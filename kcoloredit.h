@@ -161,6 +161,8 @@ class KColorEditApp : public KMainWindow
     void slotClipboardChanged();
     void slotModified( bool );
     void slotPaletteAvailable( bool );
+    void slotConfigureToolbars();
+    void saveToolbarConfig();
 
   private:
 
