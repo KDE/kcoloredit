@@ -203,7 +203,9 @@ void KColorEditView::updateColorValueLabels() {
 	slotCursorPosChanged(getDocument()->getPaletteCursorPos());
 }
 	
-void KColorEditView::redraw() {
+void KColorEditView::redraw(bool newDocument) {
+	if(newDocument)
+		paletteView->setScrollBarValue(0);
 	paletteView->redraw();
 	updateColorValueLabels();
 }

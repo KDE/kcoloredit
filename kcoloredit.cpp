@@ -194,8 +194,9 @@ void KColorEditApp::initToolBar()
   toolBar()->insertButton(BarIcon("editcopy"), ID_EDIT_COPY, true, i18n("Copy"));
   toolBar()->insertButton(BarIcon("editpaste"), ID_EDIT_PASTE, true, i18n("Paste"));
   toolBar()->insertSeparator();
-  toolBar()->insertButton(BarIcon("help"), ID_HELP_CONTENTS, SIGNAL(clicked()),
-  				this, SLOT(appHelpActivated()), true,i18n("Help"));
+  //toolBar()->insertButton(BarIcon("help"), ID_HELP_CONTENTS, SIGNAL(clicked()),
+  //				this, SLOT(appHelpActivated()),
+  //				true,i18n("Help"));
 
   ///////////////////////////////////////////////////////////////////
   // INSERT YOUR APPLICATION SPECIFIC TOOLBARS HERE WITH toolBar(n)

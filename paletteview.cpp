@@ -43,6 +43,10 @@ void PaletteView::redraw() {
 	slotRepaintScrolledArea();
 }
 
+void PaletteView::setScrollBarValue(const int value) {
+	scrollBar->setValue(value);
+}
+
 void PaletteView::slotCursorFollowsChosenColor(bool follows) {
 	scrolledArea->slotCursorFollowsChosenColor(follows);
 }

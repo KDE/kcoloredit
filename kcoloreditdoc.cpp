@@ -80,14 +80,14 @@ const QString &KColorEditDoc::getTitle() const
   return title;
 }
 
-void KColorEditDoc::slotRedrawAllViews(KColorEditView *sender) {
+void KColorEditDoc::slotRedrawAllViews(KColorEditView *sender, bool newDocument) {
  KColorEditView *w;
   if(pViewList)
   {
     for(w=pViewList->first(); w!=0; w=pViewList->next())
     {
       if(w!=sender)
-        w->redraw();
+        w->redraw(newDocument);
     }
   }
 }
@@ -147,7 +147,7 @@ bool KColorEditDoc::newDocument()
   title=i18n("Untitled");
   setPaletteCursorPos(0);
   setPaletteSelection(0, 0);
-  slotRedrawAllViews(0);
+  slotRedrawAllViews(0, true);
   return true;
 }
 
@@ -166,7 +166,7 @@ bool KColorEditDoc::openDocument(const QString& filename) {
 		title = fileInfo.fileName();
 		setPaletteCursorPos(palette.length());
 		setPaletteSelection(0, 0);
-		slotRedrawAllViews(0);
+		slotRedrawAllViews(0, true);
 	}
 	return true;
 }

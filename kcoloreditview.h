@@ -62,7 +62,7 @@ class KColorEditView : public QSplitter {
 		/** Chooses a color to the color selector */
 		void chooseColor(Color* const color);
 		/** Updates the view after the document has been changed */
-		void redraw();
+		void redraw(bool newDocument);
 		
 	public slots:
 		/** Notifies that the cursor position changed */

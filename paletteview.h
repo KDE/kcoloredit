@@ -41,6 +41,8 @@ public:
 	~PaletteView();
 	/** Calls redraw() in scrolledArea */
 	void redraw();
+	/** Sets a scroll bar value */
+	void setScrollBarValue(const int value);
 
 public slots:
 	/** Sets if the cursor follows a chosen color */

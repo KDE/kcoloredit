@@ -122,7 +122,7 @@ class KColorEditDoc : public QObject
     /** Calls redraw() on all views connected to the document object,
      *  except for sender if sender is not null
      */
-    void slotRedrawAllViews(KColorEditView *sender);
+    void slotRedrawAllViews(KColorEditView* sender, bool newDocument = false);
 
   public:	
     /** the list of the views currently connected to the document */
