@@ -17,7 +17,7 @@
 
 #ifndef KCOLOREDIT_H
 #define KCOLOREDIT_H
- 
+
 
 #include <config.h>
 
@@ -25,7 +25,7 @@
 #include <qevent.h>
 #include <qstringlist.h>
 
-// include files for KDE 
+// include files for KDE
 #include <kapplication.h>
 #include <kmainwindow.h>
 #include <kaction.h>
@@ -69,13 +69,13 @@ class KColorEditApp : public KMainWindow
     void openDocumentFile(const char *_cmdl=0);
     /** returns a pointer to the current document connected to the KMainWindow instance and is used by
      * the View class to access the document object's methods
-     */	
-    KColorEditDoc *document() const; 	
+     */
+    KColorEditDoc *document() const;
 
   protected:
     /** save general Options like all bar positions and status as well as the geometry and the recent file list to the configuration
      * file
-     */ 	
+     */
     void saveOptions();
     /** read general Options again and initialize all variables like the recent file list
      */
@@ -102,7 +102,7 @@ class KColorEditApp : public KMainWindow
      */
     virtual bool queryClose();
     /** queryExit is called by KMainWindow when the last window of the application is going to be closed during the closeEvent().
-     * Against the default implementation that just returns true, this calls saveOptions() to save the settings of the last window's	
+     * Against the default implementation that just returns true, this calls saveOptions() to save the settings of the last window's
      * properties.
      * @see KMainWindow#queryExit
      * @see KMainWindow#closeEvent
@@ -161,6 +161,7 @@ class KColorEditApp : public KMainWindow
     void slotClipboardChanged();
     void slotModified( bool );
     void slotPaletteAvailable( bool );
+    void slotConfigureKeys();
 
   private:
 
@@ -188,5 +189,5 @@ class KColorEditApp : public KMainWindow
 	/** Whether to view color names */
 	bool viewColorNames;
 };
- 
+
 #endif // KCOLOREDIT_H

@@ -29,6 +29,7 @@
 #include <kcolordialog.h>
 #include <kconfig.h>
 #include <kdebug.h>
+#include <kkeydialog.h>
 
 // application specific includes
 #include "kcoloredit.h"
@@ -68,10 +69,10 @@ void KColorEditApp::initActions()
   KStdAction::saveAs( this, SLOT( slotFileSaveAs() ), actionCollection() );
   KStdAction::close( this, SLOT( slotClose() ), actionCollection() );
   KStdAction::quit( this, SLOT( slotQuit() ), actionCollection() );
-
+  KStdAction::keyBindings( this, SLOT( slotConfigureKeys() ), actionCollection() );
   m_actSave = KStdAction::save( this, SLOT( slotFileSave() ),
           actionCollection() );
-  m_actRecent = KStdAction::openRecent( this, 
+  m_actRecent = KStdAction::openRecent( this,
           SLOT( slotFileOpenRecent( const KURL& ) ), actionCollection() );
 
   ( void ) new KAction( i18n("New &Window"), kapp->miniIcon(), KShortcut(),
@@ -79,7 +80,7 @@ void KColorEditApp::initActions()
           "file_new_window" );
 
   // Edit actions
-  m_actCut = KStdAction::cut( this, SLOT( slotEditCut() ), 
+  m_actCut = KStdAction::cut( this, SLOT( slotEditCut() ),
           actionCollection() );
   m_actCopy = KStdAction::copy( this, SLOT( slotEditCopy() ),
           actionCollection() );
@@ -93,7 +94,7 @@ void KColorEditApp::initActions()
           SLOT( slotViewColorNames() ), actionCollection(),
           "color_view_names" );
   m_actPalette = new KAction( i18n("From &Palette"), KShortcut(), this,
-          SLOT( slotColorFromPalette() ), actionCollection(), 
+          SLOT( slotColorFromPalette() ), actionCollection(),
           "color_from_palette" );
   ( void ) new KAction( i18n("From &Screen"), KShortcut(), this,
           SLOT( slotColorFromScreen() ), actionCollection(),
@@ -102,6 +103,11 @@ void KColorEditApp::initActions()
   // Settings Menu
   createStandardStatusBarAction();
   setStandardToolBarMenuEnabled(true);
+}
+
+void KColorEditApp::slotConfigureKeys()
+{
+  KKeyDialog::configure( actionCollection(), this );
 }
 
 void KColorEditApp::initStatusBar()
@@ -115,11 +121,11 @@ void KColorEditApp::initDocument()
   doc = new KColorEditDoc(this);
   doc->newDocument();
 
-  connect( doc, SIGNAL( selectionChanged( int, int ) ), 
+  connect( doc, SIGNAL( selectionChanged( int, int ) ),
           SLOT( slotSelectionChanged( int, int ) ) );
   connect( doc, SIGNAL( clipboardChanged() ),
           SLOT( slotClipboardChanged() ) );
-  connect( doc, SIGNAL( modified( bool ) ), 
+  connect( doc, SIGNAL( modified( bool ) ),
           SLOT( slotModified( bool ) ) );
   connect( doc, SIGNAL( paletteAvailable( bool ) ),
           SLOT( slotPaletteAvailable( bool ) ) );
