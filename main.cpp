@@ -18,6 +18,7 @@
 #include <kcmdlineargs.h>
 #include <kaboutdata.h>
 #include <klocale.h>
+#include <kdebug.h>
 
 #include "kcoloredit.h"
 
