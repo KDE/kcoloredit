@@ -109,13 +109,13 @@ by moving the mouse then with the left mouse button pressed.
 </para>
 </listitem>
 <listitem>
-<para>If the <guilabel>After cursor</guilabel> checkbox near to the
-<guilabel>Add a color</guilabel> button is checked, a color from the
+<para>If the <guilabel>After cursor</guilabel> check-box near to the
+<guilabel>Add a Color</guilabel> button is checked, a color from the
 color chooser is put after the cursor.  The color is either inserted
-or it ovewrites another one, depending on whether the
-<guilabel>Ovewrite</guilabel> mode is chosen. The mode can be chosen
-by checking the <guilabel>Overwrite</guilabel> checkbox, that is next
-to the <guilabel>After cursor</guilabel> one.</para>
+or it overwrites another one, depending on whether the
+<guilabel>Overwrite</guilabel> mode is chosen. The mode can be chosen
+by checking the <guilabel>Overwrite</guilabel> check-box, that is next
+to the <guilabel>After Cursor</guilabel> one.</para>
 </listitem>
 </itemizedlist>
 
@@ -159,11 +159,11 @@ By editing the HSV or RGB components.
 By selecting a color from color gradient panels. In the left one, two
 from HSV components can be selected, and in the right one, the third
 one. The third component can be chosen by clicking on one of the
-buttons labelled <guilabel>H</guilabel>, <guilabel>S</guilabel> and
+buttons labeled <guilabel>H</guilabel>, <guilabel>S</guilabel> and
 <guilabel>V</guilabel>. The one component panel display colors with
 the other two components equal to these selected in the two components
 panel.  The two components panel may display colors with the third
-component fixed, or, if the <guilabel>Variable</guilabel> checkbox is
+component fixed, or, if the <guilabel>Variable</guilabel> check-box is
 set, with a value equal to the one selected in the one component
 panel. In the <guilabel>Replace</guilabel> mode, the color selected in
 panels replaces the output one instantly, and in the
@@ -234,7 +234,7 @@ window.</action></para>
 <varlistentry>
 <term><menuchoice>
 <guimenu>File</guimenu>
-<guimenuitem>Open Recent...</guimenuitem>
+<guimenuitem>Open Recent</guimenuitem>
 </menuchoice></term>
 <listitem>
 <para><action>Reopen a palette that you have recently been
@@ -345,7 +345,7 @@ clipboard.</action></para>
 <varlistentry>
 <term><menuchoice>
 <guimenu>Color</guimenu>
-<guimenuitem>From palette</guimenuitem>
+<guimenuitem>From Palette</guimenuitem>
 </menuchoice></term>
 <listitem>
 <para><action>Find the color currently selected in the palette, in the
@@ -374,7 +374,7 @@ in the color selector on the left.</action></para>
 <varlistentry>
 <term><menuchoice>
 <guimenu>Color</guimenu>
-<guimenuitem>Color names</guimenuitem>
+<guimenuitem>Color Names</guimenuitem>
 </menuchoice></term>
 <listitem>
 <para>If the currently open palette has color names, <action>display
