@@ -23,10 +23,11 @@
 #include <qpainter.h>
 #include <qpixmap.h>
 #include <qpen.h>
-#include <qfontmetrics.h> 
+#include <qfontmetrics.h>
 #include <qtimer.h>
 #include <kglobal.h>
 #include <kcolordrag.h>
+#include <qscrollbar.h>
 
 #include "palette.h"
 #include "palettehistory.h"
@@ -203,15 +204,15 @@ Palette* PaletteViewScrolledArea::palette() const {
 	return document()->paletteHistory()->editableStream();
 }
 
-int PaletteViewScrolledArea::cursorPos() {
+int PaletteViewScrolledArea::cursorPos() const {
 	return document()->paletteCursorPos();
 }
 
-int PaletteViewScrolledArea::selectionMin() {
+int PaletteViewScrolledArea::selectionMin() const{
 	return document()->paletteSelectionBegin();
 }
 
-int PaletteViewScrolledArea::selectionMax() {
+int PaletteViewScrolledArea::selectionMax() const {
 	return document()->paletteSelectionEnd();
 }
 
@@ -247,7 +248,7 @@ void PaletteViewScrolledArea::paintEvent(QPaintEvent* event) {
 	int firstRow = posY/rowHeight;
 	int lastRow = (posY + height() - 1 + rowHeight - 1)/rowHeight;
 	if(viewColorNames)
-		painter.fillRect(0, 0, rowWidth, height(), 
+		painter.fillRect(0, 0, rowWidth, height(),
         QBrush( QFrame::palette().active().base() ));
 	QBrush normalBackgroundBrush(QFrame::palette().active().background());
 	QBrush selectedBackgroundBrush(QFrame::palette().active().highlight());

@@ -223,11 +223,11 @@ void KColorEditDoc::setPaletteSelection(const int begin, const int end) {
     emit selectionChanged( begin, end );
 }
 
-int KColorEditDoc::paletteSelectionBegin() {
+int KColorEditDoc::paletteSelectionBegin() const {
 	return m_paletteSelectionBegin;
 }
 
-int KColorEditDoc::paletteSelectionEnd() {
+int KColorEditDoc::paletteSelectionEnd() const {
 	return m_paletteSelectionEnd;
 }
 

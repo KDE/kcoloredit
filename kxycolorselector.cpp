@@ -33,7 +33,7 @@ KXYColorSelector::KXYColorSelector(QWidget *parent, const char *name) : KXYSelec
 	updateContents();
 }
 KXYColorSelector::~KXYColorSelector()	{
-	
+
 }
 
 void KXYColorSelector::setType(const int type) {
@@ -86,7 +86,7 @@ void KXYColorSelector::setGlobalComponent(const int component) {
 	m_globalComponent = component;
 }
 
-int KXYColorSelector::globalComponent() {
+int KXYColorSelector::globalComponent() const{
 	return m_globalComponent;
 }
 
@@ -95,39 +95,39 @@ void KXYColorSelector::setColor(QColor* const color, const int x, const int y) {
 	int ySize = contentsRect().height();
 	switch(type) {
 		case TYPE_HS:
-			color->setHsv(360*x/xSize, 256*( ySize - 1 - y )/ySize, 
+			color->setHsv(360*x/xSize, 256*( ySize - 1 - y )/ySize,
                     globalComponent());
 			break;
-			
+
 		case TYPE_VS:
-			color->setHsv(globalComponent(), 256*( ySize - 1 - y )/ySize, 
+			color->setHsv(globalComponent(), 256*( ySize - 1 - y )/ySize,
                     256*x/xSize);
 			break;
-			
+
 		case TYPE_HV:
-			color->setHsv(360*x/xSize, globalComponent(), 
+			color->setHsv(360*x/xSize, globalComponent(),
                     256*( ySize - 1 - y )/ySize);
 			break;
-			
+
 		case TYPE_RG:
-			color->setRgb(x/xSize, 256*( ySize - 1 - y )/ySize, 
+			color->setRgb(x/xSize, 256*( ySize - 1 - y )/ySize,
                     globalComponent());
 			break;
-			
+
 		case TYPE_GB:
-			color->setRgb(globalComponent(), 256*x/xSize, 
+			color->setRgb(globalComponent(), 256*x/xSize,
                     256*( ySize - 1 - y )/ySize);
 			break;
-			
+
 		case TYPE_BR:
-			color->setRgb(256*( ySize - 1 - y )/ySize, globalComponent(), 
+			color->setRgb(256*( ySize - 1 - y )/ySize, globalComponent(),
                     256*x/xSize);
 			break;
-			
+
 		case TYPE_NONE:
 			color->setRgb(192, 192, 192);
 			break;
-			
+
 	}
 }
 

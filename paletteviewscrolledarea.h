@@ -19,13 +19,13 @@
 #define PALETTEVIEWSCROLLEDAREA_H
 
 #include <qframe.h>
-#include <qscrollbar.h>
 #include <qevent.h>
 
 #include "palette.h"
 
 class KColorEditDoc;
 class KColorEditView;
+class QScrollBar;
 
 /** This widget draws the palette view scrolled area.
  *  It has paste and cut features.
@@ -49,7 +49,7 @@ public slots:
 	void slotCursorFollowsChosenColor(bool follows);
 	/** Sets whether to view color names */
 	void slotViewColorNames(bool viewColorNames);
-	
+
 protected:
 	/** The scrollbar widget */
 	QScrollBar* scrollBar;
@@ -97,7 +97,7 @@ protected:
 	bool cursorFollowsChosenColor;
 	/** Whether to view color names */
 	bool viewColorNames;
-	
+
 	/** @return The viewed palette */
 	Palette* palette() const;
 	/** Computes the size of cell, number of cells in a row and
@@ -120,17 +120,17 @@ protected:
 	 */
 	bool setCursorPos(const int x, const int y);
 	/** @return a palette cursor position */
-	int cursorPos();
+	int cursorPos() const;
 	/** sets a palette selection */
 	void setSelection(const int min, const int max);
 	/** @return a palette selection lesser position, or equal position
 	 *  if no colors are selected
 	 */
-	int selectionMin();
+	int selectionMin() const;
 	/** @return a palette selection greater position, or equal position
 	 *  if no colors are selected
 	 */
-	int selectionMax();
+	int selectionMax() const;
 	/**  checks whether to scrolls the palette if a mouse position
 	 *   is outside it
 	 */
@@ -153,7 +153,7 @@ protected:
 	void chooseColor(Color* const color);
 	/** scrolls the scrolled area */
 	void scrollBy(const int y);
-	
+
 protected slots:
 	/** called if there is a scroll timeout, sets scrollTimeout to true */
 	void slotScrollTimeout();

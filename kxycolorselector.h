@@ -41,7 +41,7 @@ public:
 	       TYPE_ = 7,
 	/** Component selection resolution */
 	       COMPONENT_SELECTION_RESOLUTION = 10000 };
-	
+
 public:
 	/** Constructs a two-dimensional color component selector widget,
 	 *  with a type TYPE_NONE and ranges 0 .. MAX_COLOR_COMPONENT_VALUE
@@ -55,7 +55,7 @@ public:
 	/** Set the global component */
   void setGlobalComponent(const int component);
 	/** @return The global component */
-  int globalComponent();
+  int globalComponent() const;
 
 protected:
 	/** The number of colors that are used to dither the pixmap
@@ -63,7 +63,7 @@ protected:
 	 *  getStandardColorsPalette() is of the size.
 	 */
 	enum { STANDARD_PALETTE_SIZE = 17 };
-	
+
 	/** A type of the selector */
 	int type;
 	/** The global component value */

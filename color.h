@@ -32,7 +32,7 @@ class Color {
 		       GREEN_INDEX = 1,
 		       BLUE_INDEX = 2,
 		       COMPONENTS_NUM = 3 };
-	
+
 	public:
 		/** constructs a color
 		 */
@@ -55,7 +55,7 @@ class Color {
 		int component(const int index) const;
 		/** @return components
 		 */
-		int* components();
+		int* components() const;
 		/** @return a color name
 		 */
 		const QString& name() const;
@@ -68,7 +68,7 @@ class Color {
 		/** modifies components, amount can be either positive or negative
 		 */
 		void modifyComponents(const int red, const int green, const int blue, const double amount);
-	
+
 	protected:
 		/** components table
 		 */
