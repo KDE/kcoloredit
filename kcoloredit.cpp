@@ -29,7 +29,6 @@
 #include <kcolordialog.h>
 #include <kconfig.h>
 #include <kdebug.h>
-#include <kkeydialog.h>
 
 // application specific includes
 #include "kcoloredit.h"
@@ -69,7 +68,8 @@ void KColorEditApp::initActions()
   KStdAction::saveAs( this, SLOT( slotFileSaveAs() ), actionCollection() );
   KStdAction::close( this, SLOT( slotClose() ), actionCollection() );
   KStdAction::quit( this, SLOT( slotQuit() ), actionCollection() );
-  KStdAction::keyBindings( this, SLOT( slotConfigureKeys() ), actionCollection() );
+  KStdAction::keyBindings(guiFactory(), SLOT(configureShortcuts()), 
+actionCollection());
   m_actSave = KStdAction::save( this, SLOT( slotFileSave() ),
           actionCollection() );
   m_actRecent = KStdAction::openRecent( this,
@@ -104,11 +104,6 @@ void KColorEditApp::initActions()
   // Settings Menu
   createStandardStatusBarAction();
   setStandardToolBarMenuEnabled(true);
-}
-
-void KColorEditApp::slotConfigureKeys()
-{
-  KKeyDialog::configure( actionCollection(), this );
 }
 
 void KColorEditApp::initStatusBar()
