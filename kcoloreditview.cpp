@@ -41,7 +41,7 @@ KColorEditView::KColorEditView(QWidget *parent, const char *name) : QSplitter(pa
 		Color( RGB_MAX_COMPONENT_VALUE, RGB_MAX_COMPONENT_VALUE, RGB_MAX_COMPONENT_VALUE, "" ));
 	QWidget* paletteViewArea = new QWidget(this);
 	QVBoxLayout* paletteLayout = new QVBoxLayout(paletteViewArea);
-	paletteView = new PaletteView(16, 16, 3, this, paletteViewArea);
+	paletteView = new PaletteView(16, 16, 2, this, paletteViewArea);
 	paletteLayout->addWidget(paletteView, 10);
 	QHBoxLayout* layout = new QHBoxLayout();
 	QVBoxLayout* addColorLayout = new QVBoxLayout(4);
