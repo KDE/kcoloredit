@@ -14,11 +14,6 @@ kcolorchooser_SOURCES = kcolorchooser.cpp
 kcolorchooser_LDADD = $(LIB_KDEUI)
 kcolorchooser_LDFLAGS = $(all_libraries) $(KDE_RPATH)
 
-lib_LTLIBRARIES = kcolorchooser.la
-kcolorchooser_la_SOURCES = kcolorchooser.cpp
-kcolorchooser_la_LIBADD = $(LIB_KDEUI)
-kcolorchooser_la_LDFLAGS = $(all_libraries) -module -avoid-version
-
 noinst_HEADERS = color.h colorselector.h editablestreamhistory.h \
 	gradientselection.h imageselection.h kcoloredit.h kcoloreditdoc.h \
 	kcoloreditview.h kxycolorselector.h kzcolorselector.h \
