@@ -31,12 +31,16 @@
 #include "palette.h"
 #include "loadpalettedlg.h"
 
-LoadPaletteDlg::LoadPaletteDlg(QWidget *parent, const char *name) : KDialog(parent, name, TRUE) {
+LoadPaletteDlg::LoadPaletteDlg(QWidget *parent, const char *name) 
+        : KDialogBase(parent, name, true, i18n( "Load Palette" ), 
+          Ok|Cancel, Ok, true) {
 	fileName = "";
-	QVBoxLayout* topLayout = new QVBoxLayout(this, 8);
-	QLabel* label = new QLabel(i18n( "Select a palette" ), this);
+    QWidget *mainWidget = new QWidget( this );
+    setMainWidget( mainWidget );
+	QVBoxLayout* topLayout = new QVBoxLayout(mainWidget, 0, spacingHint());
+	QLabel* label = new QLabel(i18n( "Select a palette:" ), mainWidget);
 	topLayout->addWidget(label);
-	paletteBox = new QComboBox(false, this);
+	paletteBox = new QComboBox(false, mainWidget);
 	browseFileNameInserted = false;
 	QStringList palettesList = Palette::kdePalettes();
 	for(QStringList::Iterator palette = palettesList.begin();
@@ -63,25 +67,14 @@ LoadPaletteDlg::LoadPaletteDlg(QWidget *parent, const char *name) : KDialog(pare
 	}
 	connect(paletteBox, SIGNAL( activated(int) ), SLOT( setFileName(int) ));
 	topLayout->addWidget(paletteBox);
-	QHBoxLayout* browseLayout = new QHBoxLayout(4);
-	QPushButton* browseButton = new QPushButton(i18n( "Browse" ), this);
+	QHBoxLayout* browseLayout = new QHBoxLayout( mainWidget );
+	QPushButton* browseButton = new QPushButton(i18n( "Browse..." ), 
+        mainWidget);
 	connect(browseButton, SIGNAL( clicked() ), SLOT( browseFileNames() ));
 	browseLayout->addWidget(browseButton);
 	browseLayout->addStretch(10);
 	topLayout->addLayout(browseLayout);
-	QHBoxLayout* buttonsLayout = new QHBoxLayout(4);
-	QPushButton* okButton = new QPushButton(i18n( "OK" ), this);
-	connect(okButton, SIGNAL( clicked() ), SLOT( accept() ));
-	buttonsLayout->addStretch(10);
-	buttonsLayout->addWidget(okButton, 10);
-	buttonsLayout->addStretch(10);
-	QPushButton* cancelButton = new QPushButton(i18n( "Cancel" ), this);
-	connect(cancelButton, SIGNAL( clicked() ), SLOT( reject() ));
-	buttonsLayout->addWidget(cancelButton, 10);
-	buttonsLayout->addStretch(10);
 	topLayout->addStretch(10);
-	topLayout->addLayout(buttonsLayout, 10);
-	setCaption(i18n( "Load Palette" ));
 	resize(300, 155);
 }
 LoadPaletteDlg::~LoadPaletteDlg() {
