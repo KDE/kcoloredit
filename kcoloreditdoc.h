@@ -126,7 +126,7 @@ class KColorEditDoc : public QObject
 
   public:	
     /** the list of the views currently connected to the document */
-    static QList<KColorEditView> *pViewList;	
+    QList<KColorEditView> *pViewList;	
 
   private:
     /** the modified flag of the current document */

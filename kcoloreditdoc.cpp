@@ -31,16 +31,10 @@
 #include "kcoloreditview.h"
 #include "resource.h"
 
-QList<KColorEditView> *KColorEditDoc::pViewList = 0L;
-
 KColorEditDoc::KColorEditDoc(QWidget *parent, const char *name) : QObject(parent, name),
 	palette(), paletteHistory(&palette, 0) {
-  if(!pViewList)
-  {
-    pViewList = new QList<KColorEditView>();
-  }
-
-  pViewList->setAutoDelete(true);
+	pViewList = new QList<KColorEditView>();
+	pViewList->setAutoDelete(true);
 }
 
 KColorEditDoc::~KColorEditDoc()
