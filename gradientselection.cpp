@@ -37,17 +37,23 @@ GradientSelection::GradientSelection(QWidget *parent, const char *name ) : QWidg
 	topLayout->setRowStretch(0, 10);
 	topLayout->setRowStretch(1, 0);
 	QVBoxLayout* xyColorSelectorLayout = new QVBoxLayout();
+	QHBoxLayout* checkBoxLayout = new QHBoxLayout();
+	checkBoxLayout->setMargin(0);
 	variableCheckBox = new QCheckBox(i18n( "Variable" ), this);
 	variableGlobalComponent = false;
 	connect(variableCheckBox, SIGNAL( toggled(bool) ), SLOT( slotSetVariableGlobalComponent(bool) ));
-	xyColorSelectorLayout->addWidget(variableCheckBox);
+	checkBoxLayout->addSpacing(2);
+	checkBoxLayout->addWidget(variableCheckBox);
+	xyColorSelectorLayout->addLayout(checkBoxLayout);
 	xyColorSelectorLayout->addStretch(10);
 	QHBoxLayout* buttonsLayout = new QHBoxLayout();
 	synchronizeColorButton = new QPushButton(i18n( "Synchronize" ), this);
 	connect(synchronizeColorButton, SIGNAL( clicked() ), SLOT( slotSynchronizeColor() ));
+	buttonsLayout->addSpacing(2);
 	buttonsLayout->addWidget(synchronizeColorButton);
 	buttonsLayout->addStretch(10);
 	xyColorSelectorLayout->addLayout(buttonsLayout);
+	xyColorSelectorLayout->addSpacing(2);
 	topLayout->addLayout(xyColorSelectorLayout, 1, 0);
 	zColorSelector = new KZColorSelector(KZColorSelector::Vertical, this);
 	connect(zColorSelector, SIGNAL( valueChanged(int) ),
