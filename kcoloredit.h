@@ -31,7 +31,6 @@
 #include <kmainwindow.h>
 #include <kaccel.h>
 
-// forward declaration of the KColorEdit classes
 class KColorEditDoc;
 class KColorEditView;
 
