@@ -46,6 +46,8 @@ public:
 public slots:
 	/** Sets if the cursor follows a chosen color */
 	void slotCursorFollowsChosenColor(bool follows);
+	/** Sets whether to view color names */
+	void slotViewColorNames(bool viewColorNames);
 	
 protected:
 	/** The scrollbar widget */
@@ -86,6 +88,8 @@ protected:
 	bool colorChosen;
 	/** Whether the cursor follows a chosen color */
 	bool cursorFollowsChosenColor;
+	/** Whether to view color names */
+	bool viewColorNames;
 	
 	/** @return The viewed palette */
 	Palette* getPalette() const;

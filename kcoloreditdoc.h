@@ -123,6 +123,8 @@ class KColorEditDoc : public QObject
      *  except for sender if sender is not null
      */
     void slotRedrawAllViews(KColorEditView* sender, bool newDocument = false);
+    /** Sets a view mode */
+	void slotChangeViewMode(bool viewColorNames);
 
   public:	
     /** the list of the views currently connected to the document */

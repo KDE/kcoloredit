@@ -43,6 +43,8 @@ public:
 	void redraw();
 	/** Sets a scroll bar value */
 	void setScrollBarValue(const int value);
+	/** Sets whether to view color names */
+	void slotViewColorNames(bool viewColorNames);
 
 public slots:
 	/** Sets if the cursor follows a chosen color */

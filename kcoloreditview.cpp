@@ -198,6 +198,10 @@ void KColorEditView::slotCursorPosChanged(int position) {
 		colorAtCursorRgbStringValueLabel->setText("");
 	}
 }
+
+void KColorEditView::slotViewColorNames(bool viewColorNames) {
+	paletteView->slotViewColorNames(viewColorNames);
+}
 	
 void KColorEditView::updateColorValueLabels() {
 	slotCursorPosChanged(getDocument()->getPaletteCursorPos());

@@ -67,6 +67,8 @@ class KColorEditView : public QSplitter {
 	public slots:
 		/** Notifies that the cursor position changed */
 		void slotCursorPosChanged(int position);
+		/** Whether to view color names */
+		void slotViewColorNames(bool viewColorNames);
   	
 	protected:
 		ColorSelector* colorSelector;

@@ -92,6 +92,17 @@ void KColorEditDoc::slotRedrawAllViews(KColorEditView *sender, bool newDocument)
   }
 }
 
+void KColorEditDoc::slotChangeViewMode(bool viewColorNames) {
+ KColorEditView *w;
+  if(pViewList)
+  {
+    for(w=pViewList->first(); w!=0; w=pViewList->next())
+    {
+      w->slotViewColorNames(viewColorNames);
+    }
+  }
+}
+
 bool KColorEditDoc::saveModified()
 {
   bool completed=true;

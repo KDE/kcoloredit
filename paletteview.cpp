@@ -47,6 +47,12 @@ void PaletteView::setScrollBarValue(const int value) {
 	scrollBar->setValue(value);
 }
 
+void PaletteView::slotViewColorNames(bool viewColorNames) {
+	scrolledArea->slotViewColorNames(viewColorNames);
+	setScrollBarValue(0);
+	scrolledArea->redraw();
+}
+
 void PaletteView::slotCursorFollowsChosenColor(bool follows) {
 	scrolledArea->slotCursorFollowsChosenColor(follows);
 }

@@ -61,7 +61,6 @@ KColorEditApp::KColorEditApp() : KMainWindow(0) {
   disableCommand(ID_EDIT_COPY);
   //disableCommand(ID_EDIT_PASTE);
 
-  viewColorNames = false;
   gettingColorFromScreen = false;
 }
 
@@ -311,6 +310,7 @@ void KColorEditApp::readOptions()
   viewColorNames = config->readBoolEntry("View Color Names", true);
   viewMenu->setItemChecked(ID_VIEW_COLOR_NAMES, viewColorNames);
   toolBar()->setButton(ID_VIEW_COLOR_NAMES, viewColorNames);
+  doc->slotChangeViewMode(viewColorNames);
 
   // bar status settings
   bool bViewToolbar = config->readBoolEntry("Show Toolbar", true);
@@ -617,6 +617,7 @@ void KColorEditApp::slotViewColorNames()
     toolBar()->setButton(ID_VIEW_COLOR_NAMES, true);
     viewColorNames = true;
   }		
+  doc->slotChangeViewMode(viewColorNames);
 
   slotStatusMsg(i18n(IDS_STATUS_DEFAULT));
 }
