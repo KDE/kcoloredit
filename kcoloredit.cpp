@@ -93,6 +93,7 @@ void KColorEditApp::initActions()
   m_actNames = new KToggleAction( i18n("Show &Color Names"), KShortcut(), this,
           SLOT( slotViewColorNames() ), actionCollection(),
           "color_view_names" );
+  m_actNames->setCheckedState(i18n("Hide &Color Names"));
   m_actPalette = new KAction( i18n("From &Palette"), KShortcut(), this,
           SLOT( slotColorFromPalette() ), actionCollection(),
           "color_from_palette" );
