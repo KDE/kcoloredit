@@ -37,7 +37,7 @@ public:
 	ColorSelector(QWidget *parent=0, const char *name=0);
 	~ColorSelector();
 	/** @return the selected color */
-	const Color& getColor();
+	const Color& color();
 
 signals:
 	/** A signal that a color value has changed */
@@ -77,7 +77,7 @@ private:
 	/** A gradient selection widget */
 	GradientSelection* gradientSelection;
 	/** The current color */
-	Color color;
+	Color m_color;
 	/** Color change mode */
 	int colorChangeMode;
 	/** Current color change value */
@@ -90,7 +90,7 @@ private:
 	bool fComponentsMode;
 	
 	/** Scales a component according to componentDiff and colorChangeValue */
-	void getScaledComponent(double* const component, const double componentDiff);
+	void scaledComponent(double* const component, const double componentDiff);
 };
 
 #endif

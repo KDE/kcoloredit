@@ -55,7 +55,7 @@ class KColorEditView : public QSplitter {
      *
      * @see KColorEditApp#getDocument
      */
-    KColorEditDoc *getDocument() const;
+    KColorEditDoc *document() const;
 
     /** Contains the implementation for printing functionality */
     void print(QPrinter *pPrinter);

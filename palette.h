@@ -35,11 +35,11 @@ public:
 	Palette(const Palette& palette);
 	~Palette();
 	/** @return A list of KDE palettes */
-	static QStringList getKDEPalettes();
+	static QStringList kdePalettes();
 	/** sets palette name */
 	void setName(const QString& name);
 	/** @return palette name */
-	const QString& getName() const;
+	const QString& name() const;
 	/** inserts a color at a given position */
 	void insert(const int index, Color* const color);
 	/** appends a color */
@@ -49,7 +49,7 @@ public:
 	/** @return the number of colors */
 	int length() const;
 	/** @return color at index */
-	Color* getColor(const int index);
+	Color* color(const int index);
 	/** @return a copy of palette at index, of length length */
 	Palette copy(const int index, const int length);
 	/** cuts a palette at index, of length length
@@ -82,11 +82,11 @@ public:
 	/** @return A possible error description from the last unsuccessfull
 	 *  IO operation
 	 */
-	const QString& getErrorString() const;
+	const QString& errorString() const;
 
 private:
 	/** The palette name */
-	QString name;
+	QString m_name;
 
 private:
 	/** Initialization method called by constructors */
@@ -96,7 +96,7 @@ protected:
 	/** A list of palette colors */
 	QPtrList<Color> colors;
 	/** An IO error description */
-	QString errorString;
+	QString m_errorString;
 };
 
 #endif

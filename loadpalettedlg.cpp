@@ -38,7 +38,7 @@ LoadPaletteDlg::LoadPaletteDlg(QWidget *parent, const char *name) : KDialog(pare
 	topLayout->addWidget(label);
 	paletteBox = new QComboBox(false, this);
 	browseFileNameInserted = false;
-	QStringList palettesList = Palette::getKDEPalettes();
+	QStringList palettesList = Palette::kdePalettes();
 	for(QStringList::Iterator palette = palettesList.begin();
 		palette != palettesList.end(); ++palette) {
 		bool prepend = (*palette).contains( "colors/Custom_Colors" );

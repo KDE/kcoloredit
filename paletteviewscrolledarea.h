@@ -99,7 +99,7 @@ protected:
 	bool viewColorNames;
 	
 	/** @return The viewed palette */
-	Palette* getPalette() const;
+	Palette* palette() const;
 	/** Computes the size of cell, number of cells in a row and
 	 *  height of cells table, depending on colors number and
 	 *  visible area width
@@ -108,9 +108,9 @@ protected:
 	/** repaints the palette */
 	void repaintPalette();
 	/** @return A color index at a given position, -1 if none */
-	int getColorIndex(const QPoint& point) const;
+	int colorIndex(const QPoint& point) const;
 	/** @return A color at a given position */
-	QColor getColor(const QPoint& point) const;
+	QColor color(const QPoint& point) const;
 	/** sets a palette cursor position */
 	void setCursorPos(const int pos);
 	/** Sets a cursor position due to a mouse position.
@@ -120,17 +120,17 @@ protected:
 	 */
 	bool setCursorPos(const int x, const int y);
 	/** @return a palette cursor position */
-	int getCursorPos();
+	int cursorPos();
 	/** sets a palette selection */
 	void setSelection(const int min, const int max);
 	/** @return a palette selection lesser position, or equal position
 	 *  if no colors are selected
 	 */
-	int getSelectionMin();
+	int selectionMin();
 	/** @return a palette selection greater position, or equal position
 	 *  if no colors are selected
 	 */
-	int getSelectionMax();
+	int selectionMax();
 	/**  checks whether to scrolls the palette if a mouse position
 	 *   is outside it
 	 */
@@ -148,7 +148,7 @@ protected:
 	 */
 	void scrollPalette(const int amount, const int timeout);
 	/** @return The viewed document */
-	KColorEditDoc* getDocument() const;
+	KColorEditDoc* document() const;
 	/** Chooses a color to the color selector */
 	void chooseColor(Color* const color);
 	/** scrolls the scrolled area */

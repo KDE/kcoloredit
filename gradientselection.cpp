@@ -88,9 +88,9 @@ void GradientSelection::slotSetValue(Color* color) {
 		int newHComponent;
 		int newSComponent;
 		int newVComponent;
-		QColor hsvColor(this->color.getComponent(Color::RED_INDEX),
-			this->color.getComponent(Color::GREEN_INDEX),
-			this->color.getComponent(Color::BLUE_INDEX));
+		QColor hsvColor(this->color.component(Color::RED_INDEX),
+			this->color.component(Color::GREEN_INDEX),
+			this->color.component(Color::BLUE_INDEX));
 		hsvColor.hsv(&newHComponent, &newSComponent, &newVComponent);
 		hComponent = newHComponent;
 		sComponent = newSComponent;
@@ -150,7 +150,7 @@ void GradientSelection::updateXyColorSelector(const bool modeChanged) {
 		xPos = 0;
 	if(yPos < 0)
 		yPos = 0;
-	if(modeChanged || xyColorSelector->getGlobalComponent() != component) {
+	if(modeChanged || xyColorSelector->globalComponent() != component) {
 		xyColorSelector->setGlobalComponent(component);
 		xyColorSelector->updateContents();
 	}

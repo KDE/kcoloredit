@@ -99,7 +99,7 @@ void PaletteViewScrolledArea::slotScrollTimeout() {
 	if(mousePressed) {
 		QPoint cursorPoint = mapFromGlobal(QCursor::pos());
 		setCursorPos(cursorPoint.x(), cursorPoint.y());
-		selectionEnd = getCursorPos();
+		selectionEnd = cursorPos();
 		if(selectionEnd >= selectionBegin)
 			setSelection(selectionBegin, selectionEnd);
 		else
@@ -110,8 +110,8 @@ void PaletteViewScrolledArea::slotScrollTimeout() {
 }
 
 void PaletteViewScrolledArea::setCursorPos(const int pos) {
-	int oldCursorPos = getDocument()->getPaletteCursorPos();
-	getDocument()->setPaletteCursorPos(pos);
+	int oldCursorPos = document()->paletteCursorPos();
+	document()->setPaletteCursorPos(pos);
 	if(pos != oldCursorPos)
 		view->slotCursorPosChanged(pos);
 }
@@ -139,17 +139,17 @@ bool PaletteViewScrolledArea::setCursorPos(const int x, const int y) {
 		int tmpCursorPos = cursorRow*cellsInRow + cursorColumn;
 		if(tmpCursorPos < 0)
 			tmpCursorPos = 0;
-		else if(tmpCursorPos >= getPalette()->length()) {
-			if(tmpCursorPos == getPalette()->length() &&
+		else if(tmpCursorPos >= palette()->length()) {
+			if(tmpCursorPos == palette()->length() &&
 				cursorColumn == 0 &&
-				getSelectionMin() == getSelectionMax())
+				selectionMin() == selectionMax())
 				/* if cursor has been set after the last color and the color is
 				 * also the last in a row, and there is no selection, scroll the
 				 * palette to ensure the cursor is visible
 				 */
 				scrollBy(rowHeight*2);
-			if(tmpCursorPos > getPalette()->length())
-				tmpCursorPos = getPalette()->length();
+			if(tmpCursorPos > palette()->length())
+				tmpCursorPos = palette()->length();
 		}
 		setCursorPos(tmpCursorPos);
 	}
@@ -157,7 +157,7 @@ bool PaletteViewScrolledArea::setCursorPos(const int x, const int y) {
 }
 
 void PaletteViewScrolledArea::setSelection(const int min, const int max) {
-	getDocument()->setPaletteSelection(min, max);
+	document()->setPaletteSelection(min, max);
 }
 
 void PaletteViewScrolledArea::setCellsSizes() {
@@ -184,11 +184,11 @@ void PaletteViewScrolledArea::setCellsSizes() {
 		rowHeight = (int)(rowWidth*1.0/cellsInRow/
 			( cellWidth + cellSpacing*2 )*( cellHeight + cellSpacing*2 ) + 0.5);
 	cellHeight = rowHeight - cellSpacing*2;
-	rowsNum = (getPalette()->length() + cellsInRow - 1)/cellsInRow;
+	rowsNum = (palette()->length() + cellsInRow - 1)/cellsInRow;
 	cellTableHeight = rowsNum*rowHeight;
 	int contentsHeight;
-	if(getPalette()->length() != 0 &&
-		( getPalette()->length()%cellsInRow ) == 0)
+	if(palette()->length() != 0 &&
+		( palette()->length()%cellsInRow ) == 0)
 		contentsHeight = cellTableHeight + rowHeight;
 	else
 		contentsHeight = cellTableHeight;
@@ -199,20 +199,20 @@ void PaletteViewScrolledArea::setCellsSizes() {
 	scrollBar->setSteps(rowHeight, height());
 }
 
-Palette* PaletteViewScrolledArea::getPalette() const {
-	return getDocument()->getPaletteHistory()->getEditableStream();
+Palette* PaletteViewScrolledArea::palette() const {
+	return document()->paletteHistory()->editableStream();
 }
 
-int PaletteViewScrolledArea::getCursorPos() {
-	return getDocument()->getPaletteCursorPos();
+int PaletteViewScrolledArea::cursorPos() {
+	return document()->paletteCursorPos();
 }
 
-int PaletteViewScrolledArea::getSelectionMin() {
-	return getDocument()->getPaletteSelectionBegin();
+int PaletteViewScrolledArea::selectionMin() {
+	return document()->paletteSelectionBegin();
 }
 
-int PaletteViewScrolledArea::getSelectionMax() {
-	return getDocument()->getPaletteSelectionEnd();
+int PaletteViewScrolledArea::selectionMax() {
+	return document()->paletteSelectionEnd();
 }
 
 void PaletteViewScrolledArea::paintEvent(QPaintEvent* event) {
@@ -224,9 +224,9 @@ void PaletteViewScrolledArea::paintEvent(QPaintEvent* event) {
 	int maxLineWidth;
 	if(viewColorNames) {
 		int maxTextLength = 0;
-		for(int index = 0; index < getPalette()->length(); ++index) {
+		for(int index = 0; index < palette()->length(); ++index) {
 			int currTextLength = fontMetrics.width(
-				getPalette()->getColor(index)->getName());
+				palette()->color(index)->name());
 			if(currTextLength > maxTextLength)
 				maxTextLength = currTextLength;
 		}
@@ -247,14 +247,15 @@ void PaletteViewScrolledArea::paintEvent(QPaintEvent* event) {
 	int firstRow = posY/rowHeight;
 	int lastRow = (posY + height() - 1 + rowHeight - 1)/rowHeight;
 	if(viewColorNames)
-		painter.fillRect(0, 0, rowWidth, height(), QBrush( palette().active().base() ));
-	QBrush normalBackgroundBrush(palette().active().background());
-	QBrush selectedBackgroundBrush(palette().active().highlight());
+		painter.fillRect(0, 0, rowWidth, height(), 
+        QBrush( QFrame::palette().active().base() ));
+	QBrush normalBackgroundBrush(QFrame::palette().active().background());
+	QBrush selectedBackgroundBrush(QFrame::palette().active().highlight());
 	QBrush foregroundBrush;
-	QBrush cursorBrush(palette().active().foreground());
-	QPen backgroundPen(palette().active().foreground());
-	int selectionMin = getSelectionMin();
-	int selectionMax = getSelectionMax();
+	QBrush cursorBrush(QFrame::palette().active().foreground());
+	QPen backgroundPen(QFrame::palette().active().foreground());
+	int min = selectionMin();
+	int max = selectionMax();
 	int fontAscent = fontMetrics.ascent();
 	int xBegin = -hScrollBar->value();
 	for(int x = 0; x < cellsInRow; ++x) {
@@ -269,23 +270,22 @@ void PaletteViewScrolledArea::paintEvent(QPaintEvent* event) {
 			int yBegin = y*rowHeight - posY;
 			int currCellNum = y*cellsInRow + x;
 			QBrush* backgroundBrush;
-			if(currCellNum >= selectionMin &&
-				currCellNum < selectionMax)
+			if(currCellNum >= min && currCellNum < max)
 				backgroundBrush = &selectedBackgroundBrush;
 			else
 				backgroundBrush = &normalBackgroundBrush;
-			if(currCellNum < getPalette()->length()) {
-				Color* color = getPalette()->getColor(currCellNum);
+			if(currCellNum < palette()->length()) {
+				Color* color = palette()->color(currCellNum);
 				QBrush foregroundBrush(QColor(
-					color->getComponent(Color::RED_INDEX),
-					color->getComponent(Color::GREEN_INDEX),
-					color->getComponent(Color::BLUE_INDEX) ));
+					color->component(Color::RED_INDEX),
+					color->component(Color::GREEN_INDEX),
+					color->component(Color::BLUE_INDEX) ));
 				painter.fillRect(xBegin, yBegin, cellWithSpacingWidth, cellSpacing,
 					*backgroundBrush);
 				painter.fillRect(xBegin, yBegin + rowHeight - cellSpacing, cellWithSpacingWidth, cellSpacing,
 					*backgroundBrush);
 				QBrush* backgroundOrCursorBrush;
-				if(getCursorPos() == currCellNum)
+				if(cursorPos() == currCellNum)
 					backgroundOrCursorBrush = &cursorBrush;
 				else
 					backgroundOrCursorBrush = backgroundBrush;
@@ -299,10 +299,10 @@ void PaletteViewScrolledArea::paintEvent(QPaintEvent* event) {
 				if(viewColorNames) {
 					painter.setPen(backgroundPen);
 					painter.drawText(xBegin + cellWithSpacingWidth + cellSpacing*3,
-						yBegin + rowHeight/2 + fontAscent/2, color->getName());
+						yBegin + rowHeight/2 + fontAscent/2, color->name());
 				}
 			} else {
-				if(getCursorPos() == currCellNum) {
+				if(cursorPos() == currCellNum) {
 					painter.fillRect(xBegin, yBegin + cellSpacing, cellSpacing, cellHeight,
 						cursorBrush);
 					painter.fillRect(xBegin, yBegin, cellSpacing, cellSpacing,
@@ -324,27 +324,27 @@ void PaletteViewScrolledArea::paintEvent(QPaintEvent* event) {
 	painter.end();
 }
 
-int PaletteViewScrolledArea::getColorIndex(const QPoint& point) const {
+int PaletteViewScrolledArea::colorIndex(const QPoint& point) const {
 	int colorColumn = point.x()*cellsInRow/rowWidth;
 	int colorRow = (point.y() + scrollBar->value())/rowHeight;
 	int colorIndex = colorRow*cellsInRow + colorColumn;
-	if(colorIndex > getPalette()->length() - 1 ||
+	if(colorIndex > palette()->length() - 1 ||
 		colorIndex < 0)
 		colorIndex = -1;
 	return colorIndex;
 }
 
-QColor PaletteViewScrolledArea::getColor(const QPoint& point) const {
-	Color* color = getPalette()->getColor(getColorIndex( point ));
-	return QColor(color->getComponent( Color::RED_INDEX ),
-		color->getComponent( Color::GREEN_INDEX ),
-		color->getComponent( Color::BLUE_INDEX ));
+QColor PaletteViewScrolledArea::color(const QPoint& point) const {
+	Color* color = palette()->color(colorIndex( point ));
+	return QColor(color->component( Color::RED_INDEX ),
+		color->component( Color::GREEN_INDEX ),
+		color->component( Color::BLUE_INDEX ));
 }
 
 void PaletteViewScrolledArea::mousePressEvent(QMouseEvent* event) {
 	cursorPositioning = false;
 	if(( cursorPositioning = setCursorPos(event->x(), event->y()) )) {
-		selectionBegin = getCursorPos();
+		selectionBegin = cursorPos();
 		setSelection(selectionBegin, selectionBegin);
 		redraw();
 		colorChosen = false;
@@ -358,7 +358,7 @@ void PaletteViewScrolledArea::mousePressEvent(QMouseEvent* event) {
 void PaletteViewScrolledArea::mouseMoveEvent(QMouseEvent* event) {
 	if(cursorPositioning) {
 		setCursorPos(event->x(), event->y());
-		selectionEnd = getCursorPos();
+		selectionEnd = cursorPos();
 		if(selectionEnd >= selectionBegin)
 			setSelection(selectionBegin, selectionEnd);
 		else
@@ -367,10 +367,10 @@ void PaletteViewScrolledArea::mouseMoveEvent(QMouseEvent* event) {
 		redraw();
 	} else {
 		/* check if it is a color drag */
-		if(getColorIndex( colorDragPoint ) != -1) {
+		if(colorIndex( colorDragPoint ) != -1) {
 			if(abs( event->x() - colorDragPoint.x() ) > 2 ||
 				abs( event->y() - colorDragPoint.y() ) > 2) {
-				QColor draggedColor = getColor(colorDragPoint);
+				QColor draggedColor = color(colorDragPoint);
 				KColorDrag* colorDrag = KColorDrag::makeDrag(draggedColor, this);
 				colorDrag->dragCopy();
 			} else
@@ -381,12 +381,12 @@ void PaletteViewScrolledArea::mouseMoveEvent(QMouseEvent* event) {
 
 void PaletteViewScrolledArea::mouseReleaseEvent(QMouseEvent* event) {
 	if(colorChosen) {
-		if(getColorIndex( colorDragPoint ) != -1) {
-			int index = getColorIndex(colorDragPoint);
-			chooseColor(getPalette()->getColor( index ));
+		if(colorIndex( colorDragPoint ) != -1) {
+			int index = colorIndex(colorDragPoint);
+			chooseColor(palette()->color( index ));
 			if(cursorFollowsChosenColor) {
 				setCursorPos(index);
-				setSelection(getCursorPos(), getCursorPos());
+				setSelection(cursorPos(), cursorPos());
 				redraw();
 			}
 		}
@@ -399,8 +399,8 @@ void PaletteViewScrolledArea::chooseColor(Color* const color) {
 	view->chooseColor(color);
 }
 
-KColorEditDoc* PaletteViewScrolledArea::getDocument() const {
-	return view->getDocument();
+KColorEditDoc* PaletteViewScrolledArea::document() const {
+	return view->document();
 }
 
 void PaletteViewScrolledArea::scrollBy(const int y) {

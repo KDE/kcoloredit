@@ -32,9 +32,9 @@
 #include "resource.h"
 
 KColorEditDoc::KColorEditDoc(QWidget *parent, const char *name) : QObject(parent, name),
-	palette(), paletteHistory(&palette, 0) {
-	pViewList = new QPtrList<KColorEditView>();
-	pViewList->setAutoDelete(true);
+	m_palette(), m_paletteHistory(&m_palette, 0) {
+	m_pViewList = new QPtrList<KColorEditView>();
+	m_pViewList->setAutoDelete(true);
 }
 
 KColorEditDoc::~KColorEditDoc()
@@ -43,48 +43,45 @@ KColorEditDoc::~KColorEditDoc()
 
 void KColorEditDoc::addView(KColorEditView *view)
 {
-  pViewList->append(view);
+  m_pViewList->append(view);
 }
 
 void KColorEditDoc::removeView(KColorEditView *view)
 {
-  pViewList->remove(view);
+  m_pViewList->remove(view);
 }
 
-void KColorEditDoc::setModified(bool modified) {
-	this->modified = modified;
-	KColorEditApp *window=(KColorEditApp*)parent();
-	if(this->modified)
-		window->enableCommand(ID_FILE_SAVE);
-	else
-		window->disableCommand(ID_FILE_SAVE);
+void KColorEditDoc::setModified(bool b) {
+	m_modified = b;
+
+    emit modified( b );
 }
 
 void KColorEditDoc::setAbsFilePath(const QString &filename)
 {
-  absFilePath=filename;
+  m_absFilePath=filename;
 }
 
-const QString &KColorEditDoc::getAbsFilePath() const
+const QString &KColorEditDoc::absFilePath() const
 {
-  return absFilePath;
+  return m_absFilePath;
 }
 
 void KColorEditDoc::setTitle(const QString &_t)
 {
-  title=_t;
+  m_title=_t;
 }
 
-const QString &KColorEditDoc::getTitle() const
+const QString &KColorEditDoc::title() const
 {
-  return title;
+  return m_title;
 }
 
 void KColorEditDoc::slotRedrawAllViews(KColorEditView *sender, bool newDocument) {
  KColorEditView *w;
-  if(pViewList)
+  if(m_pViewList)
   {
-    for(w=pViewList->first(); w!=0; w=pViewList->next())
+    for(w=m_pViewList->first(); w!=0; w=m_pViewList->next())
     {
       if(w!=sender)
         w->redraw(newDocument);
@@ -94,9 +91,9 @@ void KColorEditDoc::slotRedrawAllViews(KColorEditView *sender, bool newDocument)
 
 void KColorEditDoc::slotChangeViewMode(bool viewColorNames) {
  KColorEditView *w;
-  if(pViewList)
+  if(m_pViewList)
   {
-    for(w=pViewList->first(); w!=0; w=pViewList->next())
+    for(w=m_pViewList->first(); w!=0; w=m_pViewList->next())
     {
       w->slotViewColorNames(viewColorNames);
     }
@@ -107,7 +104,7 @@ bool KColorEditDoc::saveModified()
 {
   bool completed=true;
 
-  if(modified)
+  if(m_modified)
   {
     KColorEditApp *window=(KColorEditApp *) parent();
     int want_save = KMessageBox::warningYesNoCancel(window,
@@ -116,16 +113,16 @@ bool KColorEditDoc::saveModified()
     switch(want_save)
     {
       case KMessageBox::Yes:
-           if (title == i18n("Untitled"))
+           if (title() == i18n("Untitled"))
            {
              completed = window->slotFileSaveAs();
            }
            else
            {
-             completed = saveDocument(getAbsFilePath());
+             completed = saveDocument(absFilePath());
        	   };
        	   if(!completed)
-							KMessageBox::sorry(0, getErrorString());
+							KMessageBox::sorry(0, errorString());
            break;
 
       case KMessageBox::No:
@@ -154,8 +151,8 @@ bool KColorEditDoc::newDocument()
 {
   deleteContents();
 	setModified(false);
-  absFilePath=QDir::homeDirPath();
-  title=i18n("Untitled");
+  setAbsFilePath( QDir::homeDirPath() );
+  setTitle( i18n("Untitled") );
   setPaletteCursorPos(0);
   setPaletteSelection(0, 0);
   slotRedrawAllViews(0, true);
@@ -168,25 +165,25 @@ bool KColorEditDoc::openDocument(const QString& filename) {
 	else {
 		deleteContents();
 		QFileInfo fileInfo(filename);
-		absFilePath=fileInfo.absFilePath();
-		if(!palette.load( absFilePath )) {
-			setErrorString(palette.getErrorString());
+		setAbsFilePath( fileInfo.absFilePath() );
+		if(!m_palette.load( absFilePath() )) {
+			setErrorString(m_palette.errorString());
 	  		return false;
 		}
 		setModified(false);
-		title = fileInfo.fileName();
-		setPaletteCursorPos(palette.length());
+		setTitle( fileInfo.fileName() );
+		setPaletteCursorPos(m_palette.length());
 		setPaletteSelection(0, 0);
 		slotRedrawAllViews(0, true);
-                KColorEditApp *window=(KColorEditApp*)parent();
-                window->setCaption(title);
+        KColorEditApp *window=(KColorEditApp*)parent();
+        window->setCaption(m_title);
 	}
 	return true;
 }
 
 bool KColorEditDoc::saveDocument(const QString& filename) {
-	if(!palette.save( filename )) {
-	 	setErrorString(palette.getErrorString());
+	if(!m_palette.save( filename )) {
+	 	setErrorString(m_palette.errorString());
 	 	return false;
 	}
   setModified(false);
@@ -194,77 +191,66 @@ bool KColorEditDoc::saveDocument(const QString& filename) {
 }
 
 void KColorEditDoc::deleteContents() {
-	palette.deleteContents();
+	m_palette.deleteContents();
 }
 
 void KColorEditDoc::setErrorString(const QString& string) {
-	errorString = string;
+	m_errorString = string;
 }
 
-const QString& KColorEditDoc::getErrorString() const {
-	return errorString;
+const QString& KColorEditDoc::errorString() const {
+	return m_errorString;
 }
 
-PaletteHistory* KColorEditDoc::getPaletteHistory() {
-	return &paletteHistory;
-}
-
-void KColorEditDoc::updateColorMenu() {
-	KColorEditApp *window=(KColorEditApp*)parent();
-	if(paletteCursorPos == palette.length())
-		window->disableCommand(ID_COLOR_FROM_PALETTE);
-	else
-		window->enableCommand(ID_COLOR_FROM_PALETTE);
+PaletteHistory* KColorEditDoc::paletteHistory() {
+	return &m_paletteHistory;
 }
 
 void KColorEditDoc::setPaletteCursorPos(const int pos) {
-	paletteCursorPos = pos;
-	updateColorMenu();
+  m_paletteCursorPos = pos;
+
+  emit paletteAvailable( pos < m_palette.length() );
 }
 
-int KColorEditDoc::getPaletteCursorPos() {
-	return paletteCursorPos;
+int KColorEditDoc::paletteCursorPos() {
+	return m_paletteCursorPos;
 }
 
 void KColorEditDoc::setPaletteSelection(const int begin, const int end) {
-	paletteSelectionBegin = begin;
-	paletteSelectionEnd = end;
-	KColorEditApp *window=(KColorEditApp*)parent();
-	if(paletteSelectionBegin == paletteSelectionEnd) {
-	  window->disableCommand(ID_EDIT_CUT);
-	  window->disableCommand(ID_EDIT_COPY);
-	} else {
-	  window->enableCommand(ID_EDIT_CUT);
-	  window->enableCommand(ID_EDIT_COPY);
-	}
+	m_paletteSelectionBegin = begin;
+	m_paletteSelectionEnd = end;
+
+    emit selectionChanged( begin, end );
 }
 
-int KColorEditDoc::getPaletteSelectionBegin() {
-	return paletteSelectionBegin;
+int KColorEditDoc::paletteSelectionBegin() {
+	return m_paletteSelectionBegin;
 }
 
-int KColorEditDoc::getPaletteSelectionEnd() {
-	return paletteSelectionEnd;
+int KColorEditDoc::paletteSelectionEnd() {
+	return m_paletteSelectionEnd;
 }
 
-void KColorEditDoc::copyToClipboard(Palette& palette) const {
+void KColorEditDoc::copyToClipboard(Palette& palette) {
 	QString text;
 	QTextOStream stream(&text);
 	palette.save(stream, 0, false);
 	KApplication::clipboard()->setText(text);
+
+    emit clipboardChanged();
 }
 
 void KColorEditDoc::copy() {
-	Palette paletteCopy = palette.copy(getPaletteSelectionBegin(),
-		getPaletteSelectionEnd() - getPaletteSelectionBegin());
+	Palette paletteCopy = m_palette.copy(paletteSelectionBegin(),
+		paletteSelectionEnd() - paletteSelectionBegin());
 	copyToClipboard(paletteCopy);
 }
 
 void KColorEditDoc::cut() {
-	Palette paletteCut = paletteHistory.cut(getPaletteSelectionBegin(),
-		getPaletteSelectionEnd() - getPaletteSelectionBegin());
+	Palette paletteCut = m_paletteHistory.cut(paletteSelectionBegin(),
+		paletteSelectionEnd() - paletteSelectionBegin());
 	copyToClipboard(paletteCut);
-	setPaletteCursorPos(getPaletteSelectionBegin());
+	setPaletteCursorPos(paletteSelectionBegin());
 	setPaletteSelection(0, 0);
 	setModified(true);
 	slotRedrawAllViews(0);
@@ -276,8 +262,8 @@ void KColorEditDoc::paste() {
 	QTextIStream stream(&text);
 	text = KApplication::clipboard()->text();
 	if(palettePaste.load( stream, false )) {
-		paletteHistory.paste(getPaletteCursorPos(), palettePaste);
-		setPaletteSelection(getPaletteCursorPos(), getPaletteCursorPos() +
+		m_paletteHistory.paste(paletteCursorPos(), palettePaste);
+		setPaletteSelection(paletteCursorPos(), paletteCursorPos() +
 			palettePaste.length());
 		setModified(true);
 		slotRedrawAllViews(0);
@@ -288,9 +274,9 @@ void KColorEditDoc::insert(int index, const Color& color) {
 	Palette paletteInsert;
 	Color* insertColor = new Color(color);
 	paletteInsert.append(insertColor);
-	paletteHistory.paste(index, paletteInsert);
+	m_paletteHistory.paste(index, paletteInsert);
+    setPaletteCursorPos( index );
 	setPaletteSelection(0, 0);
-	updateColorMenu();
 	setModified(true);
 	slotRedrawAllViews(0);
 }
@@ -299,7 +285,7 @@ void KColorEditDoc::replace(int index, const Color& color) {
 	Palette paletteReplace;
 	Color* replaceColor = new Color(color);
 	paletteReplace.append(replaceColor);
-	paletteHistory.replace(index, paletteReplace);
+	m_paletteHistory.replace(index, paletteReplace);
 	setPaletteSelection(0, 0);
 	setModified(true);
 	slotRedrawAllViews(0);

@@ -47,38 +47,38 @@ public:
 	/** Redoes if possible */
 	void redo();
 	/** @return A pointer to editableStream */
-	EDITABLE_STREAM* getEditableStream();
+	EDITABLE_STREAM* editableStream();
 
 protected:
 	/** An editable stream */
-	EDITABLE_STREAM* editableStream;
+	EDITABLE_STREAM* m_editableStream;
 	/** A number of undo levels */
-	int undoLevels;
+	int m_undoLevels;
 };
 
 template <class EDITABLE_STREAM> EditableStreamHistory<EDITABLE_STREAM>::
 	EditableStreamHistory(EDITABLE_STREAM* stream, const int undoLevels) {
-	this->editableStream = stream;
-	this->undoLevels = undoLevels;
+	m_editableStream = stream;
+	m_undoLevels = undoLevels;
 }
 template <class EDITABLE_STREAM> EditableStreamHistory<EDITABLE_STREAM>::~EditableStreamHistory() {
 }
 	
 template <class EDITABLE_STREAM> EDITABLE_STREAM
 	EditableStreamHistory<EDITABLE_STREAM>::cut(const int index, const int length) {
-	EDITABLE_STREAM cut_stream = editableStream->cut(index, length);
+	EDITABLE_STREAM cut_stream = m_editableStream->cut(index, length);
 	return cut_stream;
 }
 
 template <class EDITABLE_STREAM> void
 	EditableStreamHistory<EDITABLE_STREAM>::paste(const int index, EDITABLE_STREAM& pasteStream) {
-	editableStream->paste(index, pasteStream);
+	m_editableStream->paste(index, pasteStream);
 }
 
 template <class EDITABLE_STREAM> void
 	EditableStreamHistory<EDITABLE_STREAM>::replace(const int index, EDITABLE_STREAM& replaceStream) {
-	editableStream->cut(index, replaceStream.length());
-	editableStream->paste(index, replaceStream);
+	m_editableStream->cut(index, replaceStream.length());
+	m_editableStream->paste(index, replaceStream);
 }
 
 template <class EDITABLE_STREAM> bool
@@ -100,8 +100,8 @@ template <class EDITABLE_STREAM> void
 }
 
 template <class EDITABLE_STREAM> EDITABLE_STREAM*
-	EditableStreamHistory<EDITABLE_STREAM>::getEditableStream() {
-	return editableStream;
+	EditableStreamHistory<EDITABLE_STREAM>::editableStream() {
+	return m_editableStream;
 }
 
 #endif

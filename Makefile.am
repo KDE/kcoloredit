@@ -9,6 +9,9 @@ kcoloredit_METASOURCES = AUTO
 kcoloredit_LDADD = $(LIB_KDEUI) $(LIB_KFILE)
 kcoloredit_LDFLAGS = $(all_libraries) $(KDE_RPATH)
 
+rcdir = $(kde_datadir)/kcoloredit
+rc_DATA = kcoloreditui.rc
+
 bin_PROGRAMS = kcoloredit kcolorchooser
 kcolorchooser_SOURCES = kcolorchooser.cpp
 kcolorchooser_LDADD = $(LIB_KDEUI)

@@ -29,7 +29,7 @@ Color::~Color(){
 }
 
 void Color::setComponent(const int index, const int value) {
-	components[index] = value;
+	m_components[index] = value;
 }
 
 void Color::setComponents(const int red, const int green, const int blue) {
@@ -39,35 +39,35 @@ void Color::setComponents(const int red, const int green, const int blue) {
 }
 
 void Color::setName(const QString& name) {
-	this->name = name;
+	m_name = name;
 }
 
-int Color::getComponent(const int index) const {
-	return components[index];
+int Color::component(const int index) const {
+	return m_components[index];
 }
 
-int* Color::getComponents() {
-	return components;
+int* Color::components() {
+	return m_components;
 }
 
-const QString& Color::getName() const {
-	return name;
+const QString& Color::name() const {
+	return m_name;
 }
 
 bool Color::equals(const Color& color) {
-	return getComponent(RED_INDEX) == color.getComponent(RED_INDEX) &&
-		getComponent(GREEN_INDEX) == color.getComponent(GREEN_INDEX) &&
-		getComponent(BLUE_INDEX) == color.getComponent(BLUE_INDEX);
+	return component(RED_INDEX) == color.component(RED_INDEX) &&
+		component(GREEN_INDEX) == color.component(GREEN_INDEX) &&
+		component(BLUE_INDEX) == color.component(BLUE_INDEX);
 }
 
 void Color::modifyComponent(const int index, const int value, const double amount) {
-	int component = getComponent(index);
-	component += (int)(value*amount + 0.5);
-	if(component > RGB_MAX_COMPONENT_VALUE)
-		component = RGB_MAX_COMPONENT_VALUE;
-	else if(component < 0)
-		component = 0;
-	setComponent(index, component);
+	int comp = component(index);
+	comp += (int)(value*amount + 0.5);
+	if(comp > RGB_MAX_COMPONENT_VALUE)
+		comp = RGB_MAX_COMPONENT_VALUE;
+	else if(comp < 0)
+		comp = 0;
+	setComponent(index, comp);
 }
 
 void Color::modifyComponents(const int red, const int green, const int blue, const double amount) {

@@ -89,7 +89,7 @@ ColorSelector::ColorSelector(QWidget *parent, const char *name ) : QWidget(paren
 	colorChangeLayout->addWidget(colorChangeSliderWidget);
 	colorChangeLayout->addStretch(10);
 	layout->addLayout(colorChangeLayout, 10);
-	color.setComponents(RGB_MAX_COMPONENT_VALUE, RGB_MAX_COMPONENT_VALUE, RGB_MAX_COMPONENT_VALUE);
+	m_color.setComponents(RGB_MAX_COMPONENT_VALUE, RGB_MAX_COMPONENT_VALUE, RGB_MAX_COMPONENT_VALUE);
 	slotColorReplace();
 	KSeparator* vLine = new KSeparator(KSeparator::VLine, this);
 	layout->addWidget(vLine);
@@ -104,12 +104,12 @@ ColorSelector::~ColorSelector() {
 }
 
 void ColorSelector::slotSetColor(Color color) {
-	this->color = color;
-	colorPatch->setColor(QColor( this->color.getComponent(Color::RED_INDEX),
-		this->color.getComponent(Color::GREEN_INDEX),
-		this->color.getComponent(Color::BLUE_INDEX) ));
+	m_color = color;
+	colorPatch->setColor(QColor( m_color.component(Color::RED_INDEX),
+		m_color.component(Color::GREEN_INDEX),
+		m_color.component(Color::BLUE_INDEX) ));
 	fComponentsMode = false;
-	emit valueChanged(&this->color);
+	emit valueChanged(&m_color);
 }
 
 void ColorSelector::slotSetColor(Color* color) {
@@ -117,14 +117,14 @@ void ColorSelector::slotSetColor(Color* color) {
 }
 
 void ColorSelector::slotSetColor(const QColor& color) {
-	this->color.setComponent(Color::RED_INDEX, color.red());
-	this->color.setComponent(Color::GREEN_INDEX, color.green());
-	this->color.setComponent(Color::BLUE_INDEX, color.blue());
+	m_color.setComponent(Color::RED_INDEX, color.red());
+	m_color.setComponent(Color::GREEN_INDEX, color.green());
+	m_color.setComponent(Color::BLUE_INDEX, color.blue());
 	fComponentsMode = false;
-	emit valueChanged(&this->color);
+	emit valueChanged(&m_color);
 }
 
-void ColorSelector::getScaledComponent(double* const component, const double componentDiff) {
+void ColorSelector::scaledComponent(double* const component, const double componentDiff) {
 	double scaledComponentDiff = componentDiff*
 		pow(colorChangeValue*1.0/MAX_COLOR_CHANGE_VALUE, 2.0);
 	*component += scaledComponentDiff;
@@ -150,13 +150,13 @@ void ColorSelector::slotGradientSelectionChangeColor(Color* gradientSelectionCol
 				gComponent = fGComponent;
 				bComponent = fBComponent;
 			} else {
-				rComponent = color.getComponent(Color::RED_INDEX);
-				gComponent = color.getComponent(Color::GREEN_INDEX);
-				bComponent = color.getComponent(Color::BLUE_INDEX);
+				rComponent = m_color.component(Color::RED_INDEX);
+				gComponent = m_color.component(Color::GREEN_INDEX);
+				bComponent = m_color.component(Color::BLUE_INDEX);
 			}
-			double rDiff = gradientSelectionColor->getComponent(Color::RED_INDEX) - rComponent;
-			double gDiff = gradientSelectionColor->getComponent(Color::GREEN_INDEX) - gComponent;
-			double bDiff = gradientSelectionColor->getComponent(Color::BLUE_INDEX) - bComponent;
+			double rDiff = gradientSelectionColor->component(Color::RED_INDEX) - rComponent;
+			double gDiff = gradientSelectionColor->component(Color::GREEN_INDEX) - gComponent;
+			double bDiff = gradientSelectionColor->component(Color::BLUE_INDEX) - bComponent;
 			/*
 		 	printf("base color = (%i %i %i) gradient color = (%i %i %i)\n",
 		 		rComponent, gComponent, bComponent,
@@ -164,9 +164,9 @@ void ColorSelector::slotGradientSelectionChangeColor(Color* gradientSelectionCol
 		 		gradientSelectionColor->getComponent(Color::GREEN_INDEX),
 		 		gradientSelectionColor->getComponent(Color::BLUE_INDEX));
 		 	 */
-			getScaledComponent(&rComponent, rDiff);
-			getScaledComponent(&gComponent, gDiff);
-			getScaledComponent(&bComponent, bDiff);
+			scaledComponent(&rComponent, rDiff);
+			scaledComponent(&gComponent, gDiff);
+			scaledComponent(&bComponent, bDiff);
 			Color newColor((int)( rComponent + 0.5 ),
 				(int)( gComponent + 0.5 ), (int)( bComponent + 0.5 ), "");
 			slotSetColor(newColor);
@@ -185,11 +185,11 @@ void ColorSelector::slotGradientSelectionChangeColor(Color* gradientSelectionCol
 
 void ColorSelector::slotGradientSelectionSynchronizeColor() {
 	/** Notify the gradient selector to update its color */
-	emit valueChanged(&this->color);
+	emit valueChanged(&m_color);
 }
 
-const Color& ColorSelector::getColor() {
-	return color;
+const Color& ColorSelector::color() {
+	return m_color;
 }
 
 void ColorSelector::slotColorReplace() {

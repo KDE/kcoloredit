@@ -144,10 +144,10 @@ void KColorEditView::setColorAtCursorComponentValueLabelSizes(QLabel* const labe
 	label->setMaximumWidth(label->fontMetrics().width( QString("88888") ));
 }
 
-KColorEditDoc *KColorEditView::getDocument() const {
+KColorEditDoc *KColorEditView::document() const {
   KColorEditApp *theApp=(KColorEditApp *) parentWidget();
 
-  return theApp->getDocument();
+  return theApp->document();
 }
 
 void KColorEditView::print(QPrinter *pPrinter) {
@@ -164,17 +164,17 @@ void KColorEditView::chooseColor(Color* const color) {
 }
 
 void KColorEditView::slotCursorPosChanged(int position) {
-	Palette* palette = getDocument()->getPaletteHistory()->getEditableStream();
+	Palette* palette = document()->paletteHistory()->editableStream();
 	if(position < palette->length()) {
-		Color* color = palette->getColor(position);
+		Color* color = palette->color(position);
 		QString string;
 		inColorNameChanging = true;
-		colorName->setText(color->getName());
+		colorName->setText(color->name());
 		colorName->setEnabled(true);
 		inColorNameChanging = false;
-		int rComponent = color->getComponent(Color::RED_INDEX);
-		int gComponent = color->getComponent(Color::GREEN_INDEX);
-		int bComponent = color->getComponent(Color::BLUE_INDEX);
+		int rComponent = color->component(Color::RED_INDEX);
+		int gComponent = color->component(Color::GREEN_INDEX);
+		int bComponent = color->component(Color::BLUE_INDEX);
 		colorAtCursorRValueLabel->setText(string.setNum( rComponent ));
 		colorAtCursorGValueLabel->setText(string.setNum( gComponent ));
 		colorAtCursorBValueLabel->setText(string.setNum( bComponent ));
@@ -207,7 +207,7 @@ void KColorEditView::slotViewColorNames(bool viewColorNames) {
 
 void KColorEditView::updateColorValueLabels() {
 	if(!doNotUpdateColorLabels)
-		slotCursorPosChanged(getDocument()->getPaletteCursorPos());
+		slotCursorPosChanged(document()->paletteCursorPos());
 }
 
 void KColorEditView::redraw(bool newDocument) {
@@ -218,25 +218,25 @@ void KColorEditView::redraw(bool newDocument) {
 }
 
 void KColorEditView::slotAddColor() {
-    Color color = colorSelector->getColor();
-    Palette* palette = getDocument()->getPaletteHistory()->getEditableStream();
+    Color color = colorSelector->color();
+    Palette* palette = document()->paletteHistory()->editableStream();
     color.setName("");
     int index;
     if(addColorAtCursor)
-        index = getDocument()->getPaletteCursorPos();
+        index = document()->paletteCursorPos();
     else
         index = palette->length();
     switch(addColorMode)
     {
         case INSERT_COLOR:
-            getDocument()->insert(index, color);
+            document()->insert(index, color);
             break;
 
         case REPLACE_COLOR:
             if(index < palette->length())
-                getDocument()->replace(index, color);
+                document()->replace(index, color);
             else
-                getDocument()->insert(index, color);
+                document()->insert(index, color);
             break;
 
     }
@@ -265,16 +265,16 @@ void KColorEditView::slotSetColorName(const QString& name) {
 			getDocument()->slotRedrawAllViews(this);
 		}
 		 */
-		Palette* palette = getDocument()->getPaletteHistory()->getEditableStream();
-		int cursorPos = getDocument()->getPaletteCursorPos();
+		Palette* palette = document()->paletteHistory()->editableStream();
+		int cursorPos = document()->paletteCursorPos();
 		if(cursorPos < palette->length()) {
 			Color newColor(
-				palette->getColor(cursorPos)->getComponent(Color::RED_INDEX),
-				palette->getColor(cursorPos)->getComponent(Color::GREEN_INDEX),
-				palette->getColor(cursorPos)->getComponent(Color::BLUE_INDEX),
+				palette->color(cursorPos)->component(Color::RED_INDEX),
+				palette->color(cursorPos)->component(Color::GREEN_INDEX),
+				palette->color(cursorPos)->component(Color::BLUE_INDEX),
 				name);
 			doNotUpdateColorLabels = true;
-			getDocument()->replace(cursorPos, newColor);
+			document()->replace(cursorPos, newColor);
 			doNotUpdateColorLabels = false;
 		}
 	}

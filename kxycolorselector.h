@@ -55,7 +55,7 @@ public:
 	/** Set the global component */
   void setGlobalComponent(const int component);
 	/** @return The global component */
-  int getGlobalComponent();
+  int globalComponent();
 
 protected:
 	/** The number of colors that are used to dither the pixmap
@@ -67,7 +67,7 @@ protected:
 	/** A type of the selector */
 	int type;
 	/** The global component value */
-	int globalComponent;
+	int m_globalComponent;
 
   /** Draws the contents of the widget on a pixmap,
    *  which is used for buffering.
@@ -87,7 +87,7 @@ protected:
 	/** @return STANDARD_PALETTE_SIZE colors used to dither the
 	 *  pixmap if number of color planes <= 8
 	 */
-	QColor* getStandardColorsPalette();
+	QColor* standardColorsPalette();
 
 private:
 	/* The buffering pixmap */

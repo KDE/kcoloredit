@@ -119,7 +119,7 @@ void KZColorSelector::setColor(QColor* const color, const int y) {
 }
 
 QColor* KZColorSelector::getStandardColorsPalette() {
-	QColor* palette = new QColor[STANDARD_PALETTE_SIZE];
+	QColor* palette = new QColor[( int )STANDARD_PALETTE_SIZE];
 	int i = 0;
 	palette[i++] = Qt::red;
 	palette[i++] = Qt::green;

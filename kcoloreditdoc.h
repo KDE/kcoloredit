@@ -47,6 +47,7 @@ class KColorEditView;
 class KColorEditDoc : public QObject
 {
   Q_OBJECT
+
   public:
     /** Constructor for the fileclass of the application */
     KColorEditDoc(QWidget *parent, const char *name=0);
@@ -60,7 +61,7 @@ class KColorEditDoc : public QObject
     /** sets the modified flag for the document after a modifying action on the view connected to the document.*/
     void setModified(bool modified);
     /** returns if the document is modified or not. Use this to determine if your document needs saving by the user on closing.*/
-    bool isModified(){ return modified; };
+    bool isModified(){ return m_modified; };
     /** "save modified" - asks the user for saving if the document is modified */
     bool saveModified();	
     /** deletes the document's contents */
@@ -76,19 +77,19 @@ class KColorEditDoc : public QObject
     /** sets the path to the file connected with the document */
     void setAbsFilePath(const QString &filename);
     /** returns the pathname of the current document file*/
-    const QString& getAbsFilePath() const;
+    const QString& absFilePath() const;
     /** sets the filename of the document */
     void setTitle(const QString &_t);
     /** returns the title of the document */
-    const QString& getTitle() const;
+    const QString& title() const;
 		/** @return a description of a possible unsuccessfull IO operation */
-		const QString& getErrorString() const;
+		const QString& errorString() const;
 		/** returns a pointer to paletteHistory */
-		PaletteHistory* getPaletteHistory();
+		PaletteHistory* paletteHistory();
 		/** sets a palette cursor position */
 		void setPaletteCursorPos(const int pos);
 		/** @return a palette cursor position */
-		int getPaletteCursorPos();
+		int paletteCursorPos();
 		/** Sets palette selection and enables or disables cut/paste
 		 *  depending on whether any colors are selected
 		 */
@@ -96,11 +97,11 @@ class KColorEditDoc : public QObject
 		/** Gets lesser selection position or equal selection position
 		 *  if no colors are selected
 		 */
-		int getPaletteSelectionBegin();
+		int paletteSelectionBegin();
 		/** Gets greater selection position or equal selection position
 		 *  if no colors are selected
 		 */
-		int getPaletteSelectionEnd();
+		int paletteSelectionEnd();
 		/** Copies a selection into a clipboard */
 		void copy();
 		/** Cuts a selection into a clipboard */
@@ -115,10 +116,8 @@ class KColorEditDoc : public QObject
 	protected:
 		/** Sets an error string if an IO operation was unsuccesfull */
 		void setErrorString(const QString& string);
-		/** Updates color menu */
-		void updateColorMenu();
 		/** Copies a palette to clipboard */
-		void copyToClipboard(Palette& palette) const;
+		void copyToClipboard(Palette& palette);
 	
   public slots:
     /** Calls redraw() on all views connected to the document object,
@@ -128,23 +127,30 @@ class KColorEditDoc : public QObject
     /** Sets a view mode */
 	void slotChangeViewMode(bool viewColorNames);
 
+  signals:
+
+    void selectionChanged( int, int );
+    void clipboardChanged();
+    void modified( bool );
+    void paletteAvailable( bool );
+
   public:	
     /** the list of the views currently connected to the document */
-    QPtrList<KColorEditView> *pViewList;	
+    QPtrList<KColorEditView> *m_pViewList;	
 
   private:
     /** the modified flag of the current document */
-    bool modified;
-    QString title;
-    QString absFilePath;
-    QString errorString;
+    bool m_modified;
+    QString m_title;
+    QString m_absFilePath;
+    QString m_errorString;
 
 	protected:
-		Palette palette;
-		PaletteHistory paletteHistory;
-		int paletteCursorPos;
-		int paletteSelectionBegin;
-		int paletteSelectionEnd;
+		Palette m_palette;
+		PaletteHistory m_paletteHistory;
+		int m_paletteCursorPos;
+		int m_paletteSelectionBegin;
+		int m_paletteSelectionEnd;
 };
 
 #endif // KCOLOREDITDOC_H

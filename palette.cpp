@@ -33,10 +33,10 @@ Palette::Palette() {
 Palette::Palette(const Palette& palette) {
 	init();
 	for(int colorIndex = 0; colorIndex < palette.length(); ++colorIndex) {
-		Color* color = new Color(*( (Palette&)palette ).getColor( colorIndex ));
+		Color* color = new Color(*( (Palette&)palette ).color( colorIndex ));
 		append(color);
 	}
-	setName(palette.getName());
+	setName(palette.name());
 }
 Palette::~Palette() {
 }
@@ -45,18 +45,18 @@ void Palette::init() {
 	colors.setAutoDelete(true);
 }
 
-QStringList Palette::getKDEPalettes() {
+QStringList Palette::kdePalettes() {
 	QStringList paletteList;
 	KGlobal::dirs()->findAllResources("config", palettesDir + "/*", false, true, paletteList);
 	return paletteList;
 }
 
 void Palette::setName(const QString& name) {
-	this->name = name;
+	m_name = name;
 }
 
-const QString& Palette::getName() const {
-	return name;
+const QString& Palette::name() const {
+	return m_name;
 }
 
 void Palette::insert(const int index, Color* const color) {
@@ -75,31 +75,31 @@ int Palette::length() const {
 	return (int)colors.count();
 }
 
-Color* Palette::getColor(const int index) {
+Color* Palette::color(const int index) {
 	return colors.at(index);
 }
 
 Palette Palette::copy(const int index, const int length) {
 	Palette newPalette;
 	for(int colorIndex = index; colorIndex < index + length; ++colorIndex)
-		newPalette.append(new Color( *getColor(colorIndex) ));
-	newPalette.setName(getName());
+		newPalette.append(new Color( *color(colorIndex) ));
+	newPalette.setName(name());
 	return newPalette;
 }
 
 Palette Palette::cut(const int index, const int length) {
 	Palette newPalette;
 	for(int colorNum = 0; colorNum < length; ++colorNum) {
-		newPalette.append(new Color( *getColor(index) ));
+		newPalette.append(new Color( *color(index) ));
 		remove(index);
 	}
-	newPalette.setName(getName());
+	newPalette.setName(name());
 	return newPalette;
 }
 
 void Palette::paste(const int index, Palette& palette) {
 	for(int colorIndex = 0; colorIndex < palette.length(); ++colorIndex)
-		insert(index + colorIndex, new Color( *palette.getColor(colorIndex) ));
+		insert(index + colorIndex, new Color( *palette.color(colorIndex) ));
 }
 
 bool Palette::load(QTextStream& stream, bool loadName /* = true */) {
@@ -119,13 +119,13 @@ bool Palette::load(QTextStream& stream, bool loadName /* = true */) {
 			for(int componentIndex = 0; componentIndex < Color::COMPONENTS_NUM;
 				++componentIndex) {
 				if(position == -1) {
-					errorString = i18n("Invalid format");
+					m_errorString = i18n("Invalid format");
 					result = false;
 					break;
 				}
 				int endPosition = string.find(QRegExp( "\\s" ), position);
 				if(endPosition == -1) {
-					errorString = i18n("Invalid format");
+					m_errorString = i18n("Invalid format");
 					result = false;
 					break;
 				}
@@ -134,7 +134,7 @@ bool Palette::load(QTextStream& stream, bool loadName /* = true */) {
 				if(!result ||
 					componentValue < 0 ||
 					componentValue > RGB_MAX_COMPONENT_VALUE) {
-					errorString = i18n("Invalid format");
+					m_errorString = i18n("Invalid format");
 					result = false;
 					break;
 				}
@@ -160,7 +160,7 @@ bool Palette::load(const QString& fileName) {
 	bool result = true;
 	QFile file(fileName);
 	if(!file.open( IO_ReadOnly )) {
-		errorString = i18n("Could not open file");
+		m_errorString = i18n("Could not open file");
 		result = false;
 	} else {
 		QTextStream stream(&file);
@@ -174,20 +174,20 @@ bool Palette::save(QTextStream& stream, const QFile* file /* = 0 */,
 	bool saveName /* = true */) {
 	bool result = true;
 	if(saveName)
-		stream << getName() + QString("\n");
+		stream << name() + QString("\n");
 	if(file && file->status() != IO_Ok) {
-		errorString = i18n("Write error");
+		m_errorString = i18n("Write error");
 		result = false;
 	} else
 		for(int colorIndex = 0; colorIndex < length(); ++colorIndex) {
-			Color* color = getColor(colorIndex);
+			Color* col = color(colorIndex);
 			QString redComponentString;
 			QString greenComponentString;
 			QString blueComponentString;
-			redComponentString.setNum(color->getComponent( Color::RED_INDEX ));
-			greenComponentString.setNum(color->getComponent( Color::GREEN_INDEX ));
-			blueComponentString.setNum(color->getComponent( Color::BLUE_INDEX ));
-			QString nameString = color->getName();
+			redComponentString.setNum(col->component( Color::RED_INDEX ));
+			greenComponentString.setNum(col->component( Color::GREEN_INDEX ));
+			blueComponentString.setNum(col->component( Color::BLUE_INDEX ));
+			QString nameString = col->name();
 			if(!nameString.isEmpty())
 				nameString.prepend(" ");
 			stream << redComponentString + QString(" ") +
@@ -195,7 +195,7 @@ bool Palette::save(QTextStream& stream, const QFile* file /* = 0 */,
 				blueComponentString +
 				nameString + QString("\n");
 			if(file && file->status() != IO_Ok) {
-				errorString = i18n("Write error");
+				m_errorString = i18n("Write error");
 				result = false;
 				break;
 			}
@@ -207,7 +207,7 @@ bool Palette::save(const QString& fileName) {
 	bool result = true;
 	QFile file(fileName);
 	if(!file.open( IO_WriteOnly|IO_Truncate )) {
-		errorString = i18n("Could not open file for writing");
+		m_errorString = i18n("Could not open file for writing");
 		result = false;
 	} else {
 		QTextStream stream(&file);
@@ -221,6 +221,6 @@ void Palette::deleteContents() {
 	colors.clear();
 }
 
-const QString& Palette::getErrorString() const {
-	return errorString;
+const QString& Palette::errorString() const {
+	return m_errorString;
 }

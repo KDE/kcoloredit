@@ -1,0 +1,13 @@
+<!DOCTYPE kpartgui>
+<kpartgui version="1" name="kcoloredit">
+<MenuBar>
+  <Menu name="file"><text>&amp;File</text>
+    <Action name="file_new_window" append="new_merge"/>
+  </Menu>
+  <Menu name="color"><text>&amp;Color</text>
+    <Action name="color_from_palette"/>
+    <Action name="color_from_screen"/>
+  </Menu>
+  <Menu name="settings">
+    <Action name="color_view_names" append="save_merge"/>
+</MenuBar>

@@ -165,9 +165,9 @@ void TextEditSelection::slotSetValue(Color* color) {
 		inChangingComponents = true;
 		this->color = *color;
 		QString string;
-		int rComponent = this->color.getComponent(Color::RED_INDEX);
-		int gComponent = this->color.getComponent(Color::GREEN_INDEX);
-		int bComponent = this->color.getComponent(Color::BLUE_INDEX);
+		int rComponent = this->color.component(Color::RED_INDEX);
+		int gComponent = this->color.component(Color::GREEN_INDEX);
+		int bComponent = this->color.component(Color::BLUE_INDEX);
 		lineEditTable[R_INDEX]->setText(string.setNum( rComponent ));
 		lineEditTable[G_INDEX]->setText(string.setNum( gComponent ));
 		lineEditTable[B_INDEX]->setText(string.setNum( bComponent ));

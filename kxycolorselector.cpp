@@ -83,11 +83,11 @@ void KXYColorSelector::drawCursor(QPainter* painter, int x, int y) {
 }
 
 void KXYColorSelector::setGlobalComponent(const int component) {
-	globalComponent = component;
+	m_globalComponent = component;
 }
 
-int KXYColorSelector::getGlobalComponent() {
-	return globalComponent;
+int KXYColorSelector::globalComponent() {
+	return m_globalComponent;
 }
 
 void KXYColorSelector::setColor(QColor* const color, const int x, const int y) {
@@ -95,27 +95,33 @@ void KXYColorSelector::setColor(QColor* const color, const int x, const int y) {
 	int ySize = contentsRect().height();
 	switch(type) {
 		case TYPE_HS:
-			color->setHsv(360*x/xSize, 256*( ySize - 1 - y )/ySize, globalComponent);
+			color->setHsv(360*x/xSize, 256*( ySize - 1 - y )/ySize, 
+                    globalComponent());
 			break;
 			
 		case TYPE_VS:
-			color->setHsv(globalComponent, 256*( ySize - 1 - y )/ySize, 256*x/xSize);
+			color->setHsv(globalComponent(), 256*( ySize - 1 - y )/ySize, 
+                    256*x/xSize);
 			break;
 			
 		case TYPE_HV:
-			color->setHsv(360*x/xSize, globalComponent, 256*( ySize - 1 - y )/ySize);
+			color->setHsv(360*x/xSize, globalComponent(), 
+                    256*( ySize - 1 - y )/ySize);
 			break;
 			
 		case TYPE_RG:
-			color->setRgb(x/xSize, 256*( ySize - 1 - y )/ySize, globalComponent);
+			color->setRgb(x/xSize, 256*( ySize - 1 - y )/ySize, 
+                    globalComponent());
 			break;
 			
 		case TYPE_GB:
-			color->setRgb(globalComponent, 256*x/xSize, 256*( ySize - 1 - y )/ySize);
+			color->setRgb(globalComponent(), 256*x/xSize, 
+                    256*( ySize - 1 - y )/ySize);
 			break;
 			
 		case TYPE_BR:
-			color->setRgb(256*( ySize - 1 - y )/ySize, globalComponent, 256*x/xSize);
+			color->setRgb(256*( ySize - 1 - y )/ySize, globalComponent(), 
+                    256*x/xSize);
 			break;
 			
 		case TYPE_NONE:
@@ -125,7 +131,7 @@ void KXYColorSelector::setColor(QColor* const color, const int x, const int y) {
 	}
 }
 
-QColor* KXYColorSelector::getStandardColorsPalette() {
+QColor* KXYColorSelector::standardColorsPalette() {
 	QColor* palette = new QColor[STANDARD_PALETTE_SIZE];
 	int i = 0;
 	palette[i++] = Qt::red;
@@ -169,7 +175,7 @@ void KXYColorSelector::drawPalette(QPixmap* pixmap) {
 		}
 		if (QColor::numBitPlanes() <= 8)
 		{
-	    QColor* standardPalette = getStandardColorsPalette();
+	    QColor* standardPalette = standardColorsPalette();
 			KImageEffect::dither(image, standardPalette, STANDARD_PALETTE_SIZE);
 			delete[] standardPalette;
 		}

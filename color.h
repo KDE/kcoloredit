@@ -52,13 +52,13 @@ class Color {
 		void setName(const QString& name);
 		/** @return a component
 		 */
-		int getComponent(const int index) const;
+		int component(const int index) const;
 		/** @return components
 		 */
-		int* getComponents();
+		int* components();
 		/** @return a color name
 		 */
-		const QString& getName() const;
+		const QString& name() const;
 		/** @return if is equal to color
 		 */
 		bool equals(const Color& color);
@@ -72,10 +72,10 @@ class Color {
 	protected:
 		/** components table
 		 */
-		int components[COMPONENTS_NUM];
+		int m_components[COMPONENTS_NUM];
 		/** a color name
 		 */
-		QString name;
+		QString m_name;
 };
 
 #endif
