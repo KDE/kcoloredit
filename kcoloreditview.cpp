@@ -130,7 +130,7 @@ KColorEditView::KColorEditView(QWidget *parent, const char *name) : QSplitter(pa
 	layout->addSpacing(8);
 	paletteLayout->addSpacing(4);
 	paletteLayout->addLayout(layout);
-	paletteLayout->addSpacing(2);
+	paletteLayout->addSpacing(4);
 	inColorNameChanging = false;
 }
 
