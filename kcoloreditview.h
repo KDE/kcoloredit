@@ -115,6 +115,8 @@ class KColorEditView : public QSplitter {
 		int addColorMode;
 		/** If in color name changing */
 		bool inColorNameChanging;
+		/** Whether not to update color labels */
+		bool doNotUpdateColorLabels;
 		
 	protected:
 		/** Sets component value label of the color at cursor sizes */

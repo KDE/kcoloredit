@@ -132,6 +132,7 @@ KColorEditView::KColorEditView(QWidget *parent, const char *name) : QSplitter(pa
 	paletteLayout->addLayout(layout);
 	paletteLayout->addSpacing(4);
 	inColorNameChanging = false;
+	doNotUpdateColorLabels = false;
 }
 
 KColorEditView::~KColorEditView() {
@@ -204,7 +205,8 @@ void KColorEditView::slotViewColorNames(bool viewColorNames) {
 }
 	
 void KColorEditView::updateColorValueLabels() {
-	slotCursorPosChanged(getDocument()->getPaletteCursorPos());
+	if(!doNotUpdateColorLabels)
+		slotCursorPosChanged(getDocument()->getPaletteCursorPos());
 }
 	
 void KColorEditView::redraw(bool newDocument) {
@@ -265,7 +267,9 @@ void KColorEditView::slotSetColorName(const QString& name) {
 				palette->getColor(cursorPos)->getComponent(Color::GREEN_INDEX),
 				palette->getColor(cursorPos)->getComponent(Color::BLUE_INDEX),
 				name);
+			doNotUpdateColorLabels = true;
 			getDocument()->replace(cursorPos, newColor);
+			doNotUpdateColorLabels = false;
 		}
 	}
 }
