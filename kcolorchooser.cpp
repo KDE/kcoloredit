@@ -29,10 +29,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <kcolordialog.h>
 #include <stdio.h>
 
-static const char *description =
+static const char description[] =
 	I18N_NOOP("KDE Color Chooser");
 
-static const char *version = "v1.0";
+static const char version[] = "v1.0";
 
 static KCmdLineOptions options[] =
 {
