@@ -237,25 +237,22 @@ void KColorEditApp::disableCommand(int id_)
   toolBar()->setItemEnabled(id_, false);
 }
 
-void KColorEditApp::addRecentFile(const QString &file)
-{
-  if(recentFiles.find(file) == -1)
-  {
-    if( recentFiles.count() < 5)
-    {
-      recentFiles.insert(0, file);
-    }
-    else
-    {
-      recentFiles.remove(4);
-      recentFiles.insert(0, file);
-    }
-    recentFilesMenu->clear();
-    for ( int i=0 ; i < (int) recentFiles.count(); i++)
-    {
-      recentFilesMenu->insertItem(recentFiles.at(i), i);
-    }
-  }
+void KColorEditApp::updateRecentFilesMenu() {
+	recentFilesMenu->clear();
+	for(int i = 0; i < (int)recentFiles.count(); ++i)
+		recentFilesMenu->insertItem(recentFiles.at( i ), i);
+}
+
+void KColorEditApp::addRecentFile(const QString &file) {
+	const int MAX_RECENT_FILES_NUM = 5;
+	int fileId = recentFiles.find(file);
+	if(fileId == -1) {
+		if((int)recentFiles.count() == MAX_RECENT_FILES_NUM)
+			recentFiles.remove(MAX_RECENT_FILES_NUM - 1);
+	} else
+		recentFiles.remove(fileId);
+	recentFiles.insert(0, file);
+	updateRecentFilesMenu();
 }
 
 void KColorEditApp::openDocumentFile(const char* _cmdl)
@@ -311,12 +308,7 @@ void KColorEditApp::readOptions()
   // initialize the recent file list
   recentFiles.setAutoDelete(TRUE);
   config->readListEntry("Recent Files", recentFiles);
-	
-  for (int i=0; i < (int) recentFiles.count(); i++)
-  {
-    recentFilesMenu->insertItem(recentFiles.at(i));
-  }
-
+  updateRecentFilesMenu();	
   QSize size=config->readSizeEntry("Geometry");
   if(!size.isEmpty())
   {
@@ -441,8 +433,10 @@ void KColorEditApp::slotFileOpenRecent(int id_)
   slotStatusMsg(i18n("Opening file..."));
 	
   if(doc->saveModified()) {
-    doc->openDocument(recentFiles.at(id_));
+  	QString recentFile = recentFiles.at(id_);
+    doc->openDocument(recentFile);
     setCaption(doc->getTitle());
+	addRecentFile(recentFile);
   }
 
   slotStatusMsg(i18n(IDS_STATUS_DEFAULT));

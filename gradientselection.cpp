@@ -146,11 +146,11 @@ void GradientSelection::updateXyColorSelector(bool modeChanged) {
 		xPos = 0;
 	if(yPos < 0)
 		yPos = 0;
-	xyColorSelector->setValues(xPos, yPos);
 	if(modeChanged || xyColorSelector->getGlobalComponent() != component) {
 		xyColorSelector->setGlobalComponent(component);
 		xyColorSelector->updateContents();
 	}
+	xyColorSelector->setValues(xPos, yPos);
 }
 
 void GradientSelection::updateZColorSelector() {
@@ -217,10 +217,6 @@ void GradientSelection::slotZColorSelectorPosChanged(int y) {
 	bool repaintZColorSelector = false;
 	switch(zColorSelectorComponentIndex) {
 		case H_COMPONENT:
-			/*
-			if(hComponent == -1)
-				repaintZColorSelector = true;
-			 */
 			hComponent = y;
 			break;
 	

@@ -132,6 +132,8 @@ class KColorEditApp : public KTMainWindow
      * @see KTMainWindow#readProperties
      */
     virtual void readProperties(KConfig *_cfg);
+    /** Updates the recent files menu */
+	void updateRecentFilesMenu();
 
   public slots:
     /** switch argument for slot selection by menu or toolbar ID */
