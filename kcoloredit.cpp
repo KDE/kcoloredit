@@ -524,7 +524,7 @@ void KColorEditApp::slotFileQuit()
   saveOptions();
   // close the first window, the list makes the next one the first again.
   // This ensures that queryClose() is called on each window to ask for closing
-  KTMainWindow* w;
+  KMainWindow* w;
   if(memberList)
   {
     for(w=memberList->first(); w!=0; w=memberList->first())
