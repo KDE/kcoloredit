@@ -551,7 +551,7 @@ void KColorEditApp::slotFileQuit()
   KMainWindow* w;
   if(memberList)
   {
-    for(w=memberList->first(); w!=0; w=memberList->first())
+    for(w=memberList->first(); w!=0; w=memberList->next())
     {
       // only close the window if the closeEvent is accepted. If the user presses Cancel on the saveModified() dialog,
       // the window and the application stay open.
