@@ -57,6 +57,8 @@ protected:
 	PaletteViewScrolledArea* scrolledArea;
 	/** The scroll bar widget */
 	QScrollBar* scrollBar;
+	/** The horizontal scroll bar widget */
+	QScrollBar* hScrollBar;
 };
 
 #endif

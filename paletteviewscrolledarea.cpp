@@ -35,12 +35,13 @@
 
 PaletteViewScrolledArea::PaletteViewScrolledArea(const int defaultCellWidth,
 	const int defaultCellHeight, const int cellSpacing, QScrollBar* scrollBar,
-	KColorEditView* view, QWidget* parent, const char* name)
+	QScrollBar* hScrollBar, KColorEditView* view, QWidget* parent, const char* name)
 	: QFrame(parent, name) {
 	this->defaultCellWidth = defaultCellWidth;
 	this->defaultCellHeight = defaultCellHeight;
 	this->cellSpacing = cellSpacing;
 	this->scrollBar = scrollBar;
+	this->hScrollBar = hScrollBar;
 	this->view = view;
 	setBackgroundMode(NoBackground);
 	scrollTimeoutTimer = new QTimer(this);
@@ -53,6 +54,7 @@ PaletteViewScrolledArea::PaletteViewScrolledArea(const int defaultCellWidth,
 	slotCursorFollowsChosenColor(false);
 	this->scrollBar->setValue(0);
 	slotViewColorNames(false);
+	setMinimumSize(1, 1);
 }
 
 PaletteViewScrolledArea::~PaletteViewScrolledArea() {
@@ -114,13 +116,14 @@ void PaletteViewScrolledArea::setCursorPos(const int pos) {
 
 bool PaletteViewScrolledArea::setCursorPos(const int x, const int y) {
 	int shiftedY = y + scrollBar->value();
-	int cursorColumn = (x + rowWidth/cellsInRow/2)*cellsInRow/rowWidth;
+	int shiftedX = x + hScrollBar->value();
+	int cursorColumn = (shiftedX + rowWidth/cellsInRow/2)*cellsInRow/rowWidth;
 	int cursorRow;
 	if(shiftedY >= 0)
 		cursorRow = (shiftedY + cellSpacing)/rowHeight;
 	else
 		cursorRow = -1;
-	bool atCursorLocation = abs(cursorColumn*rowWidth/cellsInRow - x) < cellSpacing + 1;
+	bool atCursorLocation = abs(cursorColumn*rowWidth/cellsInRow - shiftedX) < cellSpacing + 1;
 	if(!atCursorLocation) {
 		atCursorLocation = abs(cursorRow*rowHeight - shiftedY) < cellSpacing + 1;
 		if(atCursorLocation)
@@ -199,13 +202,36 @@ int PaletteViewScrolledArea::getSelectionMax() {
 
 void PaletteViewScrolledArea::paintEvent(QPaintEvent* event) {
 	setCellsSizes();
-	int width = rowWidth;
-	int posY = scrollBar->value();
-	int firstRow = posY/rowHeight;
-	int lastRow = (posY + height() - 1 + rowHeight - 1)/rowHeight;
 	QPixmap pixmap(size());
 	QPainter painter;
 	painter.begin(&pixmap, this);
+	QFontMetrics fontMetrics = painter.fontMetrics();
+	int maxLineWidth;
+	if(viewColorNames) {
+		maxLineWidth = rowWidth*2;
+		int maxTextLength = 0;
+		for(int index = 0; index < getPalette()->length(); ++index) {
+			int currTextLength = fontMetrics.width(
+				getPalette()->getColor(index)->getName());
+			if(currTextLength > maxTextLength)
+				maxTextLength = currTextLength;
+		}
+		maxLineWidth = defaultCellWidth*2 + cellSpacing*2 +
+			cellSpacing*4 + maxTextLength;
+	} else
+		maxLineWidth = rowWidth;
+	int width = rowWidth;
+	if(maxLineWidth > width) {
+		hScrollBar->setRange(0, maxLineWidth - width);
+		hScrollBar->setSteps(8, width);
+		hScrollBar->show();
+	} else {
+		hScrollBar->setValue(0);
+		hScrollBar->hide();
+	}
+	int posY = scrollBar->value();
+	int firstRow = posY/rowHeight;
+	int lastRow = (posY + height() - 1 + rowHeight - 1)/rowHeight;
 	if(viewColorNames)
 		painter.fillRect(0, 0, rowWidth, height(), QBrush( palette().active().base() ));
 	QBrush normalBackgroundBrush(palette().active().background());
@@ -216,14 +242,14 @@ void PaletteViewScrolledArea::paintEvent(QPaintEvent* event) {
 	int cellHeight = rowHeight - 2*cellSpacing;
 	int selectionMin = getSelectionMin();
 	int selectionMax = getSelectionMax();
-	int fontAscent = painter.fontMetrics().ascent();
-	int xBegin = 0;
+	int fontAscent = fontMetrics.ascent();
+	int xBegin = -hScrollBar->value();
 	for(int x = 0; x < cellsInRow; ++x) {
-		int xEnd;
+		int xEnd = -hScrollBar->value();
 		if(viewColorNames)
-			xEnd = defaultCellWidth*2 + cellSpacing*2;
+			xEnd += defaultCellWidth*2 + cellSpacing*2;
 		else
-			xEnd = (x + 1)*(width - 1)/cellsInRow;
+			xEnd += (x + 1)*(width - 1)/cellsInRow;
 		int cellWithSpacingWidth = xEnd - xBegin + 1;
 		int cellWidth = cellWithSpacingWidth - 2*cellSpacing;
 		for(int y = firstRow; y <= lastRow; ++y) {

@@ -25,15 +25,26 @@ PaletteView::PaletteView(const int defaultCellWidth, const int defaultCellHeight
 	QFrame(parent, name, QWidget::WResizeNoErase*0) {
 	setFrameStyle(StyledPanel|Sunken);
 	setLineWidth(2);
-	QHBoxLayout* topLayout = new QHBoxLayout(this, 0);
+	QGridLayout* topLayout = new QGridLayout(this, 2, 2);
 	topLayout->setMargin(2);
+	topLayout->setRowStretch(0, 10);
+	topLayout->setRowStretch(1, 0);
+	topLayout->setColStretch(0, 10);
+	topLayout->setColStretch(1, 0);
 	scrollBar = new QScrollBar(this);
+	hScrollBar = new QScrollBar(0, 1, 1, 1, 0, QScrollBar::Horizontal, this);
 	scrolledArea = new PaletteViewScrolledArea(defaultCellWidth,
-		defaultCellHeight, cellSpacing, scrollBar, view, this);
+		defaultCellHeight, cellSpacing, scrollBar, hScrollBar, view, this);
 	connect(scrollBar, SIGNAL( valueChanged(int) ),
 		SLOT( slotRepaintScrolledArea() ));
-	topLayout->addWidget(scrolledArea, 10);
-	topLayout->addWidget(scrollBar, 0);
+	topLayout->addWidget(scrolledArea, 0, 0);
+	connect(hScrollBar, SIGNAL( valueChanged(int) ),
+		SLOT( slotRepaintScrolledArea() ));
+	QHBoxLayout* hScrollBarLayout = new QHBoxLayout();
+	hScrollBarLayout->addWidget(hScrollBar, 10);
+	hScrollBarLayout->addWidget(new QWidget(this), 0);
+	topLayout->addLayout(hScrollBarLayout, 1, 0);
+	topLayout->addWidget(scrollBar, 0, 1);
 }
 
 PaletteView::~PaletteView() {
@@ -45,6 +56,7 @@ void PaletteView::redraw() {
 
 void PaletteView::setScrollBarValue(const int value) {
 	scrollBar->setValue(value);
+	hScrollBar->setValue(0);
 }
 
 void PaletteView::slotViewColorNames(bool viewColorNames) {

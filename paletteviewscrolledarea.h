@@ -37,7 +37,8 @@ class PaletteViewScrolledArea : public QFrame {
 public:
 	/** Constructs the widget */
 	PaletteViewScrolledArea(const int defaultCellWidth, const int defaultCellHeight,
-		const int cellSpacing, QScrollBar* scrollBar, KColorEditView* view,
+		const int cellSpacing, QScrollBar* scrollBar,
+		QScrollBar* hScrollBar, KColorEditView* view,
 		QWidget* parent = 0, const char* name = 0);
 	~PaletteViewScrolledArea();
 	/** Sets cells sizes and then calls repaintPalette() */
@@ -52,6 +53,8 @@ public slots:
 protected:
 	/** The scrollbar widget */
 	QScrollBar* scrollBar;
+	/** The horizontal scrollbar widget */
+	QScrollBar* hScrollBar;
 	/** Pointer to the document view */
 	KColorEditView* view;
 	/** Default cell width */
