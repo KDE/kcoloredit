@@ -57,7 +57,7 @@ may open all of these palettes, as well as palettes in arbitrary files.
 <sect1 id="file-open">
 <title>Opening a file</title>
 <para>
-In the Open File dialog, you may chose from a list of installed palettes,
+In the Open File dialog, you may choose from a list of installed palettes,
 or browse directories for files.
 </para>
 </sect1>
@@ -94,7 +94,7 @@ mouse then with the left mouse button pressed.
 <listitem>
 <para>
 If the ``After cursor'' checkbox near to the ``Add a color'' button is
-checked, a color from the color choser is put after the cursor.
+checked, a color from the color chooser is put after the cursor.
 The color is either inserted or it ovewrites another one, depending on 
 whether the ``Ovewrite'' mode is chosen. The mode can be chosen by
 checking the ``Overwrite'' checkbox, that is next to the ``After cursor'' one.
