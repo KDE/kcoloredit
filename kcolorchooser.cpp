@@ -36,7 +36,7 @@ static const char *version = "v1.0";
 	
 int main(int argc, char *argv[])
 {
-
+  KLocale::setMainCatalogue("kdelibs"); 
   KAboutData aboutData( "kcolorchooser", I18N_NOOP("KColorChooser"),
 		version, description, KAboutData::License_BSD,
 		"(c) 2000, Waldo Bastian");
@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
   KCmdLineArgs::init( argc, argv, &aboutData );
 
   KApplication app;
- 
+  
   KColorDialog dlg;
 
   dlg.setColor(Qt::blue); // Just a color
