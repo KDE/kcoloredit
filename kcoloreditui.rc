@@ -1,5 +1,10 @@
 <!DOCTYPE kpartgui>
 <kpartgui version="2" name="kcoloredit">
+<ActionProperties>
+  <Action name="color_from_palette" icon="colorize"/>
+  <Action name="color_from_screen" icon="colorpicker"/>
+</ActionProperties>
+
 <MenuBar>
   <Menu name="file"><text>&amp;File</text>
     <Action name="file_new_window" append="new_merge"/>
@@ -12,4 +17,10 @@
     <Action name="color_view_names" append="show_merge"/>
   </Menu>
 </MenuBar>
+<ToolBar name="mainToolBar" noMerge="1"><text>Main Toolbar</text>
+  <Action name="file_new" />
+  <Action name="file_open" />
+  <Action name="file_save" />
+  <Action name="color_from_screen"/>
+</ToolBar>
 </kpartgui>

@@ -29,7 +29,6 @@
 #include <kcolordialog.h>
 #include <kconfig.h>
 #include <kdebug.h>
-#include <kedittoolbar.h>
 
 // application specific includes
 #include "kcoloredit.h"
@@ -51,7 +50,7 @@ KColorEditApp::KColorEditApp() : KMainWindow(0) {
   initDocument();
   initView();
 
-  createGUI();
+  setupGUI();
 
   readOptions();
 
@@ -69,9 +68,6 @@ void KColorEditApp::initActions()
   KStdAction::saveAs( this, SLOT( slotFileSaveAs() ), actionCollection() );
   KStdAction::close( this, SLOT( slotClose() ), actionCollection() );
   KStdAction::quit( this, SLOT( slotQuit() ), actionCollection() );
-  KStdAction::keyBindings(guiFactory(), SLOT(configureShortcuts()),
-actionCollection());
-  KStdAction::configureToolbars(this, SLOT(slotConfigureToolbars()), actionCollection());
   m_actSave = KStdAction::save( this, SLOT( slotFileSave() ),
           actionCollection() );
   m_actRecent = KStdAction::openRecent( this,
@@ -102,28 +98,7 @@ actionCollection());
   ( void ) new KAction( i18n("From &Screen"), KShortcut(), this,
           SLOT( slotColorFromScreen() ), actionCollection(),
           "color_from_screen" );
-
-  // Settings Menu
-  createStandardStatusBarAction();
-  setStandardToolBarMenuEnabled(true);
 }
-
-void KColorEditApp::slotConfigureToolbars()
-{
-    saveMainWindowSettings(KGlobal::config(), "MainWindow");
-    KEditToolbar dlg( actionCollection());
-    connect(&dlg, SIGNAL(newToolbarConfig()), SLOT(saveToolbarConfig()));
-    dlg.exec();
-}
-/**
- * Save new toolbarconfig.
- */
-void KColorEditApp::saveToolbarConfig()
-{
-    createGUI();
-    applyMainWindowSettings(KGlobal::config(), "MainWindow");
-}
-
 
 void KColorEditApp::initStatusBar()
 {
