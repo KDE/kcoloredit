@@ -290,3 +290,4 @@ void KColorEditDoc::replace(int index, const Color& color) {
 	setModified(true);
 	slotRedrawAllViews(0);
 }
+#include "kcoloreditdoc.moc"

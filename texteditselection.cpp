@@ -184,3 +184,4 @@ void TextEditSelection::slotSetValue(Color* color) {
 	}
 }
 
+#include "texteditselection.moc"

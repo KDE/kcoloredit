@@ -25,3 +25,4 @@ ImageSelection::~ImageSelection(){
 void ImageSelection::slotSetValue(Color* color) {
 	this->color = *color;
 }
+#include "imageselection.moc"

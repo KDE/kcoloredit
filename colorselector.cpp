@@ -211,3 +211,4 @@ void ColorSelector::slotColorChangeValueChanged(int value) {
 	colorChangeValue = value;
 }
 
+#include "colorselector.moc"

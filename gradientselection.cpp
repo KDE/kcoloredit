@@ -245,3 +245,4 @@ void GradientSelection::slotSynchronizeColor() {
 void GradientSelection::enableSynchronizeColorButton(bool enable) {
 	synchronizeColorButton->setEnabled(enable);
 }
+#include "gradientselection.moc"

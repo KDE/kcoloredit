@@ -122,3 +122,4 @@ void LoadPaletteDlg::browseFileNames() {
 QString LoadPaletteDlg::getFileName() {
 	return fileName;
 }
+#include "loadpalettedlg.moc"

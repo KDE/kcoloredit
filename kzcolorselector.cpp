@@ -159,3 +159,4 @@ void KZColorSelector::drawPalette(QPixmap* pixmap) {
 	}
 	pixmap->convertFromImage(image);
 }
+#include "kzcolorselector.moc"

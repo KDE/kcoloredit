@@ -317,3 +317,4 @@ void PaletteView::chooseColor(Color* const color) {
 KColorEditDoc* PaletteView::getDocument() {
 	return view->getDocument();
 }
+#include "paletteview.moc"

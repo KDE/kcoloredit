@@ -741,3 +741,4 @@ void KColorEditApp::statusCallback(int id_)
          break;
   }
 }
+#include "kcoloredit.moc"

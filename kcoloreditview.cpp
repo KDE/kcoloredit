@@ -249,3 +249,4 @@ void KColorEditView::slotSetColorName(const QString& name) {
 		}
 	}
 }
+#include "kcoloreditview.moc"
