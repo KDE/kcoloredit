@@ -115,6 +115,8 @@ class KColorEditDoc : public QObject
 	protected:
 		/** Sets an error string if an IO operation was unsuccesfull */
 		void setErrorString(const QString& string);
+		/** Updates color menu */
+		void updateColorMenu();
 		/** Copies a palette to clipboard */
 		void copyToClipboard(Palette& palette) const;
 	

@@ -20,6 +20,7 @@
 
 #include <qwidget.h>
 #include <qcolor.h>
+#include <qbuttongroup.h>
 #include <kcolordlg.h>
 
 #include "color.h"
@@ -67,12 +68,14 @@ private:
 	/** Maximum color change value */
 	static const int MAX_COLOR_CHANGE_VALUE = 16;
 	
-	/** A gradient selection widget */
-	GradientSelection* gradientSelection;
-	/** A color patch widget */
-	KColorPatch* colorPatch;
 	/** A color change slider widget */
 	QWidget* colorChangeSliderWidget;
+	/** Color change buttons button group widget */
+	QButtonGroup colorChangeButtons;
+	/** A color patch widget */
+	KColorPatch* colorPatch;
+	/** A gradient selection widget */
+	GradientSelection* gradientSelection;
 	/** The current color */
 	Color color;
 	/** Color change mode */

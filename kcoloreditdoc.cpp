@@ -207,13 +207,17 @@ PaletteHistory* KColorEditDoc::getPaletteHistory() {
 	return &paletteHistory;
 }
 
-void KColorEditDoc::setPaletteCursorPos(const int pos) {
-	paletteCursorPos = pos;
+void KColorEditDoc::updateColorMenu() {
 	KColorEditApp *window=(KColorEditApp*)parent();
 	if(paletteCursorPos == palette.length())
 		window->disableCommand(ID_COLOR_FROM_PALETTE);
 	else
 		window->enableCommand(ID_COLOR_FROM_PALETTE);
+}
+
+void KColorEditDoc::setPaletteCursorPos(const int pos) {
+	paletteCursorPos = pos;
+	updateColorMenu();
 }
 
 int KColorEditDoc::getPaletteCursorPos() {
@@ -284,6 +288,7 @@ void KColorEditDoc::insert(int index, const Color& color) {
 	paletteInsert.append(insertColor);
 	paletteHistory.paste(index, paletteInsert);
 	setPaletteSelection(0, 0);
+	updateColorMenu();
 	setModified(true);
 	slotRedrawAllViews(0);
 }

@@ -17,7 +17,6 @@
 
 #include <qlayout.h>
 #include <qframe.h>
-#include <qbuttongroup.h>
 #include <qradiobutton.h>
 #include <qcolor.h>
 #include <klocale.h>
@@ -61,16 +60,15 @@ GradientSelection::GradientSelection(QWidget *parent, const char *name ) : QWidg
 	zColorSelector->setFixedWidth(36);
 	topLayout->addWidget(zColorSelector, 0, 1);
 	QVBoxLayout* zColorSelectorLayout = new QVBoxLayout(0);
-	QButtonGroup* hsvButtons = new QButtonGroup(0);
-	connect(hsvButtons, SIGNAL( clicked(int) ), SLOT( slotSetColorSelectionMode(int) ));
+	connect(&hsvButtons, SIGNAL( clicked(int) ), SLOT( slotSetColorSelectionMode(int) ));
 	QRadioButton* hRadioButton = new QRadioButton("H", this);
-	hsvButtons->insert(hRadioButton, H_COMPONENT);
+	hsvButtons.insert(hRadioButton, H_COMPONENT);
 	zColorSelectorLayout->addWidget(hRadioButton);
 	QRadioButton* sRadioButton = new QRadioButton("S", this);
-	hsvButtons->insert(sRadioButton, S_COMPONENT);
+	hsvButtons.insert(sRadioButton, S_COMPONENT);
 	zColorSelectorLayout->addWidget(sRadioButton);
 	QRadioButton* vRadioButton = new QRadioButton("V", this);
-	hsvButtons->insert(vRadioButton, V_COMPONENT);
+	hsvButtons.insert(vRadioButton, V_COMPONENT);
 	vRadioButton->toggle();
 	zColorSelectorLayout->addWidget(vRadioButton);
 	topLayout->addLayout(zColorSelectorLayout, 1, 1);

@@ -65,7 +65,6 @@ KColorEditApp::KColorEditApp() : KMainWindow(0) {
 }
 
 KColorEditApp::~KColorEditApp() {
-
 }
 
 void KColorEditApp::initKeyAccel() {
@@ -102,12 +101,12 @@ void KColorEditApp::initKeyAccel() {
 void KColorEditApp::initMenuBar() {
   ///////////////////////////////////////////////////////////////////
   // MENUBAR
-  recentFilesMenu = new QPopupMenu();
+  recentFilesMenu = new QPopupMenu(this);
   connect(recentFilesMenu, SIGNAL(activated(int)), SLOT(slotFileOpenRecent(int)));
 
   ///////////////////////////////////////////////////////////////////
   // menuBar entry fileMenu
-  fileMenu = new QPopupMenu();
+  fileMenu = new QPopupMenu(this);
   fileMenu->insertItem(kapp->miniIcon(), i18n("New &Window"), ID_FILE_NEW_WINDOW);
   fileMenu->insertSeparator();
   fileMenu->insertItem(BarIcon("filenew"), i18n("&New"), ID_FILE_NEW);
@@ -125,14 +124,14 @@ void KColorEditApp::initMenuBar() {
 	
   ///////////////////////////////////////////////////////////////////
   // menuBar entry editMenu
-  editMenu = new QPopupMenu();
+  editMenu = new QPopupMenu(this);
   editMenu->insertItem(BarIcon("editcut"), i18n("Cu&t"), ID_EDIT_CUT);
   editMenu->insertItem(BarIcon("editcopy"), i18n("&Copy"), ID_EDIT_COPY);
   editMenu->insertItem(BarIcon("editpaste"), i18n("&Paste"), ID_EDIT_PASTE);
 
   ///////////////////////////////////////////////////////////////////
   // menuBar entry editMenu
-  colorMenu = new QPopupMenu();
+  colorMenu = new QPopupMenu(this);
   colorMenu->insertItem(i18n("From palette"), ID_COLOR_FROM_PALETTE);
   colorMenu->insertItem(i18n("From screen"), ID_COLOR_FROM_SCREEN);
   //colorMenu->insertSeparator();
@@ -141,7 +140,7 @@ void KColorEditApp::initMenuBar() {
 
   ///////////////////////////////////////////////////////////////////
   // menuBar entry viewMenu
-  viewMenu = new QPopupMenu();
+  viewMenu = new QPopupMenu(this);
   viewMenu->setCheckable(true);
   viewMenu->insertItem(i18n("&Color names"), ID_VIEW_COLOR_NAMES);
   viewMenu->insertItem(i18n("&Toolbar"), ID_VIEW_TOOLBAR);

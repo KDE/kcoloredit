@@ -21,6 +21,7 @@
 #include <qwidget.h>
 #include <qcheckbox.h>
 #include <qpushbutton.h>
+#include <qbuttongroup.h>
 
 #include "kxycolorselector.h"
 #include "kzcolorselector.h"
@@ -64,6 +65,8 @@ protected:
 	QCheckBox* variableCheckBox;
 	/** Synchronize color button */
 	QPushButton* synchronizeColorButton;
+	/** HSV buttons button group widget */
+	QButtonGroup hsvButtons;
 	/** The two components selector */
 	KXYColorSelector* xyColorSelector;
 	/** The gradient selector */

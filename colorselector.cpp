@@ -20,7 +20,6 @@
 #include <qlayout.h>
 /* #include <qtabwidget.h> */
 #include <qradiobutton.h>
-#include <qbuttongroup.h>
 #include <qlabel.h>
 #include <qslider.h>
 #include <kseparator.h>
@@ -60,15 +59,14 @@ ColorSelector::ColorSelector(QWidget *parent, const char *name ) : QWidget(paren
 	connect(this, SIGNAL( valueChanged(Color*) ), textEditSelection, SLOT( slotSetValue(Color*) ));
 	QVBoxLayout* colorChangeLayout = new QVBoxLayout();
 	colorChangeLayout->setMargin(2);
-	QButtonGroup* colorChangeButtons = new QButtonGroup(0);
 	QRadioButton* replaceButton = new QRadioButton(i18n( "Replace" ), this);
 	connect(replaceButton, SIGNAL( clicked() ), SLOT( slotColorReplace() ));
 	replaceButton->setChecked(true);
-	colorChangeButtons->insert(replaceButton);
+	colorChangeButtons.insert(replaceButton);
 	colorChangeLayout->addWidget(replaceButton);
 	QRadioButton* changeButton = new QRadioButton(i18n( "Change" ) + ":", this);
 	connect(changeButton, SIGNAL( clicked() ), SLOT( slotColorChange() ));
-	colorChangeButtons->insert(changeButton);
+	colorChangeButtons.insert(changeButton);
 	colorChangeLayout->addWidget(changeButton);
 	colorChangeValue = 0;
 	colorChangeSliderWidget = new QWidget(this);
