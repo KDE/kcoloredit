@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Exec=kcolorchooser %i %m
+Icon=kcolorchooser
+TerminalOptions=
+Path=
+Terminal=0
+BinaryPattern=kcolorchooser
+DocPath=kcolorchooser/kcolorchooser.html
+Comment=Stand alone KDE color chooser
+Name=Color Chooser
+
