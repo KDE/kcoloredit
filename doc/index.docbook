@@ -62,7 +62,7 @@ editing color palettes and for color choosing and naming.</para>
 <para>
 The palette files installed by &kde; can be either system-wide or the
 user ones.  The latter are in you private &kde; configuration
-directories, and they are named <guilabel>Custom Colors</guilabel> and
+folders, and they are named <guilabel>Custom Colors</guilabel> and
 <guilabel>Recent Colors</guilabel>.
 </para>
 
@@ -77,7 +77,7 @@ palettes in arbitrary files.
 <title>Opening a file</title>
 <para>
 In the  <guilabel>Open File</guilabel> dialog,  you may choose  from a
-list of installed palettes, or browse directories for files.
+list of installed palettes, or browse folders for files.
 </para>
 </sect1>
 
