@@ -9,5 +9,5 @@
     <Action name="color_from_screen"/>
   </Menu>
   <Menu name="settings">
-    <Action name="color_view_names" append="save_merge"/>
+    <Action name="color_view_names" append="show_merge"/>
 </MenuBar>
