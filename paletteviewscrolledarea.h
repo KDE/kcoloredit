@@ -63,6 +63,10 @@ protected:
 	int defaultCellHeight;
 	/** Cell spacing */
 	int cellSpacing;
+	/** Cell width */
+	int cellWidth;
+	/** Cell height */
+	int cellHeight;
 	/** The number of cells in a row */
 	int cellsInRow;
 	/** The number of rows */
@@ -73,21 +77,21 @@ protected:
 	int rowHeight;
 	/** Total height of cells table */
 	int cellTableHeight;
-	/** a position at which selection started */
+	/** A position at which selection started */
 	int selectionBegin;
-	/** a position at which selection ended */
+	/** A position at which selection ended */
 	int selectionEnd;
-	/** auto scroll timeout timer */
+	/** Auto scroll timeout timer */
 	QTimer* scrollTimeoutTimer;
-	/** whether there is auto scroll timeout */
+	/** Whether there is auto scroll timeout */
 	bool scrollTimeout;
-	/** whether a mouse has been pressed over the palette and not yet released */
+	/** Whether a mouse has been pressed over the palette and not yet released */
 	bool mousePressed;
-	/** whether the cursor is being positioned */
+	/** Whether the cursor is being positioned */
 	bool cursorPositioning;
-	/** a color drag point */
+	/** A color drag point */
 	QPoint colorDragPoint;
-	/** whether a color has been chosen and it is not dragged */
+	/** Whether a color has been chosen and it is not dragged */
 	bool colorChosen;
 	/** Whether the cursor follows a chosen color */
 	bool cursorFollowsChosenColor;

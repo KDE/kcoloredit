@@ -160,15 +160,28 @@ void PaletteViewScrolledArea::setSelection(const int min, const int max) {
 
 void PaletteViewScrolledArea::setCellsSizes() {
 	rowWidth = width();
+	cellWidth = defaultCellWidth;
+	cellHeight = defaultCellHeight;
+	if(viewColorNames) {
+		QPainter painter;
+		painter.begin(this);
+		if(cellHeight < painter.fontMetrics().height()) {
+			int prevCellHeight = cellHeight;
+			cellHeight = painter.fontMetrics().height();
+			cellWidth = cellHeight*cellWidth/prevCellHeight;
+		}
+		painter.end();
+	}
 	if(viewColorNames)
 		cellsInRow = 1;
 	else
-		cellsInRow = rowWidth/(defaultCellWidth + cellSpacing*2);
+		cellsInRow = rowWidth/(cellWidth + cellSpacing*2);
 	if(viewColorNames)
-		rowHeight = defaultCellHeight*2 + cellSpacing*2;
+		rowHeight = cellHeight + cellSpacing*2;
 	else
 		rowHeight = (int)(rowWidth*1.0/cellsInRow/
-			( defaultCellWidth + cellSpacing*2 )*( defaultCellHeight + cellSpacing*2 ) + 0.5);
+			( cellWidth + cellSpacing*2 )*( cellHeight + cellSpacing*2 ) + 0.5);
+	cellHeight = rowHeight - cellSpacing*2;
 	rowsNum = (getPalette()->length() + cellsInRow - 1)/cellsInRow;
 	cellTableHeight = rowsNum*rowHeight;
 	int contentsHeight;
@@ -208,7 +221,6 @@ void PaletteViewScrolledArea::paintEvent(QPaintEvent* event) {
 	QFontMetrics fontMetrics = painter.fontMetrics();
 	int maxLineWidth;
 	if(viewColorNames) {
-		maxLineWidth = rowWidth*2;
 		int maxTextLength = 0;
 		for(int index = 0; index < getPalette()->length(); ++index) {
 			int currTextLength = fontMetrics.width(
@@ -216,8 +228,8 @@ void PaletteViewScrolledArea::paintEvent(QPaintEvent* event) {
 			if(currTextLength > maxTextLength)
 				maxTextLength = currTextLength;
 		}
-		maxLineWidth = defaultCellWidth*2 + cellSpacing*2 +
-			cellSpacing*4 + maxTextLength + 1;
+		maxLineWidth = cellWidth + cellSpacing*2 +
+			cellSpacing*3 + maxTextLength + 1;
 	} else
 		maxLineWidth = rowWidth;
 	int width = rowWidth;
@@ -239,7 +251,6 @@ void PaletteViewScrolledArea::paintEvent(QPaintEvent* event) {
 	QBrush foregroundBrush;
 	QBrush cursorBrush(palette().active().foreground());
 	QPen backgroundPen(palette().active().foreground());
-	int cellHeight = rowHeight - 2*cellSpacing;
 	int selectionMin = getSelectionMin();
 	int selectionMax = getSelectionMax();
 	int fontAscent = fontMetrics.ascent();
@@ -247,7 +258,7 @@ void PaletteViewScrolledArea::paintEvent(QPaintEvent* event) {
 	for(int x = 0; x < cellsInRow; ++x) {
 		int xEnd = -hScrollBar->value();
 		if(viewColorNames)
-			xEnd += defaultCellWidth*2 + cellSpacing*2;
+			xEnd += cellWidth + cellSpacing*2;
 		else
 			xEnd += (x + 1)*(width - 1)/cellsInRow;
 		int cellWithSpacingWidth = xEnd - xBegin + 1;
@@ -285,7 +296,7 @@ void PaletteViewScrolledArea::paintEvent(QPaintEvent* event) {
 					foregroundBrush);
 				if(viewColorNames) {
 					painter.setPen(backgroundPen);
-					painter.drawText(xBegin + cellWithSpacingWidth + cellSpacing*4,
+					painter.drawText(xBegin + cellWithSpacingWidth + cellSpacing*3,
 						yBegin + rowHeight/2 + fontAscent/2, color->getName());
 				}
 			} else {
