@@ -67,14 +67,14 @@ protected slots:
 
 protected:
 	/** Indexes of components */
-	static const int H_INDEX = 0;
-	static const int S_INDEX = 1;
-	static const int V_INDEX = 2;
-	static const int R_INDEX = 3;
-	static const int G_INDEX = 4;
-	static const int B_INDEX = 5;
+	enum { H_INDEX = 0,
+	       S_INDEX = 1,
+	       V_INDEX = 2,
+	       R_INDEX = 3,
+	       G_INDEX = 4,
+	       B_INDEX = 5,
 	/** A total number of components */
-	static const int COMPONENTS_NUM = 6;
+	       COMPONENTS_NUM = 6 };
 	
 	/** Line edit widgets table */
 	QLineEdit* lineEditTable[COMPONENTS_NUM];

@@ -28,10 +28,10 @@ class Color {
 	public:
 		/** indices of components
 		 */
-		static const int RED_INDEX = 		0;
-		static const int GREEN_INDEX = 		1;
-		static const int BLUE_INDEX = 		2;
-		static const int COMPONENTS_NUM = 3;
+		enum { RED_INDEX = 0,
+		       GREEN_INDEX = 1,
+		       BLUE_INDEX = 2,
+		       COMPONENTS_NUM = 3 };
 	
 	public:
 		/** constructs a color

@@ -57,9 +57,9 @@ protected:
 	 *  the two components selector should be in a mode indicated by a value
 	 *  of the appropriate index
 	 */
-	static const int H_COMPONENT = KXYColorSelector::TYPE_VS;
-	static const int S_COMPONENT = KXYColorSelector::TYPE_HV;
-	static const int V_COMPONENT = KXYColorSelector::TYPE_HS;
+	enum { H_COMPONENT = KXYColorSelector::TYPE_VS,
+	       S_COMPONENT = KXYColorSelector::TYPE_HV,
+	       V_COMPONENT = KXYColorSelector::TYPE_HS };
 	
 	/** Variable global component checkbox */
 	QCheckBox* variableCheckBox;

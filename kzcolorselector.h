@@ -32,9 +32,9 @@ class KZColorSelector : public KSelector {
 	
 public:
 	/** Selector type constants */
-	static const int TYPE_H = 0;
-	static const int TYPE_S = 1;
-	static const int TYPE_V = 2;
+	enum { TYPE_H = 0,
+	       TYPE_S = 1,
+	       TYPE_V = 2 };
 
 	/** Constructs the widget */
 	KZColorSelector(Orientation o, QWidget *parent=0, const char *name=0);
@@ -55,7 +55,7 @@ protected:
 	 *  if number of color planes <= 8. The palette returned by
 	 *  getStandardColorsPalette() is of the size.
 	 */
-	static const int STANDARD_PALETTE_SIZE = 17;
+	enum { STANDARD_PALETTE_SIZE = 17 };
 	
 	/** A type of the selector */
 	int type;

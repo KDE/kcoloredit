@@ -31,17 +31,16 @@ class KXYColorSelector : public KXYSelector  {
 
 public:
 	/** The types of the selector. They specify a color component subset */
-	static const int TYPE_NONE = 0;
-	static const int TYPE_HS = 1;
-	static const int TYPE_VS = 2;
-	static const int TYPE_HV = 3;
-	static const int TYPE_RG = 4;
-	static const int TYPE_GB = 5;
-	static const int TYPE_BR = 6;
-	static const int TYPE_ = 7;
-	
+	enum { TYPE_NONE = 0,
+	       TYPE_HS = 1,
+	       TYPE_VS = 2,
+	       TYPE_HV = 3,
+	       TYPE_RG = 4,
+	       TYPE_GB = 5,
+	       TYPE_BR = 6,
+	       TYPE_ = 7,
 	/** Component selection resolution */
-	static const int COMPONENT_SELECTION_RESOLUTION = 10000;
+	       COMPONENT_SELECTION_RESOLUTION = 10000 };
 	
 public:
 	/** Constructs a two-dimensional color component selector widget,
@@ -63,7 +62,7 @@ protected:
 	 *  if number of color planes <= 8. The palette returned by
 	 *  getStandardColorsPalette() is of the size.
 	 */
-	static const int STANDARD_PALETTE_SIZE = 17;
+	enum { STANDARD_PALETTE_SIZE = 17 };
 	
 	/** A type of the selector */
 	int type;

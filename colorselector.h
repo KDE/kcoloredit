@@ -63,10 +63,10 @@ public slots:
 	
 private:
 	/** Color change mode constants */
-	static const int MODE_REPLACE = 0;
-	static const int MODE_CHANGE = 1;
+	enum { MODE_REPLACE = 0,
+	       MODE_CHANGE = 1,
 	/** Maximum color change value */
-	static const int MAX_COLOR_CHANGE_VALUE = 16;
+	       MAX_COLOR_CHANGE_VALUE = 16 };
 	
 	/** A color change slider widget */
 	QWidget* colorChangeSliderWidget;

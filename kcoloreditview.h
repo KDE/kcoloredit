@@ -88,8 +88,8 @@ class KColorEditView : public QSplitter {
 		
 	protected:
 		/** Add color mode constants */
-		static const int INSERT_COLOR = 0;
-		static const int REPLACE_COLOR = 1;
+		enum { INSERT_COLOR = 0,
+		       REPLACE_COLOR = 1 };
 		
 		/** Color mode widget */
 		QCheckBox* overwriteCheckBox;
