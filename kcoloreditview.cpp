@@ -71,7 +71,7 @@ KColorEditView::KColorEditView(QWidget *parent, const char *name) : QSplitter(pa
 	//cursorFollowsChosenColor->toggle();
 	paletteView->slotCursorFollowsChosenColor(true);
 	layout->addLayout(addColorLayout, 0);
-	QVGroupBox* colorAtCursorFrame = new QVGroupBox(i18n("Color at cursor"), paletteViewArea);
+	QVGroupBox* colorAtCursorFrame = new QVGroupBox(i18n("Color at Cursor"), paletteViewArea);
 	QWidget* colorAtCursorFrameArea = new QWidget(colorAtCursorFrame);
 	QVBoxLayout* colorAtCursorLayout = new QVBoxLayout(colorAtCursorFrameArea, 4);
 	QHBoxLayout* colorNameLayout = new QHBoxLayout(0);
