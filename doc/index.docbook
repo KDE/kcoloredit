@@ -1,9 +1,16 @@
 <?xml version="1.0" ?>
-<!DOCTYPE book PUBLIC "-//KDE//DTD DocBook XML V4.1-Based Variant V1.0//EN" "dtd/kdex.dtd">
+<!DOCTYPE book PUBLIC "-//KDE//DTD DocBook XML V4.1-Based Variant V1.0//EN" "dtd/kdex.dtd" [
+  <!ENTITY kcoloredit "<application>KColorEdit</application>">
+  <!ENTITY kappname "&kcoloredit;">
+  <!ENTITY package "kdegraphics">
+  <!ENTITY % addindex "IGNORE">
+  <!ENTITY % English "INCLUDE"> <!-- Change language only here --> 
+]
+>
 
-<book lang="en">
+<book lang="&language;">
 <bookinfo>
-<title> The KColorEdit Handbook</title>
+<title> The &kcoloredit; Handbook</title>
 <authorgroup>
 <author>
 <firstname>Artur</firstname>
@@ -13,12 +20,24 @@
 </affiliation>
 </author>
 <!-- TRANS:ROLES_OF_TRANSLATORS -->
+
 </authorgroup>
-<date>2000-07-16</date>
-<releaseinfo>0.02.00</releaseinfo>
+
+<copyright>
+<year>2000</year>
+<holder>Artur Rataj</holder>
+</copyright>
+
+<legalnotice>&FDLNotice;</legalnotice>
+
+<date>2002-01-09</date>
+<releaseinfo>2.91.00</releaseinfo>
+
 <abstract>
-<para>This handbook describes KColorEdit version 0.1.0.</para>
+<para>&kcoloredit; is a palette files editor. It can be used for editing
+color palettes and for color choosing and naming.</para>
 </abstract>
+
 <keywordset>
 <keyword>KDE</keyword>
 <keyword>graphics</keyword>
@@ -26,13 +45,11 @@
 </keywordset>
 </bookinfo>
 
-<chapter id="Introduction">
+<chapter id="introduction">
 <title>Introduction</title>
 
-<para>
-KColorEdit is a palette files editor. It can be used for editing
-color palettes and for color choosing and naming.
-</para>
+<para>&kcoloredit; is a palette files editor. It can be used for
+editing color palettes and for color choosing and naming.</para>
 
 </chapter>
 
@@ -41,40 +58,42 @@ color palettes and for color choosing and naming.
 
 <sect1 id="file">
 <title>About palette files</title>
+
 <para>
-The palette files installed by KDE can be either system-wide or the user ones.
-The latter are in you private KDE configuration directories, and
-they are named ``Custom Colors'' and ``Recent Colors''.
+The palette files installed by &kde; can be either system-wide or the
+user ones.  The latter are in you private &kde; configuration
+directories, and they are named <guilabel>Custom Colors</guilabel> and
+<guilabel>Recent Colors</guilabel>.
 </para>
 
 <para>
-In KColorEdit, you
-may open all of these palettes, as well as palettes in arbitrary files.
+In &kcoloredit;, you may open all of these palettes, as well as
+palettes in arbitrary files.
 </para>
+
 </sect1>
 
 <sect1 id="file-open">
 <title>Opening a file</title>
 <para>
-In the Open File dialog, you may choose from a list of installed palettes,
-or browse directories for files.
+In the  <guilabel>Open File</guilabel> dialog,  you may choose  from a
+list of installed palettes, or browse directories for files.
 </para>
 </sect1>
 
 </chapter>
 
 <chapter id="Edition">
-<title>Edition</title>
+<title>Editing</title>
 
 <sect1 id="cursor">
 <title>Cursor</title>
-<para>
-The cursor is visible as a line in the palette view. It can be moved
-by clicking on an area beside a color.
-</para> 
 
-<para>The cursor has
-the following functions:
+<para>The cursor is visible as a line in the palette view. It can be
+moved by clicking on an area beside a color.</para>
+
+<para>The cursor has the following functions:</para>
+
 <itemizedlist>
 <listitem>
 <para>
@@ -84,40 +103,40 @@ the palette view. You may edit its name there.
 </listitem>
 <listitem>
 <para>
-It can be used to make a selection. A selection can be made by clicking
-on an area beside a color, so to move the cursor there, and by moving the
-mouse then with the left mouse button pressed.
+It can be used to make a selection. A selection can be made by
+clicking on an area beside a color, so to move the cursor there, and
+by moving the mouse then with the left mouse button pressed.
 </para>
 </listitem>
 <listitem>
-<para>
-If the ``After cursor'' checkbox near to the ``Add a color'' button is
-checked, a color from the color chooser is put after the cursor.
-The color is either inserted or it ovewrites another one, depending on 
-whether the ``Ovewrite'' mode is chosen. The mode can be chosen by
-checking the ``Overwrite'' checkbox, that is next to the ``After cursor'' one.
-</para>
+<para>If the <guilabel>After cursor</guilabel> checkbox near to the
+<guilabel>Add a color</guilabel> button is checked, a color from the
+color chooser is put after the cursor.  The color is either inserted
+or it ovewrites another one, depending on whether the
+<guilabel>Ovewrite</guilabel> mode is chosen. The mode can be chosen
+by checking the <guilabel>Overwrite</guilabel> checkbox, that is next
+to the <guilabel>After cursor</guilabel> one.</para>
 </listitem>
 </itemizedlist>
-</para>
+
 </sect1>
 
 <sect1 id = "selection">
 <title>Selection</title>
 <para>
-A selection, that can be made as it was written in the previous section,
-can be used with the copy, cut and paste operations.
+A selection, that can be made as it was written in the previous
+section, can be used with the copy, cut and paste operations.
 </para>
 </sect1>
 
 <sect1 id = "clipboard-format">
 <title>Clipboard format</title>
 <para>
-KColorEdit uses the following format for clipboard data: for each color
-three numbers for red, green and blue components, respectively, and an 
-optional color name, followed by a new line character if there is another
-color. Therefore, if for example three numbers are in the clipboard, they
-can be pasted by KColorEdit as a color.
+&kcoloredit; uses the following format for clipboard data: for each
+color three numbers for red, green and blue components, respectively,
+and an optional color name, followed by a new line character if there
+is another color. Therefore, if for example three numbers are in the
+clipboard, they can be pasted by &kcoloredit; as a color.
 </para>
 </sect1>
 
@@ -125,8 +144,10 @@ can be pasted by KColorEdit as a color.
 
 <chapter id="color-selection">
 <title>Selecting a color from an RGB space</title>
+
 <para>
-A color can be selected from an RGB space in KColorEdit in the following ways:
+A color can be selected from an RGB space in &kcoloredit; in the
+following ways:
 <itemizedlist>
 <listitem>
 <para>
@@ -135,35 +156,285 @@ By editing the HSV or RGB components.
 </listitem>
 <listitem>
 <para>
-By selecting a color from color gradient panels. In the left one,
-two from HSV components can be selected, and in the right one, the
-third one. The third component can be chosen by clicking on one of
-the buttons labelled ``H'', ``S'' and ``V''. The one component panel
-display colors with the other two components equal to these selected in the
-two components panel.
-The two components
-panel may display colors with the third component fixed, or,
-if the ``Variable'' checkbox is set, with a value equal to
-the one selected in the one component panel. In the ``Replace'' mode,
-the color selected in panels replaces the output one instantly,
-and in the ``Change'' mode it modifies the output color after each click,
-or a mouse move while a mouse button is pressed. Therefore, in the latter
-mode the color selected in the gradient panels may be different from
-the output color. To synchronize the colors, the ``Synchronize'' button
-can be used.
+By selecting a color from color gradient panels. In the left one, two
+from HSV components can be selected, and in the right one, the third
+one. The third component can be chosen by clicking on one of the
+buttons labelled <guilabel>H</guilabel>, <guilabel>S</guilabel> and
+<guilabel>V</guilabel>. The one component panel display colors with
+the other two components equal to these selected in the two components
+panel.  The two components panel may display colors with the third
+component fixed, or, if the <guilabel>Variable</guilabel> checkbox is
+set, with a value equal to the one selected in the one component
+panel. In the <guilabel>Replace</guilabel> mode, the color selected in
+panels replaces the output one instantly, and in the
+<guilabel>Change</guilabel> mode it modifies the output color after
+each click, or a mouse move while a mouse button is
+pressed. Therefore, in the latter mode the color selected in the
+gradient panels may be different from the output color. To synchronize
+the colors, the <guibutton>Synchronize</guibutton> button can be used.
 </para>
 </listitem>
 </itemizedlist>
 </para>
 </chapter>
 
+<!-- Someone energetic might want to write a small chapter here -->
+<!-- describing RGB vs HSV etc -->
+
 <chapter id="drag-and-drop">
 <title>Drag and drop</title>
 <para>
-The palette colors and the color selection output color can be drag
+The palette colors and the color selection output color can be dragged
 with a mouse.
 </para>
 </chapter>
+
+<chapter id="menu-reference">
+<title>Menu Reference</title>
+
+<sect1 id="file-menu">
+<title>The <guimenu>File</guimenu> Menu</title>
+
+<variablelist>
+<varlistentry>
+<term><menuchoice>
+<guimenu>File</guimenu>
+<guimenuitem>New Window</guimenuitem>
+</menuchoice></term>
+<listitem>
+<para><action>Open a new window</action></para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<shortcut><keycombo action="simul">&Ctrl;
+<keycap>N</keycap></keycombo></shortcut>
+<guimenu>File</guimenu>
+<guimenuitem>New</guimenuitem>
+</menuchoice></term>
+<listitem>
+<para><action>Start a new palette in the current
+window.</action></para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<shortcut><keycombo action="simul">&Ctrl;
+<keycap>O</keycap></keycombo></shortcut>
+<guimenu>File</guimenu>
+<guimenuitem>Open</guimenuitem>
+</menuchoice></term>
+<listitem>
+<para><action>Open a saved palette.</action></para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>File</guimenu>
+<guimenuitem>Open Recent...</guimenuitem>
+</menuchoice></term>
+<listitem>
+<para><action>Reopen a palette that you have recently been
+editing.</action></para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<shortcut><keycombo action="simul">&Ctrl;
+<keycap>W</keycap></keycombo></shortcut>
+<guimenu>File</guimenu>
+<guimenuitem>Close</guimenuitem>
+</menuchoice></term>
+<listitem>
+<para><action>Close</action> the current &kcoloredit;
+window.</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<shortcut><keycombo action="simul">&Ctrl;
+<keycap>S</keycap></keycombo></shortcut>
+<guimenu>File</guimenu>
+<guimenuitem>Save</guimenuitem>
+</menuchoice></term>
+<listitem>
+<para><action>Save the currently open palette.</action></para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>File</guimenu>
+<guimenuitem>Save As...</guimenuitem>
+</menuchoice></term>
+<listitem>
+<para><action>Save the currently open palette with a new
+name.</action></para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<shortcut><keycombo action="simul">&Ctrl;
+<keycap>Q</keycap></keycombo></shortcut>
+<guimenu>File</guimenu>
+<guimenuitem>Quit</guimenuitem>
+</menuchoice></term>
+<listitem>
+<para><action>Quit</action> &kcoloredit;.</para>
+</listitem>
+</varlistentry>
+</variablelist>
+
+</sect1>
+
+<sect1 id="edit-menu">
+<title>The <guimenu>Edit</guimenu> Menu</title>
+
+<variablelist>
+<varlistentry>
+<term><menuchoice>
+<shortcut><keycombo action="simul">&Ctrl;
+<keycap>X</keycap></keycombo></shortcut>
+<guimenu>Edit</guimenu>
+<guimenuitem>Cut</guimenuitem>
+</menuchoice></term>
+<listitem>
+<para><action>Cut the currently selected color to the
+clipboard.</action></para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<shortcut><keycombo action="simul">&Ctrl;
+<keycap>C</keycap></keycombo></shortcut>
+<guimenu>Edit</guimenu>
+<guimenuitem>Copy</guimenuitem>
+</menuchoice></term>
+<listitem>
+<para><action>Copy the currently selected color to the
+clipboard.</action></para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<shortcut><keycombo action="simul">&Ctrl;
+<keycap>V</keycap></keycombo></shortcut>
+<guimenu>Edit</guimenu>
+<guimenuitem>Paste</guimenuitem>
+</menuchoice></term>
+<listitem>
+<para><action>Paste a color from the clipboard.</action></para>
+</listitem>
+</varlistentry>
+</variablelist>
+
+</sect1>
+
+<sect1 id="color-menu">
+<title>The <guimenu>Color</guimenu> Menu</title>
+
+<variablelist>
+<varlistentry>
+<term><menuchoice>
+<guimenu>Color</guimenu>
+<guimenuitem>From palette</guimenuitem>
+</menuchoice></term>
+<listitem>
+<para><action>Find the color currently selected in the palette, in the
+color selector on the left.</action></para><!-- eww... needs rewrite -->
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>Color</guimenu>
+<guimenuitem>From Screen</guimenuitem>
+</menuchoice></term>
+<listitem>
+<para><action>Pick a color from anywhere on the screen, and find it
+in the color selector on the left.</action></para>
+</listitem>
+</varlistentry>
+</variablelist>
+
+</sect1>
+
+<sect1 id="view-menu">
+<title>The <guimenu>View</guimenu> Menu</title>
+
+<variablelist>
+<varlistentry>
+<term><menuchoice>
+<guimenu>Color</guimenu>
+<guimenuitem>Color names</guimenuitem>
+</menuchoice></term>
+<listitem>
+<para>If the currently open palette has color names, <action>display
+them alongside the colors</action>.</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>View</guimenu>
+<guimenuitem>Toolbar</guimenuitem>
+</menuchoice></term>
+<listitem>
+<para><action>Toggle on and off the toolbar icons.</action></para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>View</guimenu>
+<guimenuitem>Statusbar</guimenuitem>
+</menuchoice></term>
+<listitem>
+<para><action>Toggle on and off the status bar.</action></para>
+</listitem>
+</varlistentry>
+</variablelist>
+
+</sect1>
+
+<sect1 id="help-menu">
+<title>The <guimenu>Help</guimenu> Menu</title>
+
+&help.menu.documentation;
+
+</sect1>
+
+</chapter>
+
+<chapter id="credits-and-licenses">
+<title>Credits and Licenses</title>
+
+<para>&kcoloredit; copyright 2000 Artur Rataj</para>
+
+<para>Documentation copyright 2000 Artur Rataj</para>
+
+<!-- TRANS:CREDIT_FOR_TRANSLATORS -->
+
+&underFDL;
+&underGPL;
+</chapter>
+
+<appendix id="installation">
+<title>Installation</title>
+
+&install.intro.documentation;
+
+&install.compile.documentation;
+
+</appendix>
 
 </book>
 <!--
