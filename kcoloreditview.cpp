@@ -47,7 +47,7 @@ KColorEditView::KColorEditView(QWidget *parent, const char *name) : QSplitter(pa
 	QVBoxLayout* addColorLayout = new QVBoxLayout(4);
 	addColorLayout->setMargin(8);
 	QHBoxLayout* buttonsLayout = new QHBoxLayout(4);
-	QPushButton* addColorButton = new QPushButton(i18n( "Add a color" ), paletteViewArea);
+	QPushButton* addColorButton = new QPushButton(i18n( "Add a Color" ), paletteViewArea);
 	connect(addColorButton, SIGNAL( clicked() ), SLOT( slotAddColor() ));
 	buttonsLayout->addWidget(addColorButton);
 	buttonsLayout->addStretch(10);

@@ -113,7 +113,7 @@ void KColorEditApp::initMenuBar() {
   fileMenu->insertSeparator();
   fileMenu->insertItem(SmallIcon("filenew"), i18n("&New"), ID_FILE_NEW);
   fileMenu->insertItem(SmallIcon("fileopen"), i18n("&Open..."), ID_FILE_OPEN);
-  fileMenu->insertItem(i18n("Open &recent"), recentFilesMenu, ID_FILE_OPEN_RECENT);
+  fileMenu->insertItem(i18n("Open &Recent"), recentFilesMenu, ID_FILE_OPEN_RECENT);
 
   fileMenu->insertItem(SmallIcon("fileclose"), i18n("&Close"), ID_FILE_CLOSE);
   fileMenu->insertSeparator();
@@ -134,8 +134,8 @@ void KColorEditApp::initMenuBar() {
   ///////////////////////////////////////////////////////////////////
   // menuBar entry editMenu
   colorMenu = new QPopupMenu(this);
-  colorMenu->insertItem(i18n("From palette"), ID_COLOR_FROM_PALETTE);
-  colorMenu->insertItem(i18n("From screen"), ID_COLOR_FROM_SCREEN);
+  colorMenu->insertItem(i18n("From Palette"), ID_COLOR_FROM_PALETTE);
+  colorMenu->insertItem(i18n("From Screen"), ID_COLOR_FROM_SCREEN);
   //colorMenu->insertSeparator();
   //colorMenu->insertItem(i18n("Copy"), ID_COLOR_COPY);
   //colorMenu->insertItem(i18n("Paste"), ID_COLOR_PASTE);
@@ -144,7 +144,7 @@ void KColorEditApp::initMenuBar() {
   // menuBar entry viewMenu
   viewMenu = new QPopupMenu(this);
   viewMenu->setCheckable(true);
-  viewMenu->insertItem(i18n("&Color names"), ID_VIEW_COLOR_NAMES);
+  viewMenu->insertItem(i18n("&Color Names"), ID_VIEW_COLOR_NAMES);
   viewMenu->insertItem(i18n("&Toolbar"), ID_VIEW_TOOLBAR);
   viewMenu->insertItem(i18n("&Statusbar"), ID_VIEW_STATUSBAR);
 
@@ -487,7 +487,7 @@ bool KColorEditApp::slotFileSaveAs()
 
     while(result) {
         QString newName=KFileDialog::getSaveFileName(lastSavePaletteAsFileDir,
-                                                     "*|" + i18n("All files"), this, i18n("Save as..."));
+                                                     "*|" + i18n("All files"), this, i18n("Save As..."));
         if(newName.isEmpty())
             result = false;
         else {
