@@ -153,9 +153,6 @@ class KColorEditApp : public KMainWindow
     /** copies a color to clipboard
      */
     void slotViewColorNames();
-    /** toggles the toolbar
-     */
-    void slotViewStatusBar();
     /** changes the statusbar contents for the standard label permanently, used to indicate current actions.
      * @param text the text that is displayed in the statusbar
      */
@@ -171,7 +168,7 @@ class KColorEditApp : public KMainWindow
     KConfig *config;
 
     KAction *m_actSave, *m_actCut, *m_actCopy, *m_actPaste, *m_actPalette;
-    KToggleAction *m_actNames, *m_actStatus;
+    KToggleAction *m_actNames;
     KRecentFilesAction *m_actRecent;
 
     /** view is the main widget which represents your working area. The View

@@ -51,6 +51,7 @@ KColorEditApp::KColorEditApp() : KMainWindow(0) {
   initView();
 
   createGUI();
+  setAutoSaveSettings();
 
   readOptions();
 
@@ -100,8 +101,8 @@ void KColorEditApp::initActions()
           "color_from_screen" );
 
   // Settings Menu
-  m_actStatus = KStdAction::showStatusbar( this, SLOT( slotViewStatusBar() ), 
-          actionCollection() );
+  createStandardStatusBarAction();
+  setStandardToolBarMenuEnabled(true);
 }
 
 void KColorEditApp::initStatusBar()
@@ -150,7 +151,6 @@ KColorEditDoc *KColorEditApp::document() const
 
 void KColorEditApp::saveOptions()
 {
-  saveMainWindowSettings( config, "MainWindowSettings" );
   m_actRecent->saveEntries( config );
 
   config->setGroup("KColorEdit Options");
@@ -159,7 +159,6 @@ void KColorEditApp::saveOptions()
 
 void KColorEditApp::readOptions()
 {
-  applyMainWindowSettings( config, "MainWindowSettings" );
   m_actRecent->loadEntries( config );
 
   config->setGroup("KColorEdit Options");
@@ -167,8 +166,6 @@ void KColorEditApp::readOptions()
   viewColorNames = config->readBoolEntry("ColorNames", false);
   m_actNames->setChecked(viewColorNames);
   doc->slotChangeViewMode(viewColorNames);
-
-  m_actStatus->setChecked( !statusBar()->isHidden() );
 }
 
 bool KColorEditApp::queryClose()
@@ -351,14 +348,6 @@ void KColorEditApp::slotViewColorNames()
 {
   viewColorNames = m_actNames->isChecked();
   doc->slotChangeViewMode(viewColorNames);
-}
-
-void KColorEditApp::slotViewStatusBar()
-{
-  if ( m_actStatus->isChecked() )
-    statusBar()->show();
-  else
-    statusBar()->hide();
 }
 
 void KColorEditApp::mouseReleaseEvent(QMouseEvent* event) {
