@@ -154,10 +154,7 @@ void GradientSelection::updateXyColorSelector(bool modeChanged) {
 }
 
 void GradientSelection::updateZColorSelector() {
-	zColorSelector->setBaseColor(QColor(
-		color.getComponent(Color::RED_INDEX),
-		color.getComponent(Color::GREEN_INDEX),
-		color.getComponent(Color::BLUE_INDEX) ));
+	zColorSelector->setBaseColorHsv(hComponent, sComponent, vComponent);
 	zColorSelector->updatePointerPos();
 	zColorSelector->updateContents();
 }
@@ -220,8 +217,10 @@ void GradientSelection::slotZColorSelectorPosChanged(int y) {
 	bool repaintZColorSelector = false;
 	switch(zColorSelectorComponentIndex) {
 		case H_COMPONENT:
+			/*
 			if(hComponent == -1)
 				repaintZColorSelector = true;
+			 */
 			hComponent = y;
 			break;
 	

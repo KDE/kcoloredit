@@ -42,10 +42,12 @@ public:
 	/** Sets the selector type */
 	void setType(const int type);
 	/** Update the pixmap */
-  void updateContents();
-	/** Set the global component */
-  void setBaseColor(const QColor& color);
-  /** Updates a pointer position due to the base color */
+	void updateContents();
+	/** Set the global components */
+	void setBaseColor(const QColor& color);
+	/** Set the global components using HSV components */
+	void setBaseColorHsv(const int colorH, const int colorS, const int colorV);
+	/** Updates a pointer position due to the base color */
 	void updatePointerPos();
 	
 protected:

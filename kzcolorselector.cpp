@@ -67,6 +67,13 @@ void KZColorSelector::setBaseColor(const QColor& color) {
 	color.hsv(&baseColorH, &baseColorS, &baseColorV);
 }
 
+void KZColorSelector::setBaseColorHsv(const int colorH,
+	const int colorS, const int colorV) {
+	baseColorH = colorH;
+	baseColorS = colorS;
+	baseColorV = colorV;
+}
+
 void KZColorSelector::updatePointerPos() {
 	int pos;
 	switch(type) {
