@@ -26,6 +26,7 @@
 #include <kfiledialog.h>
 #include <kmenubar.h>
 #include <klocale.h>
+#include <kcolordlg.h>
 #include <kconfig.h>
 
 // application specific includes
@@ -59,6 +60,8 @@ KColorEditApp::KColorEditApp() : KMainWindow(0) {
   disableCommand(ID_EDIT_CUT);
   disableCommand(ID_EDIT_COPY);
   //disableCommand(ID_EDIT_PASTE);
+
+  gettingColorFromScreen = false;
 }
 
 KColorEditApp::~KColorEditApp() {
@@ -128,6 +131,15 @@ void KColorEditApp::initMenuBar() {
   editMenu->insertItem(BarIcon("editpaste"), i18n("&Paste"), ID_EDIT_PASTE);
 
   ///////////////////////////////////////////////////////////////////
+  // menuBar entry editMenu
+  colorMenu = new QPopupMenu();
+  colorMenu->insertItem(i18n("From palette"), ID_COLOR_FROM_PALETTE);
+  colorMenu->insertItem(i18n("From screen"), ID_COLOR_FROM_SCREEN);
+  colorMenu->insertSeparator();
+  colorMenu->insertItem(i18n("Copy"), ID_COLOR_COPY);
+  colorMenu->insertItem(i18n("Paste"), ID_COLOR_PASTE);
+
+  ///////////////////////////////////////////////////////////////////
   // menuBar entry viewMenu
   viewMenu = new QPopupMenu();
   viewMenu->setCheckable(true);
@@ -144,6 +156,7 @@ void KColorEditApp::initMenuBar() {
   // they will appear later from left to right
   menuBar()->insertItem(i18n("&File"), fileMenu);
   menuBar()->insertItem(i18n("&Edit"), editMenu);
+  menuBar()->insertItem(i18n("&Color"), colorMenu);
   menuBar()->insertItem(i18n("&View"), viewMenu);
 
   menuBar()->insertSeparator();
@@ -158,6 +171,9 @@ void KColorEditApp::initMenuBar() {
 
   connect(editMenu, SIGNAL(activated(int)), SLOT(commandCallback(int)));
   connect(editMenu, SIGNAL(highlighted(int)), SLOT(statusCallback(int)));
+
+  connect(colorMenu, SIGNAL(activated(int)), SLOT(commandCallback(int)));
+  connect(colorMenu, SIGNAL(highlighted(int)), SLOT(statusCallback(int)));
 
   connect(viewMenu, SIGNAL(activated(int)), SLOT(commandCallback(int)));
   connect(viewMenu, SIGNAL(highlighted(int)), SLOT(statusCallback(int)));
@@ -549,6 +565,32 @@ void KColorEditApp::slotEditPaste()
   slotStatusMsg(i18n(IDS_STATUS_DEFAULT));
 }
 
+void KColorEditApp::slotColorFromPalette()
+{
+  slotStatusMsg(i18n("Getting a color from palette..."));
+  slotStatusMsg(i18n(IDS_STATUS_DEFAULT));
+}
+
+void KColorEditApp::slotColorFromScreen()
+{
+  slotStatusMsg(i18n("Getting a color from screen..."));
+  gettingColorFromScreen = true;
+  //grabMouse(crossCursor);
+  //grabKeyboard();
+}
+
+void KColorEditApp::slotColorCopy()
+{
+  slotStatusMsg(i18n("Copying a color to clipboard..."));
+  slotStatusMsg(i18n(IDS_STATUS_DEFAULT));
+}
+
+void KColorEditApp::slotColorPaste()
+{
+  slotStatusMsg(i18n("Pasting a color from clipboard..."));
+  slotStatusMsg(i18n(IDS_STATUS_DEFAULT));
+}
+
 void KColorEditApp::slotViewToolBar()
 {
   slotStatusMsg(i18n("Toggle the toolbar..."));
@@ -654,6 +696,22 @@ void KColorEditApp::commandCallback(int id_)
          slotEditPaste();
          break;
   
+    case ID_COLOR_FROM_PALETTE:
+         slotColorFromPalette();
+         break;
+  
+    case ID_COLOR_FROM_SCREEN:
+         slotColorFromScreen();
+         break;
+  
+    case ID_COLOR_COPY:
+         slotColorCopy();
+         break;
+  
+    case ID_COLOR_PASTE:
+         slotColorPaste();
+         break;
+  
     case ID_VIEW_TOOLBAR:
          slotViewToolBar();
          break;
@@ -719,6 +777,22 @@ void KColorEditApp::statusCallback(int id_)
          slotStatusHelpMsg(i18n("Pastes the clipboard contents to actual position"));
          break;
 
+    case ID_COLOR_FROM_PALETTE:
+         slotStatusHelpMsg(i18n("Takes a color at cursor"));
+         break;
+
+    case ID_COLOR_FROM_SCREEN:
+         slotStatusHelpMsg(i18n("Takes a color on screen"));
+         break;
+
+    case ID_COLOR_COPY:
+         slotStatusHelpMsg(i18n("Copies a chosen color to the clipboard"));
+         break;
+
+    case ID_COLOR_PASTE:
+         slotStatusHelpMsg(i18n("Pastes a color in the clipboard as a chosen color"));
+         break;
+
     case ID_VIEW_TOOLBAR:
          slotStatusHelpMsg(i18n("Enables/disables the toolbar"));
          break;
@@ -731,4 +805,18 @@ void KColorEditApp::statusCallback(int id_)
          break;
   }
 }
+
+void KColorEditApp::mouseReleaseEvent(QMouseEvent* event) {
+	if(gettingColorFromScreen) {
+		gettingColorFromScreen = false;
+		//releaseMouse();
+		//releaseKeyboard();
+		QColor rgbColor =  KColorDialog::grabColor(event->globalPos());
+		color.setComponents(rgbColor.red(), rgbColor.green(), rgbColor.blue());
+		view->chooseColor(&color);
+		slotStatusMsg(i18n(IDS_STATUS_DEFAULT));
+	} else
+		KMainWindow::mouseReleaseEvent(event);
+}
+
 #include "kcoloredit.moc"

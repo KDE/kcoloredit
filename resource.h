@@ -52,6 +52,13 @@
 #define ID_EDIT_PASTE               11030
 
 ///////////////////////////////////////////////////////////////////
+// Color menu entries
+#define ID_COLOR_FROM_PALETTE        11510
+#define ID_COLOR_FROM_SCREEN         11520
+#define ID_COLOR_COPY                11530
+#define ID_COLOR_PASTE               11540
+
+///////////////////////////////////////////////////////////////////
 // View-menu entries                    
 #define ID_VIEW_TOOLBAR             12010
 #define ID_VIEW_STATUSBAR           12020

@@ -24,12 +24,16 @@
 #endif
 
 // include files for Qt
+#include <qevent.h>
 #include <qstrlist.h>
 
 // include files for KDE 
 #include <kapp.h>
 #include <kmainwindow.h>
 #include <kaccel.h>
+
+// application specific includes
+#include "color.h"
 
 class KColorEditDoc;
 class KColorEditView;
@@ -133,6 +137,7 @@ class KColorEditApp : public KMainWindow
     virtual void readProperties(KConfig *_cfg);
     /** Updates the recent files menu */
 	void updateRecentFilesMenu();
+	void mouseReleaseEvent(QMouseEvent* event);
 
   public slots:
     /** switch argument for slot selection by menu or toolbar ID */
@@ -171,6 +176,18 @@ class KColorEditApp : public KMainWindow
     /** paste the clipboard into the document
      */
     void slotEditPaste();
+    /** get a color from palette
+     */
+    void slotColorFromPalette();
+    /** get a color from screen
+     */
+    void slotColorFromScreen();
+    /** copies a color to clipboard
+     */
+    void slotColorCopy();
+    /** pastes a color from clipboard
+     */
+    void slotColorPaste();
     /** toggles the toolbar
      */
     void slotViewToolBar();
@@ -201,6 +218,8 @@ class KColorEditApp : public KMainWindow
     QPopupMenu *recentFilesMenu;
     /** edit_menu contains all items of the menubar entry "Edit" */
     QPopupMenu *editMenu;
+    /** Color menu contains all items of the menu bar entry "Color" */
+    QPopupMenu *colorMenu;
     /** view_menu contains all items of the menubar entry "View" */
     QPopupMenu *viewMenu;
     /** help_menu contains all items of the menubar entry "Help" */
@@ -215,7 +234,10 @@ class KColorEditApp : public KMainWindow
      * information such as filename and does the serialization of your files.
      */
     KColorEditDoc *doc;
-
+	/** Whether in getting a color from screen */
+	bool gettingColorFromScreen;
+	/** A color taken from screen or palette */
+	Color color;
 };
  
 #endif // KCOLOREDIT_H
