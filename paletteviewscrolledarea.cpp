@@ -216,7 +216,7 @@ int PaletteViewScrolledArea::selectionMax() const {
 	return document()->paletteSelectionEnd();
 }
 
-void PaletteViewScrolledArea::paintEvent(QPaintEvent* event) {
+void PaletteViewScrolledArea::paintEvent(QPaintEvent* /*event*/) {
 	setCellsSizes();
 	QPixmap pixmap(size());
 	QPainter painter;
@@ -380,7 +380,7 @@ void PaletteViewScrolledArea::mouseMoveEvent(QMouseEvent* event) {
 	}
 }
 
-void PaletteViewScrolledArea::mouseReleaseEvent(QMouseEvent* event) {
+void PaletteViewScrolledArea::mouseReleaseEvent(QMouseEvent* /*event*/) {
 	if(colorChosen) {
 		if(colorIndex( colorDragPoint ) != -1) {
 			int index = colorIndex(colorDragPoint);
