@@ -71,8 +71,7 @@ or browse directories for files.
 <title>Cursor</title>
 <para>
 The cursor is visible as a line in the palette view. It can be moved
-by clicking on an area beside a color, or, in the ``Cursor follows'' mode,
-also by clicking on a color.
+by clicking on an area beside a color.
 </para> 
 
 <para>The cursor has
