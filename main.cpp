@@ -37,7 +37,7 @@ static KCmdLineOptions options[] =
 int main(int argc, char *argv[])
 {
 
-	KAboutData aboutData( "kcoloredit", I18N_NOOP("A color editor for KDE"),
+	KAboutData aboutData( "kcoloredit", I18N_NOOP("KColorEdit"),
 		VERSION, description, KAboutData::License_GPL,
 		"(c) 2000, Artur Rataj");
 	aboutData.addAuthor("Artur Rataj",0, "art@zeus.polsl.gliwice.pl");
