@@ -167,18 +167,6 @@ with a mouse.
 </para>
 </chapter>
 
-<appendix>
-<title>The HSV Color Model</title>
-<para>
-In the HSV color model, a color is represented by three dimensions: hue, saturation
-and value. Hue can be described as representing a position of color in a color circle,
-in which colors change smoothly between the primary colors.
-Saturation refers to the dominance of hue in the color. As desaturated colors are
-considered black, white and shades of gray. 
-Value describes the overall intensity of light in a color.
-</para>
-</appendix>
-
 </book>
 <!--
 Local Variables:
