@@ -26,7 +26,12 @@ noinst_HEADERS = color.h colorselector.h editablestreamhistory.h \
 	resource.h texteditselection.h
 
 lnk_DATA = kcoloredit.desktop kcolorchooser.desktop
-lnkdir = $(kde_appsdir)/Graphics
+lnkdir = $(kde_appsdir)/Graphics/More
+
+install-data-local: uninstall.desktop
+	$(mkinstalldirs) $(kde_appsdir)/Graphics
+	$(INSTALL_DATA) $(srcdir)/uninstall.desktop $(kde_appsdir)/Graphics/kcoloredit.desktop 
+	$(INSTALL_DATA) $(srcdir)/uninstall.desktop $(kde_appsdir)/Graphics/kcolorchooser.desktop
 
 KDE_ICON = kcoloredit kcolorchooser
 
