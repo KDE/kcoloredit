@@ -18,6 +18,7 @@
 #include <stdlib.h>
 #include <qptrlist.h>
 #include <qcolor.h>
+#include <qcursor.h>
 #include <qbrush.h>
 #include <qpainter.h>
 #include <qpixmap.h>
