@@ -35,6 +35,8 @@
 #include "kcoloreditdoc.h"
 #include "loadpalettedlg.h"
 #include "resource.h"
+#include <kpopupmenu.h>
+#include <kstatusbar.h>
 
 
 KColorEditApp::KColorEditApp() : KMainWindow(0) {
