@@ -217,7 +217,7 @@ void PaletteViewScrolledArea::paintEvent(QPaintEvent* event) {
 				maxTextLength = currTextLength;
 		}
 		maxLineWidth = defaultCellWidth*2 + cellSpacing*2 +
-			cellSpacing*4 + maxTextLength;
+			cellSpacing*4 + maxTextLength + 1;
 	} else
 		maxLineWidth = rowWidth;
 	int width = rowWidth;
