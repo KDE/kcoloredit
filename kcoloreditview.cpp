@@ -244,12 +244,24 @@ void KColorEditView::slotAddColorOverwrite(bool overwrite) {
 
 void KColorEditView::slotSetColorName(const QString& name) {
 	if(!inColorNameChanging) {
+		/*
 		Palette* palette = getDocument()->getPaletteHistory()->getEditableStream();
 		int cursorPos = getDocument()->getPaletteCursorPos();
 		if(cursorPos < palette->length()) {
 			palette->getColor(cursorPos)->setName(name);
 			getDocument()->setModified(true);
 			getDocument()->slotRedrawAllViews(this);
+		}
+		 */
+		Palette* palette = getDocument()->getPaletteHistory()->getEditableStream();
+		int cursorPos = getDocument()->getPaletteCursorPos();
+		if(cursorPos < palette->length()) {
+			Color newColor(
+				palette->getColor(cursorPos)->getComponent(Color::RED_INDEX),
+				palette->getColor(cursorPos)->getComponent(Color::GREEN_INDEX),
+				palette->getColor(cursorPos)->getComponent(Color::BLUE_INDEX),
+				name);
+			getDocument()->replace(cursorPos, newColor);
 		}
 	}
 }
