@@ -46,7 +46,7 @@ int Color::component(const int index) const {
 	return m_components[index];
 }
 
-int* Color::components() const{
+const int* Color::components() const{
 	return m_components;
 }
 

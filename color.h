@@ -55,7 +55,7 @@ class Color {
 		int component(const int index) const;
 		/** @return components
 		 */
-		int* components() const;
+		const int* components() const;
 		/** @return a color name
 		 */
 		const QString& name() const;
