@@ -162,7 +162,7 @@ class KColorEditApp : public KMainWindow
 
     void slotSelectionChanged( int, int );
     void slotClipboardChanged();
-    void slotDocModified( bool );
+    void slotModified( bool );
     void slotPaletteAvailable( bool );
 
   private:

@@ -118,8 +118,8 @@ void KColorEditApp::initDocument()
           SLOT( slotSelectionChanged( int, int ) ) );
   connect( doc, SIGNAL( clipboardChanged() ),
           SLOT( slotClipboardChanged() ) );
-  connect( doc, SIGNAL( docModified( bool ) ), 
-          SLOT( slotDocModified( bool ) ) );
+  connect( doc, SIGNAL( modified( bool ) ), 
+          SLOT( slotModified( bool ) ) );
   connect( doc, SIGNAL( paletteAvailable( bool ) ),
           SLOT( slotPaletteAvailable( bool ) ) );
 }
@@ -196,7 +196,7 @@ void KColorEditApp::slotClipboardChanged()
   m_actPaste->setEnabled( true );
 }
 
-void KColorEditApp::slotDocModified( bool b )
+void KColorEditApp::slotModified( bool b )
 {
   m_actSave->setEnabled( b );
 }
