@@ -23,17 +23,11 @@ noinst_HEADERS = color.h colorselector.h editablestreamhistory.h \
 	loadpalettedlg.h main.h palette.h palettehistory.h paletteview.h \
 	resource.h texteditselection.h
 
-lnk_DATA = kcoloredit.desktop kcolorchooser.desktop
-lnkdir = $(kde_appsdir)/Graphics/More
-
-install-data-local: uninstall.desktop
-	$(mkinstalldirs) $(DESTDIR)$(kde_appsdir)/Graphics
-	$(INSTALL_DATA) $(srcdir)/uninstall.desktop $(DESTDIR)$(kde_appsdir)/Graphics/kcoloredit.desktop 
-	$(INSTALL_DATA) $(srcdir)/uninstall.desktop $(DESTDIR)$(kde_appsdir)/Graphics/kcolorchooser.desktop
+xdg_apps_DATA = kcoloredit.desktop kcolorchooser.desktop
 
 KDE_ICON = kcoloredit kcolorchooser
 
-EXTRA_DIST = $(lnk_DATA)
+EXTRA_DIST = $(xdg_apps_DATA)
 
 messages: rc.cpp
 	$(XGETTEXT) $(kcoloredit_SOURCES) resource.h -o $(podir)/kcoloredit.pot
