@@ -298,8 +298,8 @@ void PaletteViewScrolledArea::mouseMoveEvent(QMouseEvent* event) {
 	} else {
 		/* check if it is a color drag */
 		if(getColorIndex( colorDragPoint ) != -1) {
-			if(abs( event->x() - colorDragPoint.x() ) > 2/*KGlobal::dndEventDelay()*/ || // !!!
-				abs( event->y() - colorDragPoint.y() ) > 2/*KGlobal::dndEventDelay()*/) { // !!!
+			if(abs( event->x() - colorDragPoint.x() ) > 2 ||
+				abs( event->y() - colorDragPoint.y() ) > 2) {
 				QColor draggedColor = getColor(colorDragPoint);
 				KColorDrag* colorDrag = KColorDrag::makeDrag(draggedColor, this);
 				colorDrag->dragCopy();

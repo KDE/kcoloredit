@@ -16,8 +16,6 @@
  ***************************************************************************/
 
 #include <string.h>
-//#include <stdlib.h> /* !!! */
-//#include <stdio.h> /* !!! */
 
 #include <qlayout.h>
 #include <qlabel.h>
@@ -54,15 +52,10 @@ LoadPaletteDlg::LoadPaletteDlg() : KDialog(0, "", TRUE) {
 				setFileName(&fileName);
 		}
 		QString paletteName = (*palette).mid(strlen( palettesDir ) + strlen( "/" ));
-		int index = 0;
-		while(index < (int)paletteName.length() &&
-			( index = paletteName.find("_", (unsigned int)index) ) != -1) {
-				paletteName.replace(index, 1, " ");
-				++index;
-			}
-		if(paletteName == "Custom Colors" ||
-			paletteName == "Recent Colors")
-			paletteName = i18n(paletteName);
+		if(paletteName == "Custom_Colors")
+			paletteName = i18n("Custom Colors");
+		else if(paletteName == "Recent_Colors")
+			paletteName = i18n("Recent Colors");
 		if(prepend)
 			paletteBox->insertItem(paletteName, 0);
 		else

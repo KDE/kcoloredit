@@ -46,7 +46,7 @@ void KXYColorSelector::updateContents() {
 }
 
 void KXYColorSelector::resizeEvent(QResizeEvent*) {
-	setValues(xValue(), yValue()); // !!!
+	setValues(xValue(), yValue());
 	updateContents();
 }
 
