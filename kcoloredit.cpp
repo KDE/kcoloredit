@@ -86,19 +86,21 @@ void KColorEditApp::initKeyAccel() {
 
   keyAccel->connectItem(KStdAccel::Help, this, SLOT(appHelpActivated()));
 
-  keyAccel->changeMenuAccel(fileMenu, ID_FILE_NEW, KStdAccel::New);
-  keyAccel->changeMenuAccel(fileMenu, ID_FILE_OPEN, KStdAccel::Open);
-  keyAccel->changeMenuAccel(fileMenu, ID_FILE_SAVE, KStdAccel::Save);
-  keyAccel->changeMenuAccel(fileMenu, ID_FILE_CLOSE, KStdAccel::Close);
-  keyAccel->changeMenuAccel(fileMenu, ID_FILE_PRINT, KStdAccel::Print);
-  keyAccel->changeMenuAccel(fileMenu, ID_FILE_QUIT, KStdAccel::Quit);
+  fileMenu->setAccel(KStdAccel::openNew().keyCodeQt(), ID_FILE_NEW);
+  fileMenu->setAccel(KStdAccel::open().keyCodeQt(), ID_FILE_OPEN);
+  fileMenu->setAccel(KStdAccel::save().keyCodeQt(), ID_FILE_SAVE);
+  fileMenu->setAccel(KStdAccel::close().keyCodeQt(), ID_FILE_CLOSE);
+  fileMenu->setAccel(KStdAccel::print().keyCodeQt(), ID_FILE_PRINT);
+  fileMenu->setAccel(KStdAccel::quit().keyCodeQt(), ID_FILE_QUIT);
 
-  keyAccel->changeMenuAccel(editMenu, ID_EDIT_CUT, KStdAccel::Cut);
-  keyAccel->changeMenuAccel(editMenu, ID_EDIT_COPY, KStdAccel::Copy);
-  keyAccel->changeMenuAccel(editMenu, ID_EDIT_PASTE, KStdAccel::Paste);
+  editMenu->setAccel(KStdAccel::cut().keyCodeQt(), ID_EDIT_CUT);
+  editMenu->setAccel(KStdAccel::copy().keyCodeQt(), ID_EDIT_COPY);
+  editMenu->setAccel(KStdAccel::paste().keyCodeQt(), ID_EDIT_PASTE);
+
 
   keyAccel->readSettings();
 }
+
 
 void KColorEditApp::initMenuBar() {
   ///////////////////////////////////////////////////////////////////
