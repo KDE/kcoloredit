@@ -51,7 +51,6 @@ KColorEditApp::KColorEditApp() : KMainWindow(0) {
   initView();
 
   createGUI();
-  setAutoSaveSettings();
 
   readOptions();
 
@@ -151,6 +150,7 @@ KColorEditDoc *KColorEditApp::document() const
 
 void KColorEditApp::saveOptions()
 {
+  saveMainWindowSettings( config, "MainWindowSettings" );
   m_actRecent->saveEntries( config );
 
   config->setGroup("KColorEdit Options");
@@ -159,6 +159,7 @@ void KColorEditApp::saveOptions()
 
 void KColorEditApp::readOptions()
 {
+  applyMainWindowSettings( config, "MainWindowSettings" );
   m_actRecent->loadEntries( config );
 
   config->setGroup("KColorEdit Options");
