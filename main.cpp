@@ -29,7 +29,7 @@ static const char description[] =
 
 static KCmdLineOptions options[] =
 {
-  { "+[File]", I18N_NOOP("file to open"), 0 },
+  { "+[File]", I18N_NOOP("File to open"), 0 },
   KCmdLineLastOption
   // INSERT YOUR COMMANDLINE OPTIONS HERE
 };
@@ -37,7 +37,7 @@ static KCmdLineOptions options[] =
 int main(int argc, char *argv[])
 {
 
-	KAboutData aboutData( "kcoloredit", I18N_NOOP("KColorEdit"),
+	KAboutData aboutData( "kcoloredit", I18N_NOOP("A color editor for KDE"),
 		VERSION, description, KAboutData::License_GPL,
 		"(c) 2000, Artur Rataj");
 	aboutData.addAuthor("Artur Rataj",0, "art@zeus.polsl.gliwice.pl");
