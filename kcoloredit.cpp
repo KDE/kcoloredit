@@ -271,7 +271,7 @@ void KColorEditApp::addRecentFile(const QString &file) {
 			recentFiles.remove(recentFiles.at(MAX_RECENT_FILES_NUM - 1));
 	} else
 		recentFiles.remove(recentFiles.at(fileId));
-	recentFiles.insert(0, file);
+	recentFiles.prepend(file);
 	updateRecentFilesMenu();
 }
 
