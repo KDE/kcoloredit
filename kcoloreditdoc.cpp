@@ -130,7 +130,7 @@ bool KColorEditDoc::saveModified()
 
       case KMessageBox::No:
            completed=true;
-           break;	
+           break;
 
       case KMessageBox::Cancel:
            completed=false;
@@ -168,7 +168,7 @@ bool KColorEditDoc::openDocument(const QString& filename) {
 	else {
 		deleteContents();
 		QFileInfo fileInfo(filename);
-		absFilePath=fileInfo.absFilePath();	
+		absFilePath=fileInfo.absFilePath();
 		if(!palette.load( absFilePath )) {
 			setErrorString(palette.getErrorString());
 	  		return false;
@@ -178,6 +178,8 @@ bool KColorEditDoc::openDocument(const QString& filename) {
 		setPaletteCursorPos(palette.length());
 		setPaletteSelection(0, 0);
 		slotRedrawAllViews(0, true);
+                KColorEditApp *window=(KColorEditApp*)parent();
+                window->setCaption(title);
 	}
 	return true;
 }
@@ -194,7 +196,7 @@ bool KColorEditDoc::saveDocument(const QString& filename) {
 void KColorEditDoc::deleteContents() {
 	palette.deleteContents();
 }
-		
+
 void KColorEditDoc::setErrorString(const QString& string) {
 	errorString = string;
 }
