@@ -32,6 +32,7 @@
 #include "kcoloreditdoc.h"
 #include "kcoloreditview.h"
 #include "paletteviewscrolledarea.h"
+#include "paletteviewscrolledarea.moc"
 
 PaletteViewScrolledArea::PaletteViewScrolledArea(const int defaultCellWidth,
 	const int defaultCellHeight, const int cellSpacing, QScrollBar* scrollBar,

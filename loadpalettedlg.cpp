@@ -51,7 +51,7 @@ LoadPaletteDlg::LoadPaletteDlg(QWidget *parent, const char *name) : KDialog(pare
 			if(palette == palettesList.begin())
 				setFileName(&fileName);
 		}
-		QString paletteName = (*palette).mid(strlen( palettesDir ) + strlen( "/" ));
+		QString paletteName = (*palette).mid(palettesDir.length() + 1);
 		if(paletteName == "Custom_Colors")
 			paletteName = i18n("Custom Colors");
 		else if(paletteName == "Recent_Colors")

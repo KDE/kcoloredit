@@ -19,13 +19,11 @@
 #define KCOLOREDIT_H
  
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif
 
 // include files for Qt
 #include <qevent.h>
-#include <qstrlist.h>
+#include <qstringlist.h>
 
 // include files for KDE 
 #include <kapp.h>
@@ -209,7 +207,7 @@ class KColorEditApp : public KMainWindow
 
   private:
     /** contains the recently used filenames */
-    QStrList recentFiles;
+    QStringList recentFiles;
 
     /** the configuration object of the application */
     KConfig *config;
