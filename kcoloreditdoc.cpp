@@ -39,6 +39,7 @@ KColorEditDoc::KColorEditDoc(QWidget *parent, const char *name) : QObject(parent
 
 KColorEditDoc::~KColorEditDoc()
 {
+  delete pViewList;
 }
 
 void KColorEditDoc::addView(KColorEditView *view)
