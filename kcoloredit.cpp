@@ -231,7 +231,7 @@ void KColorEditApp::initDocument()
 void KColorEditApp::initView()
 { 
   ////////////////////////////////////////////////////////////////////
-  // create the main widget here that is managed by KTMainWindow's view-region and
+  // create the main widget here that is managed by KMainWindow's view-region and
   // connect the widget to your document to display document contents.
 
   view = new KColorEditView(this);

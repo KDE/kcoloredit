@@ -34,7 +34,7 @@
 class KColorEditDoc;
 
 /** The KColorEditView class provides the view widget for the KColorEditApp instance.	
- * The View instance inherits QWidget as a base class and represents the view object of a KTMainWindow. As KColorEditView is part of the
+ * The View instance inherits QWidget as a base class and represents the view object of a KMainWindow. As KColorEditView is part of the
  * docuement-view model, it needs a reference to the document object connected with it by the KColorEditApp class to manipulate and display
  * the document structure provided by the KColorEditDoc class.
  * 	

@@ -41,9 +41,9 @@ class KColorEditView;
   * window and reads the config file as well as providing a menubar, toolbar
   * and statusbar. An instance of KColorEditView creates your center view, which is connected
   * to the window's Doc object.
-  * KColorEditApp reimplements the methods that KTMainWindow provides for main window handling and supports
+  * KColorEditApp reimplements the methods that KMainWindow provides for main window handling and supports
   * full session management as well as keyboard accelerator configuration by using KAccel.
-  * @see KTMainWindow
+  * @see KMainWindow
   * @see KApplication
   * @see KConfig
   * @see KAccel
@@ -75,7 +75,7 @@ class KColorEditApp : public KMainWindow
     /** opens a file specified by commandline option
      */
     void openDocumentFile(const char *_cmdl=0);
-    /** returns a pointer to the current document connected to the KTMainWindow instance and is used by
+    /** returns a pointer to the current document connected to the KMainWindow instance and is used by
      * the View class to access the document object's methods
      */	
     KColorEditDoc *getDocument() const; 	
@@ -106,31 +106,31 @@ class KColorEditApp : public KMainWindow
      * @see initView();
      */
     void initDocument();
-    /** creates the centerwidget of the KTMainWindow instance and sets it as the view
+    /** creates the centerwidget of the KMainWindow instance and sets it as the view
      */
     void initView();
-    /** queryClose is called by KTMainWindow on each closeEvent of a window. Against the
+    /** queryClose is called by KMainWindow on each closeEvent of a window. Against the
      * default implementation (only returns true), this calles saveModified() on the document object to ask if the document shall
      * be saved if Modified; on cancel the closeEvent is rejected.
-     * @see KTMainWindow#queryClose
-     * @see KTMainWindow#closeEvent
+     * @see KMainWindow#queryClose
+     * @see KMainWindow#closeEvent
      */
     virtual bool queryClose();
-    /** queryExit is called by KTMainWindow when the last window of the application is going to be closed during the closeEvent().
+    /** queryExit is called by KMainWindow when the last window of the application is going to be closed during the closeEvent().
      * Against the default implementation that just returns true, this calls saveOptions() to save the settings of the last window's	
      * properties.
-     * @see KTMainWindow#queryExit
-     * @see KTMainWindow#closeEvent
+     * @see KMainWindow#queryExit
+     * @see KMainWindow#closeEvent
      */
     virtual bool queryExit();
     /** saves the window properties for each open window during session end to the session config file, including saving the currently
      * opened file by a temporary filename provided by KApplication.
-     * @see KTMainWindow#saveProperties
+     * @see KMainWindow#saveProperties
      */
     virtual void saveProperties(KConfig *_cfg);
     /** reads the session config file and restores the application's state including the last opened files and documents by reading the
      * temporary files saved by saveProperties()
-     * @see KTMainWindow#readProperties
+     * @see KMainWindow#readProperties
      */
     virtual void readProperties(KConfig *_cfg);
     /** Updates the recent files menu */
