@@ -316,6 +316,7 @@ void PaletteViewScrolledArea::mouseReleaseEvent(QMouseEvent* event) {
 			chooseColor(getPalette()->getColor( index ));
 			if(cursorFollowsChosenColor) {
 				setCursorPos(index);
+				setSelection(getCursorPos(), getCursorPos());
 				redraw();
 			}
 		}
