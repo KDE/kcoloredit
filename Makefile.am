@@ -24,9 +24,9 @@ lnk_DATA = kcoloredit.desktop kcolorchooser.desktop
 lnkdir = $(kde_appsdir)/Graphics/More
 
 install-data-local: uninstall.desktop
-	$(mkinstalldirs) $(kde_appsdir)/Graphics
-	$(INSTALL_DATA) $(srcdir)/uninstall.desktop $(kde_appsdir)/Graphics/kcoloredit.desktop 
-	$(INSTALL_DATA) $(srcdir)/uninstall.desktop $(kde_appsdir)/Graphics/kcolorchooser.desktop
+	$(mkinstalldirs) $(DESTDIR)$(kde_appsdir)/Graphics
+	$(INSTALL_DATA) $(srcdir)/uninstall.desktop $(DESTDIR)$(kde_appsdir)/Graphics/kcoloredit.desktop 
+	$(INSTALL_DATA) $(srcdir)/uninstall.desktop $(DESTDIR)$(kde_appsdir)/Graphics/kcolorchooser.desktop
 
 KDE_ICON = kcoloredit kcolorchooser
 
