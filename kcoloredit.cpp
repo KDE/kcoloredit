@@ -482,7 +482,7 @@ bool KColorEditApp::slotFileSaveAs()
 
 	while(result) {
 	  QString newName=KFileDialog::getSaveFileName(lastSavePaletteAsFileDir,
-	                                               i18n("*|All files"), this, i18n("Save as..."));
+	                                               "*|" + i18n("All files"), this, i18n("Save as..."));
 	  if(newName.isEmpty())
 	  	result = false;
 	  else {

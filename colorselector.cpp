@@ -84,7 +84,7 @@ ColorSelector::ColorSelector(QWidget *parent, const char *name ) : QWidget(paren
 	QLabel* subtractLabel = new QLabel(i18n( "0" ), colorChangeSliderWidget);
 	colorChangeSliderLabelsLayout->addWidget(subtractLabel);
 	colorChangeSliderLabelsLayout->addStretch(10);
-	QLabel* addLabel = new QLabel(i18n( " Replace" ), colorChangeSliderWidget);
+	QLabel* addLabel = new QLabel(" " + i18n( "Replace" ), colorChangeSliderWidget);
 	colorChangeSliderLabelsLayout->addWidget(addLabel);
 	colorChangeSliderLayout->addLayout(colorChangeSliderLabelsLayout);
 	colorChangeLayout->addStretch(10);
