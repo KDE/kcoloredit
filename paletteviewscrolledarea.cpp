@@ -119,8 +119,12 @@ bool PaletteViewScrolledArea::setCursorPos(const int x, const int y) {
 		cursorRow = (shiftedY + cellSpacing)/rowHeight;
 	else
 		cursorRow = -1;
-	bool atCursorLocation = abs(cursorColumn*rowWidth/cellsInRow - x) < cellSpacing + 1 ||
-		abs(cursorRow*rowHeight - shiftedY) < cellSpacing + 1;
+	bool atCursorLocation = abs(cursorColumn*rowWidth/cellsInRow - x) < cellSpacing + 1;
+	if(!atCursorLocation) {
+		atCursorLocation = abs(cursorRow*rowHeight - shiftedY) < cellSpacing + 1;
+		if(atCursorLocation)
+			cursorColumn = 0;
+	}
 	if(atCursorLocation || cursorPositioning) {
 		if(cursorColumn > cellsInRow - 1) {
 			cursorColumn = 0;
@@ -251,7 +255,7 @@ void PaletteViewScrolledArea::paintEvent(QPaintEvent* event) {
 					*backgroundBrush);
 				painter.fillRect(xBegin + cellSpacing, yBegin + cellSpacing, cellWidth, cellHeight,
 					foregroundBrush);
-				painter.drawText(xBegin + cellWithSpacingWidth + cellSpacing*2,
+				painter.drawText(xBegin + cellWithSpacingWidth + cellSpacing*4,
 					yBegin + rowHeight/2 + fontAscent/2, color->getName());
 			} else {
 				if(getCursorPos() == currCellNum) {

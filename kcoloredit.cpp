@@ -307,7 +307,7 @@ void KColorEditApp::readOptions()
 	
   config->setGroup("General Options");
 
-  viewColorNames = config->readBoolEntry("View Color Names", true);
+  viewColorNames = config->readBoolEntry("View Color Names", false);
   viewMenu->setItemChecked(ID_VIEW_COLOR_NAMES, viewColorNames);
   toolBar()->setButton(ID_VIEW_COLOR_NAMES, viewColorNames);
   doc->slotChangeViewMode(viewColorNames);
