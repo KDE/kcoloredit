@@ -148,8 +148,7 @@ void KColorEditApp::initMenuBar() {
 
   ///////////////////////////////////////////////////////////////////
   // menuBar entry helpMenu
-  helpMenu_ = helpMenu(i18n("KColorEdit 0.1\n\n(c) 2000 by\nArtur Rataj\nart@zeus.polsl.gliwice.pl"));
-
+  helpMenu_ = helpMenu();
   ///////////////////////////////////////////////////////////////////
   // MENUBAR CONFIGURATION
   // insert your popup menus with the according menubar entries in the order
@@ -473,48 +472,49 @@ void KColorEditApp::slotFileSave()
   slotStatusMsg(i18n("Saving file..."));
 
   if(!doc->saveDocument( doc->getAbsFilePath() ))
-		KMessageBox::sorry(0, doc->getErrorString());
+      slotFileSaveAs();
+      //KMessageBox::sorry(0, doc->getErrorString());
 
   slotStatusMsg(i18n(IDS_STATUS_DEFAULT));
 }
 
 bool KColorEditApp::slotFileSaveAs()
 {
-	bool result = true;
-  slotStatusMsg(i18n("Saving file with a new filename..."));
+    bool result = true;
+    slotStatusMsg(i18n("Saving file with a new filename..."));
 
-	while(result) {
-	  QString newName=KFileDialog::getSaveFileName(lastSavePaletteAsFileDir,
-	                                               "*|" + i18n("All files"), this, i18n("Save as..."));
-	  if(newName.isEmpty())
-	  	result = false;
-	  else {
+    while(result) {
+        QString newName=KFileDialog::getSaveFileName(lastSavePaletteAsFileDir,
+                                                     "*|" + i18n("All files"), this, i18n("Save as..."));
+        if(newName.isEmpty())
+            result = false;
+        else {
 	    QFileInfo saveAsInfo(newName);
 	    if(!saveAsInfo.exists() ||
-	    	KMessageBox::questionYesNo( this,
-	  		i18n("A Document with this name already exists.\nDo you want to overwrite it?"),
-	  		i18n("Warning") ) == KMessageBox::Yes) {
-		    if(!doc->saveDocument( newName )) {
-					KMessageBox::sorry(0, doc->getErrorString());
-					result = false;
-				} else {
-			    doc->setTitle(saveAsInfo.fileName());
-			    doc->setAbsFilePath(saveAsInfo.absFilePath());
-			    addRecentFile(newName);
+               KMessageBox::questionYesNo( this,
+                                           i18n("A Document with this name already exists.\nDo you want to overwrite it?"),
+                                           i18n("Warning") ) == KMessageBox::Yes) {
+                if(!doc->saveDocument( newName )) {
+                    KMessageBox::sorry(0, doc->getErrorString());
+                    result = false;
+                } else {
+                    doc->setTitle(saveAsInfo.fileName());
+                    doc->setAbsFilePath(saveAsInfo.absFilePath());
+                    addRecentFile(newName);
 
-			    setCaption(doc->getTitle());
+                    setCaption(doc->getTitle());
 
-			    lastSavePaletteAsFileDir = saveAsInfo.absFilePath();
+                    lastSavePaletteAsFileDir = saveAsInfo.absFilePath();
 
-			    break;
-			  }
-			}
-	  }
-	}
+                    break;
+                }
+            }
+        }
+    }
 
-  slotStatusMsg(i18n(IDS_STATUS_DEFAULT));
+    slotStatusMsg(i18n(IDS_STATUS_DEFAULT));
 
-  return result;
+    return result;
 }
 
 void KColorEditApp::slotFileClose()
