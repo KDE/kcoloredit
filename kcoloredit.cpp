@@ -50,6 +50,7 @@ KColorEditApp::KColorEditApp() : KMainWindow(0) {
   initDocument();
   initView();
 
+  resize(606,400);
   setupGUI();
 
   readOptions();
@@ -259,8 +260,8 @@ bool KColorEditApp::slotFileSaveAs()
         if(newName.isEmpty())
             result = false;
         else {
-	    QFileInfo saveAsInfo(newName);
-	    if(!saveAsInfo.exists() ||
+      QFileInfo saveAsInfo(newName);
+      if(!saveAsInfo.exists() ||
                KMessageBox::questionYesNo( this,
                        i18n("A Document with this name already exists.\n"
                             "Do you want to overwrite it?"),
@@ -310,7 +311,7 @@ void KColorEditApp::slotQuit()
       // only close the window if the closeEvent is accepted. If the user presses Cancel on the saveModified() dialog,
       // the window and the application stay open.
       if(!w->close())
-	break;
+  break;
     }
   }
 }
