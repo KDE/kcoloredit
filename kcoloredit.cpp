@@ -74,8 +74,9 @@ void KColorEditApp::initActions()
   m_actRecent = KStdAction::openRecent( this, 
           SLOT( slotFileOpenRecent( const KURL& ) ), actionCollection() );
 
-  ( void ) new KAction( "New &Window", kapp->miniIcon(), KShortcut(), this, 
-          SLOT( slotFileNewWindow() ), actionCollection(), "file_new_window" );
+  ( void ) new KAction( i18n("New &Window"), kapp->miniIcon(), KShortcut(),
+          this, SLOT( slotFileNewWindow() ), actionCollection(),
+          "file_new_window" );
 
   // Edit actions
   m_actCut = KStdAction::cut( this, SLOT( slotEditCut() ), 
@@ -88,13 +89,13 @@ void KColorEditApp::initActions()
   m_actPaste->setEnabled( false );
 
   // Color Menu
-  m_actNames = new KToggleAction( "Show &Color Names", KShortcut(), this,
+  m_actNames = new KToggleAction( i18n("Show &Color Names"), KShortcut(), this,
           SLOT( slotViewColorNames() ), actionCollection(),
           "color_view_names" );
-  m_actPalette = new KAction( "From &Palette", KShortcut(), this,
+  m_actPalette = new KAction( i18n("From &Palette"), KShortcut(), this,
           SLOT( slotColorFromPalette() ), actionCollection(), 
           "color_from_palette" );
-  ( void ) new KAction( "From &Screen", KShortcut(), this,
+  ( void ) new KAction( i18n("From &Screen"), KShortcut(), this,
           SLOT( slotColorFromScreen() ), actionCollection(),
           "color_from_screen" );
 
@@ -105,7 +106,7 @@ void KColorEditApp::initActions()
 
 void KColorEditApp::initStatusBar()
 {
-  statusBar()->insertItem(i18n(IDS_STATUS_DEFAULT), ID_STATUS_MSG, 1);
+  statusBar()->insertItem(i18n("Ready."), ID_STATUS_MSG, 1);
   statusBar()->setItemAlignment( ID_STATUS_MSG, Qt::AlignLeft );
 }
 
