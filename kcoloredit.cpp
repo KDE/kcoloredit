@@ -565,18 +565,18 @@ void KColorEditApp::slotEditPaste()
   slotStatusMsg(i18n(IDS_STATUS_DEFAULT));
 }
 
-void KColorEditApp::slotColorFromPalette()
-{
-  slotStatusMsg(i18n("Getting a color from palette..."));
-  slotStatusMsg(i18n(IDS_STATUS_DEFAULT));
+void KColorEditApp::slotColorFromPalette() {
+	slotStatusMsg(i18n("Getting a color from palette..."));
+	view->chooseColor(doc->getPaletteHistory()->getEditableStream()->
+		getColor( doc->getPaletteCursorPos() ));
+	slotStatusMsg(i18n(IDS_STATUS_DEFAULT));
 }
 
-void KColorEditApp::slotColorFromScreen()
-{
-  slotStatusMsg(i18n("Getting a color from screen..."));
-  gettingColorFromScreen = true;
-  //grabMouse(crossCursor);
-  //grabKeyboard();
+void KColorEditApp::slotColorFromScreen() {
+	slotStatusMsg(i18n("Getting a color from screen..."));
+	gettingColorFromScreen = true;
+	grabMouse(crossCursor);
+	grabKeyboard();
 }
 
 void KColorEditApp::slotColorCopy()
@@ -809,8 +809,8 @@ void KColorEditApp::statusCallback(int id_)
 void KColorEditApp::mouseReleaseEvent(QMouseEvent* event) {
 	if(gettingColorFromScreen) {
 		gettingColorFromScreen = false;
-		//releaseMouse();
-		//releaseKeyboard();
+		releaseMouse();
+		releaseKeyboard();
 		QColor rgbColor =  KColorDialog::grabColor(event->globalPos());
 		color.setComponents(rgbColor.red(), rgbColor.green(), rgbColor.blue());
 		view->chooseColor(&color);

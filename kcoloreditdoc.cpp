@@ -198,6 +198,11 @@ PaletteHistory* KColorEditDoc::getPaletteHistory() {
 
 void KColorEditDoc::setPaletteCursorPos(const int pos) {
 	paletteCursorPos = pos;
+	KColorEditApp *window=(KColorEditApp*)parent();
+	if(paletteCursorPos == palette.length())
+		window->disableCommand(ID_COLOR_FROM_PALETTE);
+	else
+		window->enableCommand(ID_COLOR_FROM_PALETTE);
 }
 
 int KColorEditDoc::getPaletteCursorPos() {

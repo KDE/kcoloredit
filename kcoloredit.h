@@ -236,7 +236,7 @@ class KColorEditApp : public KMainWindow
     KColorEditDoc *doc;
 	/** Whether in getting a color from screen */
 	bool gettingColorFromScreen;
-	/** A color taken from screen or palette */
+	/** A color taken from screen */
 	Color color;
 };
  
