@@ -4,7 +4,7 @@ Type=Application
 Exec=kcoloredit %i %m %U
 Icon=kcoloredit
 Path=
-Terminal=0
+Terminal=false
 DocPath=kcoloredit/index.html
 GenericName=Color Palette Editor
 GenericName[af]=Kleur Palet Redigeerder
@@ -83,4 +83,4 @@ Name[zh_TW]=顏色編輯程式
 Name[zu]=Umhleli Wombala ka K
 
 X-DCOP-ServiceType=Multi
-Categories=Qt;KDE;Graphics;X-KDE-More
+Categories=Qt;KDE;Graphics;X-KDE-More;
