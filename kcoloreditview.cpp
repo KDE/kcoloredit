@@ -138,7 +138,7 @@ KColorEditView::KColorEditView(QWidget *parent, const char *name) : QSplitter(pa
 
 KColorEditView::~KColorEditView() {
 }
-	
+
 void KColorEditView::setColorAtCursorComponentValueLabelSizes(QLabel* const label) {
 	label->setMinimumWidth(label->fontMetrics().width( QString("888") ));
 	label->setMaximumWidth(label->fontMetrics().width( QString("88888") ));
@@ -153,7 +153,7 @@ KColorEditDoc *KColorEditView::getDocument() const {
 void KColorEditView::print(QPrinter *pPrinter) {
   QPainter printpainter;
   printpainter.begin(pPrinter);
-	
+
   // TODO: add your printing code here
 
   printpainter.end();
@@ -204,12 +204,12 @@ void KColorEditView::slotCursorPosChanged(int position) {
 void KColorEditView::slotViewColorNames(bool viewColorNames) {
 	paletteView->slotViewColorNames(viewColorNames);
 }
-	
+
 void KColorEditView::updateColorValueLabels() {
 	if(!doNotUpdateColorLabels)
 		slotCursorPosChanged(getDocument()->getPaletteCursorPos());
 }
-	
+
 void KColorEditView::redraw(bool newDocument) {
 	if(newDocument)
 		paletteView->setScrollBarValue(0);
@@ -218,23 +218,28 @@ void KColorEditView::redraw(bool newDocument) {
 }
 
 void KColorEditView::slotAddColor() {
-	Color color = colorSelector->getColor();
-	color.setName("");
-	int index;
-	if(addColorAtCursor)
-		index = getDocument()->getPaletteCursorPos();
-	else
-		index = getDocument()->getPaletteHistory()->getEditableStream()->length();
-	switch(addColorMode) {
-		case INSERT_COLOR:
-			getDocument()->insert(index, color);
-			break;
-			
-		case REPLACE_COLOR:
-			getDocument()->replace(index, color);
-			break;
-			
-	}
+    Color color = colorSelector->getColor();
+    Palette* palette = getDocument()->getPaletteHistory()->getEditableStream();
+    color.setName("");
+    int index;
+    if(addColorAtCursor)
+        index = getDocument()->getPaletteCursorPos();
+    else
+        index = palette->length();
+    switch(addColorMode)
+    {
+        case INSERT_COLOR:
+            getDocument()->insert(index, color);
+            break;
+
+        case REPLACE_COLOR:
+            if(index < palette->length())
+                getDocument()->replace(index, color);
+            else
+                getDocument()->insert(index, color);
+            break;
+
+    }
 }
 
 void KColorEditView::slotAddColorAtCursor(bool atCursor) {
