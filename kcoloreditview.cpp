@@ -61,14 +61,15 @@ KColorEditView::KColorEditView(QWidget *parent, const char *name) : QSplitter(pa
 	slotAddColorOverwrite(false);
 	addColorLayout->addWidget(overwriteCheckBox);
 	addColorLayout->addStretch(10);
-	KSeparator* hLine = new KSeparator(KSeparator::HLine, paletteViewArea);
-	addColorLayout->addWidget(hLine);
-	addColorLayout->addStretch(10);
-	QCheckBox* cursorFollowsChosenColor = new QCheckBox(i18n( "Cursor follows" ), paletteViewArea);
-	addColorLayout->addWidget(cursorFollowsChosenColor);
-	connect(cursorFollowsChosenColor, SIGNAL( toggled(bool) ),
-		paletteView, SLOT( slotCursorFollowsChosenColor(bool) ));
-	cursorFollowsChosenColor->toggle();
+	//KSeparator* hLine = new KSeparator(KSeparator::HLine, paletteViewArea);
+	//addColorLayout->addWidget(hLine);
+	//addColorLayout->addStretch(10);
+	//QCheckBox* cursorFollowsChosenColor = new QCheckBox(i18n( "Cursor follows" ), paletteViewArea);
+	//addColorLayout->addWidget(cursorFollowsChosenColor);
+	//connect(cursorFollowsChosenColor, SIGNAL( toggled(bool) ),
+	//	paletteView, SLOT( slotCursorFollowsChosenColor(bool) ));
+	//cursorFollowsChosenColor->toggle();
+	paletteView->slotCursorFollowsChosenColor(true);
 	layout->addLayout(addColorLayout, 0);
 	QVGroupBox* colorAtCursorFrame = new QVGroupBox("Color at cursor", paletteViewArea);
 	QWidget* colorAtCursorFrameArea = new QWidget(colorAtCursorFrame);
