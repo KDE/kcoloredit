@@ -60,8 +60,9 @@
 
 ///////////////////////////////////////////////////////////////////
 // View-menu entries                    
-#define ID_VIEW_TOOLBAR             12010
-#define ID_VIEW_STATUSBAR           12020
+#define ID_VIEW_COLOR_NAMES         12010
+#define ID_VIEW_TOOLBAR             12020
+#define ID_VIEW_STATUSBAR           12030
 
 ///////////////////////////////////////////////////////////////////
 // Help-menu entries

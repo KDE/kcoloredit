@@ -188,6 +188,9 @@ class KColorEditApp : public KMainWindow
     /** pastes a color from clipboard
      */
     void slotColorPaste();
+    /** toggles the color names view
+     */
+    void slotViewColorNames();
     /** toggles the toolbar
      */
     void slotViewToolBar();
@@ -238,6 +241,8 @@ class KColorEditApp : public KMainWindow
 	bool gettingColorFromScreen;
 	/** A color taken from screen */
 	Color color;
+	/** Whether to view color names */
+	bool viewColorNames;
 };
  
 #endif // KCOLOREDIT_H

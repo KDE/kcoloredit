@@ -61,6 +61,7 @@ KColorEditApp::KColorEditApp() : KMainWindow(0) {
   disableCommand(ID_EDIT_COPY);
   //disableCommand(ID_EDIT_PASTE);
 
+  viewColorNames = false;
   gettingColorFromScreen = false;
 }
 
@@ -143,6 +144,7 @@ void KColorEditApp::initMenuBar() {
   // menuBar entry viewMenu
   viewMenu = new QPopupMenu();
   viewMenu->setCheckable(true);
+  viewMenu->insertItem(i18n("&Color names"), ID_VIEW_COLOR_NAMES);
   viewMenu->insertItem(i18n("&Toolbar"), ID_VIEW_TOOLBAR);
   viewMenu->insertItem(i18n("&Statusbar"), ID_VIEW_STATUSBAR);
 
@@ -194,9 +196,12 @@ void KColorEditApp::initToolBar()
   toolBar()->insertButton(BarIcon("editcopy"), ID_EDIT_COPY, true, i18n("Copy"));
   toolBar()->insertButton(BarIcon("editpaste"), ID_EDIT_PASTE, true, i18n("Paste"));
   toolBar()->insertSeparator();
-  toolBar()->insertButton(BarIcon("help"), ID_HELP_CONTENTS, SIGNAL(clicked()),
-  				this, SLOT(appHelpActivated()),
-  				true,i18n("Help"));
+  toolBar()->insertButton(BarIcon("view_detailed"), ID_VIEW_COLOR_NAMES, true, i18n("Color Names"));
+  toolBar()->setToggle(ID_VIEW_COLOR_NAMES, true);
+  toolBar()->insertSeparator();
+  //toolBar()->insertButton(BarIcon("help"), ID_HELP_CONTENTS, SIGNAL(clicked()),
+  //				this, SLOT(appHelpActivated()),
+  // 				true,i18n("Help"));
 
   ///////////////////////////////////////////////////////////////////
   // INSERT YOUR APPLICATION SPECIFIC TOOLBARS HERE WITH toolBar(n)
@@ -290,6 +295,7 @@ void KColorEditApp::saveOptions()
 {	
   config->setGroup("General Options");
   config->writeEntry("Geometry", size());
+  config->writeEntry("View Color Names", viewColorNames);
   config->writeEntry("Show Toolbar", toolBar()->isVisible());
   config->writeEntry("Show Statusbar",statusBar()->isVisible());
   config->writeEntry("ToolBarPos", (int) toolBar()->barPos());
@@ -301,6 +307,10 @@ void KColorEditApp::readOptions()
 {
 	
   config->setGroup("General Options");
+
+  viewColorNames = config->readBoolEntry("View Color Names", true);
+  viewMenu->setItemChecked(ID_VIEW_COLOR_NAMES, viewColorNames);
+  toolBar()->setButton(ID_VIEW_COLOR_NAMES, viewColorNames);
 
   // bar status settings
   bool bViewToolbar = config->readBoolEntry("Show Toolbar", true);
@@ -592,6 +602,25 @@ void KColorEditApp::slotColorPaste()
   slotStatusMsg(i18n(IDS_STATUS_DEFAULT));
 }
 
+void KColorEditApp::slotViewColorNames()
+{
+  slotStatusMsg(i18n("Toggle color names view..."));
+  if( viewMenu->isItemChecked(ID_VIEW_COLOR_NAMES))
+  {
+    viewMenu->setItemChecked(ID_VIEW_COLOR_NAMES, false);
+    toolBar()->setButton(ID_VIEW_COLOR_NAMES, false);
+    viewColorNames = false;
+  }
+  else
+  {
+    viewMenu->setItemChecked(ID_VIEW_COLOR_NAMES, true);
+    toolBar()->setButton(ID_VIEW_COLOR_NAMES, true);
+    viewColorNames = true;
+  }		
+
+  slotStatusMsg(i18n(IDS_STATUS_DEFAULT));
+}
+
 void KColorEditApp::slotViewToolBar()
 {
   slotStatusMsg(i18n("Toggle the toolbar..."));
@@ -713,6 +742,10 @@ void KColorEditApp::commandCallback(int id_)
          slotColorPaste();
          break;
   
+    case ID_VIEW_COLOR_NAMES:
+         slotViewColorNames();
+         break;
+
     case ID_VIEW_TOOLBAR:
          slotViewToolBar();
          break;
@@ -792,6 +825,10 @@ void KColorEditApp::statusCallback(int id_)
 
     case ID_COLOR_PASTE:
          slotStatusHelpMsg(i18n("Pastes a color in the clipboard as a chosen color"));
+         break;
+
+    case ID_VIEW_COLOR_NAMES:
+         slotStatusHelpMsg(i18n("Enables/disables color names view"));
          break;
 
     case ID_VIEW_TOOLBAR:
