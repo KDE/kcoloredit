@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Exec=kcoloredit %i %m %U
+Icon=kcoloredit
+TerminalOptions=
+Path=
+Terminal=0
+BinaryPattern=kcoloredit;
+DocPath=kcoloredit/kcoloredit.html
+Comment=Editor for palette files
+Name=Palette Editor
+
