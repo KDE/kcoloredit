@@ -135,9 +135,9 @@ void KColorEditApp::initMenuBar() {
   colorMenu = new QPopupMenu();
   colorMenu->insertItem(i18n("From palette"), ID_COLOR_FROM_PALETTE);
   colorMenu->insertItem(i18n("From screen"), ID_COLOR_FROM_SCREEN);
-  colorMenu->insertSeparator();
-  colorMenu->insertItem(i18n("Copy"), ID_COLOR_COPY);
-  colorMenu->insertItem(i18n("Paste"), ID_COLOR_PASTE);
+  //colorMenu->insertSeparator();
+  //colorMenu->insertItem(i18n("Copy"), ID_COLOR_COPY);
+  //colorMenu->insertItem(i18n("Paste"), ID_COLOR_PASTE);
 
   ///////////////////////////////////////////////////////////////////
   // menuBar entry viewMenu

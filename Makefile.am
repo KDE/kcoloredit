@@ -1,11 +1,11 @@
 INCLUDES = $(all_includes)
-METASOURCES = AUTO
 
 kcoloredit_SOURCES = kzcolorselector.cpp imageselection.cpp \
 	texteditselection.cpp gradientselection.cpp colorselector.cpp \
 	kxycolorselector.cpp paletteview.cpp paletteviewscrolledarea.cpp \
 	editablestreamhistory.cpp color.cpp palette.cpp loadpalettedlg.cpp \
 	kcoloreditview.cpp kcoloreditdoc.cpp kcoloredit.cpp main.cpp 
+kcoloredit_METASOURCES = AUTO
 kcoloredit_LDADD = $(LIB_KDEUI) $(LIB_KFILE)
 kcoloredit_LDFLAGS = $(all_libraries) $(KDE_RPATH)
 
