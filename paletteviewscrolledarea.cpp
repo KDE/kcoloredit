@@ -21,6 +21,7 @@
 #include <qbrush.h>
 #include <qpainter.h>
 #include <qpixmap.h>
+#include <qpen.h>
 #include <qfontmetrics.h> 
 #include <qtimer.h>
 #include <kglobal.h>
@@ -206,11 +207,12 @@ void PaletteViewScrolledArea::paintEvent(QPaintEvent* event) {
 	QPainter painter;
 	painter.begin(&pixmap, this);
 	if(viewColorNames)
-		painter.fillRect(0, 0, rowWidth, height(), QBrush( Qt::white ));
+		painter.fillRect(0, 0, rowWidth, height(), QBrush( palette().active().base() ));
 	QBrush normalBackgroundBrush(palette().active().background());
 	QBrush selectedBackgroundBrush(palette().active().highlight());
 	QBrush foregroundBrush;
-	QBrush cursorBrush(palette().active().buttonText());
+	QBrush cursorBrush(palette().active().foreground());
+	QPen backgroundPen(palette().active().foreground());
 	int cellHeight = rowHeight - 2*cellSpacing;
 	int selectionMin = getSelectionMin();
 	int selectionMax = getSelectionMax();
@@ -255,8 +257,11 @@ void PaletteViewScrolledArea::paintEvent(QPaintEvent* event) {
 					*backgroundBrush);
 				painter.fillRect(xBegin + cellSpacing, yBegin + cellSpacing, cellWidth, cellHeight,
 					foregroundBrush);
-				painter.drawText(xBegin + cellWithSpacingWidth + cellSpacing*4,
-					yBegin + rowHeight/2 + fontAscent/2, color->getName());
+				if(viewColorNames) {
+					painter.setPen(backgroundPen);
+					painter.drawText(xBegin + cellWithSpacingWidth + cellSpacing*4,
+						yBegin + rowHeight/2 + fontAscent/2, color->getName());
+				}
 			} else {
 				if(getCursorPos() == currCellNum) {
 					painter.fillRect(xBegin, yBegin + cellSpacing, cellSpacing, cellHeight,
