@@ -90,7 +90,7 @@ void LoadPaletteDlg::setFileName(int index) {
 
 void LoadPaletteDlg::browseFileNames() {
 	QString fileToOpen = KFileDialog::getOpenFileName(lastOpenPaletteFileDir,
-		i18n("*|All files"), this, i18n("Open File"));
+		i18n("*|All Files"), this, i18n("Open File"));
 	if(!fileToOpen.isEmpty()) {
 		fileName = fileToOpen;
 		if(browseFileNameInserted) {
