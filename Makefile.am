@@ -33,5 +33,5 @@ KDE_ICON = kcoloredit kcolorchooser
 EXTRA_DIST = $(lnk_DATA)
 
 messages:
-	$(XGETTEXT) $(kcoloredit_SOURCES) -o $(podir)/kcoloredit.pot
+	$(XGETTEXT) $(kcoloredit_SOURCES) resource.h -o $(podir)/kcoloredit.pot
 

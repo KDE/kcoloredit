@@ -72,6 +72,6 @@
 // General application values
 #define ID_STATUS_MSG               1001
 
-#define IDS_STATUS_DEFAULT          "Ready."
+#define IDS_STATUS_DEFAULT          I18N_NOOP("Ready.")
 
 #endif // RESOURCE_H
