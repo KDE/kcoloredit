@@ -33,7 +33,7 @@
 
 KColorEditDoc::KColorEditDoc(QWidget *parent, const char *name) : QObject(parent, name),
 	palette(), paletteHistory(&palette, 0) {
-	pViewList = new QList<KColorEditView>();
+	pViewList = new QPtrList<KColorEditView>();
 	pViewList->setAutoDelete(true);
 }
 

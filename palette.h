@@ -94,7 +94,7 @@ private:
 
 protected:
 	/** A list of palette colors */
-	QList<Color> colors;
+	QPtrList<Color> colors;
 	/** An IO error description */
 	QString errorString;
 };

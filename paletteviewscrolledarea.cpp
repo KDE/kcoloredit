@@ -16,7 +16,7 @@
  ***************************************************************************/
 
 #include <stdlib.h>
-#include <qlist.h>
+#include <qptrlist.h>
 #include <qcolor.h>
 #include <qbrush.h>
 #include <qpainter.h>
