@@ -315,7 +315,7 @@ void KColorEditApp::readOptions()
     resize(size);
   }
   else
-  	resize(658, 490);
+  	resize(658, 492);
 }
 
 void KColorEditApp::saveProperties(KConfig *_cfg)
