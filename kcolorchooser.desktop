@@ -9,6 +9,7 @@ Terminal=0
 BinaryPattern=kcolorchooser
 DocPath=kcolorchooser/kcolorchooser.html
 GenericName=Color Chooser
+GenericName[af]=kleur kieser
 GenericName[ar]=برنامج اختيار الألوان
 GenericName[bg]=Избор на Цвят
 GenericName[bs]=Izbornik boja

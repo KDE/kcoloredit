@@ -9,6 +9,7 @@ Terminal=0
 BinaryPattern=kcoloredit
 DocPath=kcoloredit/index.html
 GenericName=Color Palette Editor
+GenericName[af]=kleur palet redigeerder
 GenericName[ar]=محرر لوحة رسم الألوان
 GenericName[bg]=Редактор на палитра
 GenericName[bs]=Editor palete boja
