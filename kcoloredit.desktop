@@ -7,6 +7,8 @@ Path=
 Terminal=0
 BinaryPattern=kcoloredit
 DocPath=kcoloredit/kcoloredit.html
-Comment=Editor for palette files
+Comment=An editor for palette files
+Comment[sv]=En editor för palettfiler
 Name=Palette Editor
+Name[sv]=Paletteditor
 

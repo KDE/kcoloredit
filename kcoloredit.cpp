@@ -253,7 +253,7 @@ void KColorEditApp::addRecentFile(const QString &file)
     recentFilesMenu->clear();
     for ( int i=0 ; i < (int) recentFiles.count(); i++)
     {
-      recentFilesMenu->insertItem(recentFiles.at(i));
+      recentFilesMenu->insertItem(recentFiles.at(i), i);
     }
   }
 }
