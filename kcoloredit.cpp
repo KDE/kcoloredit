@@ -36,7 +36,7 @@
 #include "resource.h"
 
 
-KColorEditApp::KColorEditApp() {
+KColorEditApp::KColorEditApp() : KMainWindow(0) {
   config=kapp->config();
 
   ///////////////////////////////////////////////////////////////////
@@ -216,7 +216,7 @@ void KColorEditApp::initView()
 
   view = new KColorEditView(this);
   doc->addView(view);
-  setView(view);	
+  setCentralWidget(view);	
   setCaption(doc->getTitle());
 
 }
@@ -289,16 +289,12 @@ void KColorEditApp::readOptions()
   bool bViewToolbar = config->readBoolEntry("Show Toolbar", true);
   viewMenu->setItemChecked(ID_VIEW_TOOLBAR, bViewToolbar);
   if(!bViewToolbar)
-  {
-     enableToolBar(KToolBar::Hide);
-  }
-	
+	toolBar()->hide();
+
   bool bViewStatusbar = config->readBoolEntry("Show Statusbar", true);
   viewMenu->setItemChecked(ID_VIEW_STATUSBAR, bViewStatusbar);
   if(!bViewStatusbar)
-  {
-    enableStatusBar(KStatusBar::Hide);
-  }
+    statusBar()->hide();
 
   // bar position settings
   KToolBar::BarPosition toolBarPos;
@@ -315,7 +311,7 @@ void KColorEditApp::readOptions()
     resize(size);
   }
   else
-  	resize(658, 492);
+  	resize(680, 520);
 }
 
 void KColorEditApp::saveProperties(KConfig *_cfg)
@@ -561,12 +557,12 @@ void KColorEditApp::slotViewToolBar()
   if( viewMenu->isItemChecked(ID_VIEW_TOOLBAR))
   {
     viewMenu->setItemChecked(ID_VIEW_TOOLBAR, false);
-    enableToolBar(KToolBar::Hide);
+    toolBar()->hide();
   }
   else
   {
     viewMenu->setItemChecked(ID_VIEW_TOOLBAR, true);
-    enableToolBar(KToolBar::Show);
+    toolBar()->show();
   }		
 
   slotStatusMsg(i18n(IDS_STATUS_DEFAULT));
@@ -580,12 +576,12 @@ void KColorEditApp::slotViewStatusBar()
   if( viewMenu->isItemChecked(ID_VIEW_STATUSBAR))
   {
     viewMenu->setItemChecked(ID_VIEW_STATUSBAR, false);
-    enableStatusBar(KStatusBar::Hide);
+    statusBar()->hide();
   }
   else
   {
     viewMenu->setItemChecked(ID_VIEW_STATUSBAR, true);
-    enableStatusBar(KStatusBar::Show);
+    statusBar()->show();
   }
 
   slotStatusMsg(i18n(IDS_STATUS_DEFAULT));
