@@ -23,7 +23,7 @@
 #include <qstringlist.h>
 #include <qpushbutton.h>
 #include <klocale.h>
-#include <kstddirs.h>
+#include <kstandarddirs.h>
 #include <kpalette.h>
 #include <kfiledialog.h>
 
