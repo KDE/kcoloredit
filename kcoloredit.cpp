@@ -432,7 +432,7 @@ void KColorEditApp::slotFileOpen() {
   slotStatusMsg(i18n("Opening file..."));
 	
   if(doc->saveModified()) {
-    LoadPaletteDlg dialog;
+    LoadPaletteDlg dialog(this);
     if(dialog.exec()) {
     	QString fileToOpen = dialog.getFileName();
 	    if(!fileToOpen.isEmpty())

@@ -31,7 +31,7 @@
 #include "palette.h"
 #include "loadpalettedlg.h"
 
-LoadPaletteDlg::LoadPaletteDlg() : KDialog(0, "", TRUE) {
+LoadPaletteDlg::LoadPaletteDlg(QWidget *parent, const char *name) : KDialog(parent, name, TRUE) {
 	fileName = "";
 	QVBoxLayout* topLayout = new QVBoxLayout(this, 8);
 	QLabel* label = new QLabel(i18n( "Select a palette" ), this);

@@ -31,7 +31,7 @@ class LoadPaletteDlg : public KDialog  {
 public:
 	/** constructs the dialog
 	 */
-	LoadPaletteDlg();
+	LoadPaletteDlg(QWidget *parent = 0, const char *name = 0);
 	~LoadPaletteDlg();
 	/** @return the fetched file name
 	 */

@@ -46,7 +46,7 @@ class KColorEditView : public QSplitter {
 
   public:
     /** Constructor for the main view */
-    KColorEditView(QWidget *parent = 0, const char *name=0);
+    KColorEditView(QWidget *parent = 0, const char *name = 0);
     /** Destructor for the main view */
     ~KColorEditView();
 
