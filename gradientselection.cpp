@@ -104,7 +104,7 @@ void GradientSelection::slotIgnoreSetValue(bool ignore) {
 	ignoreSetValue = ignore;
 }
 
-void GradientSelection::updateXyColorSelector(bool modeChanged) {
+void GradientSelection::updateXyColorSelector(const bool modeChanged) {
 	int xPos;
 	int yPos;
 	int component;

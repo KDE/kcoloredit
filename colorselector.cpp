@@ -134,7 +134,7 @@ void ColorSelector::getScaledComponent(double* const component, const double com
 		*component = 0;
 }
 
-void ColorSelector::slotGradientSelectionChangeColor(Color* const gradientSelectionColor) {
+void ColorSelector::slotGradientSelectionChangeColor(Color* gradientSelectionColor) {
 	switch(colorChangeMode) {
 		case MODE_REPLACE:
 			slotSetColor(gradientSelectionColor);
