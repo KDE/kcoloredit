@@ -24,12 +24,12 @@
 static const char *description =
 	I18N_NOOP("KColorEdit");
 // INSERT A DESCRIPTION FOR YOUR APPLICATION HERE
-	
-	
+
+
 static KCmdLineOptions options[] =
 {
   { "+[File]", I18N_NOOP("file to open"), 0 },
-  { 0, 0, 0 }
+  KCmdLineLastOption
   // INSERT YOUR COMMANDLINE OPTIONS HERE
 };
 
@@ -46,18 +46,18 @@ int main(int argc, char *argv[])
 	KCmdLineArgs::addCmdLineOptions( options ); // Add our own options.
 
   KApplication app;
- 
+
   if (app.isRestored())
   {
     RESTORE(KColorEditApp);
   }
-  else 
+  else
   {
     KColorEditApp *kcoloredit = new KColorEditApp();
     kcoloredit->show();
 
     KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
-		
+
 		if (args->count())
 		{
         kcoloredit->openDocumentFile(args->arg(0));
@@ -70,4 +70,4 @@ int main(int argc, char *argv[])
   }
 
   return app.exec();
-}  
+}
