@@ -28,6 +28,7 @@ KZColorSelector::KZColorSelector(Orientation o, QWidget *parent, const char *nam
 	baseColorH = -1;
 	baseColorS = 0;
 	baseColorV = 0;
+	pixmap.setOptimization( QPixmap::BestOptim );
 }
 KZColorSelector::~KZColorSelector() {
 }
@@ -52,7 +53,7 @@ void KZColorSelector::setType(const int type) {
 
 void KZColorSelector::updateContents() {
 	drawPalette(&pixmap);
-	repaint();
+	repaint(false);
 }
 
 void KZColorSelector::resizeEvent(QResizeEvent*) {
