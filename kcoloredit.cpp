@@ -95,7 +95,7 @@ void KColorEditApp::initKeyAccel() {
   keyAccel->changeMenuAccel(editMenu, ID_EDIT_COPY, KStdAccel::Copy);
   keyAccel->changeMenuAccel(editMenu, ID_EDIT_PASTE, KStdAccel::Paste);
 
-  keyAccel->readSettings();	
+  keyAccel->readSettings();
 }
 
 void KColorEditApp::initMenuBar() {
@@ -109,25 +109,25 @@ void KColorEditApp::initMenuBar() {
   fileMenu = new QPopupMenu(this);
   fileMenu->insertItem(kapp->miniIcon(), i18n("New &Window"), ID_FILE_NEW_WINDOW);
   fileMenu->insertSeparator();
-  fileMenu->insertItem(BarIcon("filenew"), i18n("&New"), ID_FILE_NEW);
-  fileMenu->insertItem(BarIcon("fileopen"), i18n("&Open..."), ID_FILE_OPEN);
+  fileMenu->insertItem(SmallIcon("filenew"), i18n("&New"), ID_FILE_NEW);
+  fileMenu->insertItem(SmallIcon("fileopen"), i18n("&Open..."), ID_FILE_OPEN);
   fileMenu->insertItem(i18n("Open &recent"), recentFilesMenu, ID_FILE_OPEN_RECENT);
 
-  fileMenu->insertItem(i18n("&Close"), ID_FILE_CLOSE);
+  fileMenu->insertItem(SmallIcon("fileclose"), i18n("&Close"), ID_FILE_CLOSE);
   fileMenu->insertSeparator();
-  fileMenu->insertItem(BarIcon("filesave") ,i18n("&Save"), ID_FILE_SAVE);
+  fileMenu->insertItem(SmallIcon("filesave") ,i18n("&Save"), ID_FILE_SAVE);
   fileMenu->insertItem(i18n("Save &As..."), ID_FILE_SAVE_AS);
   //fileMenu->insertSeparator();
   //fileMenu->insertItem(BarIcon("fileprint"), i18n("&Print..."), ID_FILE_PRINT);
   fileMenu->insertSeparator();
-  fileMenu->insertItem(i18n("&Quit"), ID_FILE_QUIT);
-	
+  fileMenu->insertItem(SmallIcon("exit"), i18n("&Quit"), ID_FILE_QUIT);
+
   ///////////////////////////////////////////////////////////////////
   // menuBar entry editMenu
   editMenu = new QPopupMenu(this);
-  editMenu->insertItem(BarIcon("editcut"), i18n("Cu&t"), ID_EDIT_CUT);
-  editMenu->insertItem(BarIcon("editcopy"), i18n("&Copy"), ID_EDIT_COPY);
-  editMenu->insertItem(BarIcon("editpaste"), i18n("&Paste"), ID_EDIT_PASTE);
+  editMenu->insertItem(SmallIcon("editcut"), i18n("Cu&t"), ID_EDIT_CUT);
+  editMenu->insertItem(SmallIcon("editcopy"), i18n("&Copy"), ID_EDIT_COPY);
+  editMenu->insertItem(SmallIcon("editpaste"), i18n("&Paste"), ID_EDIT_PASTE);
 
   ///////////////////////////////////////////////////////////////////
   // menuBar entry editMenu
