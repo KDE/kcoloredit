@@ -26,7 +26,7 @@
 #include <kfiledialog.h>
 #include <kmenubar.h>
 #include <klocale.h>
-#include <kcolordlg.h>
+#include <kcolordialog.h>
 #include <kconfig.h>
 
 // application specific includes

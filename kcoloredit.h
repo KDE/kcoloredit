@@ -26,7 +26,7 @@
 #include <qstringlist.h>
 
 // include files for KDE 
-#include <kapp.h>
+#include <kapplication.h>
 #include <kmainwindow.h>
 #include <kaccel.h>
 

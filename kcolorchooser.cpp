@@ -26,7 +26,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <kaboutdata.h>
 #include <klocale.h>
 
-#include <kcolordlg.h>
+#include <kcolordialog.h>
 
 static const char *description =
 	I18N_NOOP("KDE Color Chooser");

@@ -21,7 +21,7 @@
 #include <qwidget.h>
 #include <qcolor.h>
 #include <qbuttongroup.h>
-#include <kcolordlg.h>
+#include <kcolordialog.h>
 
 #include "color.h"
 #include "gradientselection.h"
