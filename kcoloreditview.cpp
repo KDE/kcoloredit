@@ -127,7 +127,10 @@ KColorEditView::KColorEditView(QWidget *parent, const char *name) : QSplitter(pa
 	colorAtCursorRgbStringLayout->addStretch();
 	colorAtCursorLayout->addLayout(colorAtCursorRgbStringLayout);
 	layout->addWidget(colorAtCursorFrame, 10);
+	layout->addSpacing(4);
+	paletteLayout->addSpacing(2);
 	paletteLayout->addLayout(layout);
+	paletteLayout->addSpacing(2);
 	inColorNameChanging = false;
 }
 

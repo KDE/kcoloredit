@@ -151,30 +151,27 @@ bool KColorEditDoc::newDocument()
   return true;
 }
 
-bool KColorEditDoc::openDocument(const QString &filename, const char *format /*=0*/)
-{
+bool KColorEditDoc::openDocument(const QString& filename) {
 	if(filename.isEmpty())
 		return newDocument();
 	else {
-	  deleteContents();
-	  QFileInfo fileInfo(filename);
-	  absFilePath=fileInfo.absFilePath();	
-	  if(!palette.load( absFilePath )) {
-	  	setErrorString(palette.getErrorString());
-	  	return false;
+		deleteContents();
+		QFileInfo fileInfo(filename);
+		absFilePath=fileInfo.absFilePath();	
+		if(!palette.load( absFilePath )) {
+			setErrorString(palette.getErrorString());
+	  		return false;
 		}
 		setModified(false);
-	  title=fileInfo.fileName();
-	  setPaletteCursorPos(palette.length());
+		title = fileInfo.fileName();
+		setPaletteCursorPos(palette.length());
 		setPaletteSelection(0, 0);
-	  slotRedrawAllViews(0);
-	 }
-
-  return true;
+		slotRedrawAllViews(0);
+	}
+	return true;
 }
 
-bool KColorEditDoc::saveDocument(const QString &filename, const char *format /*=0*/)
-{
+bool KColorEditDoc::saveDocument(const QString& filename) {
 	if(!palette.save( filename )) {
 	 	setErrorString(palette.getErrorString());
 	 	return false;

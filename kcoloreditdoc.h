@@ -69,10 +69,10 @@ class KColorEditDoc : public QObject
     bool newDocument();
     /** closes the actual document */
     void closeDocument();
-    /** loads the document by filename and format and emits the updateViews() signal */
-    bool openDocument(const QString &filename, const char *format=0);
-    /** saves the document under filename and format.*/	
-    bool saveDocument(const QString &filename, const char *format=0);
+    /** loads the document */
+    bool openDocument(const QString& filename);
+    /** saves the document */	
+    bool saveDocument(const QString& filename);
     /** sets the path to the file connected with the document */
     void setAbsFilePath(const QString &filename);
     /** returns the pathname of the current document file*/
