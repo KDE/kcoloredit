@@ -36,9 +36,6 @@ color palettes and for color choosing and naming.
 
 <chapter id="file-operations">
 <title>File operations</title>
-<para>
-In this chapter, operations on palette files will be discussed.
-</para>
 
 <sect1 id="file">
 <title>About palette files</title>
