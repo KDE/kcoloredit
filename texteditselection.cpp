@@ -18,6 +18,10 @@
 #include <qlabel.h>
 #include <qvalidator.h>
 #include <qcolor.h>
+//Added by qt3to4:
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QGridLayout>
 
 #include <klocale.h>
 
@@ -69,7 +73,7 @@ void TextEditSelection::addComponent(const int index, QLineEdit* lineEdit, const
 	layout->addWidget(lineEdit, row, column*3 + 1);
 }
 
-void TextEditSelection::setRgbString(const int red, const int green, const int blue) {
+void TextEditSelection::setRgbString(const int Qt::red, const int Qt::green, const int Qt::blue) {
 	QString string;
 	string.sprintf("%02x%02x%02x", red, green, blue);
 	rgbStringLineEdit->setText(string);

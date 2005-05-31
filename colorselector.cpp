@@ -22,6 +22,9 @@
 #include <qradiobutton.h>
 #include <qlabel.h>
 #include <qslider.h>
+//Added by qt3to4:
+#include <QVBoxLayout>
+#include <QHBoxLayout>
 #include <kseparator.h>
 #include <klocale.h>
 

@@ -19,6 +19,8 @@
 #include <qdir.h>
 #include <qprinter.h>
 #include <qpainter.h>
+//Added by qt3to4:
+#include <QMouseEvent>
 
 // include files for KDE
 #include <kiconloader.h>

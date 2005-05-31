@@ -16,7 +16,7 @@
  ***************************************************************************/
 
 #include <stdlib.h>
-#include <qptrlist.h>
+#include <q3ptrlist.h>
 #include <qcolor.h>
 #include <qcursor.h>
 #include <qbrush.h>
@@ -25,6 +25,10 @@
 #include <qpen.h>
 #include <qfontmetrics.h>
 #include <qtimer.h>
+//Added by qt3to4:
+#include <QMouseEvent>
+#include <Q3Frame>
+#include <QPaintEvent>
 #include <kglobal.h>
 #include <kcolordrag.h>
 #include <qscrollbar.h>
@@ -39,7 +43,7 @@
 PaletteViewScrolledArea::PaletteViewScrolledArea(const int defaultCellWidth,
 	const int defaultCellHeight, const int cellSpacing, QScrollBar* scrollBar,
 	QScrollBar* hScrollBar, KColorEditView* view, QWidget* parent, const char* name)
-	: QFrame(parent, name) {
+	: Q3Frame(parent, name) {
 	this->defaultCellWidth = defaultCellWidth;
 	this->defaultCellHeight = defaultCellHeight;
 	this->cellSpacing = cellSpacing;
@@ -249,12 +253,12 @@ void PaletteViewScrolledArea::paintEvent(QPaintEvent* /*event*/) {
 	int lastRow = (posY + height() - 1 + rowHeight - 1)/rowHeight;
 	if(viewColorNames)
 		painter.fillRect(0, 0, rowWidth, height(),
-        QBrush( QFrame::palette().active().base() ));
-	QBrush normalBackgroundBrush(QFrame::palette().active().background());
-	QBrush selectedBackgroundBrush(QFrame::palette().active().highlight());
+        QBrush( Q3Frame::palette().active().base() ));
+	QBrush normalBackgroundBrush(Q3Frame::palette().active().background());
+	QBrush selectedBackgroundBrush(Q3Frame::palette().active().highlight());
 	QBrush foregroundBrush;
-	QBrush cursorBrush(QFrame::palette().active().foreground());
-	QPen backgroundPen(QFrame::palette().active().foreground());
+	QBrush cursorBrush(Q3Frame::palette().active().foreground());
+	QPen backgroundPen(Q3Frame::palette().active().foreground());
 	int min = selectionMin();
 	int max = selectionMax();
 	int fontAscent = fontMetrics.ascent();

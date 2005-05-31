@@ -23,6 +23,11 @@
 #include <qlineedit.h>
 #include <qcolor.h>
 #include <qprinter.h>
+//Added by qt3to4:
+#include <QLabel>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QGridLayout>
 
 // include files for KDE
 #include <kseparator.h>

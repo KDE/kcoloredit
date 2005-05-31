@@ -19,6 +19,9 @@
 #define KXYCOLORSELECTOR_H
 
 #include <qwidget.h>
+//Added by qt3to4:
+#include <QPixmap>
+#include <QResizeEvent>
 #include <kselect.h>
 
 #include "main.h"

@@ -25,7 +25,7 @@
 // include files for QT
 #include <qobject.h>
 #include <qstring.h>
-#include <qptrlist.h>
+#include <q3ptrlist.h>
 
 // application specific includes
 #include "palette.h"
@@ -136,7 +136,7 @@ class KColorEditDoc : public QObject
 
   public:
     /** the list of the views currently connected to the document */
-    QPtrList<KColorEditView> *m_pViewList;
+    Q3PtrList<KColorEditView> *m_pViewList;
 
   private:
     /** the modified flag of the current document */

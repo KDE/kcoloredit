@@ -16,13 +16,17 @@
  ***************************************************************************/
 
 #include <qlayout.h>
+//Added by qt3to4:
+#include <Q3Frame>
+#include <QHBoxLayout>
+#include <QGridLayout>
 
 #include "kcoloreditview.h"
 #include "paletteview.h"
 
 PaletteView::PaletteView(const int defaultCellWidth, const int defaultCellHeight, const int cellSpacing,
 	KColorEditView* view, QWidget *parent, const char *name) :
-	QFrame(parent, name, QWidget::WResizeNoErase*0) {
+	Q3Frame(parent, name, Qt::WResizeNoErase*0) {
 	setFrameStyle(StyledPanel|Sunken);
 	setLineWidth(2);
 	QGridLayout* topLayout = new QGridLayout(this, 2, 2);

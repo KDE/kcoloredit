@@ -18,6 +18,8 @@
 #include <qpainter.h>
 #include <qpixmap.h>
 #include <qimage.h>
+//Added by qt3to4:
+#include <QResizeEvent>
 #include <kimageeffect.h>
 #include <kpalette.h>
 

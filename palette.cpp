@@ -159,7 +159,7 @@ bool Palette::load(QTextStream& stream, bool loadName /* = true */) {
 bool Palette::load(const QString& fileName) {
 	bool result = true;
 	QFile file(fileName);
-	if(!file.open( IO_ReadOnly )) {
+	if(!file.open( QIODevice::ReadOnly )) {
 		m_errorString = i18n("Could not open file");
 		result = false;
 	} else {
@@ -206,7 +206,7 @@ bool Palette::save(QTextStream& stream, const QFile* file /* = 0 */,
 bool Palette::save(const QString& fileName) {
 	bool result = true;
 	QFile file(fileName);
-	if(!file.open( IO_WriteOnly|IO_Truncate )) {
+	if(!file.open( QIODevice::WriteOnly|QIODevice::Truncate )) {
 		m_errorString = i18n("Could not open file for writing");
 		result = false;
 	} else {

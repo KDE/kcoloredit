@@ -21,7 +21,7 @@ Color::Color(){
 	setComponents(0, 0, 0);
 	setName("");
 }
-Color::Color(const int red, const int green, const int blue, const QString& name) {
+Color::Color(const int Qt::red, const int Qt::green, const int Qt::blue, const QString& name) {
 	setComponents(red, green, blue);
 	setName(name);
 }
@@ -32,7 +32,7 @@ void Color::setComponent(const int index, const int value) {
 	m_components[index] = value;
 }
 
-void Color::setComponents(const int red, const int green, const int blue) {
+void Color::setComponents(const int Qt::red, const int Qt::green, const int Qt::blue) {
 	setComponent(RED_INDEX, red);
 	setComponent(GREEN_INDEX, green);
 	setComponent(BLUE_INDEX, blue);
@@ -70,7 +70,7 @@ void Color::modifyComponent(const int index, const int value, const double amoun
 	setComponent(index, comp);
 }
 
-void Color::modifyComponents(const int red, const int green, const int blue, const double amount) {
+void Color::modifyComponents(const int Qt::red, const int Qt::green, const int Qt::blue, const double amount) {
 	modifyComponent(RED_INDEX, red, amount);
 	modifyComponent(GREEN_INDEX, green, amount);
 	modifyComponent(BLUE_INDEX, blue, amount);
