@@ -50,7 +50,7 @@ PaletteViewScrolledArea::PaletteViewScrolledArea(const int defaultCellWidth,
 	this->scrollBar = scrollBar;
 	this->hScrollBar = hScrollBar;
 	this->view = view;
-	setBackgroundMode(NoBackground);
+	setBackgroundMode(Qt::NoBackground);
 	scrollTimeoutTimer = new QTimer(this);
 	connect(scrollTimeoutTimer, SIGNAL( timeout() ), SLOT( slotScrollTimeout() ));
 	scrollTimeout = true;

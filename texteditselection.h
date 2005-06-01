@@ -51,7 +51,7 @@ protected:
 	void addComponent(const int index, QLineEdit* lineEdit, const int maxValue, const QString& labelString,
 		const int row, const int column, QGridLayout* layout);
 	/** sets RGB string in rgbStringLineEdit */
-	void setRgbString(const int Qt::red, const int Qt::green, const int Qt::blue);
+	void setRgbString(const int red, const int green, const int blue);
 		
 protected slots:
 	/** Called if one of HSV components has changed. In that case, RGB components are

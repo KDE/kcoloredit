@@ -19,7 +19,6 @@
 #include <qpainter.h>
 #include <qlayout.h>
 #include <qpushbutton.h>
-#include <qvgroupbox.h>
 #include <qlineedit.h>
 #include <qcolor.h>
 #include <qprinter.h>
@@ -76,7 +75,7 @@ KColorEditView::KColorEditView(QWidget *parent, const char *name) : QSplitter(pa
 	//cursorFollowsChosenColor->toggle();
 	paletteView->slotCursorFollowsChosenColor(true);
 	layout->addLayout(addColorLayout, 0);
-	QVGroupBox* colorAtCursorFrame = new QVGroupBox(i18n("Color at Cursor"), paletteViewArea);
+	Q3GroupBox* colorAtCursorFrame = new Q3GroupBox (1, Qt::Horizontal,i18n("Color at Cursor"), paletteViewArea);
 	QWidget* colorAtCursorFrameArea = new QWidget(colorAtCursorFrame);
 	QVBoxLayout* colorAtCursorLayout = new QVBoxLayout(colorAtCursorFrameArea, 4);
 	QHBoxLayout* colorNameLayout = new QHBoxLayout(0);

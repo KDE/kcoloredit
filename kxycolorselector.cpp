@@ -26,7 +26,7 @@
 #include "kxycolorselector.h"
 
 KXYColorSelector::KXYColorSelector(QWidget *parent, const char *name) : KXYSelector(parent,name) {
-	setBackgroundMode(NoBackground);
+	setBackgroundMode(Qt::NoBackground);
 	setRange(0, 0, COMPONENT_SELECTION_RESOLUTION - 1, COMPONENT_SELECTION_RESOLUTION - 1);
 	setType(TYPE_NONE);
 	setGlobalComponent(0);
@@ -175,7 +175,7 @@ void KXYColorSelector::drawPalette(QPixmap* pixmap) {
 				++p;
 			}
 		}
-		if (QColor::numBitPlanes() <= 8)
+		if (QPixmap::defaultDepth() <= 8)
 		{
 	    QColor* standardPalette = standardColorsPalette();
 			KImageEffect::dither(image, standardPalette, STANDARD_PALETTE_SIZE);

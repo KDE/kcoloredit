@@ -58,7 +58,7 @@ GradientSelection::GradientSelection(QWidget *parent, const char *name ) : QWidg
 	xyColorSelectorLayout->addLayout(buttonsLayout);
 	xyColorSelectorLayout->addSpacing(2);
 	topLayout->addLayout(xyColorSelectorLayout, 1, 0);
-	zColorSelector = new KZColorSelector(KZColorSelector::Vertical, this);
+	zColorSelector = new KZColorSelector(/*KZColorSelector::*/Qt::Vertical, this);
 	connect(zColorSelector, SIGNAL( valueChanged(int) ),
 		SLOT( slotZColorSelectorPosChanged(int) ));
 	zColorSelector->setFixedWidth(36);
