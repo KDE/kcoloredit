@@ -109,7 +109,7 @@ bool KColorEditDoc::saveModified()
     KColorEditApp *window=(KColorEditApp *) parent();
     int want_save = KMessageBox::warningYesNoCancel(window,
                                          i18n("The current file has been modified.\n"
-                                              "Do you want to save it?"));
+                                              "Do you want to save it?"), QString::null, KStdGuiItem::save(), i18n("Do Not Save"));
     switch(want_save)
     {
       case KMessageBox::Yes:

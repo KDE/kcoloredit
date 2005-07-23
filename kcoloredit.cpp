@@ -265,7 +265,7 @@ bool KColorEditApp::slotFileSaveAs()
                KMessageBox::questionYesNo( this,
                        i18n("A Document with this name already exists.\n"
                             "Do you want to overwrite it?"),
-                       i18n("Warning") ) == KMessageBox::Yes) {
+                       i18n("Warning"), i18n("Overwrite"), KStdGuiItem::cancel() ) == KMessageBox::Yes) {
                 if(!doc->saveDocument( newName )) {
                     KMessageBox::sorry(0, doc->errorString());
                     result = false;
