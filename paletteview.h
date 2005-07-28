@@ -18,7 +18,7 @@
 #ifndef PALETTEVIEW_H
 #define PALETTEVIEW_H
 
-#include <qframe.h>
+#include <q3frame.h>
 #include <qscrollbar.h>
 
 #include "paletteviewscrolledarea.h"
@@ -29,7 +29,7 @@ class KColorEditView;
   * Its parent is KColorEditView
   * @author Artur Rataj
   */
-class PaletteView : public QFrame {
+class PaletteView : public Q3Frame {
 	Q_OBJECT
 
 public:

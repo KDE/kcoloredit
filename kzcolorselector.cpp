@@ -17,18 +17,23 @@
 
 #include <qpainter.h>
 #include <qimage.h>
+//Added by qt3to4:
+#include <QPixmap>
+#include <QResizeEvent>
 #include <kimageeffect.h>
 #include <kpalette.h>
 
 #include "main.h"
 #include "kzcolorselector.h"
 
-KZColorSelector::KZColorSelector(Orientation o, QWidget *parent, const char *name) :
+KZColorSelector::KZColorSelector(Qt::Orientation o, QWidget *parent, const char *name) :
 	KSelector(o, parent, name) {
 	baseColorH = -1;
 	baseColorS = 0;
 	baseColorV = 0;
-	pixmap.setOptimization( QPixmap::BestOptim );
+#warning "pixmap.setOptimization( QPixmap::BestOptim ); ???"
+	
+	//pixmap.setOptimization( QPixmap::BestOptim );
 }
 KZColorSelector::~KZColorSelector() {
 }
@@ -159,7 +164,7 @@ void KZColorSelector::drawPalette(QPixmap* pixmap) {
 			++p;
 		}
 	}
-	if (QColor::numBitPlanes() <= 8)
+	if (QPixmap::defaultDepth() <= 8)
 	{
     QColor* standardPalette = getStandardColorsPalette();
 		KImageEffect::dither(image, standardPalette, STANDARD_PALETTE_SIZE);

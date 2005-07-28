@@ -20,7 +20,7 @@
 
 #include <qwidget.h>
 #include <qcolor.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 #include <kcolordialog.h>
 
 #include "color.h"
@@ -71,7 +71,7 @@ private:
 	/** A color change slider widget */
 	QWidget* colorChangeSliderWidget;
 	/** Color change buttons button group widget */
-	QButtonGroup colorChangeButtons;
+	Q3ButtonGroup colorChangeButtons;
 	/** A color patch widget */
 	KColorPatch* colorPatch;
 	/** A gradient selection widget */

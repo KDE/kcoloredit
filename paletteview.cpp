@@ -16,13 +16,17 @@
  ***************************************************************************/
 
 #include <qlayout.h>
+//Added by qt3to4:
+#include <Q3Frame>
+#include <QHBoxLayout>
+#include <QGridLayout>
 
 #include "kcoloreditview.h"
 #include "paletteview.h"
 
 PaletteView::PaletteView(const int defaultCellWidth, const int defaultCellHeight, const int cellSpacing,
 	KColorEditView* view, QWidget *parent, const char *name) :
-	QFrame(parent, name, QWidget::WResizeNoErase*0) {
+	Q3Frame(parent, name, Qt::WResizeNoErase*0) {
 	setFrameStyle(StyledPanel|Sunken);
 	setLineWidth(2);
 	QGridLayout* topLayout = new QGridLayout(this, 2, 2);
@@ -32,7 +36,7 @@ PaletteView::PaletteView(const int defaultCellWidth, const int defaultCellHeight
 	topLayout->setColStretch(0, 10);
 	topLayout->setColStretch(1, 0);
 	scrollBar = new QScrollBar(this);
-	hScrollBar = new QScrollBar(0, 1, 1, 1, 0, QScrollBar::Horizontal, this);
+	hScrollBar = new QScrollBar(0, 1, 1, 1, 0, Qt::Horizontal, this);
 	scrolledArea = new PaletteViewScrolledArea(defaultCellWidth,
 		defaultCellHeight, cellSpacing, scrollBar, hScrollBar, view, this);
 	connect(scrollBar, SIGNAL( valueChanged(int) ),

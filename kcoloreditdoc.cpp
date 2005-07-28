@@ -20,6 +20,8 @@
 #include <qfileinfo.h>
 #include <qwidget.h>
 #include <qclipboard.h>
+//Added by qt3to4:
+#include <Q3PtrList>
 
 // include files for KDE
 #include <klocale.h>
@@ -33,7 +35,7 @@
 
 KColorEditDoc::KColorEditDoc(QWidget *parent, const char *name) : QObject(parent, name),
 	m_palette(), m_paletteHistory(&m_palette, 0) {
-	m_pViewList = new QPtrList<KColorEditView>();
+	m_pViewList = new Q3PtrList<KColorEditView>();
 	m_pViewList->setAutoDelete(true);
 }
 

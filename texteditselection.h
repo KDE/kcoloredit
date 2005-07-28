@@ -21,6 +21,8 @@
 #include <qwidget.h>
 #include <qlineedit.h>
 #include <qlayout.h>
+//Added by qt3to4:
+#include <QGridLayout>
 
 #include "color.h"
 

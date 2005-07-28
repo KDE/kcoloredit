@@ -24,6 +24,8 @@
 // include files for Qt
 #include <qevent.h>
 #include <qstringlist.h>
+//Added by qt3to4:
+#include <QMouseEvent>
 
 // include files for KDE
 #include <kapplication.h>

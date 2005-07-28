@@ -22,6 +22,9 @@
 #include <qstring.h>
 #include <qstringlist.h>
 #include <qpushbutton.h>
+//Added by qt3to4:
+#include <QVBoxLayout>
+#include <QHBoxLayout>
 #include <klocale.h>
 #include <kstandarddirs.h>
 #include <kpalette.h>

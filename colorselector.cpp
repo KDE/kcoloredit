@@ -22,6 +22,9 @@
 #include <qradiobutton.h>
 #include <qlabel.h>
 #include <qslider.h>
+//Added by qt3to4:
+#include <QVBoxLayout>
+#include <QHBoxLayout>
 #include <kseparator.h>
 #include <klocale.h>
 
@@ -73,7 +76,7 @@ ColorSelector::ColorSelector(QWidget *parent, const char *name ) : QWidget(paren
 	QVBoxLayout* colorChangeSliderLayout = new QVBoxLayout(colorChangeSliderWidget, 1);
 	colorChangeSliderLayout->setMargin(0);
 	QSlider* colorChangeSlider = new QSlider(0, MAX_COLOR_CHANGE_VALUE,
-		MAX_COLOR_CHANGE_VALUE/4, colorChangeValue, QSlider::Horizontal, colorChangeSliderWidget);
+		MAX_COLOR_CHANGE_VALUE/4, colorChangeValue, Qt::Horizontal, colorChangeSliderWidget);
 	colorChangeSlider->setTickInterval(colorChangeSlider->pageStep());
 	colorChangeSlider->setTickmarks(QSlider::Above);
 	connect(colorChangeSlider, SIGNAL( valueChanged(int) ), SLOT( slotColorChangeValueChanged(int) ));

@@ -16,9 +16,13 @@
  ***************************************************************************/
 
 #include <qlayout.h>
-#include <qframe.h>
+#include <q3frame.h>
 #include <qradiobutton.h>
 #include <qcolor.h>
+//Added by qt3to4:
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QGridLayout>
 #include <klocale.h>
 
 #include "main.h"
@@ -54,7 +58,7 @@ GradientSelection::GradientSelection(QWidget *parent, const char *name ) : QWidg
 	xyColorSelectorLayout->addLayout(buttonsLayout);
 	xyColorSelectorLayout->addSpacing(2);
 	topLayout->addLayout(xyColorSelectorLayout, 1, 0);
-	zColorSelector = new KZColorSelector(KZColorSelector::Vertical, this);
+	zColorSelector = new KZColorSelector(/*KZColorSelector::*/Qt::Vertical, this);
 	connect(zColorSelector, SIGNAL( valueChanged(int) ),
 		SLOT( slotZColorSelectorPosChanged(int) ));
 	zColorSelector->setFixedWidth(36);

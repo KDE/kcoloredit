@@ -20,6 +20,8 @@
 
 #include "qcolor.h"
 #include "qpixmap.h"
+//Added by qt3to4:
+#include <QResizeEvent>
 #include "kselect.h"
 
 #include "color.h"
@@ -37,7 +39,7 @@ public:
 	       TYPE_V = 2 };
 
 	/** Constructs the widget */
-	KZColorSelector(Orientation o, QWidget *parent=0, const char *name=0);
+	KZColorSelector(Qt::Orientation o, QWidget *parent=0, const char *name=0);
 	~KZColorSelector();
 	/** Sets the selector type */
 	void setType(const int type);
