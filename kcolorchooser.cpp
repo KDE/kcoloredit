@@ -21,13 +21,14 @@ AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+#include <iostream>
+
 #include <kapplication.h>
 #include <kcmdlineargs.h>
 #include <kaboutdata.h>
 #include <klocale.h>
 
-#include <kcolordialog.h>
-#include <stdio.h>
+#include "kcolordialog.h"
 
 static const char description[] =
 	I18N_NOOP("KDE Color Chooser");
@@ -64,6 +65,6 @@ int main(int argc, char *argv[])
   KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
   const  QColor c = dlg.color();
   if ( args->isSet("print") && c.isValid() ) {
-      printf( "%s", c.name().toUtf8().constData() );
+      std::cout << c.name().toUtf8().constData() << std::endl;
   }
 }  
