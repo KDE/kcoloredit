@@ -32,7 +32,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 static const char description[] =
 	I18N_NOOP("KDE Color Chooser");
 
-static const char version[] = "v1.0";
+static const char version[] = "v1.0.1";
 
 static KCmdLineOptions options[] =
 {
@@ -62,8 +62,8 @@ int main(int argc, char *argv[])
   app.exec();
 
   KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
-  QColor c = dlg.color();
+  const  QColor c = dlg.color();
   if ( args->isSet("print") && c.isValid() ) {
-      printf( "#%x%x%x", c.red(), c.green(), c.blue() );
+      printf( "%s", c.name().utf8().data() );
   }
 }  
