@@ -306,9 +306,9 @@ void KColorEditApp::slotQuit()
   // close the first window, the list makes the next one the first again.
   // This ensures that queryClose() is called on each window to ask for closing
   KMainWindow* w;
-  if(memberList)
+  if(memberList())
   {
-    for(w=memberList->first(); w!=0; w=memberList->next())
+    for(w=memberList()->first(); w!=0; w=memberList()->next())
     {
       // only close the window if the closeEvent is accepted. If the user presses Cancel on the saveModified() dialog,
       // the window and the application stay open.
