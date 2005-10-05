@@ -38,7 +38,7 @@
 #include "kcoloreditdoc.h"
 #include "loadpalettedlg.h"
 #include "resource.h"
-#include <kpopupmenu.h>
+#include <kmenu.h>
 #include <kstatusbar.h>
 
 
