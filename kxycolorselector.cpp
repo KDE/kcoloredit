@@ -25,7 +25,7 @@
 
 #include "kxycolorselector.h"
 
-KXYColorSelector::KXYColorSelector(QWidget *parent, const char *name) : KXYSelector(parent,name) {
+KXYColorSelector::KXYColorSelector(QWidget *parent, const char *name) : KXYSelector(parent) {
 	setBackgroundMode(Qt::NoBackground);
 	setRange(0, 0, COMPONENT_SELECTION_RESOLUTION - 1, COMPONENT_SELECTION_RESOLUTION - 1);
 	setType(TYPE_NONE);

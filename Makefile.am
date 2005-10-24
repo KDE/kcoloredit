@@ -6,7 +6,7 @@ kcoloredit_SOURCES = kzcolorselector.cpp imageselection.cpp \
 	editablestreamhistory.cpp color.cpp palette.cpp loadpalettedlg.cpp \
 	kcoloreditview.cpp kcoloreditdoc.cpp kcoloredit.cpp main.cpp 
 kcoloredit_METASOURCES = AUTO
-kcoloredit_LDADD = $(LIB_KDEUI) $(LIB_KFILE)
+kcoloredit_LDADD = $(LIB_KDEUI) $(LIB_KFILE) $(LIB_KDE3SUPPORT)
 kcoloredit_LDFLAGS = $(all_libraries) $(KDE_RPATH)
 
 rcdir = $(kde_datadir)/kcoloredit
