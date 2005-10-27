@@ -340,7 +340,7 @@ void KColorEditApp::slotColorFromPalette() {
 
 void KColorEditApp::slotColorFromScreen() {
   gettingColorFromScreen = true;
-  grabMouse(Qt::crossCursor);
+  grabMouse(Qt::CrossCursor);
   grabKeyboard();
 }
 
