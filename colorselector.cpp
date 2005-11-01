@@ -54,7 +54,7 @@ ColorSelector::ColorSelector(QWidget *parent, const char *name ) : QWidget(paren
 	topLayout->addWidget(pages, 10);
 	 */
 	topLayout->addWidget(gradientSelection, 10);
-	KSeparator* hLine = new KSeparator(KSeparator::HLine, this);
+	KSeparator* hLine = new KSeparator(Qt::Horizontal, this);
 	topLayout->addWidget(hLine);
 	QHBoxLayout* layout = new QHBoxLayout();
 	TextEditSelection* textEditSelection = new TextEditSelection(this);
@@ -78,7 +78,7 @@ ColorSelector::ColorSelector(QWidget *parent, const char *name ) : QWidget(paren
 	QSlider* colorChangeSlider = new QSlider(0, MAX_COLOR_CHANGE_VALUE,
 		MAX_COLOR_CHANGE_VALUE/4, colorChangeValue, Qt::Horizontal, colorChangeSliderWidget);
 	colorChangeSlider->setTickInterval(colorChangeSlider->pageStep());
-	colorChangeSlider->setTickmarks(QSlider::Above);
+	colorChangeSlider->setTickmarks(QSlider::TicksAbove);
 	connect(colorChangeSlider, SIGNAL( valueChanged(int) ), SLOT( slotColorChangeValueChanged(int) ));
 	colorChangeSliderLayout->addWidget(colorChangeSlider);
 	QHBoxLayout* colorChangeSliderLabelsLayout = new QHBoxLayout(0);
@@ -94,7 +94,7 @@ ColorSelector::ColorSelector(QWidget *parent, const char *name ) : QWidget(paren
 	layout->addLayout(colorChangeLayout, 10);
 	m_color.setComponents(RGB_MAX_COMPONENT_VALUE, RGB_MAX_COMPONENT_VALUE, RGB_MAX_COMPONENT_VALUE);
 	slotColorReplace();
-	KSeparator* vLine = new KSeparator(KSeparator::VLine, this);
+	KSeparator* vLine = new KSeparator(Qt::Vertical, this);
 	layout->addWidget(vLine);
 	layout->addWidget(textEditSelection, 1);
 	colorPatch = new KColorPatch(this);

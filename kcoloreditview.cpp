@@ -65,7 +65,7 @@ KColorEditView::KColorEditView(QWidget *parent, const char *name) : QSplitter(pa
 	slotAddColorOverwrite(false);
 	addColorLayout->addWidget(overwriteCheckBox);
 	addColorLayout->addStretch(10);
-	//KSeparator* hLine = new KSeparator(KSeparator::HLine, paletteViewArea);
+	//KSeparator* hLine = new KSeparator(Qt::Horizontal, paletteViewArea);
 	//addColorLayout->addWidget(hLine);
 	//addColorLayout->addStretch(10);
 	//QCheckBox* cursorFollowsChosenColor = new QCheckBox(i18n( "Cursor follows" ), paletteViewArea);

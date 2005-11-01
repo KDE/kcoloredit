@@ -40,10 +40,11 @@
 #include "resource.h"
 #include <kmenu.h>
 #include <kstatusbar.h>
+#include <kglobal.h>
 
 
 KColorEditApp::KColorEditApp() : KMainWindow(0) {
-  config=kapp->config();
+  config=KGlobal::config();
 
   ///////////////////////////////////////////////////////////////////
   // call inits to invoke all other construction parts
@@ -76,7 +77,7 @@ void KColorEditApp::initActions()
   m_actRecent = KStdAction::openRecent( this,
           SLOT( slotFileOpenRecent( const KURL& ) ), actionCollection() );
 
-  ( void ) new KAction( i18n("New &Window"), kapp->miniIcon(), KShortcut(),
+  ( void ) new KAction( i18n("New &Window"), qApp->windowIcon().pixmap(IconSize(KIcon::Small),IconSize(KIcon::Small)), KShortcut(),
           this, SLOT( slotFileNewWindow() ), actionCollection(),
           "file_new_window" );
 
