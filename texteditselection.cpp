@@ -135,7 +135,7 @@ void TextEditSelection::slotRgbComponentChanged() {
 void TextEditSelection::slotRgbStringChanged() {
 	if(!inChangingComponents) {
 		inChangingComponents = true;
-		QString string = rgbStringLineEdit->text().stripWhiteSpace();
+		QString string = rgbStringLineEdit->text().trimmed();
 		bool result;
 		int value = string.toInt(&result, 16);
 		if(result) {

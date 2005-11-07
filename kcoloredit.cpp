@@ -248,7 +248,7 @@ void KColorEditApp::slotFileOpenRecent( const KURL & url )
 
 void KColorEditApp::slotFileSave()
 {
-  if(!doc->saveDocument( doc->absFilePath() ))
+  if(!doc->saveDocument( doc->absoluteFilePath() ))
       slotFileSaveAs();
       //KMessageBox::sorry(0, doc->getErrorString());
 }
@@ -274,9 +274,9 @@ bool KColorEditApp::slotFileSaveAs()
                     result = false;
                 } else {
                     doc->setTitle(saveAsInfo.fileName());
-                    doc->setAbsFilePath(saveAsInfo.absFilePath());
+                    doc->setAbsFilePath(saveAsInfo.absoluteFilePath());
                     setCaption(doc->title());
-                    lastSavePaletteAsFileDir = saveAsInfo.absFilePath();
+                    lastSavePaletteAsFileDir = saveAsInfo.absoluteFilePath();
                     m_actRecent->addURL( KURL( newName ) );
                     break;
                 }

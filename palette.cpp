@@ -109,10 +109,10 @@ bool Palette::load(QTextStream& stream, bool loadName /* = true */) {
 	while (!stream.atEnd()) {
 		QString string = stream.readLine().append(' ');
 		if(string.find( QRegExp("[^\\s]") ) == -1 ||
-			string.stripWhiteSpace().at( 0 ) == '#' ||
+			string.trimmed().at( 0 ) == '#' ||
 			( loadName && lineNum == 0 )) {
 			if(loadName && lineNum == 0)
-				setName(string.stripWhiteSpace());
+				setName(string.trimmed());
 		} else {
 			Color* newColor = new Color();
 			int position = string.find(QRegExp( "[^\\s]" ));
@@ -146,7 +146,7 @@ bool Palette::load(QTextStream& stream, bool loadName /* = true */) {
 				break;
 			}
 			if(position != -1)
-				newColor->setName(string.mid( position ).stripWhiteSpace());
+				newColor->setName(string.mid( position ).trimmed());
 			colors.append(newColor);
 		}
 		++lineNum;

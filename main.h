@@ -43,10 +43,10 @@ static const QString palettesDir("colors");
 
 /** last open file dialog path
  */
-static QString lastOpenPaletteFileDir = QDir::homeDirPath();
+static QString lastOpenPaletteFileDir = QDir::homePath();
 
 /** last save file as dialog path
  */
-static QString lastSavePaletteAsFileDir = QDir::homeDirPath();
+static QString lastSavePaletteAsFileDir = QDir::homePath();
 
 #endif /* !defined( __MAIN_H__ ) */
