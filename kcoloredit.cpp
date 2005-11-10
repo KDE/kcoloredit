@@ -248,7 +248,7 @@ void KColorEditApp::slotFileOpenRecent( const KURL & url )
 
 void KColorEditApp::slotFileSave()
 {
-  if(!doc->saveDocument( doc->absoluteFilePath() ))
+  if(!doc->saveDocument( doc->absFilePath() ))
       slotFileSaveAs();
       //KMessageBox::sorry(0, doc->getErrorString());
 }
