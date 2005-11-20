@@ -34,55 +34,56 @@
 #include "palette.h"
 #include "loadpalettedlg.h"
 
-LoadPaletteDlg::LoadPaletteDlg(QWidget *parent, const char *name) 
-        : KDialogBase(parent, name, true, i18n( "Load Palette" ), 
+LoadPaletteDlg::LoadPaletteDlg(QWidget *parent, const char *name)
+        : KDialogBase(parent, name, true, i18n( "Load Palette" ),
           Ok|Cancel, Ok, true) {
-	fileName = "";
+    fileName = "";
     QWidget *mainWidget = new QWidget( this );
     setMainWidget( mainWidget );
-	QVBoxLayout* topLayout = new QVBoxLayout(mainWidget, 0, spacingHint());
-	QLabel* label = new QLabel(i18n( "Select a palette:" ), mainWidget);
-	topLayout->addWidget(label);
-	paletteBox = new QComboBox(false, mainWidget);
-	browseFileNameInserted = false;
-	QStringList palettesList = Palette::kdePalettes();
-	for(QStringList::Iterator palette = palettesList.begin();
-		palette != palettesList.end(); ++palette) {
-		bool prepend = (*palette).contains( "colors/Custom_Colors" );
-		QString fileName = locate("config", (*palette));
-		if(prepend) {
-			palettesFileNames.prepend(fileName);
-			setFileName(&fileName);
-		}	else {
-			palettesFileNames.append(fileName);
-			if(palette == palettesList.begin())
-				setFileName(&fileName);
-		}
-		QString paletteName = (*palette).mid(palettesDir.length() + 1);
-		if(paletteName == "Custom_Colors")
-			paletteName = i18n("Custom Colors");
-		else if(paletteName == "Recent_Colors")
-			paletteName = i18n("Recent Colors");
-		if(prepend)
-			paletteBox->insertItem(paletteName, 0);
-		else
-			paletteBox->insertItem(paletteName);
-	}
-	connect(paletteBox, SIGNAL( activated(int) ), SLOT( setFileName(int) ));
-	topLayout->addWidget(paletteBox);
-	QHBoxLayout* browseLayout = new QHBoxLayout( mainWidget );
-	QPushButton* browseButton = new QPushButton(i18n( "Browse..." ), 
-        mainWidget);
-	connect(browseButton, SIGNAL( clicked() ), SLOT( browseFileNames() ));
-	browseLayout->addWidget(browseButton);
-	browseLayout->addStretch(10);
-	topLayout->addLayout(browseLayout);
-	topLayout->addStretch(10);
-	resize(300, 155);
+    QVBoxLayout* topLayout = new QVBoxLayout(mainWidget, 0, spacingHint());
+
+    QLabel* label = new QLabel(i18n( "Select a palette:" ), mainWidget);
+    topLayout->addWidget(label);
+
+    paletteBox = new QComboBox(false, mainWidget);
+    browseFileNameInserted = false;
+    QStringList palettesList = Palette::kdePalettes();
+    for(QStringList::Iterator palette = palettesList.begin();
+        palette != palettesList.end(); ++palette) {
+        bool prepend = (*palette).contains( "colors/Custom_Colors" );
+        QString fileName = locate("config", (*palette));
+        if(prepend) {
+            palettesFileNames.prepend(fileName);
+            setFileName(&fileName);
+        }	else {
+            palettesFileNames.append(fileName);
+            if(palette == palettesList.begin())
+                setFileName(&fileName);
+        }
+        QString paletteName = (*palette).mid(palettesDir.length() + 1);
+        if(paletteName == "Custom_Colors")
+            paletteName = i18n("Custom Colors");
+        else if(paletteName == "Recent_Colors")
+            paletteName = i18n("Recent Colors");
+        if(prepend)
+            paletteBox->insertItem(paletteName, 0);
+        else
+            paletteBox->insertItem(paletteName);
+    }
+    connect(paletteBox, SIGNAL( activated(int) ), SLOT( setFileName(int) ));
+    topLayout->addWidget(paletteBox);
+    QHBoxLayout* browseLayout = new QHBoxLayout;
+    QPushButton* browseButton = new QPushButton(i18n( "Browse..." ), mainWidget);
+    connect(browseButton, SIGNAL( clicked() ), SLOT( browseFileNames() ));
+    browseLayout->addWidget(browseButton);
+    browseLayout->addStretch(10);
+    topLayout->addLayout(browseLayout);
+    topLayout->addStretch(10);
+    resize(300, 155);
 }
 LoadPaletteDlg::~LoadPaletteDlg() {
 }
-	
+
 void LoadPaletteDlg::setFileName(QString* fileName) {
 	this->fileName = *fileName;
 }
