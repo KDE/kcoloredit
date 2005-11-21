@@ -16,7 +16,7 @@
 <firstname>Artur</firstname>
 <surname>Rataj</surname>
 <affiliation>
-<address><email>art@zeus.polsl.gliwice.pl</email></address>
+<address>&Artur.Rataj.mail;</address>
 </affiliation>
 </author>
 <!-- TRANS:ROLES_OF_TRANSLATORS -->
@@ -25,7 +25,7 @@
 
 <copyright>
 <year>2000</year>
-<holder>Artur Rataj</holder>
+<holder>&Artur.Rataj;</holder>
 </copyright>
 
 <legalnotice>&FDLNotice;</legalnotice>
@@ -438,9 +438,9 @@ different actions.</para>
 <chapter id="credits-and-licenses">
 <title>Credits and Licenses</title>
 
-<para>&kcoloredit; copyright 2000 Artur Rataj</para>
+<para>&kcoloredit; copyright 2000 &Artur.Rataj;</para>
 
-<para>Documentation copyright 2000 Artur Rataj</para>
+<para>Documentation copyright 2000 &Artur.Rataj;</para>
 
 <!-- TRANS:CREDIT_FOR_TRANSLATORS -->
 
