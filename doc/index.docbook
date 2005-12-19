@@ -16,7 +16,7 @@
 <firstname>Artur</firstname>
 <surname>Rataj</surname>
 <affiliation>
-<address><email>art@zeus.polsl.gliwice.pl</email></address>
+<address>&Artur.Rataj.mail;</address>
 </affiliation>
 </author>
 <!-- TRANS:ROLES_OF_TRANSLATORS -->
@@ -25,13 +25,13 @@
 
 <copyright>
 <year>2000</year>
-<holder>Artur Rataj</holder>
+<holder>&Artur.Rataj;</holder>
 </copyright>
 
 <legalnotice>&FDLNotice;</legalnotice>
 
-<date>2002-01-09</date>
-<releaseinfo>2.91.00</releaseinfo>
+<date>2005-12-10</date>
+<releaseinfo>3.5.0</releaseinfo>
 
 <abstract>
 <para>&kcoloredit; is a palette files editor. It can be used for editing
@@ -109,13 +109,13 @@ by moving the mouse then with the left mouse button pressed.
 </para>
 </listitem>
 <listitem>
-<para>If the <guilabel>After cursor</guilabel> check-box near to the
-<guilabel>Add a Color</guilabel> button is checked, a color from the
-color chooser is put after the cursor.  The color is either inserted
+<para>If the <guilabel>At cursor</guilabel> check-box near the
+<guilabel>Add Color</guilabel> button is checked, a color from the
+color chooser is put at the cursor.  The color is either inserted
 or it overwrites another one, depending on whether the
 <guilabel>Overwrite</guilabel> mode is chosen. The mode can be chosen
 by checking the <guilabel>Overwrite</guilabel> check-box, that is next
-to the <guilabel>After Cursor</guilabel> one.</para>
+to the <guilabel>At cursor</guilabel> one.</para>
 </listitem>
 </itemizedlist>
 
@@ -159,15 +159,15 @@ By editing the HSV or RGB components.
 By selecting a color from color gradient panels. In the left one, two
 from HSV components can be selected, and in the right one, the third
 one. The third component can be chosen by clicking on one of the
-buttons labeled <guilabel>H</guilabel>, <guilabel>S</guilabel> and
-<guilabel>V</guilabel>. The one component panel display colors with
+buttons labeled <guilabel>H:</guilabel>, <guilabel>S:</guilabel> and
+<guilabel>V:</guilabel>. The one component panel display colors with
 the other two components equal to these selected in the two components
 panel.  The two components panel may display colors with the third
 component fixed, or, if the <guilabel>Variable</guilabel> check-box is
 set, with a value equal to the one selected in the one component
 panel. In the <guilabel>Replace</guilabel> mode, the color selected in
 panels replaces the output one instantly, and in the
-<guilabel>Change</guilabel> mode it modifies the output color after
+<guilabel>Change:</guilabel> mode it modifies the output color after
 each click, or a mouse move while a mouse button is
 pressed. Therefore, in the latter mode the color selected in the
 gradient panels may be different from the output color. To synchronize
@@ -198,24 +198,23 @@ with a mouse.
 <variablelist>
 <varlistentry>
 <term><menuchoice>
-<guimenu>File</guimenu>
-<guimenuitem>New Window</guimenuitem>
-</menuchoice></term>
-<listitem>
-<para><action>Open a new window</action></para>
-</listitem>
-</varlistentry>
-
-<varlistentry>
-<term><menuchoice>
 <shortcut><keycombo action="simul">&Ctrl;
 <keycap>N</keycap></keycombo></shortcut>
 <guimenu>File</guimenu>
 <guimenuitem>New</guimenuitem>
 </menuchoice></term>
 <listitem>
-<para><action>Start a new palette in the current
-window.</action></para>
+<para><action>Start a new palette in the current window.</action></para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>File</guimenu>
+<guimenuitem>New Window</guimenuitem>
+</menuchoice></term>
+<listitem>
+<para><action>Open a new window</action></para>
 </listitem>
 </varlistentry>
 
@@ -245,19 +244,6 @@ editing.</action></para>
 <varlistentry>
 <term><menuchoice>
 <shortcut><keycombo action="simul">&Ctrl;
-<keycap>W</keycap></keycombo></shortcut>
-<guimenu>File</guimenu>
-<guimenuitem>Close</guimenuitem>
-</menuchoice></term>
-<listitem>
-<para><action>Close</action> the current &kcoloredit;
-window.</para>
-</listitem>
-</varlistentry>
-
-<varlistentry>
-<term><menuchoice>
-<shortcut><keycombo action="simul">&Ctrl;
 <keycap>S</keycap></keycombo></shortcut>
 <guimenu>File</guimenu>
 <guimenuitem>Save</guimenuitem>
@@ -275,6 +261,18 @@ window.</para>
 <listitem>
 <para><action>Save the currently open palette with a new
 name.</action></para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<shortcut><keycombo action="simul">&Ctrl;
+<keycap>W</keycap></keycombo></shortcut>
+<guimenu>File</guimenu>
+<guimenuitem>Close</guimenuitem>
+</menuchoice></term>
+<listitem>
+<para><action>Close</action> the current &kcoloredit; window</para>
 </listitem>
 </varlistentry>
 
@@ -367,25 +365,14 @@ in the color selector on the left.</action></para>
 
 </sect1>
 
-<sect1 id="view-menu">
-<title>The <guimenu>View</guimenu> Menu</title>
+<sect1 id="settings-menu">
+<title>The <guimenu>Settings</guimenu> Menu</title>
 
 <variablelist>
 <varlistentry>
 <term><menuchoice>
-<guimenu>Color</guimenu>
-<guimenuitem>Color Names</guimenuitem>
-</menuchoice></term>
-<listitem>
-<para>If the currently open palette has color names, <action>display
-them alongside the colors</action>.</para>
-</listitem>
-</varlistentry>
-
-<varlistentry>
-<term><menuchoice>
-<guimenu>View</guimenu>
-<guimenuitem>Toolbar</guimenuitem>
+<guimenu>Settings</guimenu>
+<guimenuitem>Hide/Show Toolbar</guimenuitem>
 </menuchoice></term>
 <listitem>
 <para><action>Toggle on and off the toolbar icons.</action></para>
@@ -394,13 +381,47 @@ them alongside the colors</action>.</para>
 
 <varlistentry>
 <term><menuchoice>
-<guimenu>View</guimenu>
-<guimenuitem>Statusbar</guimenuitem>
+<guimenu>Settings</guimenu>
+<guimenuitem>Hide/Show Statusbar</guimenuitem>
 </menuchoice></term>
 <listitem>
 <para><action>Toggle on and off the status bar.</action></para>
 </listitem>
 </varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>Settings</guimenu>
+<guimenuitem>Hide/Show Color Names</guimenuitem>
+</menuchoice></term>
+<listitem>
+<para>If the currently open palette has color name, <action>display
+them alongside the colors</action>.</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>Settings</guimenu>
+<guimenuitem>Configure Shortcuts...</guimenuitem>
+</menuchoice></term>
+<listitem>
+<para><action>Configure</action> the keyboard keys you use to access the 
+different actions.</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>Settings</guimenu>
+<guimenuitem>Configure Toolbars...</guimenuitem>
+</menuchoice></term>
+<listitem>
+<para><action>Configure</action> the items you want to put in the toolbar
+</para>
+</listitem>
+</varlistentry>
+
 </variablelist>
 
 </sect1>
@@ -417,9 +438,9 @@ them alongside the colors</action>.</para>
 <chapter id="credits-and-licenses">
 <title>Credits and Licenses</title>
 
-<para>&kcoloredit; copyright 2000 Artur Rataj</para>
+<para>&kcoloredit; copyright 2000 &Artur.Rataj;</para>
 
-<para>Documentation copyright 2000 Artur Rataj</para>
+<para>Documentation copyright 2000 &Artur.Rataj;</para>
 
 <!-- TRANS:CREDIT_FOR_TRANSLATORS -->
 
