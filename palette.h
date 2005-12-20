@@ -22,7 +22,7 @@
 #include <qtextstream.h>
 #include <qfile.h>
 //Added by qt3to4:
-#include <Q3PtrList>
+#include <QList>
 
 #include "color.h"
 
@@ -96,7 +96,7 @@ private:
 
 protected:
 	/** A list of palette colors */
-	Q3PtrList<Color> colors;
+	QList<Color *> colors;
 	/** An IO error description */
 	QString m_errorString;
 };

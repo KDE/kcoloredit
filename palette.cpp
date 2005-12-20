@@ -39,10 +39,11 @@ Palette::Palette(const Palette& palette) {
 	setName(palette.name());
 }
 Palette::~Palette() {
+	qDeleteAll(colors);
+    colors.clear();
 }
 
 void Palette::init() {
-	colors.setAutoDelete(true);
 }
 
 QStringList Palette::kdePalettes() {
@@ -68,7 +69,7 @@ void Palette::append(Color* const color) {
 }
 
 void Palette::remove(const int index) {
-	colors.remove(index);
+	delete colors.takeAt(index);
 }
 
 int Palette::length() const {
