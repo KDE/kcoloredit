@@ -20,8 +20,6 @@
 #include <qfileinfo.h>
 #include <qwidget.h>
 #include <qclipboard.h>
-//Added by qt3to4:
-#include <Q3PtrList>
 
 // include files for KDE
 #include <klocale.h>
@@ -35,12 +33,14 @@
 
 KColorEditDoc::KColorEditDoc(QWidget *parent, const char *name) : QObject(parent, name),
 	m_palette(), m_paletteHistory(&m_palette, 0) {
-	m_pViewList = new Q3PtrList<KColorEditView>();
-	m_pViewList->setAutoDelete(true);
+	m_pViewList = new QList<KColorEditView*>();
 }
 
 KColorEditDoc::~KColorEditDoc()
 {
+	qDeleteAll(*m_pViewList);
+	m_pViewList->clear();
+	delete m_pViewList;	
 }
 
 void KColorEditDoc::addView(KColorEditView *view)
@@ -83,7 +83,7 @@ void KColorEditDoc::slotRedrawAllViews(KColorEditView *sender, bool newDocument)
  KColorEditView *w;
   if(m_pViewList)
   {
-    for(w=m_pViewList->first(); w!=0; w=m_pViewList->next())
+	Q_FOREACH( w,*m_pViewList )
     {
       if(w!=sender)
         w->redraw(newDocument);
@@ -95,7 +95,7 @@ void KColorEditDoc::slotChangeViewMode(bool viewColorNames) {
  KColorEditView *w;
   if(m_pViewList)
   {
-    for(w=m_pViewList->first(); w!=0; w=m_pViewList->next())
+    Q_FOREACH( w,*m_pViewList )
     {
       w->slotViewColorNames(viewColorNames);
     }
