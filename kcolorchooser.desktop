@@ -1,7 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
 Type=Application
-Exec=kcolorchooser %i %m
+Exec=kcolorchooser
 Icon=kcolorchooser
 Path=
 Terminal=false
