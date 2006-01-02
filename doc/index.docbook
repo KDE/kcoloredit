@@ -30,8 +30,8 @@
 
 <legalnotice>&FDLNotice;</legalnotice>
 
-<date>2002-01-09</date>
-<releaseinfo>2.91.00</releaseinfo>
+<date>2005-12-10</date>
+<releaseinfo>3.5.0</releaseinfo>
 
 <abstract>
 <para>&kcoloredit; is a palette files editor. It can be used for editing
@@ -115,7 +115,7 @@ color chooser is put at the cursor.  The color is either inserted
 or it overwrites another one, depending on whether the
 <guilabel>Overwrite</guilabel> mode is chosen. The mode can be chosen
 by checking the <guilabel>Overwrite</guilabel> check-box, that is next
-to the <guilabel>At Cursor</guilabel> one.</para>
+to the <guilabel>At cursor</guilabel> one.</para>
 </listitem>
 </itemizedlist>
 
@@ -159,15 +159,15 @@ By editing the HSV or RGB components.
 By selecting a color from color gradient panels. In the left one, two
 from HSV components can be selected, and in the right one, the third
 one. The third component can be chosen by clicking on one of the
-buttons labeled <guilabel>H</guilabel>, <guilabel>S</guilabel> and
-<guilabel>V</guilabel>. The one component panel display colors with
+buttons labeled <guilabel>H:</guilabel>, <guilabel>S:</guilabel> and
+<guilabel>V:</guilabel>. The one component panel display colors with
 the other two components equal to these selected in the two components
 panel.  The two components panel may display colors with the third
 component fixed, or, if the <guilabel>Variable</guilabel> check-box is
 set, with a value equal to the one selected in the one component
 panel. In the <guilabel>Replace</guilabel> mode, the color selected in
 panels replaces the output one instantly, and in the
-<guilabel>Change</guilabel> mode it modifies the output color after
+<guilabel>Change:</guilabel> mode it modifies the output color after
 each click, or a mouse move while a mouse button is
 pressed. Therefore, in the latter mode the color selected in the
 gradient panels may be different from the output color. To synchronize
