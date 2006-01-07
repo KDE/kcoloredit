@@ -18,7 +18,7 @@
 #ifndef PALETTEVIEWSCROLLEDAREA_H
 #define PALETTEVIEWSCROLLEDAREA_H
 
-#include <q3frame.h>
+#include <QFrame>
 #include <qevent.h>
 //Added by qt3to4:
 #include <QMouseEvent>
@@ -34,7 +34,7 @@ class QScrollBar;
  *  It has paste and cut features.
  *  @author Artur Rataj
  */
-class PaletteViewScrolledArea : public Q3Frame {
+class PaletteViewScrolledArea : public QFrame {
 	Q_OBJECT
 
 public:
