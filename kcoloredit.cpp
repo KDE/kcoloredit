@@ -75,7 +75,7 @@ void KColorEditApp::initActions()
   m_actSave = KStdAction::save( this, SLOT( slotFileSave() ),
           actionCollection() );
   m_actRecent = KStdAction::openRecent( this,
-          SLOT( slotFileOpenRecent( const KURL& ) ), actionCollection() );
+          SLOT( slotFileOpenRecent( const KUrl& ) ), actionCollection() );
 
   ( void ) new KAction( i18n("New &Window"), qApp->windowIcon().pixmap(IconSize(KIcon::Small),IconSize(KIcon::Small)), KShortcut(),
           this, SLOT( slotFileNewWindow() ), actionCollection(),
@@ -231,14 +231,14 @@ void KColorEditApp::slotFileOpen() {
           KMessageBox::sorry(0, doc->errorString());
         } else {
           setCaption(doc->title());
-          m_actRecent->addURL( KURL::fromPathOrURL( fileToOpen ) );
+          m_actRecent->addURL( KUrl::fromPathOrURL( fileToOpen ) );
         }
       }
     }
   }
 }
 
-void KColorEditApp::slotFileOpenRecent( const KURL & url )
+void KColorEditApp::slotFileOpenRecent( const KUrl & url )
 {
   if(doc->saveModified()) {
     doc->openDocument( url.path() );

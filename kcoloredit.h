@@ -121,7 +121,7 @@ class KColorEditApp : public KMainWindow
     /** open a file and load it into the document*/
     void slotFileOpen();
     /** opens a file from the recent files menu */
-    void slotFileOpenRecent( const KURL & );
+    void slotFileOpenRecent( const KUrl & );
     /** save a document */
     void slotFileSave();
     /** save a document by a new filename
