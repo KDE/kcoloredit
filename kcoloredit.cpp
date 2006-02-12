@@ -277,7 +277,7 @@ bool KColorEditApp::slotFileSaveAs()
                     doc->setAbsFilePath(saveAsInfo.absoluteFilePath());
                     setCaption(doc->title());
                     lastSavePaletteAsFileDir = saveAsInfo.absoluteFilePath();
-                    m_actRecent->addURL( KURL( newName ) );
+                    m_actRecent->addURL( KUrl( newName ) );
                     break;
                 }
             }
