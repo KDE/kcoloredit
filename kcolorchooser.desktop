@@ -7,6 +7,7 @@ Path=
 Terminal=false
 DocPath=kcoloredit/index.html
 GenericName=Color Chooser
+GenericName[fr]=Sélecteur de couleur
 GenericName[x-test]=xxColor Chooserxx
 Name=KColorChooser
 Name[x-test]=xxKColorChooserxx
