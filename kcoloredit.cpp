@@ -164,7 +164,7 @@ void KColorEditApp::readOptions()
 
   config->setGroup("KColorEdit Options");
 
-  viewColorNames = config->readBoolEntry("ColorNames", false);
+  viewColorNames = config->readEntry("ColorNames", false);
   m_actNames->setChecked(viewColorNames);
   doc->slotChangeViewMode(viewColorNames);
 }
