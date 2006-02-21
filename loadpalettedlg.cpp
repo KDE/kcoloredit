@@ -29,7 +29,7 @@
 #include <kstandarddirs.h>
 #include <kpalette.h>
 #include <kfiledialog.h>
-
+#include <kdialogbase.h>
 #include "main.h"
 #include "palette.h"
 #include "loadpalettedlg.h"
