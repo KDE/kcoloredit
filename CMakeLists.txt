@@ -12,7 +12,7 @@ kde4_automoc(${kcoloredit_SRCS})
 
 kde4_add_executable(kcoloredit ${kcoloredit_SRCS})
 
-target_link_libraries(kcoloredit  ${LIB_KDE3SUPPORT} )
+target_link_libraries(kcoloredit  ${KDE4_KDE3SUPPORT_LIBRARIES} )
 
 install_targets(/bin kcoloredit )
 
@@ -25,7 +25,7 @@ kde4_automoc(${kcolorchooser_SRCS})
 
 kde4_add_executable(kcolorchooser ${kcolorchooser_SRCS})
 
-target_link_libraries(kcolorchooser  ${LIB_KIO} )
+target_link_libraries(kcolorchooser  ${KDE4_KIO_LIBRARIES} )
 
 install_targets(/bin kcolorchooser )
 
