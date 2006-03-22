@@ -231,7 +231,7 @@ void KColorEditApp::slotFileOpen() {
           KMessageBox::sorry(0, doc->errorString());
         } else {
           setCaption(doc->title());
-          m_actRecent->addURL( KUrl::fromPathOrURL( fileToOpen ) );
+          m_actRecent->addUrl( KUrl::fromPathOrURL( fileToOpen ) );
         }
       }
     }
@@ -277,7 +277,7 @@ bool KColorEditApp::slotFileSaveAs()
                     doc->setAbsFilePath(saveAsInfo.absoluteFilePath());
                     setCaption(doc->title());
                     lastSavePaletteAsFileDir = saveAsInfo.absoluteFilePath();
-                    m_actRecent->addURL( KUrl( newName ) );
+                    m_actRecent->addUrl( KUrl( newName ) );
                     break;
                 }
             }
