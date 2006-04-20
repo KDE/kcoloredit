@@ -34,7 +34,7 @@ TextEditSelection::TextEditSelection(QWidget *parent, const char *name ) : QWidg
 	QGridLayout* componentsLayout = new QGridLayout(3, 5, 2);
 	topLayout->addLayout(componentsLayout);
 	componentsLayout->setColStretch(1, 10);
-	componentsLayout->addColSpacing(2, 8);
+	componentsLayout->addItem( new QSpacerItem( 8, 0 ), 0, 2 );
 	componentsLayout->setColStretch(4, 10);
 	QLineEdit* lineEdit;
 	addComponent(H_INDEX, ( lineEdit = new QLineEdit(this) ), HSV_MAX_H_VALUE, "H:", 0, 0, componentsLayout);
