@@ -166,10 +166,10 @@ void KZColorSelector::drawPalette(QPixmap* pixmap) {
 	}
 	if (QPixmap::defaultDepth() <= 8)
 	{
-    QColor* standardPalette = getStandardColorsPalette();
+	        QColor* standardPalette = getStandardColorsPalette();
 		KImageEffect::dither(image, standardPalette, STANDARD_PALETTE_SIZE);
 		delete[] standardPalette;
 	}
-	pixmap->convertFromImage(image);
+	*pixmap = QPixmap::fromImage(image);
 }
 #include "kzcolorselector.moc"

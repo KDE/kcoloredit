@@ -182,7 +182,7 @@ void KXYColorSelector::drawPalette(QPixmap* pixmap) {
 			delete[] standardPalette;
 		}
 	}
-	pixmap->convertFromImage(image);
+	*pixmap = QPixmap::fromImage(image);
 }
 
 #include "kxycolorselector.moc"
