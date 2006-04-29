@@ -99,7 +99,7 @@ void LoadPaletteDlg::browseFileNames() {
 		fileName = fileToOpen;
 		if(browseFileNameInserted) {
 			paletteBox->removeItem(0);
-			palettesFileNames.remove(palettesFileNames.begin());
+			palettesFileNames.removeAt(0);
 		}
 		paletteBox->insertItem(fileName, 0);
 		paletteBox->setCurrentItem(0);

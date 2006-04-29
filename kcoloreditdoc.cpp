@@ -50,7 +50,7 @@ void KColorEditDoc::addView(KColorEditView *view)
 
 void KColorEditDoc::removeView(KColorEditView *view)
 {
-  m_pViewList->remove(view);
+  m_pViewList->removeAll(view);
 }
 
 void KColorEditDoc::setModified(bool b) {
