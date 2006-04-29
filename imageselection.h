@@ -30,9 +30,9 @@ class ImageSelection : public QWidget  {
 
 public:
 	/** constructs the widget */
-	ImageSelection(QWidget *parent=0, const char *name=0);
+	ImageSelection(QWidget *parent=0);
 	~ImageSelection();
-	
+
 signals:
 	/** A signal that a color value has changed by edition */
 	void valueChanged(Color*);
