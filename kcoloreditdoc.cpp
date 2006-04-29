@@ -235,7 +235,7 @@ int KColorEditDoc::paletteSelectionEnd() const {
 
 void KColorEditDoc::copyToClipboard(Palette& palette) {
 	QString text;
-	QTextOStream stream(&text);
+	QTextStream stream(&text, QIODevice::ReadWrite);
 	palette.save(stream, 0, false);
 	KApplication::clipboard()->setText(text);
 
