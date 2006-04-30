@@ -50,7 +50,7 @@ PaletteViewScrolledArea::PaletteViewScrolledArea(const int defaultCellWidth,
 	this->scrollBar = scrollBar;
 	this->hScrollBar = hScrollBar;
 	this->view = view;
-	setBackgroundMode(Qt::NoBackground);
+        setAttribute(Qt::WA_NoSystemBackground, true);
 	scrollTimeoutTimer = new QTimer(this);
 	connect(scrollTimeoutTimer, SIGNAL( timeout() ), SLOT( slotScrollTimeout() ));
 	scrollTimeout = true;
@@ -254,11 +254,11 @@ void PaletteViewScrolledArea::paintEvent(QPaintEvent* /*event*/) {
 	if(viewColorNames)
 		painter.fillRect(0, 0, rowWidth, height(),
         QBrush( QFrame::palette().active().base() ));
-	QBrush normalBackgroundBrush(QFrame::palette().active().background());
-	QBrush selectedBackgroundBrush(QFrame::palette().active().highlight());
+	QBrush normalBackgroundBrush(QFrame::palette().color( QPalette::Active, QPalette::Background) );
+	QBrush selectedBackgroundBrush(QFrame::palette().color( QPalette::Active, QPalette::Highlight ) );
 	QBrush foregroundBrush;
-	QBrush cursorBrush(QFrame::palette().active().foreground());
-	QPen backgroundPen(QFrame::palette().active().foreground());
+	QBrush cursorBrush(QFrame::palette().color( QPalette::Active, QPalette::Foreground ) );
+	QPen backgroundPen(QFrame::palette().color( QPalette::Active, QPalette::Foreground ) );
 	int min = selectionMin();
 	int max = selectionMax();
 	int fontAscent = fontMetrics.ascent();
