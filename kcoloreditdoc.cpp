@@ -40,7 +40,7 @@ KColorEditDoc::~KColorEditDoc()
 {
 	qDeleteAll(*m_pViewList);
 	m_pViewList->clear();
-	delete m_pViewList;	
+	delete m_pViewList;
 }
 
 void KColorEditDoc::addView(KColorEditView *view)
@@ -261,7 +261,7 @@ void KColorEditDoc::cut() {
 void KColorEditDoc::paste() {
 	Palette palettePaste;
 	QString text;
-	QTextIStream stream(&text);
+	QTextStream stream(&text, QIODevice::ReadOnly);
 	text = KApplication::clipboard()->text();
 	if(palettePaste.load( stream, false )) {
 		m_paletteHistory.paste(paletteCursorPos(), palettePaste);
