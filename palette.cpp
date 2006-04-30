@@ -176,7 +176,7 @@ bool Palette::save(QTextStream& stream, const QFile* file /* = 0 */,
 	bool result = true;
 	if(saveName)
 		stream << name() + QString("\n");
-	if(file && file->status() != IO_Ok) {
+	if(file && file->error() != QFile::NoError) {
 		m_errorString = i18n("Write error");
 		result = false;
 	} else
@@ -195,7 +195,7 @@ bool Palette::save(QTextStream& stream, const QFile* file /* = 0 */,
 				greenComponentString + QString(" ") +
 				blueComponentString +
 				nameString + QString("\n");
-			if(file && file->status() != IO_Ok) {
+			if(file && file->error() != QFile::NoError) {
 				m_errorString = i18n("Write error");
 				result = false;
 				break;
