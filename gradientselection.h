@@ -35,7 +35,7 @@ class GradientSelection : public QWidget  {
 
 public:
 	/** Constructs the widget */
-	GradientSelection(QWidget *parent=0, const char *name=0);
+	GradientSelection(QWidget *parent=0);
 	~GradientSelection();
 	/** Enables or disables the color synchronize button */
 	void enableSynchronizeColorButton(bool enable);
@@ -60,7 +60,7 @@ protected:
 	enum { H_COMPONENT = KXYColorSelector::TYPE_VS,
 	       S_COMPONENT = KXYColorSelector::TYPE_HV,
 	       V_COMPONENT = KXYColorSelector::TYPE_HS };
-	
+
 	/** Variable global component checkbox */
 	QCheckBox* variableCheckBox;
 	/** Synchronize color button */
@@ -89,7 +89,7 @@ protected:
 	void updateXyColorSelector(const bool modeChanged);
 	/** Updates gradient selector colors */
 	void updateZColorSelector();
-	
+
 protected slots:
 	/** Sets color selection mode */
 	void slotSetColorSelectionMode(int mode);

@@ -29,7 +29,7 @@ PaletteView::PaletteView(const int defaultCellWidth, const int defaultCellHeight
 	Q3Frame(parent, name, Qt::WResizeNoErase*0) {
 	setFrameStyle(StyledPanel|Sunken);
 	setLineWidth(2);
-	QGridLayout* topLayout = new QGridLayout(this, 2, 2);
+	QGridLayout* topLayout = new QGridLayout(this);
 	topLayout->setMargin(2);
 	topLayout->setRowStretch(0, 10);
 	topLayout->setRowStretch(1, 0);

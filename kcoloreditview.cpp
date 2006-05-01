@@ -85,7 +85,8 @@ KColorEditView::KColorEditView(QWidget *parent, const char *name) : QSplitter(pa
 	connect(colorName, SIGNAL( textChanged(const QString&) ), SLOT( slotSetColorName(const QString&) ));
 	colorNameLayout->addWidget(colorName, 10);
 	colorAtCursorLayout->addLayout(colorNameLayout);
-	QGridLayout* colorAtCursorComponentsLayout = new QGridLayout(3, 6, 4);
+	QGridLayout* colorAtCursorComponentsLayout = new QGridLayout();
+        colorAtCursorComponentsLayout->setMargin( 4 );
 	colorAtCursorLayout->addLayout(colorAtCursorComponentsLayout);
 	colorAtCursorComponentsLayout->setColStretch(1, 10);
 	colorAtCursorComponentsLayout->addItem( new QSpacerItem( 8, 0 ), 0, 2 );

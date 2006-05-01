@@ -31,7 +31,8 @@
 TextEditSelection::TextEditSelection(QWidget *parent, const char *name ) : QWidget(parent,name) {
 	inChangingComponents = false;
 	QVBoxLayout* topLayout = new QVBoxLayout(this, 4);
-	QGridLayout* componentsLayout = new QGridLayout(3, 5, 2);
+	QGridLayout* componentsLayout = new QGridLayout();
+        componentsLayout->setMargin( 2 );
 	topLayout->addLayout(componentsLayout);
 	componentsLayout->setColStretch(1, 10);
 	componentsLayout->addItem( new QSpacerItem( 8, 0 ), 0, 2 );

@@ -28,8 +28,9 @@
 #include "main.h"
 #include "gradientselection.h"
 
-GradientSelection::GradientSelection(QWidget *parent, const char *name ) : QWidget(parent,name) {
-	QGridLayout* topLayout = new QGridLayout(this, 2, 2, 0);
+GradientSelection::GradientSelection(QWidget *parent ) : QWidget(parent)
+{
+	QGridLayout* topLayout = new QGridLayout(this);
 	QHBoxLayout* layout = new QHBoxLayout(0);
 	layout->setMargin(3);
 	xyColorSelector = new KXYColorSelector(this);
@@ -120,7 +121,7 @@ void GradientSelection::updateXyColorSelector(const bool modeChanged) {
 				HSV_MAX_S_VALUE + 0.5);
 			component = hComponent;
 			break;
-			
+
 		case S_COMPONENT:
 			xPos = (int)(hComponent*( KXYColorSelector::COMPONENT_SELECTION_RESOLUTION - 1 )/
 				HSV_MAX_H_VALUE + 0.5);
@@ -131,7 +132,7 @@ void GradientSelection::updateXyColorSelector(const bool modeChanged) {
 			else
 				component = 240;
 			break;
-			
+
 		case V_COMPONENT:
 			xPos = (int)(hComponent*( KXYColorSelector::COMPONENT_SELECTION_RESOLUTION - 1 )/
 				HSV_MAX_H_VALUE + 0.5);
@@ -142,13 +143,13 @@ void GradientSelection::updateXyColorSelector(const bool modeChanged) {
 			else
 				component = 192;
 			break;
-		
+
 		default:
 			xPos = 0;
 			yPos = 0;
 			component = 0;
 			break;
-			
+
 	}
 	if(xPos < 0)
 		xPos = 0;
@@ -176,17 +177,17 @@ void GradientSelection::slotSetColorSelectionMode(int mode) {
 			zColorSelector->setType(KZColorSelector::TYPE_H);
 			variableCheckBox->setEnabled(false);
 			break;
-			
+
 		case S_COMPONENT:
 			zColorSelector->setType(KZColorSelector::TYPE_S);
 			variableCheckBox->setEnabled(true);
 			break;
-			
+
 		case V_COMPONENT:
 			zColorSelector->setType(KZColorSelector::TYPE_V);
 			variableCheckBox->setEnabled(true);
 			break;
-			
+
 	}
 	updateZColorSelector();
 }
@@ -202,17 +203,17 @@ void GradientSelection::slotXyColorSelectorPosChanged(int x, int y) {
 			vComponent = (int)(x*1.0*HSV_MAX_V_VALUE/( KXYColorSelector::COMPONENT_SELECTION_RESOLUTION - 1 ) + 0.5);
 			sComponent = (int)(y*1.0*HSV_MAX_S_VALUE/( KXYColorSelector::COMPONENT_SELECTION_RESOLUTION - 1 ) + 0.5);
 			break;
-	
+
 		case S_COMPONENT:
 			hComponent = (int)(x*1.0*HSV_MAX_H_VALUE/( KXYColorSelector::COMPONENT_SELECTION_RESOLUTION - 1 ) + 0.5);
 			vComponent = (int)(y*1.0*HSV_MAX_V_VALUE/( KXYColorSelector::COMPONENT_SELECTION_RESOLUTION - 1 ) + 0.5);
 			break;
-	
+
 		case V_COMPONENT:
 			hComponent = (int)(x*1.0*HSV_MAX_H_VALUE/( KXYColorSelector::COMPONENT_SELECTION_RESOLUTION - 1 ) + 0.5);
 			sComponent = (int)(y*1.0*HSV_MAX_S_VALUE/( KXYColorSelector::COMPONENT_SELECTION_RESOLUTION - 1 ) + 0.5);
 			break;
-	
+
 	}
 	QColor rgbColor;
 	rgbColor.setHsv(hComponent, sComponent, vComponent);
@@ -226,15 +227,15 @@ void GradientSelection::slotZColorSelectorPosChanged(int y) {
 		case H_COMPONENT:
 			hComponent = y;
 			break;
-	
+
 		case S_COMPONENT:
 			sComponent = y;
 			break;
-	
+
 		case V_COMPONENT:
 			vComponent = y;
 			break;
-	
+
 	}
 	QColor rgbColor;
 	rgbColor.setHsv(hComponent, sComponent, vComponent);
