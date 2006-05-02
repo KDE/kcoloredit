@@ -109,14 +109,14 @@ bool Palette::load(QTextStream& stream, bool loadName /* = true */) {
 	int lineNum = 0;
 	while (!stream.atEnd()) {
 		QString string = stream.readLine().append(' ');
-		if(string.find( QRegExp("[^\\s]") ) == -1 ||
+		if(!string.contains( QRegExp("[^\\s]") ) ||
 			string.trimmed().at( 0 ) == '#' ||
 			( loadName && lineNum == 0 )) {
 			if(loadName && lineNum == 0)
 				setName(string.trimmed());
 		} else {
 			Color* newColor = new Color();
-			int position = string.find(QRegExp( "[^\\s]" ));
+			int position = string.indexOf(QRegExp( "[^\\s]" ));
 			for(int componentIndex = 0; componentIndex < Color::COMPONENTS_NUM;
 				++componentIndex) {
 				if(position == -1) {
@@ -124,7 +124,7 @@ bool Palette::load(QTextStream& stream, bool loadName /* = true */) {
 					result = false;
 					break;
 				}
-				int endPosition = string.find(QRegExp( "\\s" ), position);
+				int endPosition = string.indexOf(QRegExp( "\\s" ), position);
 				if(endPosition == -1) {
 					m_errorString = i18n("Invalid format");
 					result = false;
@@ -140,7 +140,7 @@ bool Palette::load(QTextStream& stream, bool loadName /* = true */) {
 					break;
 				}
 				newColor->setComponent(componentIndex, componentValue);
-				position = string.find(QRegExp( "[^\\s]" ), endPosition);
+				position = string.indexOf(QRegExp( "[^\\s]" ), endPosition);
 			}
 			if(!result) {
 				delete newColor;
