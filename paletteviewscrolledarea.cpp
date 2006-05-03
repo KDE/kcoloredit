@@ -81,7 +81,7 @@ void PaletteViewScrolledArea::redraw() {
 }
 
 void PaletteViewScrolledArea::repaintPalette() {
-	repaint(false);
+	repaint();
 }
 
 void PaletteViewScrolledArea::checkSelectionAutoScroll(const int mousePosY) {

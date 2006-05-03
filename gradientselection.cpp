@@ -96,7 +96,7 @@ void GradientSelection::slotSetValue(Color* color) {
 		QColor hsvColor(this->color.component(Color::RED_INDEX),
 			this->color.component(Color::GREEN_INDEX),
 			this->color.component(Color::BLUE_INDEX));
-		hsvColor.hsv(&newHComponent, &newSComponent, &newVComponent);
+		hsvColor.getHsv(&newHComponent, &newSComponent, &newVComponent);
 		hComponent = newHComponent;
 		sComponent = newSComponent;
 		vComponent = newVComponent;

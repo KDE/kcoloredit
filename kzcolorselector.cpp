@@ -58,7 +58,7 @@ void KZColorSelector::setType(const int type) {
 
 void KZColorSelector::updateContents() {
 	drawPalette(&pixmap);
-	repaint(false);
+	repaint();
 }
 
 void KZColorSelector::resizeEvent(QResizeEvent*) {
@@ -70,7 +70,7 @@ void KZColorSelector::drawContents(QPainter* painter) {
 }
 
 void KZColorSelector::setBaseColor(const QColor& color) {
-	color.hsv(&baseColorH, &baseColorS, &baseColorV);
+	color.getHsv(&baseColorH, &baseColorS, &baseColorV);
 }
 
 void KZColorSelector::setBaseColorHsv(const int colorH,

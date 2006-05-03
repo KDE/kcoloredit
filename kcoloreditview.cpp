@@ -187,7 +187,7 @@ void KColorEditView::slotCursorPosChanged(int position) {
 		int hComponent;
 		int sComponent;
 		int vComponent;
-		hsvColor.hsv(&hComponent, &sComponent, &vComponent);
+		hsvColor.getHsv(&hComponent, &sComponent, &vComponent);
 		colorAtCursorHValueLabel->setText(string.setNum( hComponent ));
 		colorAtCursorSValueLabel->setText(string.setNum( sComponent ));
 		colorAtCursorVValueLabel->setText(string.setNum( vComponent ));

@@ -117,7 +117,7 @@ void TextEditSelection::slotRgbComponentChanged() {
 		int hComponent;
 		int sComponent;
 		int vComponent;
-		color.hsv(&hComponent, &sComponent, &vComponent);
+		color.getHsv(&hComponent, &sComponent, &vComponent);
 		QString string;
 		lineEditTable[H_INDEX]->setText(string.setNum( hComponent ));
 		lineEditTable[S_INDEX]->setText(string.setNum( sComponent ));
@@ -150,7 +150,7 @@ void TextEditSelection::slotRgbStringChanged() {
 			int sComponent;
 			int vComponent;
 			QColor hsvColor;
-			hsvColor.hsv(&hComponent, &sComponent, &vComponent);
+			hsvColor.getHsv(&hComponent, &sComponent, &vComponent);
 			lineEditTable[H_INDEX]->setText(string.setNum( hComponent ));
 			lineEditTable[S_INDEX]->setText(string.setNum( sComponent ));
 			lineEditTable[V_INDEX]->setText(string.setNum( vComponent ));
@@ -180,7 +180,7 @@ void TextEditSelection::slotSetValue(Color* color) {
 		int hComponent;
 		int sComponent;
 		int vComponent;
-		hsvColor.hsv(&hComponent, &sComponent, &vComponent);
+		hsvColor.getHsv(&hComponent, &sComponent, &vComponent);
 		lineEditTable[H_INDEX]->setText(string.setNum( hComponent ));
 		lineEditTable[S_INDEX]->setText(string.setNum( sComponent ));
 		lineEditTable[V_INDEX]->setText(string.setNum( vComponent ));
