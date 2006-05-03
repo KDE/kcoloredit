@@ -40,7 +40,9 @@ LoadPaletteDlg::LoadPaletteDlg(QWidget *parent, const char *name)
     fileName = "";
     QWidget *mainWidget = new QWidget( this );
     setMainWidget( mainWidget );
-    QVBoxLayout* topLayout = new QVBoxLayout(mainWidget, 0, spacingHint());
+    QVBoxLayout* topLayout = new QVBoxLayout(mainWidget);
+    topLayout->setSpacing(spacingHint());
+    topLayout->setMargin(0);
 
     QLabel* label = new QLabel(i18n( "Select a palette:" ), mainWidget);
     topLayout->addWidget(label);

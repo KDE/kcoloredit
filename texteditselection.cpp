@@ -30,7 +30,8 @@
 
 TextEditSelection::TextEditSelection(QWidget *parent, const char *name ) : QWidget(parent,name) {
 	inChangingComponents = false;
-	QVBoxLayout* topLayout = new QVBoxLayout(this, 4);
+	QVBoxLayout* topLayout = new QVBoxLayout(this);
+	topLayout->setSpacing(4);
 	QGridLayout* componentsLayout = new QGridLayout();
         componentsLayout->setMargin( 2 );
 	topLayout->addLayout(componentsLayout);

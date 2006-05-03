@@ -48,9 +48,11 @@ KColorEditView::KColorEditView(QWidget *parent, const char *name) : QSplitter(pa
 	paletteView = new PaletteView(16, 16, 2, this, paletteViewArea);
 	paletteLayout->addWidget(paletteView, 10);
 	QHBoxLayout* layout = new QHBoxLayout();
-	QVBoxLayout* addColorLayout = new QVBoxLayout(4);
+	QVBoxLayout* addColorLayout = new QVBoxLayout();
+        addColorLayout->setSpacing( 4 );
 	addColorLayout->setMargin(8);
-	QHBoxLayout* buttonsLayout = new QHBoxLayout(4);
+	QHBoxLayout* buttonsLayout = new QHBoxLayout();
+        buttonsLayout->setSpacing( 4 );
 	QPushButton* addColorButton = new QPushButton(i18n( "Add Color" ), paletteViewArea);
 	connect(addColorButton, SIGNAL( clicked() ), SLOT( slotAddColor() ));
 	buttonsLayout->addWidget(addColorButton);
@@ -77,7 +79,8 @@ KColorEditView::KColorEditView(QWidget *parent, const char *name) : QSplitter(pa
 	layout->addLayout(addColorLayout, 0);
 	Q3GroupBox* colorAtCursorFrame = new Q3GroupBox (1, Qt::Horizontal,i18n("Color at Cursor"), paletteViewArea);
 	QWidget* colorAtCursorFrameArea = new QWidget(colorAtCursorFrame);
-	QVBoxLayout* colorAtCursorLayout = new QVBoxLayout(colorAtCursorFrameArea, 4);
+	QVBoxLayout* colorAtCursorLayout = new QVBoxLayout(colorAtCursorFrameArea);
+	colorAtCursorLayout->setSpacing(4);
 	QHBoxLayout* colorNameLayout = new QHBoxLayout(0);
 	QLabel* nameLabel = new QLabel(i18n( "Name" ) + ": ", colorAtCursorFrameArea);
 	colorNameLayout->addWidget(nameLabel, 0);

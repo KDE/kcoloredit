@@ -35,7 +35,8 @@
 
 ColorSelector::ColorSelector(QWidget *parent, const char *name ) : QWidget(parent, name) {
 	fComponentsMode = false;
-	QVBoxLayout* topLayout = new QVBoxLayout(this, 4);
+	QVBoxLayout* topLayout = new QVBoxLayout(this);
+	topLayout->setSpacing(4);
 	/*
 	QTabWidget* pages = new QTabWidget(this);
 	 */
@@ -73,7 +74,8 @@ ColorSelector::ColorSelector(QWidget *parent, const char *name ) : QWidget(paren
 	colorChangeLayout->addWidget(changeButton);
 	colorChangeValue = 0;
 	colorChangeSliderWidget = new QWidget(this);
-	QVBoxLayout* colorChangeSliderLayout = new QVBoxLayout(colorChangeSliderWidget, 1);
+	QVBoxLayout* colorChangeSliderLayout = new QVBoxLayout(colorChangeSliderWidget);
+	colorChangeSliderLayout->setSpacing(1);
 	colorChangeSliderLayout->setMargin(0);
 	QSlider* colorChangeSlider = new QSlider(0, MAX_COLOR_CHANGE_VALUE,
 		MAX_COLOR_CHANGE_VALUE/4, colorChangeValue, Qt::Horizontal, colorChangeSliderWidget);
