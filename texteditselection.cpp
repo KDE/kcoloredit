@@ -51,7 +51,8 @@ TextEditSelection::TextEditSelection(QWidget *parent, const char *name ) : QWidg
 	connect(lineEdit, SIGNAL( textChanged(const QString&) ), SLOT( slotRgbComponentChanged() ));
 	addComponent(B_INDEX, ( lineEdit = new QLineEdit(this) ), RGB_MAX_COMPONENT_VALUE, "B:", 2, 1, componentsLayout);
 	connect(lineEdit, SIGNAL( textChanged(const QString&) ), SLOT( slotRgbComponentChanged() ));
-	QHBoxLayout* rgbStringLayout = new QHBoxLayout(2);
+	QHBoxLayout* rgbStringLayout = new QHBoxLayout();
+        rgbStringLayout->setSpacing( 2 );
 	QLabel* rgbStringLabel = new QLabel("RGB " + i18n( "hex." ) + ": ", this);
 	rgbStringLayout->addWidget(rgbStringLabel);
 	rgbStringLineEdit = new QLineEdit(this);
