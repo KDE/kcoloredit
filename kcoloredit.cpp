@@ -96,12 +96,10 @@ void KColorEditApp::initActions()
           SLOT( slotViewColorNames() ), actionCollection(),
           "color_view_names" );
   m_actNames->setCheckedState(i18n("Hide &Color Names"));
-  m_actPalette = new KAction( i18n("From &Palette"), KShortcut(), this,
-          SLOT( slotColorFromPalette() ), actionCollection(),
-          "color_from_palette" );
+  m_actPalette = new KAction( i18n("From &Palette"), actionCollection(), "color_from_palette" );
+  connect(m_actPalette, SIGNAL(triggered(bool) ), SLOT( slotColorFromPalette() ));
   ( void ) new KAction( i18n("From &Screen"), KShortcut(), this,
-          SLOT( slotColorFromScreen() ), actionCollection(),
-          "color_from_screen" );
+          SLOT( slotColorFromScreen() ), actionCollection(), "color_from_screen" );
 }
 
 void KColorEditApp::initStatusBar()
