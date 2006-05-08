@@ -31,7 +31,8 @@
 #include <kapplication.h>
 #include <kmainwindow.h>
 #include <kaction.h>
-
+#include <ktoggleaction.h>
+#include <krecentfilesaction.h>
 // application specific includes
 #include "color.h"
 

@@ -31,7 +31,7 @@
 #include <kcolordialog.h>
 #include <kconfig.h>
 #include <kdebug.h>
-
+#include <kstdaction.h>
 // application specific includes
 #include "kcoloredit.h"
 #include "kcoloreditview.h"
