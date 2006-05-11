@@ -92,9 +92,8 @@ void KColorEditApp::initActions()
   m_actPaste->setEnabled( false );
 
   // Color Menu
-  m_actNames = new KToggleAction( i18n("Show &Color Names"), KShortcut(), this,
-          SLOT( slotViewColorNames() ), actionCollection(),
-          "color_view_names" );
+  m_actNames = new KToggleAction( i18n("Show &Color Names"), actionCollection(), "color_view_names" );
+  connect(m_actNames, SIGNAL(triggered(bool) ), SLOT( slotViewColorNames() ));
   m_actNames->setCheckedState(i18n("Hide &Color Names"));
   m_actPalette = new KAction( i18n("From &Palette"), actionCollection(), "color_from_palette" );
   connect(m_actPalette, SIGNAL(triggered(bool) ), SLOT( slotColorFromPalette() ));
