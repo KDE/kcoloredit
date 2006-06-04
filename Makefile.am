@@ -4,7 +4,7 @@ kcoloredit_SOURCES = kzcolorselector.cpp imageselection.cpp \
 	texteditselection.cpp gradientselection.cpp colorselector.cpp \
 	kxycolorselector.cpp paletteview.cpp paletteviewscrolledarea.cpp \
 	editablestreamhistory.cpp color.cpp palette.cpp loadpalettedlg.cpp \
-	kcoloreditview.cpp kcoloreditdoc.cpp kcoloredit.cpp main.cpp 
+	kcoloreditview.cpp kcoloreditdoc.cpp kcoloredit.cpp main.cpp
 kcoloredit_METASOURCES = AUTO
 kcoloredit_LDADD = $(LIB_KDEUI) $(LIB_KFILE)
 kcoloredit_LDFLAGS = $(all_libraries) $(KDE_RPATH)
@@ -30,5 +30,6 @@ KDE_ICON = kcoloredit kcolorchooser
 EXTRA_DIST = $(xdg_apps_DATA)
 
 messages: rc.cpp
+	$(EXTRACTRC) *.rc > rc.cpp
 	$(XGETTEXT) $(kcoloredit_SOURCES) rc.cpp resource.h -o $(podir)/kcoloredit.pot
 
