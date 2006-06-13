@@ -25,7 +25,7 @@
   *of choosing a custom file
   *@author Artur Rataj
   */
-class LoadPaletteDlg : public KDialogBase  {
+class LoadPaletteDlg : public KDialog  {
 	Q_OBJECT
 	
 public:

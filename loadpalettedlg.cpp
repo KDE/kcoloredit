@@ -29,14 +29,17 @@
 #include <kstandarddirs.h>
 #include <kpalette.h>
 #include <kfiledialog.h>
-#include <kdialogbase.h>
+#include <kdialog.h>
 #include "main.h"
 #include "palette.h"
 #include "loadpalettedlg.h"
 
 LoadPaletteDlg::LoadPaletteDlg(QWidget *parent, const char *name)
-        : KDialogBase(parent, name, true, i18n( "Load Palette" ),
-          Ok|Cancel, Ok, true) {
+        : KDialog(parent) {
+    setCaption( i18n( "Load Palette" ) );
+    setButtons( Ok|Cancel );
+    setDefaultButton( Ok );
+    setModal( true );
     fileName = "";
     QWidget *mainWidget = new QWidget( this );
     setMainWidget( mainWidget );
