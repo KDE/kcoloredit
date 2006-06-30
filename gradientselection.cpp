@@ -75,6 +75,7 @@ GradientSelection::GradientSelection(QWidget *parent ) : QWidget(parent)
 	QRadioButton* vRadioButton = new QRadioButton("V", this);
 	hsvButtons.insert(vRadioButton, V_COMPONENT);
 	vRadioButton->toggle();
+        hsvButtons.setExclusive( true );
 	zColorSelectorLayout->addWidget(vRadioButton);
 	topLayout->addLayout(zColorSelectorLayout, 1, 1);
 	color.setComponents(RGB_MAX_COMPONENT_VALUE, RGB_MAX_COMPONENT_VALUE, RGB_MAX_COMPONENT_VALUE);
