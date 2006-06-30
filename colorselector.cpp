@@ -71,6 +71,7 @@ ColorSelector::ColorSelector(QWidget *parent, const char *name ) : QWidget(paren
 	QRadioButton* changeButton = new QRadioButton(i18n( "Change" ) + ":", this);
 	connect(changeButton, SIGNAL( clicked() ), SLOT( slotColorChange() ));
 	colorChangeButtons.insert(changeButton);
+        colorChangeButtons.setExclusive( true );
 	colorChangeLayout->addWidget(changeButton);
 	colorChangeValue = 0;
 	colorChangeSliderWidget = new QWidget(this);
@@ -144,7 +145,7 @@ void ColorSelector::slotGradientSelectionChangeColor(Color* gradientSelectionCol
 		case MODE_REPLACE:
 			slotSetColor(gradientSelectionColor);
 			break;
-			
+
 		case MODE_CHANGE:
 			gradientSelection->slotIgnoreSetValue(true);
 			double rComponent;
