@@ -56,7 +56,7 @@ LoadPaletteDlg::LoadPaletteDlg(QWidget *parent, const char *name)
     for(QStringList::Iterator palette = palettesList.begin();
         palette != palettesList.end(); ++palette) {
         bool prepend = (*palette).contains( "colors/Custom_Colors" );
-        QString fileName = locate("config", (*palette));
+        QString fileName = KStandardDirs::locate("config", (*palette));
         if(prepend) {
             palettesFileNames.prepend(fileName);
             setFileName(&fileName);
