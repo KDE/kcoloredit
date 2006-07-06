@@ -13,7 +13,7 @@ kde4_add_executable(kcoloredit ${kcoloredit_SRCS})
 
 target_link_libraries(kcoloredit  ${KDE4_KDE3SUPPORT_LIBS} )
 
-install_targets(/bin kcoloredit )
+install(TARGETS kcoloredit  DESTINATION ${BIN_INSTALL_DIR} )
 
 
 ########### next target ###############
@@ -26,7 +26,7 @@ kde4_add_executable(kcolorchooser ${kcolorchooser_SRCS})
 
 target_link_libraries(kcolorchooser  ${KDE4_KIO_LIBS} )
 
-install_targets(/bin kcolorchooser )
+install(TARGETS kcolorchooser  DESTINATION ${BIN_INSTALL_DIR} )
 
 
 ########### install files ###############
