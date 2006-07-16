@@ -77,7 +77,7 @@ void KColorEditApp::initActions()
   m_actRecent = KStdAction::openRecent( this,
           SLOT( slotFileOpenRecent( const KUrl& ) ), actionCollection() );
 
-  ( void ) new KAction( i18n("New &Window"), qApp->windowIcon().pixmap(IconSize(K3Icon::Small),IconSize(K3Icon::Small)), KShortcut(),
+  KAction *action = new KAction( i18n("New &Window"), qApp->windowIcon().pixmap(IconSize(K3Icon::Small),IconSize(K3Icon::Small)), KShortcut(),
           this, SLOT( slotFileNewWindow() ), actionCollection(),
           "file_new_window" );
 
@@ -97,8 +97,8 @@ void KColorEditApp::initActions()
   m_actNames->setCheckedState(i18n("Hide &Color Names"));
   m_actPalette = new KAction( i18n("From &Palette"), actionCollection(), "color_from_palette" );
   connect(m_actPalette, SIGNAL(triggered(bool) ), SLOT( slotColorFromPalette() ));
-  ( void ) new KAction( i18n("From &Screen"), KShortcut(), this,
-          SLOT( slotColorFromScreen() ), actionCollection(), "color_from_screen" );
+  action = new KAction( i18n("From &Screen"), actionCollection(), "color_from_screen" );
+  connect(action, SIGNAL(triggered(bool)),SLOT( slotColorFromScreen() ));
 }
 
 void KColorEditApp::initStatusBar()
