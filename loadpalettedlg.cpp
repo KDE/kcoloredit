@@ -71,7 +71,7 @@ LoadPaletteDlg::LoadPaletteDlg(QWidget *parent, const char *name)
         else if(paletteName == "Recent_Colors")
             paletteName = i18n("Recent Colors");
         if(prepend)
-            paletteBox->insertItem(paletteName, 0);
+            paletteBox->insertItem(0, paletteName);
         else
             paletteBox->addItem(paletteName);
     }
@@ -106,7 +106,7 @@ void LoadPaletteDlg::browseFileNames() {
 			paletteBox->removeItem(0);
 			palettesFileNames.removeAt(0);
 		}
-		paletteBox->insertItem(fileName, 0);
+		paletteBox->insertItem(0, fileName);
 		paletteBox->setCurrentItem(0);
 		palettesFileNames.prepend(fileName);
 		browseFileNameInserted = true;
