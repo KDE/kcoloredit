@@ -73,7 +73,7 @@ LoadPaletteDlg::LoadPaletteDlg(QWidget *parent, const char *name)
         if(prepend)
             paletteBox->insertItem(paletteName, 0);
         else
-            paletteBox->insertItem(paletteName);
+            paletteBox->addItem(paletteName);
     }
     connect(paletteBox, SIGNAL( activated(int) ), SLOT( setFileName(int) ));
     topLayout->addWidget(paletteBox);
