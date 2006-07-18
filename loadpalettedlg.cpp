@@ -107,7 +107,7 @@ void LoadPaletteDlg::browseFileNames() {
 			palettesFileNames.removeAt(0);
 		}
 		paletteBox->insertItem(0, fileName);
-		paletteBox->setCurrentItem(0);
+		paletteBox->setCurrentIndex(0);
 		palettesFileNames.prepend(fileName);
 		browseFileNameInserted = true;
 		lastOpenPaletteFileDir = fileName;
