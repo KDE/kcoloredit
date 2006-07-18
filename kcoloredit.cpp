@@ -77,9 +77,9 @@ void KColorEditApp::initActions()
   m_actRecent = KStdAction::openRecent( this,
           SLOT( slotFileOpenRecent( const KUrl& ) ), actionCollection() );
 
-  KAction *action = new KAction( i18n("New &Window"), qApp->windowIcon().pixmap(IconSize(K3Icon::Small),IconSize(K3Icon::Small)), KShortcut(),
-          this, SLOT( slotFileNewWindow() ), actionCollection(),
-          "file_new_window" );
+  KAction *action = new KAction( i18n("New &Window"), actionCollection(), "file_new_window" );
+  connect(action, SIGNAL(triggered(bool)), SLOT( slotFileNewWindow() ));
+  static_cast<QAction*>(action)->setIcon(qApp->windowIcon().pixmap(IconSize(K3Icon::Small),IconSize(K3Icon::Small)));
 
   // Edit actions
   m_actCut = KStdAction::cut( this, SLOT( slotEditCut() ),
