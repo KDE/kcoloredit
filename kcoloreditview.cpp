@@ -91,10 +91,10 @@ KColorEditView::KColorEditView(QWidget *parent, const char *name) : QSplitter(pa
 	QGridLayout* colorAtCursorComponentsLayout = new QGridLayout();
         colorAtCursorComponentsLayout->setMargin( 4 );
 	colorAtCursorLayout->addLayout(colorAtCursorComponentsLayout);
-	colorAtCursorComponentsLayout->setColStretch(1, 10);
+	colorAtCursorComponentsLayout->setColumnStretch(1, 10);
 	colorAtCursorComponentsLayout->addItem( new QSpacerItem( 8, 0 ), 0, 2 );
-	colorAtCursorComponentsLayout->setColStretch(4, 10);
-	colorAtCursorComponentsLayout->setColStretch(5, 10);
+	colorAtCursorComponentsLayout->setColumnStretch(4, 10);
+	colorAtCursorComponentsLayout->setColumnStretch(5, 10);
 	QLabel* hLabel = new QLabel("H: ", colorAtCursorFrameArea);
 	colorAtCursorComponentsLayout->addWidget(hLabel, 0, 0);
 	colorAtCursorHValueLabel = new QLabel("", colorAtCursorFrameArea);

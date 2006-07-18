@@ -95,7 +95,8 @@ void PaletteViewScrolledArea::scrollPalette(const int amount, const int timeout)
 	if(scrollTimeout) {
 		scrollBy(amount);
 		scrollTimeout = false;
-		scrollTimeoutTimer->start(timeout, true);
+        scrollTimeoutTimer->setSingleShot(true);
+		scrollTimeoutTimer->start(timeout);
 	}
 }
 

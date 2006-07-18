@@ -33,8 +33,8 @@ PaletteView::PaletteView(const int defaultCellWidth, const int defaultCellHeight
 	topLayout->setMargin(2);
 	topLayout->setRowStretch(0, 10);
 	topLayout->setRowStretch(1, 0);
-	topLayout->setColStretch(0, 10);
-	topLayout->setColStretch(1, 0);
+	topLayout->setColumnStretch(0, 10);
+	topLayout->setColumnStretch(1, 0);
 	scrollBar = new QScrollBar(this);
 	hScrollBar = new QScrollBar(0, 1, 1, 1, 0, Qt::Horizontal, this);
 	scrolledArea = new PaletteViewScrolledArea(defaultCellWidth,
