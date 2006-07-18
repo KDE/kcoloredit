@@ -50,7 +50,8 @@ LoadPaletteDlg::LoadPaletteDlg(QWidget *parent, const char *name)
     QLabel* label = new QLabel(i18n( "Select a palette:" ), mainWidget);
     topLayout->addWidget(label);
 
-    paletteBox = new QComboBox(false, mainWidget);
+    paletteBox = new QComboBox(mainWidget);
+    paletteBox->setEditable( false );
     browseFileNameInserted = false;
     QStringList palettesList = Palette::kdePalettes();
     for(QStringList::Iterator palette = palettesList.begin();
