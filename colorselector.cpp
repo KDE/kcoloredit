@@ -68,7 +68,7 @@ ColorSelector::ColorSelector(QWidget *parent, const char *name ) : QWidget(paren
 	replaceButton->setChecked(true);
 	colorChangeButtons.insert(replaceButton);
 	colorChangeLayout->addWidget(replaceButton);
-	QRadioButton* changeButton = new QRadioButton(i18n( "Change" ) + ":", this);
+	QRadioButton* changeButton = new QRadioButton(i18n( "Change" ) + ':', this);
 	connect(changeButton, SIGNAL( clicked() ), SLOT( slotColorChange() ));
 	colorChangeButtons.insert(changeButton);
         colorChangeButtons.setExclusive( true );
@@ -88,7 +88,7 @@ ColorSelector::ColorSelector(QWidget *parent, const char *name ) : QWidget(paren
 	QLabel* subtractLabel = new QLabel(i18n( "0" ), colorChangeSliderWidget);
 	colorChangeSliderLabelsLayout->addWidget(subtractLabel);
 	colorChangeSliderLabelsLayout->addStretch(10);
-	QLabel* addLabel = new QLabel(" " + i18n( "Replace" ), colorChangeSliderWidget);
+	QLabel* addLabel = new QLabel(' ' + i18n( "Replace" ), colorChangeSliderWidget);
 	colorChangeSliderLabelsLayout->addWidget(addLabel);
 	colorChangeSliderLayout->addLayout(colorChangeSliderLabelsLayout);
 	colorChangeLayout->addStretch(10);
