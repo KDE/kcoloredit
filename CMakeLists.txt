@@ -34,7 +34,7 @@ install(TARGETS kcolorchooser  DESTINATION ${BIN_INSTALL_DIR} )
 install( FILES kcoloredit.desktop kcolorchooser.desktop  DESTINATION  ${XDG_APPS_DIR} )
 install( FILES kcoloreditui.rc  DESTINATION  ${DATA_INSTALL_DIR}/kcoloredit )
 
-kde4_install_icons( ${ICON_INSTALL_DIR}  hicolor )
+kde4_install_icons( ${ICON_INSTALL_DIR}   )
 
 
 
