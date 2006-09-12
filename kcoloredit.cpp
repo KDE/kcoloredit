@@ -94,7 +94,7 @@ void KColorEditApp::initActions()
   // Color Menu
   m_actNames = new KToggleAction( i18n("Show &Color Names"), actionCollection(), "color_view_names" );
   connect(m_actNames, SIGNAL(triggered(bool) ), SLOT( slotViewColorNames() ));
-  m_actNames->setCheckedState(i18n("Hide &Color Names"));
+  m_actNames->setCheckedState(KGuiItem(i18n("Hide &Color Names")));
   m_actPalette = new KAction( i18n("From &Palette"), actionCollection(), "color_from_palette" );
   connect(m_actPalette, SIGNAL(triggered(bool) ), SLOT( slotColorFromPalette() ));
   action = new KAction( i18n("From &Screen"), actionCollection(), "color_from_screen" );
@@ -265,7 +265,7 @@ bool KColorEditApp::slotFileSaveAs()
                KMessageBox::questionYesNo( this,
                        i18n("A Document with this name already exists.\n"
                             "Do you want to overwrite it?"),
-                       i18n("Warning"), i18n("Overwrite"), KStdGuiItem::cancel() ) == KMessageBox::Yes) {
+                       i18n("Warning"), KGuiItem(i18n("Overwrite")), KStdGuiItem::cancel() ) == KMessageBox::Yes) {
                 if(!doc->saveDocument( newName )) {
                     KMessageBox::sorry(0, doc->errorString());
                     result = false;
