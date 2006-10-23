@@ -7,7 +7,7 @@ project(kcoloredit)
 
 set(kcoloredit_SRCS kzcolorselector.cpp imageselection.cpp texteditselection.cpp gradientselection.cpp colorselector.cpp kxycolorselector.cpp paletteview.cpp paletteviewscrolledarea.cpp editablestreamhistory.cpp color.cpp palette.cpp loadpalettedlg.cpp kcoloreditview.cpp kcoloreditdoc.cpp kcoloredit.cpp main.cpp)
 
-kde4_automoc(kcoloredit ${kcoloredit_SRCS})
+kde4_automoc(${kcoloredit_SRCS})
 
 kde4_add_executable(kcoloredit ${kcoloredit_SRCS})
 
@@ -20,7 +20,7 @@ install(TARGETS kcoloredit  DESTINATION ${BIN_INSTALL_DIR} )
 
 set(kcolorchooser_SRCS kcolorchooser.cpp )
 
-kde4_automoc(kcolorchooser ${kcolorchooser_SRCS})
+kde4_automoc(${kcolorchooser_SRCS})
 
 kde4_add_executable(kcolorchooser ${kcolorchooser_SRCS})
 
