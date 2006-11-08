@@ -31,8 +31,9 @@ KZColorSelector::KZColorSelector(Qt::Orientation o, QWidget *parent, const char 
 	baseColorH = -1;
 	baseColorS = 0;
 	baseColorV = 0;
+#ifdef __GNUC__
 #warning "pixmap.setOptimization( QPixmap::BestOptim ); ???"
-	
+#endif
 	//pixmap.setOptimization( QPixmap::BestOptim );
 }
 KZColorSelector::~KZColorSelector() {
