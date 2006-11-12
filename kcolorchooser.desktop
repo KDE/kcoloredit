@@ -12,5 +12,5 @@ GenericName[x-test]=xxColor Chooserxx
 Name=KColorChooser
 Name[x-test]=xxKColorChooserxx
 
-X-DCOP-ServiceType=Multi
+X-DBUS-StartupType=Multi
 Categories=Qt;KDE;Graphics;X-KDE-More;
