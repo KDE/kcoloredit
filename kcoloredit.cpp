@@ -31,7 +31,7 @@
 #include <kcolordialog.h>
 #include <kconfig.h>
 #include <kdebug.h>
-#include <kstdaction.h>
+#include <kstandardaction.h>
 // application specific includes
 #include "kcoloredit.h"
 #include "kcoloreditview.h"
@@ -67,14 +67,14 @@ KColorEditApp::~KColorEditApp() {
 void KColorEditApp::initActions()
 {
   // File actiojns
-  KStdAction::openNew( this, SLOT( slotFileNew() ), actionCollection() );
-  KStdAction::open( this, SLOT( slotFileOpen() ), actionCollection() );
-  KStdAction::saveAs( this, SLOT( slotFileSaveAs() ), actionCollection() );
-  KStdAction::close( this, SLOT( slotClose() ), actionCollection() );
-  KStdAction::quit( this, SLOT( slotQuit() ), actionCollection() );
-  m_actSave = KStdAction::save( this, SLOT( slotFileSave() ),
+  KStandardAction::openNew( this, SLOT( slotFileNew() ), actionCollection() );
+  KStandardAction::open( this, SLOT( slotFileOpen() ), actionCollection() );
+  KStandardAction::saveAs( this, SLOT( slotFileSaveAs() ), actionCollection() );
+  KStandardAction::close( this, SLOT( slotClose() ), actionCollection() );
+  KStandardAction::quit( this, SLOT( slotQuit() ), actionCollection() );
+  m_actSave = KStandardAction::save( this, SLOT( slotFileSave() ),
           actionCollection() );
-  m_actRecent = KStdAction::openRecent( this,
+  m_actRecent = KStandardAction::openRecent( this,
           SLOT( slotFileOpenRecent( const KUrl& ) ), actionCollection() );
 
   KAction *action = new KAction( i18n("New &Window"), actionCollection(), "file_new_window" );
@@ -82,11 +82,11 @@ void KColorEditApp::initActions()
   static_cast<QAction*>(action)->setIcon(qApp->windowIcon().pixmap(IconSize(K3Icon::Small),IconSize(K3Icon::Small)));
 
   // Edit actions
-  m_actCut = KStdAction::cut( this, SLOT( slotEditCut() ),
+  m_actCut = KStandardAction::cut( this, SLOT( slotEditCut() ),
           actionCollection() );
-  m_actCopy = KStdAction::copy( this, SLOT( slotEditCopy() ),
+  m_actCopy = KStandardAction::copy( this, SLOT( slotEditCopy() ),
           actionCollection() );
-  m_actPaste = KStdAction::paste( this, SLOT( slotEditPaste() ),
+  m_actPaste = KStandardAction::paste( this, SLOT( slotEditPaste() ),
           actionCollection() );
 
   m_actPaste->setEnabled( false );
