@@ -32,6 +32,7 @@
 #include <kconfig.h>
 #include <kdebug.h>
 #include <kstandardaction.h>
+#include <kactioncollection.h>
 // application specific includes
 #include "kcoloredit.h"
 #include "kcoloreditview.h"
@@ -77,7 +78,8 @@ void KColorEditApp::initActions()
   m_actRecent = KStandardAction::openRecent( this,
           SLOT( slotFileOpenRecent( const KUrl& ) ), actionCollection() );
 
-  KAction *action = new KAction( i18n("New &Window"), actionCollection(), "file_new_window" );
+  QAction *action = actionCollection()->addAction( "file_new_window" );
+  action->setText( i18n("New &Window") );
   connect(action, SIGNAL(triggered(bool)), SLOT( slotFileNewWindow() ));
   static_cast<QAction*>(action)->setIcon(qApp->windowIcon().pixmap(IconSize(K3Icon::Small),IconSize(K3Icon::Small)));
 
@@ -92,12 +94,15 @@ void KColorEditApp::initActions()
   m_actPaste->setEnabled( false );
 
   // Color Menu
-  m_actNames = new KToggleAction( i18n("Show &Color Names"), actionCollection(), "color_view_names" );
+  m_actNames = actionCollection()->add<KToggleAction>( "color_view_names" );
+  m_actNames->setText( i18n("Show &Color Names") );
   connect(m_actNames, SIGNAL(triggered(bool) ), SLOT( slotViewColorNames() ));
   m_actNames->setCheckedState(KGuiItem(i18n("Hide &Color Names")));
-  m_actPalette = new KAction( i18n("From &Palette"), actionCollection(), "color_from_palette" );
+  m_actPalette = actionCollection()->addAction( "color_from_palette" );
+  m_actPalette->setText( i18n("From &Palette") );
   connect(m_actPalette, SIGNAL(triggered(bool) ), SLOT( slotColorFromPalette() ));
-  action = new KAction( i18n("From &Screen"), actionCollection(), "color_from_screen" );
+  action = actionCollection()->addAction( "color_from_screen" );
+  action->setText( i18n("From &Screen") );
   connect(action, SIGNAL(triggered(bool)),SLOT( slotColorFromScreen() ));
 }
 
