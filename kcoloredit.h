@@ -170,7 +170,7 @@ class KColorEditApp : public KMainWindow
     /** the configuration object of the application */
     KConfig *config;
 
-    KAction *m_actSave, *m_actCut, *m_actCopy, *m_actPaste, *m_actPalette;
+    QAction *m_actSave, *m_actCut, *m_actCopy, *m_actPaste, *m_actPalette;
     KToggleAction *m_actNames;
     KRecentFilesAction *m_actRecent;
 
