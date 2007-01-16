@@ -7,6 +7,7 @@ Path=
 Terminal=false
 DocPath=kcoloredit/index.html
 GenericName=Color Palette Editor
+GenericName[el]=Επεξεργαστής παλέτας χρωμάτων
 GenericName[fr]=Éditeur de palette de couleurs
 GenericName[x-test]=xxColor Palette Editorxx
 Name=KColorEdit
