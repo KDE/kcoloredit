@@ -31,6 +31,7 @@
 #include <kapplication.h>
 #include <kmainwindow.h>
 #include <kaction.h>
+#include <kconfig.h>
 #include <ktoggleaction.h>
 #include <krecentfilesaction.h>
 // application specific includes
@@ -168,7 +169,7 @@ class KColorEditApp : public KMainWindow
   private:
 
     /** the configuration object of the application */
-    KConfig *config;
+    KSharedConfigPtr config;
 
     QAction *m_actSave, *m_actCut, *m_actCopy, *m_actPaste, *m_actPalette;
     KToggleAction *m_actNames;
