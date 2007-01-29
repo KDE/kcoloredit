@@ -152,8 +152,8 @@ KColorEditDoc *KColorEditApp::document() const
 
 void KColorEditApp::saveOptions()
 {
-  saveMainWindowSettings( config, "MainWindowSettings" );
-  m_actRecent->saveEntries( config );
+  saveMainWindowSettings( config.data(), "MainWindowSettings" );
+  m_actRecent->saveEntries( config.data() );
 
   config->setGroup("KColorEdit Options");
   config->writeEntry("ColorNames", viewColorNames);
@@ -161,8 +161,8 @@ void KColorEditApp::saveOptions()
 
 void KColorEditApp::readOptions()
 {
-  applyMainWindowSettings( config, "MainWindowSettings" );
-  m_actRecent->loadEntries( config );
+  applyMainWindowSettings( config.data(), "MainWindowSettings" );
+  m_actRecent->loadEntries( config.data() );
 
   config->setGroup("KColorEdit Options");
 
