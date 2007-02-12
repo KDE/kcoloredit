@@ -48,7 +48,7 @@ void Palette::init() {
 
 QStringList Palette::kdePalettes() {
 	QStringList paletteList;
-	KGlobal::dirs()->findAllResources("config", palettesDir + "/*", false, true, paletteList);
+	KGlobal::dirs()->findAllResources("config", palettesDir + "/*", KStandardDirs::NoDuplicates, paletteList);
 	return paletteList;
 }
 
