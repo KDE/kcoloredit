@@ -152,21 +152,18 @@ KColorEditDoc *KColorEditApp::document() const
 
 void KColorEditApp::saveOptions()
 {
-  saveMainWindowSettings( config.data(), "MainWindowSettings" );
-  m_actRecent->saveEntries( config.data() );
+  saveMainWindowSettings( config->group( "MainWindowSettings" ) );
+  m_actRecent->saveEntries( config->group( QString() ) );
 
-  config->setGroup("KColorEdit Options");
-  config->writeEntry("ColorNames", viewColorNames);
+  config->group("KColorEdit Options").writeEntry("ColorNames", viewColorNames);
 }
 
 void KColorEditApp::readOptions()
 {
-  applyMainWindowSettings( config.data(), "MainWindowSettings" );
-  m_actRecent->loadEntries( config.data() );
+  applyMainWindowSettings( config->group( "MainWindowSettings" ) );
+  m_actRecent->loadEntries( config->group( QString() ) );
 
-  config->setGroup("KColorEdit Options");
-
-  viewColorNames = config->readEntry("ColorNames", false);
+  viewColorNames = config->group("KColorEdit Options" ).readEntry("ColorNames", false);
   m_actNames->setChecked(viewColorNames);
   doc->slotChangeViewMode(viewColorNames);
 }
