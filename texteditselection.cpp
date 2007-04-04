@@ -28,7 +28,8 @@
 #include "main.h"
 #include "texteditselection.h"
 
-TextEditSelection::TextEditSelection(QWidget *parent, const char *name ) : QWidget(parent,name) {
+TextEditSelection::TextEditSelection(QWidget *parent, const char *name ) : QWidget(parent) {
+	setObjectName(QLatin1String(name));
 	inChangingComponents = false;
 	QVBoxLayout* topLayout = new QVBoxLayout(this);
 	topLayout->setSpacing(4);

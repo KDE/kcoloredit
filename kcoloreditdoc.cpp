@@ -31,8 +31,9 @@
 #include "kcoloreditview.h"
 #include "resource.h"
 
-KColorEditDoc::KColorEditDoc(QWidget *parent, const char *name) : QObject(parent, name),
+KColorEditDoc::KColorEditDoc(QWidget *parent, const char *name) : QObject(parent),
 	m_palette(), m_paletteHistory(&m_palette, 0) {
+	setObjectName(QLatin1String(name));
 	m_pViewList = new QList<KColorEditView*>();
 }
 
@@ -153,7 +154,7 @@ bool KColorEditDoc::newDocument()
 {
   deleteContents();
 	setModified(false);
-  setAbsFilePath( QDir::homeDirPath() );
+  setAbsFilePath( QDir::homePath() );
   setTitle( i18n("Untitled") );
   setPaletteCursorPos(0);
   setPaletteSelection(0, 0);
@@ -167,7 +168,7 @@ bool KColorEditDoc::openDocument(const QString& filename) {
 	else {
 		deleteContents();
 		QFileInfo fileInfo(filename);
-		setAbsFilePath( fileInfo.absFilePath() );
+		setAbsFilePath( fileInfo.absoluteFilePath() );
 		if(!m_palette.load( absFilePath() )) {
 			setErrorString(m_palette.errorString());
 	  		return false;

@@ -31,7 +31,7 @@
 GradientSelection::GradientSelection(QWidget *parent ) : QWidget(parent)
 {
 	QGridLayout* topLayout = new QGridLayout(this);
-	QHBoxLayout* layout = new QHBoxLayout(0);
+	QHBoxLayout* layout = new QHBoxLayout();
 	layout->setMargin(3);
 	xyColorSelector = new KXYColorSelector(this);
 	connect(xyColorSelector, SIGNAL( valueChanged(int, int) ),
@@ -64,7 +64,7 @@ GradientSelection::GradientSelection(QWidget *parent ) : QWidget(parent)
 		SLOT( slotZColorSelectorPosChanged(int) ));
 	zColorSelector->setFixedWidth(36);
 	topLayout->addWidget(zColorSelector, 0, 1);
-	QVBoxLayout* zColorSelectorLayout = new QVBoxLayout(0);
+	QVBoxLayout* zColorSelectorLayout = new QVBoxLayout();
 	connect(&hsvButtons, SIGNAL( clicked(int) ), SLOT( slotSetColorSelectionMode(int) ));
 	QRadioButton* hRadioButton = new QRadioButton("H", this);
 	hsvButtons.insert(hRadioButton, H_COMPONENT);

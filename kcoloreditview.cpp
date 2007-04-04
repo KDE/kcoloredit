@@ -39,7 +39,8 @@
 #include "kcoloredit.h"
 #include "palette.h"
 
-KColorEditView::KColorEditView(QWidget *parent, const char *name) : QSplitter(parent, name) {
+KColorEditView::KColorEditView(QWidget *parent, const char *name) : QSplitter(parent) {
+	setObjectName(QLatin1String(name));
 	colorSelector = new ColorSelector(this);
 	colorSelector->slotSetColor(
 		Color( RGB_MAX_COMPONENT_VALUE, RGB_MAX_COMPONENT_VALUE, RGB_MAX_COMPONENT_VALUE, "" ));
@@ -81,7 +82,7 @@ KColorEditView::KColorEditView(QWidget *parent, const char *name) : QSplitter(pa
 	QWidget* colorAtCursorFrameArea = new QWidget(colorAtCursorFrame);
 	QVBoxLayout* colorAtCursorLayout = new QVBoxLayout(colorAtCursorFrameArea);
 	colorAtCursorLayout->setSpacing(4);
-	QHBoxLayout* colorNameLayout = new QHBoxLayout(0);
+	QHBoxLayout* colorNameLayout = new QHBoxLayout();
 	QLabel* nameLabel = new QLabel(i18n( "Name" ) + ": ", colorAtCursorFrameArea);
 	colorNameLayout->addWidget(nameLabel, 0);
 	colorName = new QLineEdit(colorAtCursorFrameArea);

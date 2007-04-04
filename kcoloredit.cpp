@@ -230,7 +230,7 @@ void KColorEditApp::slotFileOpen() {
           KMessageBox::sorry(0, doc->errorString());
         } else {
           setCaption(doc->title());
-          m_actRecent->addUrl( KUrl::fromPathOrUrl( fileToOpen ) );
+          m_actRecent->addUrl( KUrl( fileToOpen ) );
         }
       }
     }

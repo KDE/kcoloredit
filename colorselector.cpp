@@ -33,7 +33,8 @@
 #include "texteditselection.h"
 #include "colorselector.h"
 
-ColorSelector::ColorSelector(QWidget *parent, const char *name ) : QWidget(parent, name) {
+ColorSelector::ColorSelector(QWidget *parent, const char *name ) : QWidget(parent) {
+	setObjectName(QLatin1String(name));
 	fComponentsMode = false;
 	QVBoxLayout* topLayout = new QVBoxLayout(this);
 	topLayout->setSpacing(4);
@@ -84,7 +85,7 @@ ColorSelector::ColorSelector(QWidget *parent, const char *name ) : QWidget(paren
 	colorChangeSlider->setTickPosition(QSlider::TicksAbove);
 	connect(colorChangeSlider, SIGNAL( valueChanged(int) ), SLOT( slotColorChangeValueChanged(int) ));
 	colorChangeSliderLayout->addWidget(colorChangeSlider);
-	QHBoxLayout* colorChangeSliderLabelsLayout = new QHBoxLayout(0);
+	QHBoxLayout* colorChangeSliderLabelsLayout = new QHBoxLayout();
 	QLabel* subtractLabel = new QLabel(i18n( "0" ), colorChangeSliderWidget);
 	colorChangeSliderLabelsLayout->addWidget(subtractLabel);
 	colorChangeSliderLabelsLayout->addStretch(10);

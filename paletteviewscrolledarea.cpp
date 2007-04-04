@@ -202,7 +202,8 @@ void PaletteViewScrolledArea::setCellsSizes() {
 	if(scrollBarRange < 0)
 		scrollBarRange = 0;
 	scrollBar->setRange(0, scrollBarRange);
-	scrollBar->setSteps(rowHeight, height());
+	scrollBar->setSingleStep(rowHeight);
+	scrollBar->setPageStep(height());
 }
 
 Palette* PaletteViewScrolledArea::palette() const {
@@ -225,7 +226,8 @@ void PaletteViewScrolledArea::paintEvent(QPaintEvent* /*event*/) {
 	setCellsSizes();
 	QPixmap pixmap(size());
 	QPainter painter;
-	painter.begin(&pixmap, this);
+	painter.begin(&pixmap);
+	painter.initFrom(this);
 	QFontMetrics fontMetrics = painter.fontMetrics();
 	int maxLineWidth;
 	if(viewColorNames) {

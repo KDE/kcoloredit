@@ -160,7 +160,7 @@ QColor* KXYColorSelector::standardColorsPalette() {
 void KXYColorSelector::drawPalette(QPixmap* pixmap) {
 	int xSize = contentsRect().width();
 	int ySize = contentsRect().height();
-	QImage image(xSize, ySize, 32);
+	QImage image(xSize, ySize, QImage::Format_RGB32);
 	QColor color;
 	int x;
 	int y;
