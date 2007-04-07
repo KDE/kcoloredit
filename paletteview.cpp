@@ -16,8 +16,6 @@
  ***************************************************************************/
 
 #include <qlayout.h>
-//Added by qt3to4:
-#include <Q3Frame>
 #include <QHBoxLayout>
 #include <QGridLayout>
 
@@ -26,7 +24,7 @@
 
 PaletteView::PaletteView(const int defaultCellWidth, const int defaultCellHeight, const int cellSpacing,
 	KColorEditView* view, QWidget *parent, const char *name) :
-	Q3Frame(parent) {
+	QFrame(parent) {
 	setObjectName(QLatin1String(name));
 	setFrameStyle(StyledPanel|Sunken);
 	setLineWidth(2);

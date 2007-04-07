@@ -16,7 +16,6 @@
  ***************************************************************************/
 
 #include <stdlib.h>
-#include <q3ptrlist.h>
 #include <qcolor.h>
 #include <qcursor.h>
 #include <qbrush.h>
@@ -30,8 +29,8 @@
 #include <QFrame>
 #include <QPaintEvent>
 #include <kglobal.h>
-#include <k3colordrag.h>
 #include <qscrollbar.h>
+#include <kcolormimedata.h>
 
 #include "palette.h"
 #include "palettehistory.h"
@@ -380,8 +379,8 @@ void PaletteViewScrolledArea::mouseMoveEvent(QMouseEvent* event) {
 			if(abs( event->x() - colorDragPoint.x() ) > 2 ||
 				abs( event->y() - colorDragPoint.y() ) > 2) {
 				QColor draggedColor = color(colorDragPoint);
-				K3ColorDrag* colorDrag = K3ColorDrag::makeDrag(draggedColor, this);
-				colorDrag->dragCopy();
+				QDrag* colorDrag = KColorMimeData::createDrag(draggedColor, this);
+				colorDrag->exec();
 			} else
 				colorChosen = true;
 		}
