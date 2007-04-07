@@ -245,7 +245,8 @@ void PaletteViewScrolledArea::paintEvent(QPaintEvent* /*event*/) {
 	int width = rowWidth;
 	if(maxLineWidth > width) {
 		hScrollBar->setRange(0, maxLineWidth - width);
-		hScrollBar->setSteps(8, width);
+		hScrollBar->setSingleStep(8);
+		hScrollBar->setPageStep(width);
 		hScrollBar->show();
 	} else {
 		hScrollBar->setValue(0);
@@ -256,7 +257,7 @@ void PaletteViewScrolledArea::paintEvent(QPaintEvent* /*event*/) {
 	int lastRow = (posY + height() - 1 + rowHeight - 1)/rowHeight;
 	if(viewColorNames)
 		painter.fillRect(0, 0, rowWidth, height(),
-        QBrush( QFrame::palette().active().base() ));
+        	QFrame::palette().brush(QPalette::Active, QPalette::Base));
 	QBrush normalBackgroundBrush(QFrame::palette().color( QPalette::Active, QPalette::Background) );
 	QBrush selectedBackgroundBrush(QFrame::palette().color( QPalette::Active, QPalette::Highlight ) );
 	QBrush foregroundBrush;

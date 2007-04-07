@@ -26,7 +26,8 @@
 
 PaletteView::PaletteView(const int defaultCellWidth, const int defaultCellHeight, const int cellSpacing,
 	KColorEditView* view, QWidget *parent, const char *name) :
-	Q3Frame(parent, name, Qt::WResizeNoErase*0) {
+	Q3Frame(parent) {
+	setObjectName(QLatin1String(name));
 	setFrameStyle(StyledPanel|Sunken);
 	setLineWidth(2);
 	QGridLayout* topLayout = new QGridLayout(this);
@@ -36,7 +37,11 @@ PaletteView::PaletteView(const int defaultCellWidth, const int defaultCellHeight
 	topLayout->setColumnStretch(0, 10);
 	topLayout->setColumnStretch(1, 0);
 	scrollBar = new QScrollBar(this);
-	hScrollBar = new QScrollBar(0, 1, 1, 1, 0, Qt::Horizontal, this);
+	hScrollBar = new QScrollBar(Qt::Horizontal, this);
+	hScrollBar->setRange(0, 1);
+	hScrollBar->setSingleStep(1);
+	hScrollBar->setPageStep(1);
+	hScrollBar->setValue(0);
 	scrolledArea = new PaletteViewScrolledArea(defaultCellWidth,
 		defaultCellHeight, cellSpacing, scrollBar, hScrollBar, view, this);
 	connect(scrollBar, SIGNAL( valueChanged(int) ),
