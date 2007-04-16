@@ -37,7 +37,7 @@ class KColorEditView;
 /**	KColorEditDoc provides a document object for a document-view model.
   *
   * The KColorEditDoc class provides a document object that can be used in conjunction with the classes KColorEditApp and KColorEditView
-  * to create a document-view model for standard KDE applications based on KApplication and KMainWindow. Thereby, the document object
+  * to create a document-view model for standard KDE applications based on KApplication and KXmlGuiWindow. Thereby, the document object
   * is created by the KColorEditApp instance and contains the document structure with the according methods for manipulation of the document
   * data by KColorEditView objects. Also, KColorEditDoc contains the methods for serialization of the document data from and to files.
   *

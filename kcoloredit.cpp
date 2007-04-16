@@ -44,7 +44,7 @@
 #include <kglobal.h>
 
 
-KColorEditApp::KColorEditApp() : KMainWindow(0) {
+KColorEditApp::KColorEditApp() : KXmlGuiWindow(0) {
   config=KGlobal::config();
 
   ///////////////////////////////////////////////////////////////////
@@ -130,7 +130,7 @@ void KColorEditApp::initDocument()
 void KColorEditApp::initView()
 {
   ////////////////////////////////////////////////////////////////////
-  // create the main widget here that is managed by KMainWindow's view-region
+  // create the main widget here that is managed by KXmlGuiWindow's view-region
   // and connect the widget to your document to display document contents.
 
   view = new KColorEditView(this);
@@ -361,7 +361,7 @@ void KColorEditApp::mouseReleaseEvent(QMouseEvent* event) {
 		color.setComponents(rgbColor.red(), rgbColor.green(), rgbColor.blue());
 		view->chooseColor(&color);
 	} else
-		KMainWindow::mouseReleaseEvent(event);
+		KXmlGuiWindow::mouseReleaseEvent(event);
 }
 
 #include "kcoloredit.moc"
