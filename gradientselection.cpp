@@ -18,7 +18,6 @@
 #include "gradientselection.h"
 
 #include <qlayout.h>
-#include <q3frame.h>
 #include <qradiobutton.h>
 #include <qcolor.h>
 //Added by qt3to4:

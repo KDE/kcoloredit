@@ -25,7 +25,6 @@
 // include files for QT
 #include <qobject.h>
 #include <qstring.h>
-#include <q3ptrlist.h>
 
 // application specific includes
 #include "palette.h"
