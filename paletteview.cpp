@@ -15,12 +15,13 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "paletteview.h"
+
 #include <qlayout.h>
 #include <QHBoxLayout>
 #include <QGridLayout>
 
 #include "kcoloreditview.h"
-#include "paletteview.h"
 
 PaletteView::PaletteView(const int defaultCellWidth, const int defaultCellHeight, const int cellSpacing,
 	KColorEditView* view, QWidget *parent, const char *name) :

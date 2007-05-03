@@ -15,6 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "kcoloreditdoc.h"
+
 // include files for Qt
 #include <qdir.h>
 #include <qfileinfo.h>
@@ -26,7 +28,6 @@
 #include <kmessagebox.h>
 
 // application specific includes
-#include "kcoloreditdoc.h"
 #include "kcoloredit.h"
 #include "kcoloreditview.h"
 #include "resource.h"

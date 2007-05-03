@@ -15,6 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "loadpalettedlg.h"
+
 #include <string.h>
 
 #include <qlayout.h>
@@ -32,7 +34,6 @@
 #include <kdialog.h>
 #include "main.h"
 #include "palette.h"
-#include "loadpalettedlg.h"
 
 LoadPaletteDlg::LoadPaletteDlg(QWidget *parent, const char *name)
         : KDialog(parent) {

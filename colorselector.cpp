@@ -15,6 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "colorselector.h"
+
 #include <math.h>
 
 #include <qlayout.h>
@@ -31,7 +33,6 @@
 #include "main.h"
 #include "imageselection.h"
 #include "texteditselection.h"
-#include "colorselector.h"
 
 ColorSelector::ColorSelector(QWidget *parent, const char *name ) : QWidget(parent) {
 	setObjectName(QLatin1String(name));

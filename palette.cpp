@@ -15,6 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "palette.h"
+
 #include <qstring.h>
 #include <qstringlist.h>
 #include <qtextstream.h>
@@ -25,7 +27,6 @@
 
 #include "main.h"
 #include "color.h"
-#include "palette.h"
 
 Palette::Palette() {
 	init();

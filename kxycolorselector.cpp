@@ -15,6 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "kxycolorselector.h"
+
 #include <qpainter.h>
 #include <qpixmap.h>
 #include <qimage.h>
@@ -22,8 +24,6 @@
 #include <QResizeEvent>
 #include <kimageeffect.h>
 #include <kpalette.h>
-
-#include "kxycolorselector.h"
 
 KXYColorSelector::KXYColorSelector(QWidget *parent) : KXYSelector(parent)
 {

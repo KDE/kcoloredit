@@ -15,6 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "kzcolorselector.h"
+
 #include <qpainter.h>
 #include <qimage.h>
 //Added by qt3to4:
@@ -24,7 +26,6 @@
 #include <kpalette.h>
 
 #include "main.h"
-#include "kzcolorselector.h"
 
 KZColorSelector::KZColorSelector(Qt::Orientation o, QWidget *parent, const char *name) :
 	KSelector(o, parent) {

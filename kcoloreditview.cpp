@@ -15,6 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "kcoloreditview.h"
+
 // include files for Qt
 #include <qpainter.h>
 #include <qlayout.h>
@@ -34,7 +36,6 @@
 
 // application specific includes
 #include "main.h"
-#include "kcoloreditview.h"
 #include "kcoloreditdoc.h"
 #include "kcoloredit.h"
 #include "palette.h"

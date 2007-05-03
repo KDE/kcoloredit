@@ -15,6 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "texteditselection.h"
+
 #include <qlabel.h>
 #include <qvalidator.h>
 #include <qcolor.h>
@@ -26,7 +28,6 @@
 #include <klocale.h>
 
 #include "main.h"
-#include "texteditselection.h"
 
 TextEditSelection::TextEditSelection(QWidget *parent, const char *name ) : QWidget(parent) {
 	setObjectName(QLatin1String(name));

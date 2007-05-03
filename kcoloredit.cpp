@@ -15,6 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "kcoloredit.h"
+
 // include files for QT
 #include <qdir.h>
 #include <qprinter.h>
@@ -34,7 +36,6 @@
 #include <kstandardaction.h>
 #include <kactioncollection.h>
 // application specific includes
-#include "kcoloredit.h"
 #include "kcoloreditview.h"
 #include "kcoloreditdoc.h"
 #include "loadpalettedlg.h"

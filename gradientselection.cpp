@@ -15,6 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "gradientselection.h"
+
 #include <qlayout.h>
 #include <q3frame.h>
 #include <qradiobutton.h>
@@ -26,7 +28,6 @@
 #include <klocale.h>
 
 #include "main.h"
-#include "gradientselection.h"
 
 GradientSelection::GradientSelection(QWidget *parent ) : QWidget(parent)
 {

@@ -15,6 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "paletteviewscrolledarea.h"
+
 #include <stdlib.h>
 #include <qcolor.h>
 #include <qcursor.h>
@@ -36,7 +38,6 @@
 #include "palettehistory.h"
 #include "kcoloreditdoc.h"
 #include "kcoloreditview.h"
-#include "paletteviewscrolledarea.h"
 #include "paletteviewscrolledarea.moc"
 
 PaletteViewScrolledArea::PaletteViewScrolledArea(const int defaultCellWidth,
