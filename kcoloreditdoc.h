@@ -60,7 +60,7 @@ class KColorEditDoc : public QObject
     /** sets the modified flag for the document after a modifying action on the view connected to the document.*/
     void setModified(bool modified);
     /** returns if the document is modified or not. Use this to determine if your document needs saving by the user on closing.*/
-    bool isModified() const { return m_modified; };
+    bool isModified() const { return m_modified; }
     /** "save modified" - asks the user for saving if the document is modified */
     bool saveModified();
     /** deletes the document's contents */
