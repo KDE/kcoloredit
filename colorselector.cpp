@@ -68,11 +68,11 @@ ColorSelector::ColorSelector(QWidget *parent, const char *name ) : QWidget(paren
 	QRadioButton* replaceButton = new QRadioButton(i18n( "Replace" ), this);
 	connect(replaceButton, SIGNAL( clicked() ), SLOT( slotColorReplace() ));
 	replaceButton->setChecked(true);
-	colorChangeButtons.insert(replaceButton);
+	colorChangeButtons.addButton(replaceButton);
 	colorChangeLayout->addWidget(replaceButton);
 	QRadioButton* changeButton = new QRadioButton(i18n( "Change" ) + ':', this);
 	connect(changeButton, SIGNAL( clicked() ), SLOT( slotColorChange() ));
-	colorChangeButtons.insert(changeButton);
+	colorChangeButtons.addButton(changeButton);
         colorChangeButtons.setExclusive( true );
 	colorChangeLayout->addWidget(changeButton);
 	colorChangeValue = 0;
