@@ -29,7 +29,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QGridLayout>
-
+#include <Q3GroupBox>
 // include files for KDE
 #include <kseparator.h>
 #include <klocale.h>
