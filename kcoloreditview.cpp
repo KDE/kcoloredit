@@ -29,7 +29,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QGridLayout>
-#include <Q3GroupBox>
+#include <QGroupBox>
 // include files for KDE
 #include <kseparator.h>
 #include <klocale.h>
@@ -79,14 +79,13 @@ KColorEditView::KColorEditView(QWidget *parent, const char *name) : QSplitter(pa
 	//cursorFollowsChosenColor->toggle();
 	paletteView->slotCursorFollowsChosenColor(true);
 	layout->addLayout(addColorLayout, 0);
-	Q3GroupBox* colorAtCursorFrame = new Q3GroupBox (1, Qt::Horizontal,i18n("Color at Cursor"), paletteViewArea);
-	QWidget* colorAtCursorFrameArea = new QWidget(colorAtCursorFrame);
-	QVBoxLayout* colorAtCursorLayout = new QVBoxLayout(colorAtCursorFrameArea);
+	QGroupBox* colorAtCursorFrame = new QGroupBox (i18n("Color at Cursor"), paletteViewArea);
+	QVBoxLayout* colorAtCursorLayout = new QVBoxLayout(colorAtCursorFrame);
 	colorAtCursorLayout->setSpacing(4);
 	QHBoxLayout* colorNameLayout = new QHBoxLayout();
-	QLabel* nameLabel = new QLabel(i18n( "Name" ) + ": ", colorAtCursorFrameArea);
+	QLabel* nameLabel = new QLabel(i18n( "Name" ) + ": ", colorAtCursorFrame);
 	colorNameLayout->addWidget(nameLabel, 0);
-	colorName = new QLineEdit(colorAtCursorFrameArea);
+	colorName = new QLineEdit(colorAtCursorFrame);
 	connect(colorName, SIGNAL( textChanged(const QString&) ), SLOT( slotSetColorName(const QString&) ));
 	colorNameLayout->addWidget(colorName, 10);
 	colorAtCursorLayout->addLayout(colorNameLayout);
@@ -97,41 +96,41 @@ KColorEditView::KColorEditView(QWidget *parent, const char *name) : QSplitter(pa
 	colorAtCursorComponentsLayout->addItem( new QSpacerItem( 8, 0 ), 0, 2 );
 	colorAtCursorComponentsLayout->setColumnStretch(4, 10);
 	colorAtCursorComponentsLayout->setColumnStretch(5, 10);
-	QLabel* hLabel = new QLabel("H: ", colorAtCursorFrameArea);
+	QLabel* hLabel = new QLabel("H: ", colorAtCursorFrame);
 	colorAtCursorComponentsLayout->addWidget(hLabel, 0, 0);
-	colorAtCursorHValueLabel = new QLabel("", colorAtCursorFrameArea);
+	colorAtCursorHValueLabel = new QLabel("", colorAtCursorFrame);
 	setColorAtCursorComponentValueLabelSizes(colorAtCursorHValueLabel);
 	colorAtCursorComponentsLayout->addWidget(colorAtCursorHValueLabel, 0, 1);
-	QLabel* sLabel = new QLabel("S: ", colorAtCursorFrameArea);
+	QLabel* sLabel = new QLabel("S: ", colorAtCursorFrame);
 	colorAtCursorComponentsLayout->addWidget(sLabel, 1, 0);
-	colorAtCursorSValueLabel = new QLabel("", colorAtCursorFrameArea);
+	colorAtCursorSValueLabel = new QLabel("", colorAtCursorFrame);
 	setColorAtCursorComponentValueLabelSizes(colorAtCursorSValueLabel);
 	colorAtCursorComponentsLayout->addWidget(colorAtCursorSValueLabel, 1, 1);
-	QLabel* vLabel = new QLabel("V: ", colorAtCursorFrameArea);
+	QLabel* vLabel = new QLabel("V: ", colorAtCursorFrame);
 	colorAtCursorComponentsLayout->addWidget(vLabel, 2, 0);
-	colorAtCursorVValueLabel = new QLabel("", colorAtCursorFrameArea);
+	colorAtCursorVValueLabel = new QLabel("", colorAtCursorFrame);
 	setColorAtCursorComponentValueLabelSizes(colorAtCursorVValueLabel);
 	colorAtCursorComponentsLayout->addWidget(colorAtCursorVValueLabel, 2, 1);
-	QLabel* rLabel = new QLabel("R: ", colorAtCursorFrameArea);
+	QLabel* rLabel = new QLabel("R: ", colorAtCursorFrame);
 	colorAtCursorComponentsLayout->addWidget(rLabel, 0, 3);
-	colorAtCursorRValueLabel = new QLabel("", colorAtCursorFrameArea);
+	colorAtCursorRValueLabel = new QLabel("", colorAtCursorFrame);
 	setColorAtCursorComponentValueLabelSizes(colorAtCursorRValueLabel);
 	colorAtCursorComponentsLayout->addWidget(colorAtCursorRValueLabel, 0, 4);
-	QLabel* gLabel = new QLabel("G: ", colorAtCursorFrameArea);
+	QLabel* gLabel = new QLabel("G: ", colorAtCursorFrame);
 	colorAtCursorComponentsLayout->addWidget(gLabel, 1, 3);
-	colorAtCursorGValueLabel = new QLabel("", colorAtCursorFrameArea);
+	colorAtCursorGValueLabel = new QLabel("", colorAtCursorFrame);
 	setColorAtCursorComponentValueLabelSizes(colorAtCursorGValueLabel);
 	colorAtCursorComponentsLayout->addWidget(colorAtCursorGValueLabel, 1, 4);
-	QLabel* bLabel = new QLabel("B: ", colorAtCursorFrameArea);
+	QLabel* bLabel = new QLabel("B: ", colorAtCursorFrame);
 	colorAtCursorComponentsLayout->addWidget(bLabel, 2, 3);
-	colorAtCursorBValueLabel = new QLabel("", colorAtCursorFrameArea);
+	colorAtCursorBValueLabel = new QLabel("", colorAtCursorFrame);
 	setColorAtCursorComponentValueLabelSizes(colorAtCursorBValueLabel);
 	colorAtCursorComponentsLayout->addWidget(colorAtCursorBValueLabel, 2, 4);
 	QHBoxLayout* colorAtCursorRgbStringLayout = new QHBoxLayout();
 	QLabel* colorAtCursorRgbStringLabel =
-		new QLabel("RGB " + i18n( "hex." ) + ": ", colorAtCursorFrameArea);
+		new QLabel("RGB " + i18n( "hex." ) + ": ", colorAtCursorFrame);
 	colorAtCursorRgbStringLayout->addWidget(colorAtCursorRgbStringLabel);
-	colorAtCursorRgbStringValueLabel = new QLabel("", colorAtCursorFrameArea);
+	colorAtCursorRgbStringValueLabel = new QLabel("", colorAtCursorFrame);
 	colorAtCursorRgbStringValueLabel->setFixedWidth(
 		colorAtCursorRgbStringValueLabel->fontMetrics().width( QString("8888888") ));
 	colorAtCursorRgbStringLayout->addWidget(colorAtCursorRgbStringValueLabel);
