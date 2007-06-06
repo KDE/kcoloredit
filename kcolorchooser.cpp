@@ -67,4 +67,5 @@ int main(int argc, char *argv[])
   if ( args->isSet("print") && c.isValid() ) {
       std::cout << c.name().toUtf8().constData() << std::endl;
   }
+  args->clear();
 }  
