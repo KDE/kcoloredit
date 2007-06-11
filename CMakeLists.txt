@@ -10,9 +10,6 @@ target_link_libraries(kcoloredit ${KDE4_KIO_LIBS})
 
 install(TARGETS kcoloredit  DESTINATION ${BIN_INSTALL_DIR} )
 
-target_link_libraries(kcolorchooser ${KDE4_KDEUI_LIBS})
-
-install(TARGETS kcolorchooser  DESTINATION ${BIN_INSTALL_DIR} )
 install( FILES kcoloredit.desktop DESTINATION  ${XDG_APPS_DIR} )
 install( FILES kcoloreditui.rc  DESTINATION  ${DATA_INSTALL_DIR}/kcoloredit )
 
