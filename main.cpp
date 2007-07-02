@@ -28,23 +28,19 @@ static const char description[] =
 // INSERT A DESCRIPTION FOR YOUR APPLICATION HERE
 
 
-static KCmdLineOptions options[] =
-{
-  { "+[File]", I18N_NOOP("File to open"), 0 },
-  KCmdLineLastOption
-  // INSERT YOUR COMMANDLINE OPTIONS HERE
-};
-
 int main(int argc, char *argv[])
 {
 
-	KAboutData aboutData( "kcoloredit", I18N_NOOP("KColorEdit"),
-		KDE_VERSION_STRING, description, KAboutData::License_GPL,
-		"(c) 2000, Artur Rataj");
-	aboutData.addAuthor("Artur Rataj",0, "art@zeus.polsl.gliwice.pl");
-    aboutData.addCredit( "Nadeem Hasan", I18N_NOOP( "Rewrote UI code "
+	KAboutData aboutData( "kcoloredit", 0, ki18n("KColorEdit"),
+		KDE_VERSION_STRING, ki18n(description), KAboutData::License_GPL,
+		ki18n("(c) 2000, Artur Rataj"));
+	aboutData.addAuthor(ki18n("Artur Rataj"),KLocalizedString(), "art@zeus.polsl.gliwice.pl");
+    aboutData.addCredit( ki18n("Nadeem Hasan"), ki18n( "Rewrote UI code "
         "to be KDE standards compliant" ), "nhasan@kde.org" );
 	KCmdLineArgs::init( argc, argv, &aboutData );
+
+	KCmdLineOptions options;
+	options.add("+[File]", ki18n("File to open"));
 	KCmdLineArgs::addCmdLineOptions( options ); // Add our own options.
 
   KApplication app;
