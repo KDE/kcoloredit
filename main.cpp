@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
 
 		if (args->count())
 		{
-        kcoloredit->openDocumentFile(args->arg(0));
+        kcoloredit->openDocumentFile(args->arg(0).toLocal8Bit().data());
 		}
 		else
 		{
