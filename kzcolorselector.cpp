@@ -23,7 +23,6 @@
 #include <QPixmap>
 #include <QResizeEvent>
 #include <kimageeffect.h>
-#include <kpalette.h>
 
 #include "main.h"
 

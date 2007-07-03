@@ -29,7 +29,6 @@
 #include <QHBoxLayout>
 #include <klocale.h>
 #include <kstandarddirs.h>
-#include <kpalette.h>
 #include <kfiledialog.h>
 #include <kdialog.h>
 #include "main.h"

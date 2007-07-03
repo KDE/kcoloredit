@@ -23,7 +23,6 @@
 //Added by qt3to4:
 #include <QResizeEvent>
 #include <kimageeffect.h>
-#include <kpalette.h>
 
 KXYColorSelector::KXYColorSelector(QWidget *parent) : KXYSelector(parent)
 {
