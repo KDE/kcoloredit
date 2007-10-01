@@ -82,7 +82,7 @@ void KColorEditApp::initActions()
   QAction *action = actionCollection()->addAction( "file_new_window" );
   action->setText( i18n("New &Window") );
   connect(action, SIGNAL(triggered(bool)), SLOT( slotFileNewWindow() ));
-  static_cast<QAction*>(action)->setIcon(qApp->windowIcon().pixmap(IconSize(K3Icon::Small),IconSize(K3Icon::Small)));
+  static_cast<QAction*>(action)->setIcon(qApp->windowIcon().pixmap(IconSize(KIconLoader::Small),IconSize(KIconLoader::Small)));
 
   // Edit actions
   m_actCut = KStandardAction::cut( this, SLOT( slotEditCut() ),
