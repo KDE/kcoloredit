@@ -22,7 +22,6 @@
 //Added by qt3to4:
 #include <QPixmap>
 #include <QResizeEvent>
-#include <kimageeffect.h>
 
 #include "main.h"
 
@@ -165,12 +164,14 @@ void KZColorSelector::drawPalette(QPixmap* pixmap) {
 			++p;
 		}
 	}
+	/*
 	if (QPixmap::defaultDepth() <= 8)
 	{
 	        QColor* standardPalette = getStandardColorsPalette();
 		KImageEffect::dither(image, standardPalette, STANDARD_PALETTE_SIZE);
 		delete[] standardPalette;
 	}
+	*/
 	*pixmap = QPixmap::fromImage(image);
 }
 #include "kzcolorselector.moc"

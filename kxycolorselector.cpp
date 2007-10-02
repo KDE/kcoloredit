@@ -22,7 +22,6 @@
 #include <qimage.h>
 //Added by qt3to4:
 #include <QResizeEvent>
-#include <kimageeffect.h>
 
 KXYColorSelector::KXYColorSelector(QWidget *parent) : KXYSelector(parent)
 {
@@ -175,12 +174,14 @@ void KXYColorSelector::drawPalette(QPixmap* pixmap) {
 				++p;
 			}
 		}
+		/*
 		if (QPixmap::defaultDepth() <= 8)
 		{
 	    QColor* standardPalette = standardColorsPalette();
 			KImageEffect::dither(image, standardPalette, STANDARD_PALETTE_SIZE);
 			delete[] standardPalette;
 		}
+		*/
 	}
 	*pixmap = QPixmap::fromImage(image);
 }
