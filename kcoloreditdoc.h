@@ -18,10 +18,6 @@
 #ifndef KCOLOREDITDOC_H
 #define KCOLOREDITDOC_H
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-
 // include files for QT
 #include <qobject.h>
 #include <qstring.h>

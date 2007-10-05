@@ -19,8 +19,6 @@
 #define KCOLOREDIT_H
 
 
-#include <config.h>
-
 // include files for Qt
 #include <qevent.h>
 #include <qstringlist.h>
@@ -31,7 +29,6 @@
 #include <kapplication.h>
 #include <kxmlguiwindow.h>
 #include <kaction.h>
-#include <kconfig.h>
 #include <ktoggleaction.h>
 #include <krecentfilesaction.h>
 // application specific includes
