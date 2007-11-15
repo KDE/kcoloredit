@@ -1,4 +1,5 @@
 project(kcoloredit)
+find_package (KDE4 REQUIRED)
 
 set(kcoloredit_SRCS kzcolorselector.cpp imageselection.cpp texteditselection.cpp gradientselection.cpp colorselector.cpp kxycolorselector.cpp paletteview.cpp paletteviewscrolledarea.cpp editablestreamhistory.cpp color.cpp palette.cpp loadpalettedlg.cpp kcoloreditview.cpp kcoloreditdoc.cpp kcoloredit.cpp main.cpp)
 
