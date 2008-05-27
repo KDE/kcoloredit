@@ -9,7 +9,7 @@ kde4_add_executable(kcoloredit ${kcoloredit_SRCS})
 
 target_link_libraries(kcoloredit ${KDE4_KIO_LIBS})
 
-install(TARGETS kcoloredit  DESTINATION ${BIN_INSTALL_DIR} )
+install(TARGETS kcoloredit  ${INSTALL_TARGETS_DEFAULT_ARGS} )
 
 install( FILES kcoloredit.desktop DESTINATION  ${XDG_APPS_INSTALL_DIR} )
 install( FILES kcoloreditui.rc  DESTINATION  ${DATA_INSTALL_DIR}/kcoloredit )
