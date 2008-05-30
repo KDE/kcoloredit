@@ -22,10 +22,7 @@
 
 #include <QtGui/QWidget>
 
-class QLabel;
 
-class KLineEdit;
-class KComboBox;
 
 class MultiPageWidget;
 class ColorInfoVisualSingle;

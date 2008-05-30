@@ -24,7 +24,6 @@
 
 class QDockWidget;
 
-class KAction;
 
 class PaletteModel;
 class PaletteDocument;
