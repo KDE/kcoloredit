@@ -24,7 +24,7 @@
 #include <QtGui/QGridLayout>
 #include <QtGui/QHeaderView>
 #include <QtGui/QSlider>
-#include <QtGui/QLabel>
+#include <QtGui/QCheckBox>
 
 #include <KLocalizedString>
 #include <KColorScheme>
@@ -37,8 +37,12 @@ PaletteGridView::PaletteGridView(PaletteModel * model, QWidget * parent) : QWidg
 {
     m_model = model;
 
-    m_paletteTitleLabel = new QLabel(i18n("Palette"), this);
-    m_paletteTitleLabel->setAlignment(Qt::AlignCenter);
+    m_quickNavigationCheckBox = new QCheckBox(this);
+    m_quickNavigationCheckBox->setText(i18n("Quick navigation"));
+
+    m_showCommentsCheckBox = new QCheckBox(this);
+    m_showCommentsCheckBox->setText(i18n("Show comments"));
+    m_showCommentsCheckBox->setChecked(true);
 
     m_setColumnSlider = new QSlider(Qt::Horizontal, this);
     m_setColumnSlider->setRange(1, 20);
@@ -59,7 +63,8 @@ PaletteGridView::PaletteGridView(PaletteModel * model, QWidget * parent) : QWidg
     m_colorCells->setSelectionMode(QAbstractItemView::ContiguousSelection);
 
     QHBoxLayout * layoutHeader = new QHBoxLayout();
-    layoutHeader->addWidget(m_paletteTitleLabel);
+    layoutHeader->addWidget(m_quickNavigationCheckBox);
+    layoutHeader->addWidget(m_showCommentsCheckBox);
 
     QVBoxLayout * layout = new QVBoxLayout(this);
     layout->addLayout(layoutHeader);
@@ -124,11 +129,14 @@ void PaletteGridView::updateWhenRemoveItem(const QModelIndex & /* parent */, int
 
 void PaletteGridView::trackColor(int row, int column)
 {
-    int i = row * m_colorCells->columnCount() + column;
+    if (m_quickNavigationCheckBox->isChecked())
+    {
+        int i = row * m_colorCells->columnCount() + column;
 
-    // WARNING should use tableitemwidget?
+        // WARNING should use tableitemwidget?
 
-    emit trackedColor(m_colorCells->color(i));
+        emit trackedColor(m_colorCells->color(i));
+    }
 }
 
 void PaletteGridView::loadDataFromModel()

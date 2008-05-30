@@ -23,8 +23,8 @@
 #include <QtCore/QModelIndex>
 #include <QtGui/QWidget>
 
-class QLabel;
 class QSlider;
+class QCheckBox;
 
 class KPushButton;
 class KColorCells;
@@ -62,10 +62,11 @@ class PaletteGridView : public QWidget
 
         KColorCells * m_colorCells;
 
-        QLabel * m_paletteTitleLabel;
         QSlider * m_setColumnSlider;
         KPushButton * m_zoomOutButton;
         KPushButton * m_zoomInButton;
+        QCheckBox * m_quickNavigationCheckBox;
+        QCheckBox * m_showCommentsCheckBox;
 };
 
 #endif // PALETTE_GRID_VIEW_H
