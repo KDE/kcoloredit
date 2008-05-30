@@ -90,19 +90,24 @@ void PaletteGridView::setModel(PaletteModel * model)
 
 void PaletteGridView::setZoomFactor(int factor)
 {
-    m_colorCells->setColumnCount(factor);
+    if (m_model->rowCount() > 0)
+    {
+        m_colorCells->setColumnCount(factor);
 
-    loadDataFromModel();
+        loadDataFromModel();
+    }
 }
 
 void PaletteGridView::zoomOut()
 {
-    m_setColumnSlider->setValue(m_setColumnSlider->value() - m_setColumnSlider->singleStep());
+    if (m_model->rowCount() > 0)
+        m_setColumnSlider->setValue(m_setColumnSlider->value() - m_setColumnSlider->singleStep());
 }
 
 void PaletteGridView::zoomIn()
 {
-    m_setColumnSlider->setValue(m_setColumnSlider->value() + m_setColumnSlider->singleStep());
+    if (m_model->rowCount() > 0)
+        m_setColumnSlider->setValue(m_setColumnSlider->value() + m_setColumnSlider->singleStep());
 }
 
 void PaletteGridView::updateWhenInsertItem(const QModelIndex & /* topLeft */, const QModelIndex & /* bottomRight */)
