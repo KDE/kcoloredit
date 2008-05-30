@@ -22,17 +22,15 @@
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QVBoxLayout>
 
+#include <KLocalizedString>
+
 #include "multipagewidget.h"
-
 #include "kdecolorselector.h"
-
 #include "colorinfovisual.h"
 #include "colorinfotext.h"
 
 KColorEditWidget::KColorEditWidget(QWidget * parent) : QWidget(parent), m_color(Qt::red) // default color
 {
-    // TODO i18n and l10n
-
     m_selectors = new MultiPageWidget(this);
 
     KdeColorSelector * kdeColorSelector = new KdeColorSelector(m_selectors);
@@ -46,8 +44,8 @@ KColorEditWidget::KColorEditWidget(QWidget * parent) : QWidget(parent), m_color(
 
     m_colorInfoVisualComplement = new ColorInfoVisualComplement(m_infoStyles);
 
-    m_infoStyles->addPage(m_colorInfoVisualSingle, KIcon(), QString("Single"));
-    m_infoStyles->addPage(m_colorInfoVisualComplement, KIcon(), QString("Complement"));
+    m_infoStyles->addPage(m_colorInfoVisualSingle, KIcon(), i18n("Single color"));
+    m_infoStyles->addPage(m_colorInfoVisualComplement, KIcon(), i18n("Complementary color"));
 
     m_infoTextModels = new MultiPageWidget(this);
     m_infoTextModels->setMaximumHeight(100); // NOTE default value here;
@@ -64,25 +62,16 @@ KColorEditWidget::KColorEditWidget(QWidget * parent) : QWidget(parent), m_color(
     ColorInfoTextHTML * infoTextHTML = new ColorInfoTextHTML(m_infoTextModels);
     infoTextHTML->setColor(Qt::red); // default color
 
-    m_infoTextModels->addPage(infoTextRGB, KIcon(), QString("RGB Model"));
-    m_infoTextModels->addPage(infoTextHSV, KIcon(), QString("HSV Model"));
-    m_infoTextModels->addPage(infoTextCMY, KIcon(), QString("CMY Model"));
-    m_infoTextModels->addPage(infoTextHTML, KIcon(), QString("CMY Model"));
-
-    /// layouts
+    m_infoTextModels->addPage(infoTextRGB, KIcon(), i18n("RGB Model"));
+    m_infoTextModels->addPage(infoTextHSV, KIcon(), i18n("HSV Model"));
+    m_infoTextModels->addPage(infoTextCMY, KIcon(), i18n("CMY Model"));
+    m_infoTextModels->addPage(infoTextHTML, KIcon(), i18n("CMY Model"));
 
     QVBoxLayout * mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(m_selectors);
     mainLayout->addWidget(m_infoStyles);
     mainLayout->addWidget(m_infoTextModels);
 
-
-    // think ...
-    //connect(m_kdeColorSelector, SIGNAL( colorSelected(QColor) ), m_colorInfoVisualSingle, SLOT( slotSetColor(QColor) ));
-    //connect(m_kdeColorSelector, SIGNAL( colorSelected(QColor) ), m_colorInfoVisualComplement, SLOT( slotSetColor(QColor) ));
-
-    // workflow ?
-    // si o si
     connect(kdeColorSelector, SIGNAL( colorSelected(QColor) ), infoTextRGB, SLOT( setColor(QColor) ));
     connect(kdeColorSelector, SIGNAL( colorSelected(QColor) ), infoTextHSV, SLOT( setColor(QColor) ));
     connect(kdeColorSelector, SIGNAL( colorSelected(QColor) ), infoTextCMY, SLOT( setColor(QColor) ));
@@ -91,8 +80,6 @@ KColorEditWidget::KColorEditWidget(QWidget * parent) : QWidget(parent), m_color(
     connect(kdeColorSelector, SIGNAL( colorSelected(QColor) ), m_colorInfoVisualSingle, SLOT( setColor(QColor) ));
     connect(kdeColorSelector, SIGNAL( colorSelected(QColor) ), m_colorInfoVisualComplement, SLOT( setColor(QColor) ));
 
-    // especifico para esta clase lo de arriba es para q le de
-    //a los styles el color osea cambian el main color de los diferentes styles
     connect(kdeColorSelector, SIGNAL( colorSelected(QColor) ), this, SLOT( getColorFromColorSelector(QColor) ));
 }
 

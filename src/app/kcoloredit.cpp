@@ -232,6 +232,7 @@ void KColorEditMainWnd::setupWidgets()
 
     connect(m_paletteGridView, SIGNAL( trackedColor(QColor) ), m_kColorEditWidget, SLOT( slotSetColor(QColor) ));
 */
+    connect(m_paletteGridView, SIGNAL( trackedColor(QColor) ), m_kColorEditWidget, SLOT( setColor(QColor) ));
 }
 
 void KColorEditMainWnd::setupActions()

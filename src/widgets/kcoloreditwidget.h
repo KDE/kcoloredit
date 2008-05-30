@@ -22,8 +22,6 @@
 
 #include <QtGui/QWidget>
 
-
-
 class MultiPageWidget;
 class ColorInfoVisualSingle;
 class ColorInfoVisualComplement;

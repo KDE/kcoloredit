@@ -45,9 +45,14 @@ class PaletteGridView : public QWidget
         void zoomOut();
         void zoomIn();
 
+    signals:
+        void trackedColor(const QColor & color);
+
     private slots:
         void updateWhenInsertItem(const QModelIndex & topLeft, const QModelIndex & bottomRight);
         void updateWhenRemoveItem(const QModelIndex & parent, int start, int end);
+
+        void trackColor(int row, int column);
 
     private:
         void loadDataFromModel();

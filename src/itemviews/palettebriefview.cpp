@@ -78,6 +78,8 @@ PaletteGridView::PaletteGridView(PaletteModel * model, QWidget * parent) : QWidg
     connect(m_setColumnSlider, SIGNAL( valueChanged(int) ), this, SLOT( setZoomFactor(int) ));
     connect(m_zoomOutButton, SIGNAL( pressed () ), this, SLOT( zoomOut() ));
     connect(m_zoomInButton, SIGNAL( pressed () ), this, SLOT( zoomIn() ));
+
+    connect(m_colorCells, SIGNAL( cellEntered(int, int) ), this, SLOT( trackColor(int, int) ));
 }
 
 void PaletteGridView::setModel(PaletteModel * model)
@@ -118,6 +120,15 @@ void PaletteGridView::updateWhenInsertItem(const QModelIndex & /* topLeft */, co
 void PaletteGridView::updateWhenRemoveItem(const QModelIndex & /* parent */, int /* start */, int /* end */)
 {
     loadDataFromModel();
+}
+
+void PaletteGridView::trackColor(int row, int column)
+{
+    int i = row * m_colorCells->columnCount() + column;
+
+    // WARNING should use tableitemwidget?
+
+    emit trackedColor(m_colorCells->color(i));
 }
 
 void PaletteGridView::loadDataFromModel()

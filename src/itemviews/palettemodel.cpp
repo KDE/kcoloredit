@@ -80,7 +80,7 @@ bool PaletteModel::setData(const QModelIndex & index, const QVariant & value, in
 
             if (m_palette.itemType(index.row()) == PaletteItem::ColorType)
             {
-    
+ 
                 vmap.insert("type", QString("color"));
 
                 index.model()->data(index, Qt::BackgroundRole).toMap().insert("type", QString("color"));  // NOTE
@@ -105,14 +105,14 @@ bool PaletteModel::setData(const QModelIndex & index, const QVariant & value, in
                 if (commentItem != 0)
                     commentItem->setComment(vmap.value("comment").toString());
             }
-         }
+        }
 
         emit dataChanged(index, index);
 
         return true;
     }
-    
-     return false;
+
+    return false;
 }
 
 QVariant PaletteModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -125,9 +125,9 @@ QVariant PaletteModel::headerData(int section, Qt::Orientation orientation, int 
             return QString("Palette Items");
 
      if (orientation == Qt::Vertical)
-         return QString("%1").arg(section + 1);
+        return QString("%1").arg(section + 1);
 
-     return QVariant();
+    return QVariant();
 }
 
 int PaletteModel::rowCount(const QModelIndex & /* parent */) const
