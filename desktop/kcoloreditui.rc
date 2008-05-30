@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
+<gui name="KColorEdit" version="1">
+    <MenuBar>
+        <Menu name="view">
+            <Action name="show-detail-view"/>
+            <Action name="show-brief-view"/>
+        </Menu>
+    </MenuBar>
+    <ToolBar name="palette-toolbar" newline="true">
+        <text>Palette Toolbar</text>
+        <Action name="add-color"/>
+        <Action name="add-comment"/>
+        <Separator/>
+        <Action name="insert-color"/>
+        <Action name="insert-comment"/>
+        <Separator/>
+        <Action name="remove-item"/>
+        <Separator/>
+        <Action name="move-next"/>
+        <Action name="move-prev"/>
+        <Action name="move-begin"/>
+        <Action name="move-end"/>
+    </ToolBar>
+</gui>

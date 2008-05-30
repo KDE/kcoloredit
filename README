@@ -1,0 +1,18 @@
+This version of KColorEdit makes more easy and fun edit your palettes.
+Also, this version have all the features that KDE 4 offers like shade effects and more usability of item list.
+
+
+****************************************************************
+
+Dedico esta version de KColorEdit a las siguientes personas:
+* Humberto Bejarano Bravo:
+Por brindarme una solida base en C++ y alentar mi curiosidad
+para el aprendizaje de lo que significa realmente ser un programador.
+
+* Paul Rivas Galloso:
+Por enseñarme lo que significa GNU/Linux como sistema operativo y apoyarme en mis primeros
+pasos con el desarrollo en Qt y xlib.
+
+* Ilver Anache Pupo:
+Por transmitirme toda su experiencia en los fundamentos de como diseñar correctamente
+una aplicacion en base a las tecnicas de la ingenieria de software.
