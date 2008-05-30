@@ -77,13 +77,8 @@ void KColorEditMainWnd::openFile()
                 if (m_paletteDocument->model()->rowCount() > 0)
                     m_paletteDocument->model()->setData(m_paletteDocument->model()->index(0, 0), m_paletteDocument->model()->index(0, 0).data());
 
-                // setup the window title acording to the file name
-                QStringList strLst = m_paletteDocument->fileName().split("/");
 
-                if (strLst[strLst.count() - 1][0] == '/')
-                    setWindowTitle(KCmdLineArgs::aboutData()->catalogName() + strLst[strLst.count() - 2]);
-
-                setWindowTitle(KCmdLineArgs::aboutData()->catalogName() + " - " + strLst[strLst.count() - 1]);
+                updateWndTittle();
             }
             else
                 KMessageBox::error(this, m_paletteDocument->lastErrorString());
@@ -100,6 +95,8 @@ void KColorEditMainWnd::saveFile()
     {
         if (!m_paletteDocument->saveFileAs(m_paletteDocument->fileName()))
             KMessageBox::error(this, m_paletteDocument->lastErrorString());
+        else
+            updateWndTittle();
     }
     else
         saveFileAs();
@@ -116,8 +113,13 @@ void KColorEditMainWnd::saveFileAs()
     QString filter = QString("*.colors *.gpl|") + allSupportedStr + QString("\n*.colors|") + kdePaletteStr +
         QString(" (*.colors)\n*.gpl|") + gimpPaletteStr + QString(" (*.gpl)");
 
-    if (!m_paletteDocument->saveFileAs(KFileDialog::getSaveFileName(url, filter)))
-        KMessageBox::error(this, m_paletteDocument->lastErrorString());
+    QString paletteFile = KFileDialog::getSaveFileName(url, filter);
+
+    if (!paletteFile.isEmpty())
+        if (!m_paletteDocument->saveFileAs(paletteFile))
+            KMessageBox::error(this, m_paletteDocument->lastErrorString());
+        else
+            updateWndTittle();
 }
 
 void KColorEditMainWnd::newWindow()
@@ -187,7 +189,7 @@ void KColorEditMainWnd::setupWidgets()
 {
     //init viewers
 
-    m_paletteDocument = new PaletteDocument(new PaletteModel(this), this);
+    m_paletteDocument = new PaletteDocument(this);
 
     m_paletteDetailView = new PaletteDetailView(m_paletteDocument->model(), this);
 
@@ -299,6 +301,17 @@ void KColorEditMainWnd::setupActions()
     // TODO settings
     //KStandardAction::preferences(this, SLOT( settingsPreferences() ), actionCollection());
     KStandardAction::quit       (kapp, SLOT( quit() ), actionCollection());
+}
+
+void KColorEditMainWnd::updateWndTittle()
+{
+    // setup the window title acording to the file name
+    QStringList strLst = m_paletteDocument->fileName().split("/");
+
+    if (strLst[strLst.count() - 1][0] == '/')
+        setWindowTitle(KCmdLineArgs::aboutData()->catalogName() + strLst[strLst.count() - 2]);
+
+    setWindowTitle(KCmdLineArgs::aboutData()->catalogName() + " - " + strLst[strLst.count() - 1]);
 }
 
 #include "kcoloredit.moc"

@@ -29,7 +29,7 @@ class PaletteDocument : public QObject
     Q_OBJECT
 
     public:
-        PaletteDocument(PaletteModel * model, QObject * parent = 0);
+        PaletteDocument(QObject * parent = 0);
         ~PaletteDocument();
 
         QString fileName() const;

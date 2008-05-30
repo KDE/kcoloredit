@@ -29,7 +29,7 @@
 
 #include "palettemodel.h"
 
-PaletteDocument::PaletteDocument(PaletteModel * model, QObject * parent) : QObject(parent), m_model(model), m_file(QString())
+PaletteDocument::PaletteDocument(QObject * parent) : QObject(parent), m_model(new PaletteModel(this)), m_file(QString())
 {
 }
 
