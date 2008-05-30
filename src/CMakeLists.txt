@@ -40,7 +40,6 @@ kde4_add_executable ( kcoloredit ${kcoloredit_SRCS} )
 target_link_libraries (
   kcoloredit
 
-  ${KDE4_KDECORE_LIBS}
   ${KDE4_KDEUI_LIBS}
   ${KDE4_KFILE_LIBS}
   ${KDE4_KIO_LIBS}
