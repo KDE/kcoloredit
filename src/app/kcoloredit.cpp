@@ -208,17 +208,19 @@ void KColorEditMainWnd::setupWidgets()
 
     setCentralWidget(m_kColorEditWidget);
 
-    m_paletteTableDockWidget = new QDockWidget(i18n("Brief view   "), this);
+    m_paletteTableDockWidget = new QDockWidget(i18n("Brief view"), this);
     m_paletteTableDockWidget->setObjectName(QString("brief-view-dock"));
     m_paletteTableDockWidget->setFeatures(QDockWidget::AllDockWidgetFeatures);
     m_paletteTableDockWidget->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     m_paletteTableDockWidget->setWidget(m_paletteGridView);
+    m_paletteTableDockWidget->setMinimumWidth(310);
 
-    m_paletteListDockWidget = new QDockWidget(i18n("Detail view   "), this);
+    m_paletteListDockWidget = new QDockWidget(i18n("Detail view"), this);
     m_paletteListDockWidget->setObjectName(QString("detail-view-dock"));
     m_paletteListDockWidget->setFeatures(QDockWidget::AllDockWidgetFeatures);
     m_paletteListDockWidget->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     m_paletteListDockWidget->setWidget(m_paletteDetailView);
+    m_paletteListDockWidget->setMinimumWidth(310);
 
     addDockWidget(Qt::RightDockWidgetArea, m_paletteListDockWidget);
     addDockWidget(Qt::RightDockWidgetArea, m_paletteTableDockWidget);

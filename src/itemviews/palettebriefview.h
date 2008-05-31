@@ -53,6 +53,7 @@ class PaletteGridView : public QWidget
         void updateWhenRemoveItem(const QModelIndex & parent, int start, int end);
 
         void trackColor(int row, int column);
+        void showComments(bool show); // NOTE if show commenten then can't copy/cut/paste
 
     private:
         void loadDataFromModel();
@@ -67,6 +68,8 @@ class PaletteGridView : public QWidget
         KPushButton * m_zoomInButton;
         QCheckBox * m_quickNavigationCheckBox;
         QCheckBox * m_showCommentsCheckBox;
+
+        bool m_showComments;
 };
 
 #endif // PALETTE_GRID_VIEW_H

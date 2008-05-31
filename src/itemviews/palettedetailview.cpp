@@ -41,7 +41,7 @@ PaletteDetailView::PaletteDetailView(PaletteModel * model, QWidget * parent) : Q
     m_view = new QTableView(this);
     m_view->setModel(m_model);
     m_view->setItemDelegate(new PaletteDelegate(this));
-    m_view->setMinimumWidth(292); // NOTE 128 + 40 = 168 from kcoloreditwidget
+    //m_view->setMinimumWidth(292); // NOTE 128 + 40 = 168 from kcoloreditwidget
     m_view->setSelectionMode(QAbstractItemView::SingleSelection);
     m_view->setSelectionBehavior(QAbstractItemView::SelectItems);
     m_view->setEditTriggers(QAbstractItemView::AllEditTriggers);
@@ -209,7 +209,7 @@ void PaletteDetailView::moveItem(int index, Palette::MoveOperation operation)
             break;
 
         case Palette::MoveToNext:
-            if (index == m_model->rowCount() - 1)
+            if (index == (m_model->rowCount() - 1))
                 break ;
 
             m_view->setCurrentIndex(m_view->model()->index(index + 1, 0));
@@ -223,7 +223,7 @@ void PaletteDetailView::moveItem(int index, Palette::MoveOperation operation)
             break;
 
         case Palette::MoveToEnd:
-            if (index == m_model->rowCount() - 1)
+            if (index == (m_model->rowCount() - 1))
                 break ;
 
             m_view->setCurrentIndex(m_view->model()->index(m_model->rowCount() - 1, 0));

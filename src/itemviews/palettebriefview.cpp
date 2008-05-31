@@ -33,16 +33,17 @@
 
 #include "palettemodel.h"
 
-PaletteGridView::PaletteGridView(PaletteModel * model, QWidget * parent) : QWidget(parent)
+PaletteGridView::PaletteGridView(PaletteModel * model, QWidget * parent)
+    : QWidget(parent)
+    , m_model(model)
+    , m_showComments(false)
 {
-    m_model = model;
-
     m_quickNavigationCheckBox = new QCheckBox(this);
     m_quickNavigationCheckBox->setText(i18n("Quick navigation"));
 
     m_showCommentsCheckBox = new QCheckBox(this);
     m_showCommentsCheckBox->setText(i18n("Show comments"));
-    m_showCommentsCheckBox->setChecked(true);
+    m_showCommentsCheckBox->setChecked(m_showComments);
 
     m_setColumnSlider = new QSlider(Qt::Horizontal, this);
     m_setColumnSlider->setRange(1, 20);
@@ -85,6 +86,8 @@ PaletteGridView::PaletteGridView(PaletteModel * model, QWidget * parent) : QWidg
     connect(m_zoomInButton, SIGNAL( pressed () ), this, SLOT( zoomIn() ));
 
     connect(m_colorCells, SIGNAL( cellEntered(int, int) ), this, SLOT( trackColor(int, int) ));
+
+    connect(m_showCommentsCheckBox, SIGNAL( toggled(bool) ), this, SLOT( showComments(bool) ));
 }
 
 void PaletteGridView::setModel(PaletteModel * model)
@@ -139,65 +142,129 @@ void PaletteGridView::trackColor(int row, int column)
     }
 }
 
+void PaletteGridView::showComments(bool show)
+{
+    if (m_model->rowCount() > 0)
+    {
+        m_showComments = show;
+
+        loadDataFromModel();
+    }
+}
+
 void PaletteGridView::loadDataFromModel()
 {
     m_colorCells->clear();
 
     int rows = m_model->rowCount();
+    int colors = 0;
 
-    if (rows != 0)
+    QVariantMap vmap;
+
+    for (int i = 0; i < rows; i++)
     {
-        if (rows % m_colorCells->columnCount() == 0)
-            m_colorCells->setRowCount(rows/m_colorCells->columnCount());
+        vmap = m_model->index(i, 0).data().toMap();
+
+        if (vmap.value("type").toString() == QString("color"))
+            colors++;
+    }
+
+    if (!m_showComments)
+    {
+        if (colors > 0)
+        {
+            if (colors % m_colorCells->columnCount() == 0)
+                m_colorCells->setRowCount(colors/m_colorCells->columnCount());
+            else
+                m_colorCells->setRowCount(1 + colors/m_colorCells->columnCount());
+        }
         else
-            m_colorCells->setRowCount(1 + rows/m_colorCells->columnCount());
+            return ;
+    }
+    else
+    {
+        if (rows > 0)
+        {
+            if (rows % m_colorCells->columnCount() == 0)
+                m_colorCells->setRowCount(rows/m_colorCells->columnCount());
+            else
+                m_colorCells->setRowCount(1 + rows/m_colorCells->columnCount());
+        }
+        else
+            return ;
     }
 
     int tableRow;
     int tableColumn;
 
     // NOTE same code in delegate ... utils.h ?
-    QVariantMap vmap;
     KColorScheme systemColorScheme(QPalette::Active);
     QColor baseWndColor = systemColorScheme.background(KColorScheme::NormalBackground).color();
 
-    for (int i = 0; i < rows; i++)
+    if (!m_showComments)
     {
-        tableRow = i / m_colorCells->columnCount();
-        tableColumn = i % m_colorCells->columnCount();
+        int colorCount = 0;
 
-        vmap = m_model->index(i, 0).data().toMap();
-
-        if (vmap.value("type").toString() == QString("color"))
+        for (int i = 0; i < rows; i++)
         {
-            m_colorCells->setColor(i, vmap.value("color").value<QColor>());
+            vmap = m_model->index(i, 0).data().toMap();
 
-            QTableWidgetItem * colorItem = m_colorCells->item(tableRow, tableColumn);
+            if (vmap.value("type").toString() == QString("color"))
+            {
+                tableRow = colorCount / m_colorCells->columnCount();
+                tableColumn = colorCount % m_colorCells->columnCount();
 
-            if ((!vmap.value("name").toString().isEmpty()) && (colorItem))
-                colorItem->setToolTip(i18n("Name : ") + vmap.value("name").toString());
+                m_colorCells->setColor(colorCount, vmap.value("color").value<QColor>());
+
+                QTableWidgetItem * colorItem = m_colorCells->item(tableRow, tableColumn);
+
+                if ((!vmap.value("name").toString().isEmpty()) && (colorItem))
+                    colorItem->setToolTip(i18n("Name : ") + vmap.value("name").toString());
+
+                colorCount++;
+            }
         }
-
-        if (vmap.value("type").toString() == QString("comment"))
+    }
+    else
+    {
+        for (int i = 0; i < rows; i++)
         {
-            QTableWidgetItem * commentItem = new QTableWidgetItem();
+            tableRow = i / m_colorCells->columnCount();
+            tableColumn = i % m_colorCells->columnCount();
 
-            m_colorCells->setItem(tableRow, tableColumn, commentItem);
+            vmap = m_model->index(i, 0).data().toMap();
 
-            int luminance = 0.2126*baseWndColor.red() + 0.7152*baseWndColor.green() + 0.0722*baseWndColor.blue();
+            if (vmap.value("type").toString() == QString("color"))
+            {
+                m_colorCells->setColor(i, vmap.value("color").value<QColor>());
 
-            QBrush brush;
-            brush.setStyle(Qt::Dense7Pattern);
+                QTableWidgetItem * colorItem = m_colorCells->item(tableRow, tableColumn);
 
-            if (luminance > (255 / 2.0))
-                brush.setColor(Qt::black);
-            else
-                brush.setColor(Qt::white);
+                if ((!vmap.value("name").toString().isEmpty()) && (colorItem))
+                    colorItem->setToolTip(i18n("Name : ") + vmap.value("name").toString());
+            }
 
-            commentItem->setBackground(brush);
+            if (vmap.value("type").toString() == QString("comment"))
+            {
+                QTableWidgetItem * commentItem = new QTableWidgetItem();
 
-            if (!vmap.value("comment").toString().isEmpty())
-                commentItem->setToolTip(i18n("Comment : ") + vmap.value("comment").toString());
+                m_colorCells->setItem(tableRow, tableColumn, commentItem);
+
+                int luminance = 0.2126*baseWndColor.red() + 0.7152*baseWndColor.green() + 0.0722*baseWndColor.blue();
+
+                QBrush brush;
+                brush.setStyle(Qt::Dense7Pattern);
+
+                if (luminance > (255 / 2.0))
+                    brush.setColor(Qt::black);
+                else
+                    brush.setColor(Qt::white);
+
+                commentItem->setBackground(brush);
+
+                if (!vmap.value("comment").toString().isEmpty())
+                    commentItem->setToolTip(i18n("Comment : ") + vmap.value("comment").toString());
+            }
         }
     }
 
