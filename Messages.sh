@@ -1,2 +1,2 @@
 #!bin/sh
-$XGETTEXT *.rc *.h *.cpp -o $podir/kcoloredit.pot
+$XGETTEXT `find -name '*.rc' -o -name '*.h' -o -name '*.cpp'` -o $podir/kcoloredit.pot
