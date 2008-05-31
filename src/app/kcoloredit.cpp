@@ -273,11 +273,11 @@ void KColorEditMainWnd::setupActions()
 
     tmpAction = actionCollection()->addAction("move-next");
     tmpAction->setIcon(KIcon("go-up"));
-    tmpAction->setText(i18n("Next position"));
+    tmpAction->setText(i18n("Prev position"));
 
     tmpAction = actionCollection()->addAction("move-prev");
     tmpAction->setIcon(KIcon("go-down"));
-    tmpAction->setText(i18n("Prev position"));
+    tmpAction->setText(i18n("Next position"));
 
     tmpAction = actionCollection()->addAction("move-begin");
     tmpAction->setIcon(KIcon("go-top"));

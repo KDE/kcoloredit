@@ -101,7 +101,7 @@ PaletteDetailView::PaletteDetailView(PaletteModel * model, QWidget * parent) : Q
     connect(m_paletteNameLineEdit, SIGNAL( textEdited(QString) ), this, SLOT( updatePaletteName(QString) ));
     connect(m_model, SIGNAL( dataChanged(QModelIndex, QModelIndex) ), this, SLOT( updateHeaders(QModelIndex, QModelIndex) ));
     connect(m_model, SIGNAL( dataChanged(QModelIndex, QModelIndex) ), this, SLOT( updateDescriptions(QModelIndex, QModelIndex) ));
-    
+
 /*
     PaletteModel * model = dynamic_cast<PaletteModel *>(m_model);
 
