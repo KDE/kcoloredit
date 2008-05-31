@@ -113,7 +113,7 @@ void PaletteDelegate::setEditorData(QWidget * editor, const QModelIndex & index)
     if (vmap.value("type").toString() == QString("comment"))
     {
         CommentItemEditor * commentEditor = dynamic_cast<CommentItemEditor *>(editor);
-        
+
         if (commentEditor)
             commentEditor->setComment(vmap.value("comment").toString());
     }
@@ -158,55 +158,52 @@ void PaletteDelegate::updateEditorGeometry(QWidget * editor, const QStyleOptionV
 
 void PaletteDelegate::paint(QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index) const
 {
-    if (index.column() == 0)
+    QVariantMap vmap = index.data().toMap();
+
+    float luminance;
+
+    if (vmap.value("type").toString() == QString("color"))
     {
-        QVariantMap vmap = index.data().toMap();
+        QColor color = index.model()->data(index).toMap().value("color").value<QColor>();
 
-        float luminance;
+        // get the luminance source wikipedia
+        // Y = 0.2126 R + 0.7152 G + 0.0722 B
+        // thanks to agave developer
+        luminance = 0.2126*color.red() + 0.7152*color.green() + 0.0722*color.blue();
 
-        if (vmap.value("type").toString() == QString("color"))
+        if (luminance > (255 / 2.0))
+            painter->setPen(Qt::black);
+        else
+            painter->setPen(Qt::white);
+
+        painter->fillRect(option.rect, color);
+        painter->drawText(option.rect, Qt::AlignCenter, index.model()->data(index).toMap().value("name").toString());
+    }
+
+    if (vmap.value("type").toString() == QString("comment"))
+    {
+        KColorScheme systemColorScheme(QPalette::Active);
+
+        QColor baseWndColor = systemColorScheme.background(KColorScheme::NormalBackground).color();
+
+        luminance = 0.2126*baseWndColor.red() + 0.7152*baseWndColor.green() + 0.0722*baseWndColor.blue();
+
+        QBrush brush;
+        brush.setStyle(Qt::Dense7Pattern);
+
+        if (luminance > (255 / 2.0))
         {
-            QColor color = index.model()->data(index).toMap().value("color").value<QColor>();
-
-            // get the luminance source wikipedia
-            // Y = 0.2126 R + 0.7152 G + 0.0722 B
-            // thanks to agave developer
-            luminance = 0.2126*color.red() + 0.7152*color.green() + 0.0722*color.blue();
-
-            if (luminance > (255 / 2.0))
-                painter->setPen(Qt::black);
-            else
-                painter->setPen(Qt::white);
-
-            painter->fillRect(option.rect, color);
-            painter->drawText(option.rect, Qt::AlignCenter, index.model()->data(index).toMap().value("name").toString());
+            painter->setPen(Qt::black);
+            brush.setColor(Qt::black);
+        }
+        else
+        {
+            painter->setPen(Qt::white);
+            brush.setColor(Qt::white);
         }
 
-        if (vmap.value("type").toString() == QString("comment"))
-        {
-            KColorScheme systemColorScheme(QPalette::Active);
-
-            QColor baseWndColor = systemColorScheme.background(KColorScheme::NormalBackground).color();
-
-            luminance = 0.2126*baseWndColor.red() + 0.7152*baseWndColor.green() + 0.0722*baseWndColor.blue();
-
-            QBrush brush;
-            brush.setStyle(Qt::Dense7Pattern);
-
-            if (luminance > (255 / 2.0))
-            {
-                painter->setPen(Qt::black);
-                brush.setColor(Qt::black);
-            }
-            else
-            {
-                painter->setPen(Qt::white);
-                brush.setColor(Qt::white);
-            }
-
-            painter->fillRect(option.rect, brush);
-            painter->drawText(option.rect, Qt::AlignCenter, index.model()->data(index).toMap().value("comment").toString());
-        }
+        painter->fillRect(option.rect, brush);
+        painter->drawText(option.rect, Qt::AlignCenter, index.model()->data(index).toMap().value("comment").toString());
     }
 }
 

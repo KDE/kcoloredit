@@ -39,6 +39,11 @@ PaletteDocument::~PaletteDocument()
 {
 }
 
+QString PaletteDocument::fullPathFileName() const
+{
+    return m_fullPathFile;
+}
+
 QString PaletteDocument::fileName() const
 {
     return m_file;
@@ -66,9 +71,6 @@ bool PaletteDocument::openPaletteFile(const QString & fileName)
 
         return false; 
     }
-
-    m_fullPathFile = fileName;
-    m_file = m_fullPathFile.split("/")[m_fullPathFile.split("/").count() - 1];
 
     // NOTE this 4 lines are very important
     // always work with 1 only single model X file
@@ -142,6 +144,9 @@ bool PaletteDocument::openPaletteFile(const QString & fileName)
         }
     }
 
+    m_fullPathFile = fileName;
+    m_file = m_fullPathFile.split("/")[m_fullPathFile.split("/").count() - 1];
+
     connect(m_model, SIGNAL( dataChanged(QModelIndex, QModelIndex) ), this, SLOT( updateDocStateWhenInsertItem(QModelIndex, QModelIndex) ));
     connect(m_model, SIGNAL( rowsRemoved(QModelIndex, int, int) ), this, SLOT( updateDocStateWhenRemoveItem(QModelIndex, int, int) ));
 
@@ -188,15 +193,19 @@ bool PaletteDocument::saveFileAs(const QString & fileName)
 
     sf.flush();
 
-    m_fullPathFile = fileName;
-    m_file = m_fullPathFile.split("/")[m_fullPathFile.split("/").count() - 1];
-
     bool finalize = sf.finalize();
 
     if (!finalize)
+    {
         m_lastErrorString = sf.errorString();
 
-    return finalize;
+        return false;
+    }
+
+    m_fullPathFile = fileName;
+    m_file = m_fullPathFile.split("/")[m_fullPathFile.split("/").count() - 1];
+
+    return true;
 }
 
 QString PaletteDocument::lastErrorString() const

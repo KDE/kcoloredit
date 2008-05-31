@@ -93,9 +93,9 @@ void KColorEditMainWnd::openFile()
 
 void KColorEditMainWnd::saveFile()
 {
-    if(!m_paletteDocument->fileName().isEmpty())
+    if(!m_paletteDocument->fullPathFileName().isEmpty())
     {
-        if (!m_paletteDocument->saveFileAs(m_paletteDocument->fileName()))
+        if (!m_paletteDocument->saveFileAs(m_paletteDocument->fullPathFileName()))
             KMessageBox::error(this, m_paletteDocument->lastErrorString());
         else
             updateTittleWhenOpenSaveDoc();

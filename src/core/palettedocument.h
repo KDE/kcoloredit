@@ -33,6 +33,7 @@ class PaletteDocument : public QObject
         PaletteDocument(QObject * parent = 0);
         ~PaletteDocument();
 
+        QString fullPathFileName() const;
         QString fileName() const;
 
         PaletteModel * model();

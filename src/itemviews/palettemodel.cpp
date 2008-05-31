@@ -22,6 +22,8 @@
 #include <QtCore/QString>
 #include <QtGui/QColor>
 
+#include <KLocalizedString>
+
 //BEGIN constructor
 
 PaletteModel::PaletteModel(QObject * parent) : QAbstractTableModel(parent)
@@ -74,37 +76,34 @@ bool PaletteModel::setData(const QModelIndex & index, const QVariant & value, in
 {
     if (index.isValid() && role == Qt::EditRole)
     {
-        if (index.column() == 0)
+        QVariantMap vmap = value.toMap();
+
+        if (m_palette.itemType(index.row()) == PaletteItem::ColorType)
         {
-            QVariantMap vmap = value.toMap();
 
-            if (m_palette.itemType(index.row()) == PaletteItem::ColorType)
+            vmap.insert("type", QString("color"));
+
+            index.model()->data(index, Qt::BackgroundRole).toMap().insert("type", QString("color"));  // NOTE
+
+            PaletteColorItem * colorItem = m_palette.colorItem(index.row());
+
+            if (colorItem != 0)
             {
- 
-                vmap.insert("type", QString("color"));
-
-                index.model()->data(index, Qt::BackgroundRole).toMap().insert("type", QString("color"));  // NOTE
-
-                PaletteColorItem * colorItem = m_palette.colorItem(index.row());
-
-                if (colorItem != 0)
-                {
                     colorItem->setColor(vmap.value("color").value<QColor>());
                     colorItem->setColorName(vmap.value("name").toString());
-                }
             }
+        }
 
-            if (m_palette.itemType(index.row()) == PaletteItem::CommentType)
-            {
-                vmap.insert("type", QString("comment"));
+        if (m_palette.itemType(index.row()) == PaletteItem::CommentType)
+        {
+            vmap.insert("type", QString("comment"));
 
-                index.model()->data(index, Qt::BackgroundRole).toMap().insert("type", QString("comment"));  // NOTE
+            index.model()->data(index, Qt::BackgroundRole).toMap().insert("type", QString("comment"));  // NOTE
 
-                PaletteCommentItem * commentItem = m_palette.commentItem(index.row());
+            PaletteCommentItem * commentItem = m_palette.commentItem(index.row());
 
-                if (commentItem != 0)
-                    commentItem->setComment(vmap.value("comment").toString());
-            }
+            if (commentItem != 0)
+                commentItem->setComment(vmap.value("comment").toString());
         }
 
         emit dataChanged(index, index);
@@ -122,7 +121,7 @@ QVariant PaletteModel::headerData(int section, Qt::Orientation orientation, int 
 
     if (orientation == Qt::Horizontal)
         if (section == 0)
-            return QString("Palette Items");
+            return i18n("Palette items");
 
      if (orientation == Qt::Vertical)
         return QString("%1").arg(section + 1);
@@ -192,7 +191,6 @@ void PaletteModel::setPaletteName(const QString & paletteName)
 {
     m_palette.setName(paletteName);
 }
-
 
 QString PaletteModel::briefDescription() const
 {
