@@ -21,6 +21,7 @@
 #define PALETTE_DOCUMENT_H
 
 #include <QtCore/QObject>
+#include <QtCore/QModelIndex>
 
 class PaletteModel;
 
@@ -35,7 +36,6 @@ class PaletteDocument : public QObject
         QString fileName() const;
 
         PaletteModel * model();
-        void setModel(PaletteModel * model);
 
         bool openPaletteFile(const QString & fileName);
         bool saveFile();
@@ -43,8 +43,16 @@ class PaletteDocument : public QObject
 
         QString lastErrorString() const;
 
+    signals:
+        void modified();
+
+    private slots:
+        void updateDocStateWhenInsertItem(const QModelIndex & topLeft, const QModelIndex & bottomRight);
+        void updateDocStateWhenRemoveItem(const QModelIndex & parent, int start, int end);
+
     private:
         PaletteModel * m_model;
+        QString m_fullPathFile;
         QString m_file;
         QString m_lastErrorString;
 };

@@ -41,6 +41,8 @@
 
 KColorEditMainWnd::KColorEditMainWnd(QWidget * parent, Qt::WindowFlags f) : KXmlGuiWindow(parent, f)
 {
+    m_appName = KCmdLineArgs::aboutData()->catalogName();
+
     setupWidgets();
     setupActions();
 
@@ -78,7 +80,7 @@ void KColorEditMainWnd::openFile()
                     m_paletteDocument->model()->setData(m_paletteDocument->model()->index(0, 0), m_paletteDocument->model()->index(0, 0).data());
 
 
-                updateWndTittle();
+                updateTittleWhenOpenSaveDoc();
             }
             else
                 KMessageBox::error(this, m_paletteDocument->lastErrorString());
@@ -96,7 +98,7 @@ void KColorEditMainWnd::saveFile()
         if (!m_paletteDocument->saveFileAs(m_paletteDocument->fileName()))
             KMessageBox::error(this, m_paletteDocument->lastErrorString());
         else
-            updateWndTittle();
+            updateTittleWhenOpenSaveDoc();
     }
     else
         saveFileAs();
@@ -119,7 +121,7 @@ void KColorEditMainWnd::saveFileAs()
         if (!m_paletteDocument->saveFileAs(paletteFile))
             KMessageBox::error(this, m_paletteDocument->lastErrorString());
         else
-            updateWndTittle();
+            updateTittleWhenOpenSaveDoc();
 }
 
 void KColorEditMainWnd::newWindow()
@@ -185,6 +187,11 @@ void KColorEditMainWnd::moveEnd()
 
 //END public slots
 
+void KColorEditMainWnd::updateTittleWhenChangeDocState()
+{
+    setWindowTitle(m_appName + " - " + m_paletteDocument->fileName() + i18n(" [modified]"));
+}
+
 void KColorEditMainWnd::setupWidgets()
 {
     //init viewers
@@ -234,6 +241,9 @@ void KColorEditMainWnd::setupWidgets()
 
     connect(m_paletteGridView, SIGNAL( trackedColor(QColor) ), m_kColorEditWidget, SLOT( slotSetColor(QColor) ));
 */
+
+    connect(m_paletteDocument, SIGNAL( modified() ), this, SLOT( updateTittleWhenChangeDocState() ));
+
     connect(m_paletteGridView, SIGNAL( trackedColor(QColor) ), m_kColorEditWidget, SLOT( setColor(QColor) ));
 }
 
@@ -303,15 +313,10 @@ void KColorEditMainWnd::setupActions()
     KStandardAction::quit       (kapp, SLOT( quit() ), actionCollection());
 }
 
-void KColorEditMainWnd::updateWndTittle()
+void KColorEditMainWnd::updateTittleWhenOpenSaveDoc()
 {
     // setup the window title acording to the file name
-    QStringList strLst = m_paletteDocument->fileName().split("/");
-
-    if (strLst[strLst.count() - 1][0] == '/')
-        setWindowTitle(KCmdLineArgs::aboutData()->catalogName() + strLst[strLst.count() - 2]);
-
-    setWindowTitle(KCmdLineArgs::aboutData()->catalogName() + " - " + strLst[strLst.count() - 1]);
+    setWindowTitle(m_appName + " - " + m_paletteDocument->fileName());
 }
 
 #include "kcoloredit.moc"

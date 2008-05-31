@@ -29,8 +29,10 @@
 
 #include "palettemodel.h"
 
-PaletteDocument::PaletteDocument(QObject * parent) : QObject(parent), m_model(new PaletteModel(this)), m_file(QString())
+PaletteDocument::PaletteDocument(QObject * parent) : QObject(parent), m_model(new PaletteModel(this)), m_fullPathFile(QString())
 {
+    connect(m_model, SIGNAL( dataChanged(QModelIndex, QModelIndex) ), this, SLOT( updateDocStateWhenInsertItem(QModelIndex, QModelIndex) ));
+    connect(m_model, SIGNAL( rowsRemoved(QModelIndex, int, int) ), this, SLOT( updateDocStateWhenRemoveItem(QModelIndex, int, int) ));
 }
 
 PaletteDocument::~PaletteDocument()
@@ -45,11 +47,6 @@ QString PaletteDocument::fileName() const
 PaletteModel * PaletteDocument::model()
 {
     return m_model;
-}
-
-void PaletteDocument::setModel(PaletteModel * model)
-{
-    m_model = model;
 }
 
 bool PaletteDocument::openPaletteFile(const QString & fileName)
@@ -70,7 +67,8 @@ bool PaletteDocument::openPaletteFile(const QString & fileName)
         return false; 
     }
 
-    m_file = fileName;
+    m_fullPathFile = fileName;
+    m_file = m_fullPathFile.split("/")[m_fullPathFile.split("/").count() - 1];
 
     // NOTE this 4 lines are very important
     // always work with 1 only single model X file
@@ -144,6 +142,9 @@ bool PaletteDocument::openPaletteFile(const QString & fileName)
         }
     }
 
+    connect(m_model, SIGNAL( dataChanged(QModelIndex, QModelIndex) ), this, SLOT( updateDocStateWhenInsertItem(QModelIndex, QModelIndex) ));
+    connect(m_model, SIGNAL( rowsRemoved(QModelIndex, int, int) ), this, SLOT( updateDocStateWhenRemoveItem(QModelIndex, int, int) ));
+
     return true;
 }
 
@@ -187,7 +188,8 @@ bool PaletteDocument::saveFileAs(const QString & fileName)
 
     sf.flush();
 
-    m_file = fileName;
+    m_fullPathFile = fileName;
+    m_file = m_fullPathFile.split("/")[m_fullPathFile.split("/").count() - 1];
 
     bool finalize = sf.finalize();
 
@@ -200,6 +202,16 @@ bool PaletteDocument::saveFileAs(const QString & fileName)
 QString PaletteDocument::lastErrorString() const
 {
     return m_lastErrorString;
+}
+
+void PaletteDocument::updateDocStateWhenInsertItem(const QModelIndex & /* topLeft */, const QModelIndex & /* bottomRight */)
+{
+    emit modified();
+}
+
+void PaletteDocument::updateDocStateWhenRemoveItem(const QModelIndex & /* parent */, int /* start */, int /* end */)
+{
+    emit modified();
 }
 
 #include "palettedocument.moc"

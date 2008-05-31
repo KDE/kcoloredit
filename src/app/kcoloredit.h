@@ -58,11 +58,15 @@ class KColorEditMainWnd : public KXmlGuiWindow
         void moveBegin();
         void moveEnd();
 
+    private slots:
+        void updateTittleWhenChangeDocState();
+        void updateTittleWhenOpenSaveDoc();
+
     private:
         void setupWidgets();
         void setupActions();
 
-        void updateWndTittle();
+        QString appName() const;
 
     private:
         PaletteDocument * m_paletteDocument;
@@ -74,6 +78,8 @@ class KColorEditMainWnd : public KXmlGuiWindow
 
         QDockWidget * m_paletteTableDockWidget;
         QDockWidget * m_paletteListDockWidget;
+
+        QString m_appName; // save memory
 };
 
 #endif // KCOLOREDIT_H
