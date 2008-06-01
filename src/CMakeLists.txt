@@ -24,6 +24,8 @@ set (
   itemviews/palettebriefview.cpp
   widgets/colorselectors/kdeselector/rectanglecolorwidget.cpp
   widgets/colorselectors/kdeselector/kdecolorselector.cpp
+  widgets/colorselectors/gtkselector/trianglecolorwidget.cpp
+  widgets/colorselectors/gtkselector/gtkcolorselector.cpp
   widgets/colorselectors/colorselector.cpp
   widgets/colorinfo/colorinfo.cpp
   widgets/colorinfo/colorinfovisual.cpp
