@@ -19,7 +19,8 @@
 
 #include "colorselector.h"
 
-ColorSelector::ColorSelector(QWidget * parent) : QWidget(parent)
+ColorSelector::ColorSelector(QWidget * parent)
+    : QWidget(parent)
 {
 }
 
@@ -27,6 +28,5 @@ ColorSelector::ColorSelector(QWidget * parent) : QWidget(parent)
 //void ColorSelector::setColor(const QColor & /* color */)
 //{
 //}
-
 
 #include "colorselector.moc"

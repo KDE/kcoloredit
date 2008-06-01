@@ -19,7 +19,6 @@
 
 #include "kdecolorselector.h"
 
-#include <QtGui/QHBoxLayout>
 #include <QtGui/QVBoxLayout>
 
 #include <KLocalizedString>
