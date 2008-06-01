@@ -28,7 +28,8 @@
 #include <KPushButton>
 #include <KFadeWidgetEffect>
 
-MultiPageWidget::MultiPageWidget(QWidget * parent) : QFrame(parent)
+MultiPageWidget::MultiPageWidget(QWidget * parent)
+    : QFrame(parent)
 {
     m_nextPushButton = new KPushButton(KIcon(QString("arrow-right")), QString(), this);
     m_nextPushButton->setEnabled(false);

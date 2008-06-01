@@ -26,7 +26,8 @@
 
 //BEGIN constructor
 
-PaletteModel::PaletteModel(QObject * parent) : QAbstractTableModel(parent)
+PaletteModel::PaletteModel(QObject * parent)
+    : QAbstractTableModel(parent)
 {
 }
 

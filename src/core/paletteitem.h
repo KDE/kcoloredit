@@ -37,7 +37,9 @@ class PaletteItem
 class PaletteColorItem : public PaletteItem
 {
     public:
-        PaletteColorItem(const QColor & color = Qt::white, const QString & colorName = QString()) : m_color(color), m_colorName(colorName) {}
+        PaletteColorItem(const QColor & color = Qt::white, const QString & colorName = QString())
+            : m_color(color)
+            , m_colorName(colorName) {}
         ~PaletteColorItem() {}
 
         PaletteItem::ItemType type() const { return PaletteItem::ColorType; }
@@ -56,7 +58,8 @@ class PaletteColorItem : public PaletteItem
 class PaletteCommentItem : public PaletteItem
 {
     public:
-        PaletteCommentItem(const QString & comment = QString()) : m_comment(comment) {}
+        PaletteCommentItem(const QString & comment = QString())
+            : m_comment(comment) {}
         ~PaletteCommentItem() {}
 
         PaletteItem::ItemType type() const { return PaletteItem::CommentType; }

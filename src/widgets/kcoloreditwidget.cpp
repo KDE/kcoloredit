@@ -26,16 +26,22 @@
 
 #include "multipagewidget.h"
 #include "kdecolorselector.h"
+#include "gtkcolorselector.h"
 #include "colorinfovisual.h"
 #include "colorinfotext.h"
 
-KColorEditWidget::KColorEditWidget(QWidget * parent) : QWidget(parent), m_color(Qt::red) // default color
+KColorEditWidget::KColorEditWidget(QWidget * parent)
+    : QWidget(parent)
+    , m_color(Qt::red) // default color
 {
     m_selectors = new MultiPageWidget(this);
 
     KdeColorSelector * kdeColorSelector = new KdeColorSelector(m_selectors);
 
-    m_selectors->addPage(kdeColorSelector, KIcon("kde"), QString("KDE Style"));
+    GtkColorSelector * gtkColorSelector = new GtkColorSelector(m_selectors);
+
+    m_selectors->addPage(kdeColorSelector, KIcon("kde"), i18n("KDE Style"));
+    m_selectors->addPage(gtkColorSelector, KIcon("fill-color"), i18n("GTK Style"));
 
     m_infoStyles = new MultiPageWidget(this);
     m_infoStyles->setMaximumHeight(128); // NOTE default value here;
@@ -81,6 +87,16 @@ KColorEditWidget::KColorEditWidget(QWidget * parent) : QWidget(parent), m_color(
     connect(kdeColorSelector, SIGNAL( colorSelected(QColor) ), m_colorInfoVisualComplement, SLOT( setColor(QColor) ));
 
     connect(kdeColorSelector, SIGNAL( colorSelected(QColor) ), this, SLOT( getColorFromColorSelector(QColor) ));
+
+    connect(gtkColorSelector, SIGNAL( colorSelected(QColor) ), infoTextRGB, SLOT( setColor(QColor) ));
+    connect(gtkColorSelector, SIGNAL( colorSelected(QColor) ), infoTextHSV, SLOT( setColor(QColor) ));
+    connect(gtkColorSelector, SIGNAL( colorSelected(QColor) ), infoTextCMY, SLOT( setColor(QColor) ));
+    connect(gtkColorSelector, SIGNAL( colorSelected(QColor) ), infoTextHTML, SLOT( setColor(QColor) ));
+
+    connect(gtkColorSelector, SIGNAL( colorSelected(QColor) ), m_colorInfoVisualSingle, SLOT( setColor(QColor) ));
+    connect(gtkColorSelector, SIGNAL( colorSelected(QColor) ), m_colorInfoVisualComplement, SLOT( setColor(QColor) ));
+
+    connect(gtkColorSelector, SIGNAL( colorSelected(QColor) ), this, SLOT( getColorFromColorSelector(QColor) ));
 }
 
 QColor KColorEditWidget::selectedColor() const

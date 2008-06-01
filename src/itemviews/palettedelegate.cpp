@@ -31,7 +31,8 @@
 class ColorItemEditor : public QWidget
 {
     public:
-        ColorItemEditor(QWidget * parent = 0) : QWidget(parent)
+        ColorItemEditor(QWidget * parent = 0)
+            : QWidget(parent)
         {
             m_color = new KColorButton(this);
             m_color->setMinimumWidth(92);
@@ -61,7 +62,8 @@ class ColorItemEditor : public QWidget
 class CommentItemEditor : public QWidget
 {
     public:
-        CommentItemEditor(QWidget * parent = 0) : QWidget(parent)
+        CommentItemEditor(QWidget * parent = 0)
+            : QWidget(parent)
         {
             m_comment = new KLineEdit(this);
             m_comment->setMinimumWidth(128);
@@ -80,7 +82,8 @@ class CommentItemEditor : public QWidget
         KLineEdit * m_comment;
 };
 
-PaletteDelegate::PaletteDelegate(QObject * parent) : QItemDelegate(parent)
+PaletteDelegate::PaletteDelegate(QObject * parent)
+    : QItemDelegate(parent)
 {
 }
 
