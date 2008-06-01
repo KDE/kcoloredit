@@ -34,69 +34,69 @@ KColorEditWidget::KColorEditWidget(QWidget * parent)
     : QWidget(parent)
     , m_color(Qt::red) // default color
 {
-    m_selectors = new MultiPageWidget(this);
+    MultiPageWidget * colorSelectors = new MultiPageWidget(this);
+    colorSelectors->setPrevToolTip(i18n("Prev selector"));
+    colorSelectors->setNextToolTip(i18n("Next selector"));
 
-    KdeColorSelector * kdeColorSelector = new KdeColorSelector(m_selectors);
+    m_kdeColorSelector = new KdeColorSelector(colorSelectors);
 
-    GtkColorSelector * gtkColorSelector = new GtkColorSelector(m_selectors);
+    m_gtkColorSelector = new GtkColorSelector(colorSelectors);
 
-    m_selectors->addPage(kdeColorSelector, KIcon("kde"), i18n("KDE Style"));
-    m_selectors->addPage(gtkColorSelector, KIcon("fill-color"), i18n("GTK Style"));
+    colorSelectors->addPage(m_kdeColorSelector, KIcon("kde"), i18n("KDE Style"));
+    colorSelectors->addPage(m_gtkColorSelector, KIcon("fill-color"), i18n("GTK Style"));
 
-    m_infoStyles = new MultiPageWidget(this);
-    m_infoStyles->setMaximumHeight(128); // NOTE default value here;
+    MultiPageWidget* colorInfoVisuals = new MultiPageWidget(this);
+    colorInfoVisuals->setMaximumHeight(128); // NOTE default value here;
+    colorInfoVisuals->setPrevToolTip(i18n("Prev visual style"));
+    colorInfoVisuals->setNextToolTip(i18n("Next visual style"));
 
-    m_colorInfoVisualSingle = new ColorInfoVisualSingle(m_infoStyles);
 
-    m_colorInfoVisualComplement = new ColorInfoVisualComplement(m_infoStyles);
+    ColorInfoVisualSingle * colorInfoVisualSingle = new ColorInfoVisualSingle(colorInfoVisuals);
 
-    m_infoStyles->addPage(m_colorInfoVisualSingle, KIcon(), i18n("Single color"));
-    m_infoStyles->addPage(m_colorInfoVisualComplement, KIcon(), i18n("Complementary color"));
+    ColorInfoVisualComplement * colorInfoVisualComplement = new ColorInfoVisualComplement(colorInfoVisuals);
 
-    m_infoTextModels = new MultiPageWidget(this);
-    m_infoTextModels->setMaximumHeight(100); // NOTE default value here;
+    colorInfoVisuals->addPage(colorInfoVisualSingle, KIcon(), i18n("Single color"));
+    colorInfoVisuals->addPage(colorInfoVisualComplement, KIcon(), i18n("Complementary color"));
 
-    ColorInfoTextRGB * infoTextRGB = new ColorInfoTextRGB(m_infoTextModels);
+    MultiPageWidget * colorInfoTexts = new MultiPageWidget(this);
+    colorInfoTexts->setMaximumHeight(100); // NOTE default value here;
+    colorInfoTexts->setPrevToolTip(i18n("Prev text style"));
+    colorInfoTexts->setNextToolTip(i18n("Next text style"));
+
+    ColorInfoTextRGB * infoTextRGB = new ColorInfoTextRGB(colorInfoTexts);
     infoTextRGB->setColor(Qt::red); // default color
 
-    ColorInfoTextHSV * infoTextHSV = new ColorInfoTextHSV(m_infoTextModels);
+    ColorInfoTextHSV * infoTextHSV = new ColorInfoTextHSV(colorInfoTexts);
     infoTextHSV->setColor(Qt::red); // default color
 
-    ColorInfoTextCMY * infoTextCMY = new ColorInfoTextCMY(m_infoTextModels);
+    ColorInfoTextCMY * infoTextCMY = new ColorInfoTextCMY(colorInfoTexts);
     infoTextCMY->setColor(Qt::red); // default color
 
-    ColorInfoTextHTML * infoTextHTML = new ColorInfoTextHTML(m_infoTextModels);
+    ColorInfoTextHTML * infoTextHTML = new ColorInfoTextHTML(colorInfoTexts);
     infoTextHTML->setColor(Qt::red); // default color
 
-    m_infoTextModels->addPage(infoTextRGB, KIcon(), i18n("RGB Model"));
-    m_infoTextModels->addPage(infoTextHSV, KIcon(), i18n("HSV Model"));
-    m_infoTextModels->addPage(infoTextCMY, KIcon(), i18n("CMY Model"));
-    m_infoTextModels->addPage(infoTextHTML, KIcon(), i18n("CMY Model"));
+    colorInfoTexts->addPage(infoTextRGB, KIcon(), i18n("RGB Model"));
+    colorInfoTexts->addPage(infoTextHSV, KIcon(), i18n("HSV Model"));
+    colorInfoTexts->addPage(infoTextCMY, KIcon(), i18n("CMY Model"));
+    colorInfoTexts->addPage(infoTextHTML, KIcon(), i18n("Other"));
 
     QVBoxLayout * mainLayout = new QVBoxLayout(this);
-    mainLayout->addWidget(m_selectors);
-    mainLayout->addWidget(m_infoStyles);
-    mainLayout->addWidget(m_infoTextModels);
+    mainLayout->addWidget(colorSelectors);
+    mainLayout->addWidget(colorInfoVisuals);
+    mainLayout->addWidget(colorInfoTexts);
 
-    connect(kdeColorSelector, SIGNAL( colorSelected(QColor) ), infoTextRGB, SLOT( setColor(QColor) ));
-    connect(kdeColorSelector, SIGNAL( colorSelected(QColor) ), infoTextHSV, SLOT( setColor(QColor) ));
-    connect(kdeColorSelector, SIGNAL( colorSelected(QColor) ), infoTextCMY, SLOT( setColor(QColor) ));
-    connect(kdeColorSelector, SIGNAL( colorSelected(QColor) ), infoTextHTML, SLOT( setColor(QColor) ));
+    for (int i = 0; i < colorSelectors->count(); i++)
+    {
+        connect(colorSelectors->page(i), SIGNAL( colorSelected(QColor) ), infoTextRGB, SLOT( setColor(QColor) ));
+        connect(colorSelectors->page(i), SIGNAL( colorSelected(QColor) ), infoTextHSV, SLOT( setColor(QColor) ));
+        connect(colorSelectors->page(i), SIGNAL( colorSelected(QColor) ), infoTextCMY, SLOT( setColor(QColor) ));
+        connect(colorSelectors->page(i), SIGNAL( colorSelected(QColor) ), infoTextHTML, SLOT( setColor(QColor) ));
 
-    connect(kdeColorSelector, SIGNAL( colorSelected(QColor) ), m_colorInfoVisualSingle, SLOT( setColor(QColor) ));
-    connect(kdeColorSelector, SIGNAL( colorSelected(QColor) ), m_colorInfoVisualComplement, SLOT( setColor(QColor) ));
+        connect(colorSelectors->page(i), SIGNAL( colorSelected(QColor) ), colorInfoVisualSingle, SLOT( setColor(QColor) ));
+        connect(colorSelectors->page(i), SIGNAL( colorSelected(QColor) ), colorInfoVisualComplement, SLOT( setColor(QColor) ));
 
-    connect(kdeColorSelector, SIGNAL( colorSelected(QColor) ), this, SLOT( getColorFromColorSelector(QColor) ));
-
-    connect(gtkColorSelector, SIGNAL( colorSelected(QColor) ), infoTextRGB, SLOT( setColor(QColor) ));
-    connect(gtkColorSelector, SIGNAL( colorSelected(QColor) ), infoTextHSV, SLOT( setColor(QColor) ));
-    connect(gtkColorSelector, SIGNAL( colorSelected(QColor) ), infoTextCMY, SLOT( setColor(QColor) ));
-    connect(gtkColorSelector, SIGNAL( colorSelected(QColor) ), infoTextHTML, SLOT( setColor(QColor) ));
-
-    connect(gtkColorSelector, SIGNAL( colorSelected(QColor) ), m_colorInfoVisualSingle, SLOT( setColor(QColor) ));
-    connect(gtkColorSelector, SIGNAL( colorSelected(QColor) ), m_colorInfoVisualComplement, SLOT( setColor(QColor) ));
-
-    connect(gtkColorSelector, SIGNAL( colorSelected(QColor) ), this, SLOT( getColorFromColorSelector(QColor) ));
+        connect(colorSelectors->page(i), SIGNAL( colorSelected(QColor) ), this, SLOT( getColorFromColorSelector(QColor) ));
+    }
 }
 
 QColor KColorEditWidget::selectedColor() const
@@ -106,10 +106,8 @@ QColor KColorEditWidget::selectedColor() const
 
 void KColorEditWidget::setColor(const QColor & color)
 {
-    m_color = color;
-
-    m_colorInfoVisualSingle->setColor(m_color);
-    m_colorInfoVisualComplement->setColor(m_color);
+    m_kdeColorSelector->setColor(color);
+    m_gtkColorSelector->setColor(color);
 }
 
 void KColorEditWidget::getColorFromColorSelector(const QColor & color)

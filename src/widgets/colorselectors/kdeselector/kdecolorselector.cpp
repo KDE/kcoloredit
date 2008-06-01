@@ -52,11 +52,10 @@ KdeColorSelector::~KdeColorSelector()
 {
 }
 
-// TODO
-//void KdeColorSelector::setColor(const QColor & color)
-//{
-//  m_rectangleColorWidget->setColor(color);
-//}
+void KdeColorSelector::setColor(const QColor & color)
+{
+    m_rectangleColorWidget->setColor(color);
+}
 
 void KdeColorSelector::updateColor(const QColor & /* color */)
 {

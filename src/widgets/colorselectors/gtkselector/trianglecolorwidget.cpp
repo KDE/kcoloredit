@@ -184,7 +184,7 @@ QColor TriangleColorWidget::color() const
     return QColor(r,g,b);
 }
 
-void TriangleColorWidget::setQColor(const QColor& c)
+void TriangleColorWidget::setColor(const QColor& c)
 {
     if(m_updateAllowed)
     {

@@ -34,7 +34,9 @@
 
 //BEGIN public class CollectionGrid
 
-CollectionGrid::CollectionGrid(const QString & collection, QWidget * parent) : KColorCells(parent, 0, 0), m_collection(collection), m_isEmpty(true)
+CollectionGrid::CollectionGrid(const QString & collection, QWidget * parent)
+    : KColorCells(parent, 0, 0), m_collection(collection)
+    , m_isEmpty(true)
 {
     setCursor(KCursor("hand2"));
 
@@ -43,7 +45,14 @@ CollectionGrid::CollectionGrid(const QString & collection, QWidget * parent) : K
     int columns = 4; // default value
     int rows = colorCollection.count() / columns;
 
-    if (rows > 0)
+    // NOTE
+    // becouse some times custom and recent colors start with only
+    // 1,2,3 or 4 colors and if the row of the colorcell is 0
+    // then custon and recent colors will not show it
+    if (rows == 0)
+        rows = 1;
+
+    if (colorCollection.count() > 0)
         m_isEmpty = false;
 
     setRowCount(rows);
@@ -73,7 +82,7 @@ void CollectionGrid::mousePressEvent(QMouseEvent * event)
 // this construct need a lot of explanation .. hehehe i think :P
 CollectionsWidget::CollectionsWidget(QWidget * parent) : QWidget(parent)
 {
-    QString emptyStr = i18n(" [Empty]");
+    QString emptyStr = i18n("\n[Empty]");
 
     QHBoxLayout * layout = new QHBoxLayout(this);
 

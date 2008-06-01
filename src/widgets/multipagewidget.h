@@ -38,7 +38,14 @@ class MultiPageWidget : public QFrame
     public:
         MultiPageWidget(QWidget * parent = 0);
 
+        int count() const;
+
+        QWidget * page(int index) const;
+
         void addPage(QWidget * widget, const KIcon & icon, const QString & title);
+
+        void setPrevToolTip(const QString & prevToolTip);
+        void setNextToolTip(const QString & nextToolTip);
 
     public slots:
         void switchToNextWidget();

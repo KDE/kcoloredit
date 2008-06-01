@@ -41,7 +41,7 @@ class TriangleColorWidget : public QWidget
         void setValue(int v);
         void setSaturation(int s);
         void setHSV(int h, int s, int v);
-        void setQColor(const QColor& );
+        void setColor(const QColor& );
 
     signals:
         void colorChanged(const QColor& );

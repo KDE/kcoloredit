@@ -32,9 +32,8 @@ class KdeColorSelector : public ColorSelector
         KdeColorSelector(QWidget * parent = 0);
         ~KdeColorSelector();
 
-    // TODO
-    //public slots:
-      //  void setColor(const QColor & color);
+    public slots:
+        void setColor(const QColor & color);
 
     private slots:
         void updateColor(const QColor & color);

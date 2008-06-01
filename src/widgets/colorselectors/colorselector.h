@@ -30,9 +30,8 @@ class ColorSelector : public QWidget
         ColorSelector(QWidget * parent = 0);
 
 
-    // TODO
-    //public slots:
-      //  virtual void setColor(const QColor & color);
+    public slots:
+        virtual void setColor(const QColor & color);
 
     signals:
         void colorSelected(const QColor & color);

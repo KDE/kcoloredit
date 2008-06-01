@@ -62,6 +62,16 @@ MultiPageWidget::MultiPageWidget(QWidget * parent)
     connect(m_previousPushButton, SIGNAL( pressed() ), this, SLOT( switchToPreviousWidget() ));
 }
 
+int MultiPageWidget::count() const
+{
+    return m_stackedBodyLayout->count();
+}
+
+QWidget * MultiPageWidget::page(int index) const
+{
+    return m_stackedBodyLayout->widget(index);
+}
+
 void MultiPageWidget::addPage(QWidget * widget, const KIcon & icon, const QString & title)
 {
     if (m_headers.isEmpty())
@@ -77,6 +87,16 @@ void MultiPageWidget::addPage(QWidget * widget, const KIcon & icon, const QStrin
 
     m_headers.append(QPair<QPixmap, QString>(icon.pixmap(24, 24), title));
     m_stackedBodyLayout->addWidget(widget);
+}
+
+void MultiPageWidget::setPrevToolTip(const QString & prevToolTip)
+{
+    m_previousPushButton->setToolTip(prevToolTip);
+}
+
+void MultiPageWidget::setNextToolTip(const QString & nextToolTip)
+{
+    m_nextPushButton->setToolTip(nextToolTip);
 }
 
 void MultiPageWidget::switchToNextWidget()

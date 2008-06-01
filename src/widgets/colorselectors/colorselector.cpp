@@ -24,9 +24,8 @@ ColorSelector::ColorSelector(QWidget * parent)
 {
 }
 
-// TODO
-//void ColorSelector::setColor(const QColor & /* color */)
-//{
-//}
+void ColorSelector::setColor(const QColor & /* color */)
+{
+}
 
 #include "colorselector.moc"

@@ -12,6 +12,9 @@ class GtkColorSelector : public ColorSelector
     public:
         GtkColorSelector(QWidget* parent);
 
+    public slots:
+        void setColor(const QColor & color);
+
     private slots:
         void updateColor(const QColor & color);
 

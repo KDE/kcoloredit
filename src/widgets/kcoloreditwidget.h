@@ -22,9 +22,8 @@
 
 #include <QtGui/QWidget>
 
-class MultiPageWidget;
-class ColorInfoVisualSingle;
-class ColorInfoVisualComplement;
+class KdeColorSelector;
+class GtkColorSelector;
 
 class KColorEditWidget : public QWidget
 {
@@ -44,12 +43,8 @@ class KColorEditWidget : public QWidget
     private:
         QColor m_color;
 
-        MultiPageWidget * m_selectors;
-        MultiPageWidget * m_infoStyles;
-        MultiPageWidget * m_infoTextModels;
-
-        ColorInfoVisualSingle * m_colorInfoVisualSingle;
-        ColorInfoVisualComplement * m_colorInfoVisualComplement;
+        KdeColorSelector * m_kdeColorSelector;
+        GtkColorSelector * m_gtkColorSelector;
 };
 
 #endif // KCOLOREDIT_WIDGET_H
