@@ -24,7 +24,7 @@
 
 class QLabel;
 
-class KLineEdit;
+class ClipboardLineEdit;
 
 class ColorInfoText : public ColorInfo
 {
@@ -43,9 +43,9 @@ class ColorInfoText : public ColorInfo
         QLabel * m_componentName2;
         QLabel * m_componentName3;
 
-        KLineEdit * m_componentValue1;
-        KLineEdit * m_componentValue2;
-        KLineEdit * m_componentValue3;
+        ClipboardLineEdit * m_componentValue1;
+        ClipboardLineEdit * m_componentValue2;
+        ClipboardLineEdit * m_componentValue3;
 };
 
 class ColorInfoTextRGB : public ColorInfoText

@@ -23,7 +23,8 @@
 #include <QtGui/QLabel>
 
 #include <KLocalizedString>
-#include <KLineEdit>
+
+#include "clipboardlineedit.h"
 
 //BEGIN ColorInfoText
 
@@ -35,14 +36,11 @@ ColorInfoText::ColorInfoText(QWidget * parent) : ColorInfo(parent)
 
     m_componentName3 = new QLabel(this);
 
-    m_componentValue1 = new KLineEdit(this);
-    m_componentValue1->setReadOnly(true);
+    m_componentValue1 = new ClipboardLineEdit(this);
 
-    m_componentValue2 = new KLineEdit(this);
-    m_componentValue2->setReadOnly(true);
+    m_componentValue2 = new ClipboardLineEdit(this);
 
-    m_componentValue3 = new KLineEdit(this);
-    m_componentValue3->setReadOnly(true);
+    m_componentValue3 = new ClipboardLineEdit(this);
 
     QGridLayout * layout = new QGridLayout(this);
     layout->addWidget(m_componentName1, 0, 0, Qt::AlignLeft);

@@ -30,6 +30,8 @@ set (
   widgets/colorinfo/colorinfo.cpp
   widgets/colorinfo/colorinfovisual.cpp
   widgets/colorinfo/colorinfotext.cpp
+  widgets/palettedelegateeditors.cpp
+  widgets/clipboardlineedit.cpp
   widgets/multipagewidget.cpp
   widgets/kcoloreditwidget.cpp
   dialog/palettedialog.cpp

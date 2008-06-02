@@ -22,65 +22,9 @@
 #include <QtCore/QModelIndex>
 #include <QtGui/QPainter>
 
-#include <QtGui/QHBoxLayout>
-
 #include <KColorScheme>
-#include <KColorButton>
-#include <KLineEdit>
 
-class ColorItemEditor : public QWidget
-{
-    public:
-        ColorItemEditor(QWidget * parent = 0)
-            : QWidget(parent)
-        {
-            m_color = new KColorButton(this);
-            m_color->setMinimumWidth(92);
-
-            m_colorName = new KLineEdit(this);
-            m_colorName->setMinimumWidth(128);
-            m_colorName->setClearButtonShown(true);
-
-            QHBoxLayout * layout = new QHBoxLayout(this);
-            layout->addWidget(m_color);
-            layout->addWidget(m_colorName);
-
-            setMinimumHeight(40);
-        }
-
-        QColor color() const { return m_color->color(); }
-        void setColor(const QColor & color) { m_color->setColor(color); }
-
-        QString colorName() const { return m_colorName->text(); }
-        void setColorName(const QString & colorName) {     m_colorName->setText(colorName); }
-
-    private:
-        KColorButton * m_color;
-        KLineEdit * m_colorName;
-};
-
-class CommentItemEditor : public QWidget
-{
-    public:
-        CommentItemEditor(QWidget * parent = 0)
-            : QWidget(parent)
-        {
-            m_comment = new KLineEdit(this);
-            m_comment->setMinimumWidth(128);
-            m_comment->setClearButtonShown(true);
-
-            QHBoxLayout * layout = new QHBoxLayout(this);
-            layout->addWidget(m_comment);
-
-            setMinimumHeight(40);
-        }
-
-        QString comment() const { return m_comment->text(); }
-        void setComment(const QString & comment) { m_comment->setText(comment); }
-
-    private:
-        KLineEdit * m_comment;
-};
+#include "palettedelegateeditors.h"
 
 PaletteDelegate::PaletteDelegate(QObject * parent)
     : QItemDelegate(parent)
