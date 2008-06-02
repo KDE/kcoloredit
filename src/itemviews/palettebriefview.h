@@ -46,12 +46,15 @@ class PaletteGridView : public QWidget
         void zoomIn();
 
     signals:
+        void selectedItem(int index);
+        void trackedItem(int index);
         void trackedColor(const QColor & color);
 
     private slots:
         void updateWhenInsertItem(const QModelIndex & topLeft, const QModelIndex & bottomRight);
         void updateWhenRemoveItem(const QModelIndex & parent, int start, int end);
 
+        void updateIndex(int row, int column);
         void trackColor(int row, int column);
         void showComments(bool show); // NOTE if show commenten then can't copy/cut/paste
 

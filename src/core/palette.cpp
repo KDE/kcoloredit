@@ -213,7 +213,7 @@ void Palette::moveItem(int index, Palette::MoveOperation operation)
             m_items.swap(index, index - 1);
 
             break;
-    
+
         case Palette::MoveToNext:
             if (index == m_items.count() - 1)
                 break ;
@@ -242,6 +242,8 @@ void Palette::moveItem(int index, Palette::MoveOperation operation)
 
 void Palette::removeItem(int index)
 {
+    // NOTE safe deleting of items
+
     PaletteItem * item = m_items[index];
 
     if (item)

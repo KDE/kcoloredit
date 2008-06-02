@@ -40,10 +40,13 @@ PaletteGridView::PaletteGridView(PaletteModel * model, QWidget * parent)
 {
     m_quickNavigationCheckBox = new QCheckBox(this);
     m_quickNavigationCheckBox->setText(i18n("Quick navigation"));
+    m_quickNavigationCheckBox->setChecked(false);
+    m_quickNavigationCheckBox->setStatusTip(i18n("It would disable automatically if you selected a item"));
 
     m_showCommentsCheckBox = new QCheckBox(this);
     m_showCommentsCheckBox->setText(i18n("Show comments"));
     m_showCommentsCheckBox->setChecked(m_showComments);
+    m_showCommentsCheckBox->setStatusTip(i18n("If is checked, you can cut,copy and paste"));
 
     m_setColumnSlider = new QSlider(Qt::Horizontal, this);
     m_setColumnSlider->setRange(1, 20);
@@ -86,6 +89,7 @@ PaletteGridView::PaletteGridView(PaletteModel * model, QWidget * parent)
     connect(m_zoomInButton, SIGNAL( pressed () ), this, SLOT( zoomIn() ));
 
     connect(m_colorCells, SIGNAL( cellEntered(int, int) ), this, SLOT( trackColor(int, int) ));
+    connect(m_colorCells, SIGNAL( cellPressed(int, int) ), this, SLOT( updateIndex(int, int) ));
 
     connect(m_showCommentsCheckBox, SIGNAL( toggled(bool) ), this, SLOT( showComments(bool) ));
 }
@@ -130,6 +134,15 @@ void PaletteGridView::updateWhenRemoveItem(const QModelIndex & /* parent */, int
     loadDataFromModel();
 }
 
+void PaletteGridView::updateIndex(int row, int column)
+{
+    m_quickNavigationCheckBox->setChecked(false);
+
+    int index = row * m_colorCells->columnCount() + column;
+
+    emit selectedItem(index);
+}
+
 void PaletteGridView::trackColor(int row, int column)
 {
     if (m_quickNavigationCheckBox->isChecked())
@@ -139,6 +152,9 @@ void PaletteGridView::trackColor(int row, int column)
         // WARNING should use tableitemwidget?
 
         emit trackedColor(m_colorCells->color(i));
+
+        if (m_showCommentsCheckBox->isChecked())
+            emit trackedItem(i);
     }
 }
 

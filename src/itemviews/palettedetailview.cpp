@@ -232,6 +232,20 @@ void PaletteDetailView::moveItem(int index, Palette::MoveOperation operation)
     }
 }
 
+void PaletteDetailView::setSelectedItem(int index)
+{
+    // WARNING check this
+    if (m_model->rowCount())
+        m_view->setCurrentIndex(m_model->index(index, 0));
+}
+
+void PaletteDetailView::slotScrollToItem(int index)
+{
+    // WARNING check this
+    if (m_model->rowCount())
+        m_view->scrollTo(m_model->index(index, 0), QAbstractItemView::PositionAtTop);
+}
+
 void PaletteDetailView::updateHeaders(const QModelIndex & /* topLeft */, const QModelIndex & /* bottomRight */)
 {
     m_view->horizontalHeader()->setResizeMode(0, QHeaderView::Stretch);

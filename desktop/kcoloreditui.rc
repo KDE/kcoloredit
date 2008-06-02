@@ -6,6 +6,14 @@
             <Action name="show-detail-view"/>
             <Action name="show-brief-view"/>
         </Menu>
+        <Menu name="palette">
+            <text>Palette</text>
+            <Action name="clean-palette"/>
+            <Action name="generate-color-names"/>
+        </Menu>
+        <Menu name="tools">
+            <Action name="show-brief-view"/>
+        </Menu>
     </MenuBar>
     <ToolBar name="palette-toolbar" newline="true">
         <text>Palette Toolbar</text>

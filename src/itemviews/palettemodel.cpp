@@ -81,35 +81,38 @@ bool PaletteModel::setData(const QModelIndex & index, const QVariant & value, in
 
         if (m_palette.itemType(index.row()) == PaletteItem::ColorType)
         {
-
-            vmap.insert("type", QString("color"));
+            //vmap.insert("type", QString("color"));
 
             index.model()->data(index, Qt::BackgroundRole).toMap().insert("type", QString("color"));  // NOTE
 
             PaletteColorItem * colorItem = m_palette.colorItem(index.row());
 
-            if (colorItem != 0)
+            if (colorItem)
             {
-                    colorItem->setColor(vmap.value("color").value<QColor>());
-                    colorItem->setColorName(vmap.value("name").toString());
+                colorItem->setColor(vmap.value("color").value<QColor>());
+                colorItem->setColorName(vmap.value("name").toString());
             }
+
+            emit dataChanged(index, index);
+
+            return true;
         }
 
         if (m_palette.itemType(index.row()) == PaletteItem::CommentType)
         {
-            vmap.insert("type", QString("comment"));
+            //vmap.insert("type", QString("comment"));
 
             index.model()->data(index, Qt::BackgroundRole).toMap().insert("type", QString("comment"));  // NOTE
 
             PaletteCommentItem * commentItem = m_palette.commentItem(index.row());
 
-            if (commentItem != 0)
+            if (commentItem)
                 commentItem->setComment(vmap.value("comment").toString());
+
+            emit dataChanged(index, index);
+
+            return true;
         }
-
-        emit dataChanged(index, index);
-
-        return true;
     }
 
     return false;
@@ -163,8 +166,8 @@ bool PaletteModel::removeRows(int row, int count, const QModelIndex & /* parent 
 {
     beginRemoveRows(QModelIndex(), row, row + count - 1);
 
-    for (int i = 0; i < count; ++i)
-        m_palette.removeItem(i + row);
+    for (int i = 0; i < count; i++)
+        m_palette.removeItem(row);
 
     endRemoveRows();
 

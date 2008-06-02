@@ -79,7 +79,6 @@ void KColorEditMainWnd::openFile()
                 if (m_paletteDocument->model()->rowCount() > 0)
                     m_paletteDocument->model()->setData(m_paletteDocument->model()->index(0, 0), m_paletteDocument->model()->index(0, 0).data());
 
-
                 updateTittleWhenOpenSaveDoc();
             }
             else
@@ -139,6 +138,38 @@ void KColorEditMainWnd::settingsPreferences()
     dialog.exec();
 }
 */
+
+void KColorEditMainWnd::cleanPalette()
+{
+    // TODO popup a dialog here
+
+    if (m_paletteDocument->model()->rowCount() > 0)
+        m_paletteDocument->model()->removeRows(0, m_paletteDocument->model()->rowCount());
+}
+
+void KColorEditMainWnd::generateColorNames()
+{
+    // TODO popup a dialog here
+
+    if (m_paletteDocument->model()->rowCount() > 0)
+    {
+        QVariantMap vmap;
+
+        int rows = m_paletteDocument->model()->rowCount();
+
+        for (int i = 0; i < rows; i++)
+        {
+            vmap = m_paletteDocument->model()->index(i, 0).data().toMap();
+
+            if (vmap.value("type").toString() == QString("color"))
+            {
+                vmap.insert("name", vmap.value("color").value<QColor>().name());
+
+                m_paletteDocument->model()->setData(m_paletteDocument->model()->index(i, 0), vmap);
+            }
+        }
+    }
+}
 
 void KColorEditMainWnd::addColorItem()
 {
@@ -247,11 +278,26 @@ void KColorEditMainWnd::setupWidgets()
     connect(m_paletteDocument, SIGNAL( modified() ), this, SLOT( updateTittleWhenChangeDocState() ));
 
     connect(m_paletteGridView, SIGNAL( trackedColor(QColor) ), m_kColorEditWidget, SLOT( setColor(QColor) ));
+    connect(m_paletteGridView, SIGNAL( trackedItem(int) ), m_paletteDetailView, SLOT( slotScrollToItem(int) ));
+
+    connect(m_paletteGridView, SIGNAL( selectedItem(int) ), m_paletteDetailView, SLOT( setSelectedItem(int) ));
 }
 
 void KColorEditMainWnd::setupActions()
 {
     KAction * tmpAction = 0;
+
+    /// palette menu
+
+    tmpAction = actionCollection()->addAction("clean-palette");
+    tmpAction->setIcon(KIcon("edit-clear"));
+    tmpAction->setText(i18n("Clean Palette"));
+
+    tmpAction = actionCollection()->addAction("generate-color-names");
+    tmpAction->setIcon(KIcon("format-stroke-color"));
+    tmpAction->setText(i18n("Generate Color Names"));
+
+    /// palette toolbar
 
     tmpAction = actionCollection()->addAction("add-color");
     tmpAction->setIcon(KIcon("list-add"));
@@ -288,6 +334,12 @@ void KColorEditMainWnd::setupActions()
     tmpAction = actionCollection()->addAction("move-end");
     tmpAction->setIcon(KIcon("go-bottom"));
     tmpAction->setText(i18n("Last position"));
+
+    /// palette menu
+    connect(dynamic_cast<KAction *>(actionCollection()->action("clean-palette"))        , SIGNAL( triggered(bool) ), this, SLOT( cleanPalette() ));
+    connect(dynamic_cast<KAction *>(actionCollection()->action("generate-color-names")) , SIGNAL( triggered(bool) ), this, SLOT( generateColorNames() ));
+
+    /// palette toolbar
 
     connect(dynamic_cast<KAction *>(actionCollection()->action("add-color"))     , SIGNAL( triggered(bool) ), this, SLOT( addColorItem()       ));
     connect(dynamic_cast<KAction *>(actionCollection()->action("add-comment"))   , SIGNAL( triggered(bool) ), this, SLOT( addCommentItem()     ));

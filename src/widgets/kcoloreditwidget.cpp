@@ -50,7 +50,6 @@ KColorEditWidget::KColorEditWidget(QWidget * parent)
     colorInfoVisuals->setPrevToolTip(i18n("Prev visual style"));
     colorInfoVisuals->setNextToolTip(i18n("Next visual style"));
 
-
     ColorInfoVisualSingle * colorInfoVisualSingle = new ColorInfoVisualSingle(colorInfoVisuals);
 
     ColorInfoVisualComplement * colorInfoVisualComplement = new ColorInfoVisualComplement(colorInfoVisuals);
@@ -87,13 +86,11 @@ KColorEditWidget::KColorEditWidget(QWidget * parent)
 
     for (int i = 0; i < colorSelectors->count(); i++)
     {
-        connect(colorSelectors->page(i), SIGNAL( colorSelected(QColor) ), infoTextRGB, SLOT( setColor(QColor) ));
-        connect(colorSelectors->page(i), SIGNAL( colorSelected(QColor) ), infoTextHSV, SLOT( setColor(QColor) ));
-        connect(colorSelectors->page(i), SIGNAL( colorSelected(QColor) ), infoTextCMY, SLOT( setColor(QColor) ));
-        connect(colorSelectors->page(i), SIGNAL( colorSelected(QColor) ), infoTextHTML, SLOT( setColor(QColor) ));
+        for (int j = 0; j < colorInfoVisuals->count(); j++)
+            connect(colorSelectors->page(i), SIGNAL( colorSelected(QColor) ), colorInfoVisuals->page(j), SLOT( setColor(QColor) ));
 
-        connect(colorSelectors->page(i), SIGNAL( colorSelected(QColor) ), colorInfoVisualSingle, SLOT( setColor(QColor) ));
-        connect(colorSelectors->page(i), SIGNAL( colorSelected(QColor) ), colorInfoVisualComplement, SLOT( setColor(QColor) ));
+        for (int k = 0; k < colorInfoTexts->count(); k++)
+            connect(colorSelectors->page(i), SIGNAL( colorSelected(QColor) ), colorInfoTexts->page(k), SLOT( setColor(QColor) ));
 
         connect(colorSelectors->page(i), SIGNAL( colorSelected(QColor) ), this, SLOT( getColorFromColorSelector(QColor) ));
     }

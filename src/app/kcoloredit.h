@@ -48,6 +48,9 @@ class KColorEditMainWnd : public KXmlGuiWindow
         // TODO settings
         //void settingsPreferences();
 
+        void cleanPalette();
+        void generateColorNames();
+
         void addColorItem();
         void addCommentItem();
         void insertColorItem();

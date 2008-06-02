@@ -54,6 +54,10 @@ PaletteModel * PaletteDocument::model()
     return m_model;
 }
 
+#include <kdebug.h>
+
+#include <QTime>
+
 bool PaletteDocument::openPaletteFile(const QString & fileName)
 {
     QFile paletteFile(fileName);
@@ -72,6 +76,7 @@ bool PaletteDocument::openPaletteFile(const QString & fileName)
         return false; 
     }
 
+    // NOT DEPRECATED i solved the issue with deletion see palettemodel removeRows
     // NOTE this 4 lines are very important
     // always work with 1 only single model X file
     // is to slowyyyyyy proccess the load files if you wrok with one model X app
@@ -79,6 +84,14 @@ bool PaletteDocument::openPaletteFile(const QString & fileName)
         delete m_model;
 
     m_model = new PaletteModel(this);
+
+    connect(m_model, SIGNAL( dataChanged(QModelIndex, QModelIndex) ), this, SLOT( updateDocStateWhenInsertItem(QModelIndex, QModelIndex) ));
+    connect(m_model, SIGNAL( rowsRemoved(QModelIndex, int, int) ), this, SLOT( updateDocStateWhenRemoveItem(QModelIndex, int, int) ));
+
+    // TOO SLOWWWW load time no wayy
+    // NOTE now we simply remove items not delete the model
+    //if (m_model->rowCount() > 0)
+    //   m_model->removeRows(0, m_model->rowCount());
 
     line = QString::fromLocal8Bit(paletteFile.readLine());
 
@@ -92,6 +105,12 @@ bool PaletteDocument::openPaletteFile(const QString & fileName)
         m_model->setPaletteName(palName);
     }
 
+    int rows = 0;
+    int r, g, b;
+    int pos = 0;
+
+    QVariantMap vmap;
+
     while( !paletteFile.atEnd() )
     {
         line = QString::fromLocal8Bit(paletteFile.readLine());
@@ -104,26 +123,19 @@ bool PaletteDocument::openPaletteFile(const QString & fileName)
             if (line.isEmpty())
                 continue;
 
-            int r, g, b;
-            int pos = 0;
-
             if (sscanf(line.toAscii(), "%d %d %d%n", &r, &g, &b, &pos) >= 3)
             {
                 r = qBound(0, r, 255);
                 g = qBound(0, g, 255);
                 b = qBound(0, b, 255);
 
-                QColor color(r, g, b);
-                QString colorName = line.mid(pos).trimmed();
+                m_model->insertColorRows(rows, 1);
 
-                m_model->insertColorRows(m_model->rowCount(), 1);
-
-                QVariantMap vmap;
                 vmap.insert("type", QString("color"));  // NOTE
-                vmap.insert("color", color);
-                vmap.insert("name", colorName);
+                vmap.insert("color", QColor(r, g, b));
+                vmap.insert("name", line.mid(pos).trimmed());
 
-                m_model->setData(m_model->index(m_model->rowCount() - 1, 0), vmap);
+                m_model->setData(m_model->index(rows - 1, 0), vmap);
             }
         }
         else
@@ -131,24 +143,23 @@ bool PaletteDocument::openPaletteFile(const QString & fileName)
             // This is a comment line
             line = line.mid(1); // Strip '#'
             line = line.trimmed(); // Strip remaining white space..
+
             if (!line.isEmpty())
             {
-                m_model->insertCommentRows(m_model->rowCount(), 1);
+                m_model->insertCommentRows(rows, 1);
 
-                QVariantMap vmap;
                 vmap.insert("type", QString("comment"));  // NOTE
                 vmap.insert("comment", line);
 
-                m_model->setData(m_model->index(m_model->rowCount() - 1, 0), vmap);
+                m_model->setData(m_model->index(rows - 1, 0), vmap);
             }
         }
+
+        rows++;
     }
 
     m_fullPathFile = fileName;
     m_file = m_fullPathFile.split("/")[m_fullPathFile.split("/").count() - 1];
-
-    connect(m_model, SIGNAL( dataChanged(QModelIndex, QModelIndex) ), this, SLOT( updateDocStateWhenInsertItem(QModelIndex, QModelIndex) ));
-    connect(m_model, SIGNAL( rowsRemoved(QModelIndex, int, int) ), this, SLOT( updateDocStateWhenRemoveItem(QModelIndex, int, int) ));
 
     return true;
 }

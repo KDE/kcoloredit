@@ -55,6 +55,9 @@ class PaletteDetailView : public QWidget
         void moveItem(int index, Palette::MoveOperation operation);
 
     public slots:
+        void setSelectedItem(int index);
+        void slotScrollToItem(int index);
+
         void updateHeaders(const QModelIndex & topLeft, const QModelIndex & bottomRight);
 
     private slots:
