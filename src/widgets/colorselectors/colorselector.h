@@ -29,7 +29,6 @@ class ColorSelector : public QWidget
     public:
         ColorSelector(QWidget * parent = 0);
 
-
     public slots:
         virtual void setColor(const QColor & color);
 

@@ -24,6 +24,7 @@
 
 class KdeColorSelector;
 class GtkColorSelector;
+class BlenderColorSelector;
 
 class KColorEditWidget : public QWidget
 {
@@ -45,6 +46,7 @@ class KColorEditWidget : public QWidget
 
         KdeColorSelector * m_kdeColorSelector;
         GtkColorSelector * m_gtkColorSelector;
+        BlenderColorSelector * m_blenderColorSelector;
 };
 
 #endif // KCOLOREDIT_WIDGET_H

@@ -6,6 +6,7 @@ include_directories (
   ${CMAKE_CURRENT_SOURCE_DIR}/itemviews
   ${CMAKE_CURRENT_SOURCE_DIR}/widgets/colorselectors/kdeselector
   ${CMAKE_CURRENT_SOURCE_DIR}/widgets/colorselectors/gtkselector
+  ${CMAKE_CURRENT_SOURCE_DIR}/widgets/colorselectors/blenderselector
   ${CMAKE_CURRENT_SOURCE_DIR}/widgets/colorselectors
   ${CMAKE_CURRENT_SOURCE_DIR}/widgets/colorinfo
   ${CMAKE_CURRENT_SOURCE_DIR}/widgets
@@ -26,6 +27,7 @@ set (
   widgets/colorselectors/kdeselector/kdecolorselector.cpp
   widgets/colorselectors/gtkselector/trianglecolorwidget.cpp
   widgets/colorselectors/gtkselector/gtkcolorselector.cpp
+  widgets/colorselectors/blenderselector/blendercolorselector.cpp
   widgets/colorselectors/colorselector.cpp
   widgets/colorinfo/colorinfo.cpp
   widgets/colorinfo/colorinfovisual.cpp

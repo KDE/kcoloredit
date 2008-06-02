@@ -21,7 +21,6 @@
 
 #include <QtGui/QHBoxLayout>
 
-#include <KFadeWidgetEffect>
 #include <KColorPatch>
 
 ColorInfoVisual::ColorInfoVisual(QWidget * parent) : ColorInfo(parent), m_mainColorPatch(0)
@@ -30,18 +29,6 @@ ColorInfoVisual::ColorInfoVisual(QWidget * parent) : ColorInfo(parent), m_mainCo
 
 ColorInfoVisual::~ColorInfoVisual()
 {
-}
-
-void ColorInfoVisual::changeColorPatchWithFadeEffect(KColorPatch * colorPatch, const QColor & color, int duration)
-{
-    if ((colorPatch) && (duration >= 250))
-    {
-        KFadeWidgetEffect * effect = new KFadeWidgetEffect(colorPatch);
-
-        colorPatch->setColor(color);
-
-        effect->start(duration);
-    }
 }
 
 //BEGIN public class ColorInfoVisualSingle
@@ -64,7 +51,7 @@ ColorInfoVisualSingle::~ColorInfoVisualSingle()
 
 void ColorInfoVisualSingle::setColor(const QColor & color)
 {
-    changeColorPatchWithFadeEffect(m_mainColorPatch, color);
+    m_mainColorPatch->setColor(color);
 }
 
 //END public class ColorInfoVisualSingle
@@ -96,14 +83,14 @@ ColorInfoVisualComplement::~ColorInfoVisualComplement()
 void ColorInfoVisualComplement::setColor(const QColor & color)
 {
     // WARNING OPTIMIZE THIS
-    changeColorPatchWithFadeEffect(m_mainColorPatch, color);
-    changeColorPatchWithFadeEffect(m_complementColorPatch, QColor(255 - color.red(), 255 - color.green(), 255 - color.blue()));
+    m_mainColorPatch->setColor(color);
+    m_complementColorPatch->setColor(QColor(255 - color.red(), 255 - color.green(), 255 - color.blue()));
 }
 
 void ColorInfoVisualComplement::setComplementColor(const QColor & color)
 {
-    changeColorPatchWithFadeEffect(m_mainColorPatch, QColor(255 - color.red(), 255 - color.green(), 255 - color.blue()));
-    changeColorPatchWithFadeEffect(m_complementColorPatch, color);
+    m_mainColorPatch->setColor(QColor(255 - color.red(), 255 - color.green(), 255 - color.blue()));
+    m_complementColorPatch->setColor(color);
 }
 
 //BEGIN public class ColorInfoVisualComplement

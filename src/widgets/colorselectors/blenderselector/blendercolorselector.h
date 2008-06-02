@@ -17,53 +17,35 @@
 *  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.                 *
 *********************************************************************************/
 
-#ifndef COLOR_INFO_VISUAL_H
-#define COLOR_INFO_VISUAL_H
+#ifndef BLENDER_COLOR_SELECTOR_H
+#define BLENDER_COLOR_SELECTOR_H
 
-#include "colorinfo.h"
+#include "colorselector.h"
 
-class KColorPatch;
+class KColorButton;
 
-class ColorInfoVisual : public ColorInfo
+class BlenderColorSelector : public ColorSelector
 {
     Q_OBJECT
 
     public:
-        ColorInfoVisual(QWidget * parent = 0);
-        virtual ~ColorInfoVisual();
-
-    protected:
-        KColorPatch * m_mainColorPatch;
-};
-
-class ColorInfoVisualSingle : public ColorInfoVisual
-{
-    Q_OBJECT
-
-    public:
-        ColorInfoVisualSingle(QWidget * parent = 0);
-        ~ColorInfoVisualSingle();
-
-    public slots:
-        void setColor(const QColor & color);
-};
-
-class ColorInfoVisualComplement : public ColorInfoVisual
-{
-    Q_OBJECT
-
-    public:
-        ColorInfoVisualComplement(QWidget * parent = 0);
-        ~ColorInfoVisualComplement();
+        BlenderColorSelector(QWidget * parent = 0);
 
     public slots:
         void setColor(const QColor & color);
 
     private slots:
-        void setComplementColor(const QColor & color);
+        void updateMixWhenChangeBias(int factor);
+        void updateMixWhenChangeColor(const QColor & color);
 
     private:
-        KColorPatch * m_complementColorPatch;
+        void performMix();
+
+    private:
+        float m_bias;
+
+        KColorButton * m_baseColor;
+        KColorButton * m_overlayedColor;
 };
 
-#endif // COLOR_INFO_VISUAL_H
+#endif // BLENDER_COLOR_SELECTOR_H

@@ -27,6 +27,7 @@
 #include "multipagewidget.h"
 #include "kdecolorselector.h"
 #include "gtkcolorselector.h"
+#include "blendercolorselector.h"
 #include "colorinfovisual.h"
 #include "colorinfotext.h"
 
@@ -42,8 +43,11 @@ KColorEditWidget::KColorEditWidget(QWidget * parent)
 
     m_gtkColorSelector = new GtkColorSelector(colorSelectors);
 
+    m_blenderColorSelector = new BlenderColorSelector(colorSelectors);
+
     colorSelectors->addPage(m_kdeColorSelector, KIcon("kde"), i18n("KDE Style"));
     colorSelectors->addPage(m_gtkColorSelector, KIcon("fill-color"), i18n("GTK Style"));
+    colorSelectors->addPage(m_blenderColorSelector, KIcon("fill-color"), i18n("Mix Colors"));
 
     MultiPageWidget* colorInfoVisuals = new MultiPageWidget(this);
     colorInfoVisuals->setMaximumHeight(128); // NOTE default value here;
@@ -105,6 +109,7 @@ void KColorEditWidget::setColor(const QColor & color)
 {
     m_kdeColorSelector->setColor(color);
     m_gtkColorSelector->setColor(color);
+    m_blenderColorSelector->setColor(color);
 }
 
 void KColorEditWidget::getColorFromColorSelector(const QColor & color)
