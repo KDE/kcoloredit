@@ -113,7 +113,7 @@ void ColorInfoTextHSV::setColor(const QColor & color)
 
 ColorInfoTextCMY::ColorInfoTextCMY(QWidget * parent) : ColorInfoText(parent)
 {
-    setComponentNames(i18n("Cyan"), i18n("Magneta"), i18n("Yellow"));
+    setComponentNames(i18n("Cyan"), i18n("Magenta"), i18n("Yellow"));
 }
 
 ColorInfoTextCMY::~ColorInfoTextCMY()

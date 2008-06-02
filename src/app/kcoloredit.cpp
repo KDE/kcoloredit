@@ -283,7 +283,7 @@ void KColorEditMainWnd::setupActions()
 
     tmpAction = actionCollection()->addAction("move-begin");
     tmpAction->setIcon(KIcon("go-top"));
-    tmpAction->setText(i18n("Lirst position"));
+    tmpAction->setText(i18n("First position"));
 
     tmpAction = actionCollection()->addAction("move-end");
     tmpAction->setIcon(KIcon("go-bottom"));
