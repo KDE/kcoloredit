@@ -18,8 +18,8 @@ set (
   kcoloredit_SRCS
 
   core/palette.cpp
+  core/palettemodel.cpp
   core/palettedocument.cpp
-  itemviews/palettemodel.cpp
   itemviews/palettedelegate.cpp
   itemviews/palettedetailview.cpp
   itemviews/palettebriefview.cpp
@@ -34,6 +34,7 @@ set (
   widgets/colorinfo/colorinfotext.cpp
   widgets/palettedelegateeditors.cpp
   widgets/clipboardlineedit.cpp
+  widgets/colorwidget.cpp
   widgets/multipagewidget.cpp
   widgets/kcoloreditwidget.cpp
   dialog/palettedialog.cpp

@@ -23,7 +23,8 @@
 
 #include <KColorPatch>
 
-ColorInfoVisual::ColorInfoVisual(QWidget * parent) : ColorInfo(parent), m_mainColorPatch(0)
+ColorInfoVisual::ColorInfoVisual(QWidget * parent)
+    : ColorInfo(parent)
 {
 }
 
@@ -31,49 +32,17 @@ ColorInfoVisual::~ColorInfoVisual()
 {
 }
 
-//BEGIN public class ColorInfoVisualSingle
-
-ColorInfoVisualSingle::ColorInfoVisualSingle(QWidget * parent) : ColorInfoVisual(parent)
-{
-    m_mainColorPatch = new KColorPatch(this);
-    m_mainColorPatch->setMinimumSize(100, 100); // NOTE this valuessss ?
-    m_mainColorPatch->setColor(Qt::red); // default color
-
-    QHBoxLayout * mainLayout = new QHBoxLayout(this);
-    mainLayout->addWidget(m_mainColorPatch);
-
-    connect(m_mainColorPatch, SIGNAL( colorChanged(QColor) ), this, SLOT( setColor(QColor) ));
-}
-
-ColorInfoVisualSingle::~ColorInfoVisualSingle()
-{
-}
-
-void ColorInfoVisualSingle::setColor(const QColor & color)
-{
-    m_mainColorPatch->setColor(color);
-}
-
-//END public class ColorInfoVisualSingle
-
 //BEGIN public class ColorInfoVisualComplement
 
 ColorInfoVisualComplement::ColorInfoVisualComplement(QWidget * parent) : ColorInfoVisual(parent)
 {
-    m_mainColorPatch = new KColorPatch(this);
-    m_mainColorPatch->setMinimumSize(100, 100); // NOTE this valuessss ?
-    m_mainColorPatch->setColor(Qt::red); // default color
-
     m_complementColorPatch = new KColorPatch(this);
-    m_complementColorPatch->setMinimumSize(100, 100); // NOTE this valuessss ?
+    m_complementColorPatch->setMinimumSize(64, 64); // NOTE this valuessss ?
     m_complementColorPatch->setColor(QColor(0, 255, 255)); // default complement color
+    m_complementColorPatch->setAcceptDrops(false);
 
     QHBoxLayout * mainLayout = new QHBoxLayout(this);
-    mainLayout->addWidget(m_mainColorPatch);
     mainLayout->addWidget(m_complementColorPatch);
-
-    connect(m_mainColorPatch, SIGNAL( colorChanged(QColor) ), this, SLOT( setColor(QColor) ));
-    connect(m_complementColorPatch, SIGNAL( colorChanged(QColor) ), this, SLOT( setComplementColor(QColor) ));
 }
 
 ColorInfoVisualComplement::~ColorInfoVisualComplement()
@@ -82,16 +51,9 @@ ColorInfoVisualComplement::~ColorInfoVisualComplement()
 
 void ColorInfoVisualComplement::setColor(const QColor & color)
 {
-    // WARNING OPTIMIZE THIS
-    m_mainColorPatch->setColor(color);
     m_complementColorPatch->setColor(QColor(255 - color.red(), 255 - color.green(), 255 - color.blue()));
 }
 
-void ColorInfoVisualComplement::setComplementColor(const QColor & color)
-{
-    m_mainColorPatch->setColor(QColor(255 - color.red(), 255 - color.green(), 255 - color.blue()));
-    m_complementColorPatch->setColor(color);
-}
 
 //BEGIN public class ColorInfoVisualComplement
 

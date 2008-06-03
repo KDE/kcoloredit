@@ -28,12 +28,12 @@
 #include "kdecolorselector.h"
 #include "gtkcolorselector.h"
 #include "blendercolorselector.h"
+#include "colorwidget.h"
 #include "colorinfovisual.h"
 #include "colorinfotext.h"
 
 KColorEditWidget::KColorEditWidget(QWidget * parent)
     : QWidget(parent)
-    , m_color(Qt::red) // default color
 {
     MultiPageWidget * colorSelectors = new MultiPageWidget(this);
     colorSelectors->setPrevToolTip(i18n("Prev selector"));
@@ -54,11 +54,10 @@ KColorEditWidget::KColorEditWidget(QWidget * parent)
     colorInfoVisuals->setPrevToolTip(i18n("Prev visual style"));
     colorInfoVisuals->setNextToolTip(i18n("Next visual style"));
 
-    ColorInfoVisualSingle * colorInfoVisualSingle = new ColorInfoVisualSingle(colorInfoVisuals);
+    m_colorDispatcher = new ColorWidget(this);
 
     ColorInfoVisualComplement * colorInfoVisualComplement = new ColorInfoVisualComplement(colorInfoVisuals);
 
-    colorInfoVisuals->addPage(colorInfoVisualSingle, KIcon(), i18n("Single color"));
     colorInfoVisuals->addPage(colorInfoVisualComplement, KIcon(), i18n("Complementary color"));
 
     MultiPageWidget * colorInfoTexts = new MultiPageWidget(this);
@@ -85,24 +84,23 @@ KColorEditWidget::KColorEditWidget(QWidget * parent)
 
     QVBoxLayout * mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(colorSelectors);
-    mainLayout->addWidget(colorInfoVisuals);
+    mainLayout->addWidget(m_colorDispatcher);
     mainLayout->addWidget(colorInfoTexts);
+    mainLayout->addWidget(colorInfoVisuals);
 
     for (int i = 0; i < colorSelectors->count(); i++)
-    {
-        for (int j = 0; j < colorInfoVisuals->count(); j++)
-            connect(colorSelectors->page(i), SIGNAL( colorSelected(QColor) ), colorInfoVisuals->page(j), SLOT( setColor(QColor) ));
+        connect(colorSelectors->page(i), SIGNAL( colorSelected(QColor) ), m_colorDispatcher, SLOT( setColor(QColor) ));
 
-        for (int k = 0; k < colorInfoTexts->count(); k++)
-            connect(colorSelectors->page(i), SIGNAL( colorSelected(QColor) ), colorInfoTexts->page(k), SLOT( setColor(QColor) ));
+    for (int k = 0; k < colorInfoTexts->count(); k++)
+        connect(m_colorDispatcher, SIGNAL( colorChanged(QColor) ), colorInfoTexts->page(k), SLOT( setColor(QColor) ));
 
-        connect(colorSelectors->page(i), SIGNAL( colorSelected(QColor) ), this, SLOT( getColorFromColorSelector(QColor) ));
-    }
+    for (int j = 0; j < colorInfoVisuals->count(); j++)
+        connect(m_colorDispatcher, SIGNAL( colorChanged(QColor) ), colorInfoVisuals->page(j), SLOT( setColor(QColor) ));
 }
 
 QColor KColorEditWidget::selectedColor() const
 {
-    return m_color;
+    return m_colorDispatcher->color();
 }
 
 void KColorEditWidget::setColor(const QColor & color)
@@ -110,11 +108,6 @@ void KColorEditWidget::setColor(const QColor & color)
     m_kdeColorSelector->setColor(color);
     m_gtkColorSelector->setColor(color);
     m_blenderColorSelector->setColor(color);
-}
-
-void KColorEditWidget::getColorFromColorSelector(const QColor & color)
-{
-    m_color = color;
 }
 
 #include "kcoloreditwidget.moc"

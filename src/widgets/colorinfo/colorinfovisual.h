@@ -31,21 +31,6 @@ class ColorInfoVisual : public ColorInfo
     public:
         ColorInfoVisual(QWidget * parent = 0);
         virtual ~ColorInfoVisual();
-
-    protected:
-        KColorPatch * m_mainColorPatch;
-};
-
-class ColorInfoVisualSingle : public ColorInfoVisual
-{
-    Q_OBJECT
-
-    public:
-        ColorInfoVisualSingle(QWidget * parent = 0);
-        ~ColorInfoVisualSingle();
-
-    public slots:
-        void setColor(const QColor & color);
 };
 
 class ColorInfoVisualComplement : public ColorInfoVisual
@@ -58,9 +43,6 @@ class ColorInfoVisualComplement : public ColorInfoVisual
 
     public slots:
         void setColor(const QColor & color);
-
-    private slots:
-        void setComplementColor(const QColor & color);
 
     private:
         KColorPatch * m_complementColorPatch;

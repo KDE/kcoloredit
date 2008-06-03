@@ -22,6 +22,7 @@
 
 #include <QtGui/QWidget>
 
+class ColorWidget;
 class KdeColorSelector;
 class GtkColorSelector;
 class BlenderColorSelector;
@@ -38,11 +39,8 @@ class KColorEditWidget : public QWidget
     public slots:
         void setColor(const QColor & color);
 
-    private slots:
-        void getColorFromColorSelector(const QColor & color);
-
     private:
-        QColor m_color;
+        ColorWidget * m_colorDispatcher;
 
         KdeColorSelector * m_kdeColorSelector;
         GtkColorSelector * m_gtkColorSelector;
