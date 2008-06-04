@@ -22,11 +22,12 @@
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QGridLayout>
 #include <QtGui/QStackedLayout>
-#include <QtGui/QLabel>
 
 #include <KLocalizedString>
 #include <KPushButton>
 #include <KFadeWidgetEffect>
+
+#include "kcoloreditpage.h"
 
 MultiPageWidget::MultiPageWidget(QWidget * parent)
     : QFrame(parent)
@@ -36,27 +37,21 @@ MultiPageWidget::MultiPageWidget(QWidget * parent)
     m_nextPushButton->setMaximumWidth(64);
     m_nextPushButton->setToolTip(i18n("Next page"));
 
-    m_currentHeaderIcon = new QLabel(this);
-    m_currentHeaderIcon->setMaximumWidth(32);
-
-    m_currentHeaderTitle = new QLabel(this);
-
     m_previousPushButton = new KPushButton(KIcon(QString("arrow-left")), QString(), this);
     m_previousPushButton->setEnabled(false);
     m_previousPushButton->setMaximumWidth(64);
     m_previousPushButton->setToolTip(i18n("Prev page"));
 
+    m_stackedHeaderLayout = new QStackedLayout();
+
     m_stackedBodyLayout = new QStackedLayout();
 
-    QHBoxLayout * headerLayout = new QHBoxLayout();
-    headerLayout->addWidget(m_currentHeaderIcon);
-    headerLayout->addWidget(m_currentHeaderTitle);
 
-    QGridLayout * gridLayout = new QGridLayout(this);
-    gridLayout->addWidget(m_previousPushButton, 0, 0);
-    gridLayout->addLayout(headerLayout, 0, 1, Qt::AlignCenter);
-    gridLayout->addWidget(m_nextPushButton, 0, 2);
-    gridLayout->addLayout(m_stackedBodyLayout, 1, 0, 1, 3);
+    setLayout(new QGridLayout(this));
+    dynamic_cast< QGridLayout* >(layout())->addWidget(m_previousPushButton, 0, 0, Qt::AlignTop);
+    dynamic_cast< QGridLayout* >(layout())->addLayout(m_stackedHeaderLayout, 0, 1, Qt::AlignCenter);
+    dynamic_cast< QGridLayout* >(layout())->addWidget(m_nextPushButton, 0, 2, Qt::AlignTop);
+    dynamic_cast< QGridLayout* >(layout())->addLayout(m_stackedBodyLayout, 1, 0, 1, 3);
 
     connect(m_nextPushButton, SIGNAL( pressed() ), this, SLOT( switchToNextWidget() ));
     connect(m_previousPushButton, SIGNAL( pressed() ), this, SLOT( switchToPreviousWidget() ));
@@ -72,21 +67,16 @@ QWidget * MultiPageWidget::page(int index) const
     return m_stackedBodyLayout->widget(index);
 }
 
-void MultiPageWidget::addPage(QWidget * widget, const KIcon & icon, const QString & title)
+void MultiPageWidget::addPage(KColorEditPage * page)
 {
-    if (m_headers.isEmpty())
-    {
-        m_currentHeaderIcon->setPixmap(icon.pixmap(24, 24));
-        m_currentHeaderTitle->setText(title);
-    }
-    else
+    if (!m_stackedBodyLayout->isEmpty())
     {
         m_nextPushButton->setEnabled(true);
         m_previousPushButton->setEnabled(true);
     }
 
-    m_headers.append(QPair<QPixmap, QString>(icon.pixmap(24, 24), title));
-    m_stackedBodyLayout->addWidget(widget);
+    m_stackedHeaderLayout->addWidget(page->header());
+    m_stackedBodyLayout->addWidget(page);
 }
 
 void MultiPageWidget::setPrevToolTip(const QString & prevToolTip)
@@ -101,11 +91,11 @@ void MultiPageWidget::setNextToolTip(const QString & nextToolTip)
 
 void MultiPageWidget::switchToNextWidget()
 {
-    if (!m_headers.isEmpty())
+    if (!m_stackedBodyLayout->isEmpty())
     {
         int index = m_stackedBodyLayout->currentIndex() + 1;
 
-        if (index >= m_headers.count())
+        if (index >= m_stackedBodyLayout->count())
             index = 0;
 
         switchToPage(index);
@@ -114,12 +104,12 @@ void MultiPageWidget::switchToNextWidget()
 
 void MultiPageWidget::switchToPreviousWidget()
 {
-    if (!m_headers.isEmpty())
+    if (!m_stackedBodyLayout->isEmpty())
     {
         int index = m_stackedBodyLayout->currentIndex() - 1;
 
         if (index < 0)
-            index = m_headers.count() - 1;
+            index = m_stackedBodyLayout->count() - 1;
 
         switchToPage(index);
     }
@@ -127,15 +117,12 @@ void MultiPageWidget::switchToPreviousWidget()
 
 void MultiPageWidget::switchToPage(int index)
 {
-    KFadeWidgetEffect * iconEffect = new KFadeWidgetEffect(m_currentHeaderIcon);
-    KFadeWidgetEffect * titleEffect = new KFadeWidgetEffect(m_currentHeaderTitle);
+    //KFadeWidgetEffect * headerEffect = new KFadeWidgetEffect(m_currentHeader);
 
-    m_currentHeaderIcon->setPixmap(m_headers[index].first);
-    m_currentHeaderTitle->setText(m_headers[index].second);
+    m_stackedHeaderLayout->setCurrentIndex(index);
     m_stackedBodyLayout->setCurrentIndex(index);
 
-    iconEffect->start(364);
-    titleEffect->start(364);
+    //headerEffect->start(364);
 }
 
 #include "multipagewidget.moc"

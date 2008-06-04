@@ -30,6 +30,8 @@ KdeColorSelector::KdeColorSelector(QWidget * parent) : ColorSelector(parent)
 {
     m_rectangleColorWidget = new RectangleColorWidget(this);
 
+    setupHeader(KGuiItem(i18n("KDE Style"), KIcon("kde")));
+
     KComboBox * colorMode = new KComboBox(this);
     colorMode->addItem(i18n("Classic"));
     colorMode->addItem(i18n("Hue"));

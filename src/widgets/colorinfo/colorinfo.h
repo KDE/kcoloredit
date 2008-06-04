@@ -20,9 +20,9 @@
 #ifndef COLOR_INFO_H
 #define COLOR_INFO_H
 
-#include <QtGui/QWidget>
+#include "kcoloreditpage.h"
 
-class ColorInfo : public QWidget
+class ColorInfo : public KColorEditPage
 {
     Q_OBJECT
 
@@ -32,6 +32,9 @@ class ColorInfo : public QWidget
 
     public slots:
         virtual void setColor(const QColor & color);
+
+    protected:
+        void setupHeader(const KGuiItem & item);
 };
 
 #endif // COLOR_INFO_H

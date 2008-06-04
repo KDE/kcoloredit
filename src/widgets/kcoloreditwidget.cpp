@@ -22,8 +22,6 @@
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QVBoxLayout>
 
-#include <KLocalizedString>
-
 #include "multipagewidget.h"
 #include "kdecolorselector.h"
 #include "gtkcolorselector.h"
@@ -35,6 +33,7 @@
 KColorEditWidget::KColorEditWidget(QWidget * parent)
     : QWidget(parent)
 {
+
     MultiPageWidget * colorSelectors = new MultiPageWidget(this);
     colorSelectors->setPrevToolTip(i18n("Prev selector"));
     colorSelectors->setNextToolTip(i18n("Next selector"));
@@ -45,20 +44,12 @@ KColorEditWidget::KColorEditWidget(QWidget * parent)
 
     m_blenderColorSelector = new BlenderColorSelector(colorSelectors);
 
-    colorSelectors->addPage(m_kdeColorSelector, KIcon("kde"), i18n("KDE Style"));
-    colorSelectors->addPage(m_gtkColorSelector, KIcon("fill-color"), i18n("GTK Style"));
-    colorSelectors->addPage(m_blenderColorSelector, KIcon("fill-color"), i18n("Mix Colors"));
+    colorSelectors->addPage(m_kdeColorSelector);
+    colorSelectors->addPage(m_gtkColorSelector);
+    colorSelectors->addPage(m_blenderColorSelector);
 
-    MultiPageWidget* colorInfoVisuals = new MultiPageWidget(this);
-    colorInfoVisuals->setMaximumHeight(128); // NOTE default value here;
-    colorInfoVisuals->setPrevToolTip(i18n("Prev visual style"));
-    colorInfoVisuals->setNextToolTip(i18n("Next visual style"));
 
     m_colorDispatcher = new ColorWidget(this);
-
-    ColorInfoVisualComplement * colorInfoVisualComplement = new ColorInfoVisualComplement(colorInfoVisuals);
-
-    colorInfoVisuals->addPage(colorInfoVisualComplement, KIcon(), i18n("Complementary color"));
 
     MultiPageWidget * colorInfoTexts = new MultiPageWidget(this);
     colorInfoTexts->setMaximumHeight(100); // NOTE default value here;
@@ -66,21 +57,36 @@ KColorEditWidget::KColorEditWidget(QWidget * parent)
     colorInfoTexts->setNextToolTip(i18n("Next text style"));
 
     ColorInfoTextRGB * infoTextRGB = new ColorInfoTextRGB(colorInfoTexts);
-    infoTextRGB->setColor(Qt::red); // default color
 
     ColorInfoTextHSV * infoTextHSV = new ColorInfoTextHSV(colorInfoTexts);
-    infoTextHSV->setColor(Qt::red); // default color
 
     ColorInfoTextCMY * infoTextCMY = new ColorInfoTextCMY(colorInfoTexts);
-    infoTextCMY->setColor(Qt::red); // default color
 
     ColorInfoTextHTML * infoTextHTML = new ColorInfoTextHTML(colorInfoTexts);
-    infoTextHTML->setColor(Qt::red); // default color
 
-    colorInfoTexts->addPage(infoTextRGB, KIcon(), i18n("RGB Model"));
-    colorInfoTexts->addPage(infoTextHSV, KIcon(), i18n("HSV Model"));
-    colorInfoTexts->addPage(infoTextCMY, KIcon(), i18n("CMY Model"));
-    colorInfoTexts->addPage(infoTextHTML, KIcon(), i18n("Other"));
+    colorInfoTexts->addPage(infoTextRGB);
+    colorInfoTexts->addPage(infoTextHSV);
+    colorInfoTexts->addPage(infoTextCMY);
+    colorInfoTexts->addPage(infoTextHTML);
+
+    MultiPageWidget* colorInfoVisuals = new MultiPageWidget(this);
+    colorInfoVisuals->setMaximumHeight(128); // NOTE default value here;
+    colorInfoVisuals->setPrevToolTip(i18n("Prev visual style"));
+    colorInfoVisuals->setNextToolTip(i18n("Next visual style"));
+
+    ColorInfoVisualComplement * colorInfoVisualComplement = new ColorInfoVisualComplement(colorInfoVisuals);
+
+    ColorInfoVisualTriadic * colorInfoVisualTriadic = new ColorInfoVisualTriadic(colorInfoVisuals);
+
+    ColorInfoVisualTetradic * colorInfoVisualTetradic = new ColorInfoVisualTetradic(colorInfoVisuals);
+
+    ColorInfoVisualAnalogous * colorInfoVisualAnalogous = new ColorInfoVisualAnalogous(colorInfoVisuals);
+
+    colorInfoVisuals->addPage(colorInfoVisualComplement);
+    colorInfoVisuals->addPage(colorInfoVisualTriadic);
+    colorInfoVisuals->addPage(colorInfoVisualTetradic);
+    colorInfoVisuals->addPage(colorInfoVisualAnalogous);
+
 
     QVBoxLayout * mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(colorSelectors);

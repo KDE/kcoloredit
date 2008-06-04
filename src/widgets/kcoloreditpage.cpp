@@ -17,50 +17,20 @@
 *  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.                 *
 *********************************************************************************/
 
-#ifndef MULTIPAGE_WIDGET_H
-#define MULTIPAGE_WIDGET_H
+#include "kcoloreditpage.h"
 
-#include <QtCore/QVector>
-#include <QtCore/QPair>
-#include <QtGui/QFrame>
-
-#include <KIcon>
-
-class QStackedLayout;
-
-class KPushButton;
-
-class KColorEditPage;
-
-class MultiPageWidget : public QFrame
+KColorEditPage::KColorEditPage(QWidget * parent)
+    : QWidget(parent)
 {
-    Q_OBJECT
+}
 
-    public:
-        MultiPageWidget(QWidget * parent = 0);
+KColorEditPage::~KColorEditPage()
+{
+}
 
-        int count() const;
+QWidget * KColorEditPage::header() const
+{
+    return m_header;
+}
 
-        QWidget * page(int index) const;
-
-        void addPage(KColorEditPage * page);
-
-        void setPrevToolTip(const QString & prevToolTip);
-        void setNextToolTip(const QString & nextToolTip);
-
-    public slots:
-        void switchToNextWidget();
-        void switchToPreviousWidget();
-
-    private:
-        void switchToPage(int index);
-
-    private:
-        QStackedLayout * m_stackedHeaderLayout;
-        QStackedLayout * m_stackedBodyLayout;
-
-        KPushButton * m_nextPushButton;
-        KPushButton * m_previousPushButton;
-};
-
-#endif // MULTIPAGE_WIDGET_H
+#include "kcoloreditpage.moc"

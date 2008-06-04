@@ -20,9 +20,9 @@
 #ifndef COLOR_SELECTOR_H
 #define COLOR_SELECTOR_H
 
-#include <QtGui/QWidget>
+#include "kcoloreditpage.h"
 
-class ColorSelector : public QWidget
+class ColorSelector : public KColorEditPage
 {
     Q_OBJECT
 
@@ -34,6 +34,9 @@ class ColorSelector : public QWidget
 
     signals:
         void colorSelected(const QColor & color);
+
+    protected:
+        void setupHeader(const KGuiItem & item);
 };
 
 #endif // COLOR_SELECTOR_H

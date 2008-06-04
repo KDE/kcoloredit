@@ -28,7 +28,6 @@
 #include <KActionCollection>
 #include <KFileDialog>
 
-#include <KLocalizedString>
 #include <KCmdLineArgs>
 #include <KAboutData>
 
@@ -281,6 +280,10 @@ void KColorEditMainWnd::setupWidgets()
     connect(m_paletteGridView, SIGNAL( trackedItem(int) ), m_paletteDetailView, SLOT( slotScrollToItem(int) ));
 
     connect(m_paletteGridView, SIGNAL( selectedItem(int) ), m_paletteDetailView, SLOT( setSelectedItem(int) ));
+
+
+    // setup default colors colors
+    m_kColorEditWidget->setColor(Qt::blue);
 }
 
 void KColorEditMainWnd::setupActions()

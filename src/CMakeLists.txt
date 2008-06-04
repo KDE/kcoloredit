@@ -35,6 +35,7 @@ set (
   widgets/palettedelegateeditors.cpp
   widgets/clipboardlineedit.cpp
   widgets/colorwidget.cpp
+  widgets/kcoloreditpage.cpp
   widgets/multipagewidget.cpp
   widgets/kcoloreditwidget.cpp
   dialog/palettedialog.cpp

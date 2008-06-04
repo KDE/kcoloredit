@@ -29,7 +29,10 @@
 
 #include "palettemodel.h"
 
-PaletteDocument::PaletteDocument(QObject * parent) : QObject(parent), m_model(new PaletteModel(this)), m_fullPathFile(QString())
+PaletteDocument::PaletteDocument(QObject * parent)
+    : QObject(parent)
+    , m_model(new PaletteModel(this))
+    , m_fullPathFile(QString())
 {
     connect(m_model, SIGNAL( dataChanged(QModelIndex, QModelIndex) ), this, SLOT( updateDocStateWhenInsertItem(QModelIndex, QModelIndex) ));
     connect(m_model, SIGNAL( rowsRemoved(QModelIndex, int, int) ), this, SLOT( updateDocStateWhenRemoveItem(QModelIndex, int, int) ));

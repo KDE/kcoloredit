@@ -30,9 +30,10 @@
 BlenderColorSelector::BlenderColorSelector(QWidget * parent)
     : ColorSelector(parent)
 {
+    setupHeader(KGuiItem(i18n("Mix Colors"), KIcon("fill-color")));
+
     m_baseColor = new KColorButton(this);
     m_baseColor->setMinimumHeight(64);
-    m_baseColor->setColor(Qt::red);
 
     QSlider * m_linearMixer = new QSlider(Qt::Horizontal, this);
     m_linearMixer->setRange(1, 100);
@@ -40,7 +41,6 @@ BlenderColorSelector::BlenderColorSelector(QWidget * parent)
 
     m_overlayedColor = new KColorButton(this);
     m_overlayedColor->setMinimumHeight(64);
-    m_overlayedColor->setColor(Qt::white);
 
     QHBoxLayout * layout = new QHBoxLayout(this);
     layout->addWidget(m_baseColor);
