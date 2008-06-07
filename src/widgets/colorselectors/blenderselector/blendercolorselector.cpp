@@ -25,12 +25,14 @@
 #include <QtGui/QLabel>
 
 #include <KColorUtils>
+#include <KPushButton>
 #include <KColorButton>
 
 BlenderColorSelector::BlenderColorSelector(QWidget * parent)
     : ColorSelector(parent)
 {
-    setupHeader(KGuiItem(i18n("Mix Colors"), KIcon("fill-color")));
+    m_header->setText(i18n("Mix Colors"));
+    m_header->setIcon(KIcon("fill-color"));
 
     m_baseColor = new KColorButton(this);
     m_baseColor->setMinimumHeight(64);

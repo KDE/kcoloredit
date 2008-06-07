@@ -23,6 +23,7 @@
 
 #include <KLocalizedString>
 #include <KComboBox>
+#include <KPushButton>
 
 #include "rectanglecolorwidget.h"
 
@@ -30,24 +31,37 @@ KdeColorSelector::KdeColorSelector(QWidget * parent) : ColorSelector(parent)
 {
     m_rectangleColorWidget = new RectangleColorWidget(this);
 
-    setupHeader(KGuiItem(i18n("KDE Style"), KIcon("kde")));
+    m_header->setText(i18n("KDE Style"));
+    m_header->setIcon(KIcon("kde"));
 
-    KComboBox * colorMode = new KComboBox(this);
-    colorMode->addItem(i18n("Classic"));
-    colorMode->addItem(i18n("Hue"));
-    colorMode->addItem(i18n("Saturation"));
-    colorMode->addItem(i18n("Value"));
-    colorMode->addItem(i18n("Red"));
-    colorMode->addItem(i18n("Green"));
-    colorMode->addItem(i18n("Blue"));
-    colorMode->setCurrentIndex(3);
+    m_ClassicModeAction = new KAction(KIcon(), i18n("Classic"), header()->menu());
+    m_HueModeAction = new KAction(KIcon(), i18n("Hue"), header()->menu());
+    m_SaturationModeAction = new KAction(KIcon(), i18n("Saturation"), header()->menu());
+    m_ValueModeAction = new KAction(KIcon(), i18n("Value"), header()->menu());
+    m_RedModeAction = new KAction(KIcon(), i18n("Red"), header()->menu());
+    m_GreenModeAction = new KAction(KIcon(), i18n("Green"), header()->menu());
+    m_BlueModeAction = new KAction(KIcon(), i18n("Blue"), header()->menu());
+
+    header()->menu()->addAction(m_ClassicModeAction);
+    header()->menu()->addAction(m_HueModeAction);
+    header()->menu()->addAction(m_SaturationModeAction);
+    header()->menu()->addAction(m_ValueModeAction);
+    header()->menu()->addAction(m_RedModeAction);
+    header()->menu()->addAction(m_GreenModeAction);
+    header()->menu()->addAction(m_BlueModeAction);
 
     QVBoxLayout * mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(m_rectangleColorWidget);
-    mainLayout->addWidget(colorMode);
 
     connect(m_rectangleColorWidget, SIGNAL(colorSelected(QColor)), this, SLOT( updateColor(QColor) ));
-    connect(colorMode, SIGNAL( currentIndexChanged(int) ), this, SLOT( changeColorMode(int) ));
+
+    connect(m_ClassicModeAction, SIGNAL( triggered(bool) ), this, SLOT( changeToClassicMode() ));
+    connect(m_HueModeAction, SIGNAL( triggered(bool) ), this, SLOT( changeToHueMode() ));
+    connect(m_SaturationModeAction, SIGNAL( triggered(bool) ), this, SLOT( changeToSaturationMode() ));
+    connect(m_ValueModeAction, SIGNAL( triggered(bool) ), this, SLOT( changeToValueMode() ));
+    connect(m_RedModeAction, SIGNAL( triggered(bool) ), this, SLOT( changeToRedMode() ));
+    connect(m_GreenModeAction, SIGNAL( triggered(bool) ), this, SLOT( changeToGreenMode() ));
+    connect(m_BlueModeAction, SIGNAL( triggered(bool) ), this, SLOT( changeToBlueMode() ));
 }
 
 KdeColorSelector::~KdeColorSelector()
@@ -56,26 +70,58 @@ KdeColorSelector::~KdeColorSelector()
 
 void KdeColorSelector::setColor(const QColor & color)
 {
-    m_rectangleColorWidget->setColor(color);
+    m_lastSelectedColor = color;
+
+    m_rectangleColorWidget->setColor(m_lastSelectedColor);
 }
 
-void KdeColorSelector::updateColor(const QColor & /* color */)
+void KdeColorSelector::updateColor(const QColor & color)
 {
-    emit colorSelected(m_rectangleColorWidget->color());
+    m_lastSelectedColor = color;
+
+    emit colorSelected(m_lastSelectedColor);
 }
 
-void KdeColorSelector::changeColorMode(int index)
+void KdeColorSelector::changeToClassicMode()
 {
-    switch (index)
-    {
-        case 0: m_rectangleColorWidget->setChooserMode(ChooserClassic); break;
-        case 1: m_rectangleColorWidget->setChooserMode(ChooserHue); break;
-        case 2: m_rectangleColorWidget->setChooserMode(ChooserSaturation); break;
-        case 3: m_rectangleColorWidget->setChooserMode(ChooserValue); break;
-        case 4: m_rectangleColorWidget->setChooserMode(ChooserRed); break;
-        case 5: m_rectangleColorWidget->setChooserMode(ChooserGreen); break;
-        case 6: m_rectangleColorWidget->setChooserMode(ChooserBlue); break;
-    }
+    m_rectangleColorWidget->setChooserMode(ChooserClassic);
+    m_rectangleColorWidget->setColor(m_lastSelectedColor);
+}
+
+void KdeColorSelector::changeToHueMode()
+{
+    m_rectangleColorWidget->setChooserMode(ChooserHue);
+    m_rectangleColorWidget->setColor(m_lastSelectedColor);
+}
+
+void KdeColorSelector::changeToSaturationMode()
+{
+    m_rectangleColorWidget->setChooserMode(ChooserSaturation);
+    m_rectangleColorWidget->setColor(m_lastSelectedColor);
+}
+
+void KdeColorSelector::changeToValueMode()
+{
+    m_rectangleColorWidget->setChooserMode(ChooserValue);
+    m_rectangleColorWidget->setColor(m_lastSelectedColor);
+}
+
+void KdeColorSelector::changeToRedMode()
+{
+    m_rectangleColorWidget->setChooserMode(ChooserRed);
+    m_rectangleColorWidget->setColor(m_lastSelectedColor);
+}
+
+void KdeColorSelector::changeToGreenMode()
+{
+    m_rectangleColorWidget->setChooserMode(ChooserGreen);
+    m_rectangleColorWidget->setColor(m_lastSelectedColor);
+}
+
+void KdeColorSelector::changeToBlueMode()
+{
+    m_rectangleColorWidget->setChooserMode(ChooserBlue);
+    m_rectangleColorWidget->setColor(m_lastSelectedColor);
 }
 
 #include "kdecolorselector.moc"

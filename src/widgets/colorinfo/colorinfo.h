@@ -32,9 +32,6 @@ class ColorInfo : public KColorEditPage
 
     public slots:
         virtual void setColor(const QColor & color);
-
-    protected:
-        void setupHeader(const KGuiItem & item);
 };
 
 #endif // COLOR_INFO_H

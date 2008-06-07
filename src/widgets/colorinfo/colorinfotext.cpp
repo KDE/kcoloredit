@@ -22,8 +22,6 @@
 #include <QtGui/QGridLayout>
 #include <QtGui/QLabel>
 
-#include <KLocalizedString>
-
 #include "clipboardlineedit.h"
 
 //BEGIN ColorInfoText
@@ -75,7 +73,7 @@ void ColorInfoText::setComponentValues(const QString & valueComponent1, const QS
 
 ColorInfoTextRGB::ColorInfoTextRGB(QWidget * parent) : ColorInfoText(parent)
 {
-    setupHeader(KGuiItem(i18n("RGB Model"), KIcon()));
+    m_header->setText(i18n("RGB Model"));
     setComponentNames(i18n("Red"), i18n("Green"), i18n("Blue"));
 }
 
@@ -94,7 +92,7 @@ void ColorInfoTextRGB::setColor(const QColor & color)
 
 ColorInfoTextHSV::ColorInfoTextHSV(QWidget * parent) : ColorInfoText(parent)
 {
-    setupHeader(KGuiItem(i18n("HSV Model"), KIcon()));
+    m_header->setText(i18n("HSV Model"));
     setComponentNames(i18n("Hue"), i18n("Saturation"), i18n("Value"));
 }
 
@@ -113,7 +111,7 @@ void ColorInfoTextHSV::setColor(const QColor & color)
 
 ColorInfoTextCMY::ColorInfoTextCMY(QWidget * parent) : ColorInfoText(parent)
 {
-    setupHeader(KGuiItem(i18n("CMY Model"), KIcon()));
+    m_header->setText(i18n("CMY Model"));
     setComponentNames(i18n("Cyan"), i18n("Magenta"), i18n("Yellow"));
 }
 
@@ -132,9 +130,8 @@ void ColorInfoTextCMY::setColor(const QColor & color)
 
 ColorInfoTextHTML::ColorInfoTextHTML(QWidget * parent) : ColorInfoText(parent)
 {
+    m_header->setText(i18n("Other"));
     setComponentNames(i18n("HTML"), "", "");
-
-    setupHeader(KGuiItem(i18n("Other"), KIcon()));
 
     m_componentName2->setVisible(false);
     m_componentName3->setVisible(false);

@@ -19,11 +19,10 @@
 
 #include "colorinfo.h"
 
-#include <KPushButton>
-
 ColorInfo::ColorInfo(QWidget * parent)
     : KColorEditPage(parent)
 {
+
 }
 
 ColorInfo::~ColorInfo()
@@ -32,15 +31,6 @@ ColorInfo::~ColorInfo()
 
 void ColorInfo::setColor(const QColor & /* color */)
 {
-}
-
-void ColorInfo::setupHeader(const KGuiItem & item)
-{
-// el paren es el contenedor de paginas tengo q hacer documentacion porq esto esta bien kemado
-    //m_header = new KPushButton(item, dynamic_cast< QWidget * >(parent()));
-
-    m_header = new KPushButton(item, dynamic_cast< QWidget * >(parent()));
-    m_header->setMaximumHeight(28);
 }
 
 #include "colorinfo.moc"

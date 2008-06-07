@@ -22,7 +22,7 @@
 
 #include "colorinfo.h"
 
-class KColorPatch;
+class ColorWidget;
 
 class ColorInfoVisual : public ColorInfo
 {
@@ -32,10 +32,17 @@ class ColorInfoVisual : public ColorInfo
         ColorInfoVisual(QWidget * parent = 0);
         virtual ~ColorInfoVisual();
 
+        virtual QVector<QColor> colors() const = 0;
+
+        KAction * addColorAction() const;
+
     protected:
-        KColorPatch * buildColorPatch(QWidget * parent);
+        ColorWidget * buildColorWidget(QWidget * parent);
 
         inline int validHue(int hue);
+
+    protected:
+        KAction * m_addColorsAction;
 };
 
 class ColorInfoVisualComplement : public ColorInfoVisual
@@ -46,11 +53,13 @@ class ColorInfoVisualComplement : public ColorInfoVisual
         ColorInfoVisualComplement(QWidget * parent = 0);
         ~ColorInfoVisualComplement();
 
+        QVector<QColor> colors() const;
+
     public slots:
         void setColor(const QColor & color);
 
     private:
-        KColorPatch * m_complementColorPatch;
+        ColorWidget * m_complementColorWidget;
 };
 
 class ColorInfoVisualTriadic : public ColorInfoVisual
@@ -61,12 +70,14 @@ class ColorInfoVisualTriadic : public ColorInfoVisual
         ColorInfoVisualTriadic(QWidget * parent = 0);
         ~ColorInfoVisualTriadic();
 
+        QVector<QColor> colors() const;
+
     public slots:
         void setColor(const QColor & color);
 
     private:
-        KColorPatch * m_triad1ColorPatch;
-        KColorPatch * m_triad2ColorPatch;
+        ColorWidget * m_triad1ColorWidget;
+        ColorWidget * m_triad2ColorWidget;
 };
 
 class ColorInfoVisualTetradic : public ColorInfoVisual
@@ -77,13 +88,15 @@ class ColorInfoVisualTetradic : public ColorInfoVisual
         ColorInfoVisualTetradic(QWidget * parent = 0);
         ~ColorInfoVisualTetradic();
 
+        QVector<QColor> colors() const;
+
     public slots:
         void setColor(const QColor & color);
 
     private:
-        KColorPatch * m_tetrad1ColorPatch;
-        KColorPatch * m_tetrad2ColorPatch;
-        KColorPatch * m_tetrad3ColorPatch;
+        ColorWidget * m_tetrad1ColorWidget;
+        ColorWidget * m_tetrad2ColorWidget;
+        ColorWidget * m_tetrad3ColorWidget;
 };
 
 class ColorInfoVisualAnalogous : public ColorInfoVisual
@@ -94,12 +107,14 @@ class ColorInfoVisualAnalogous : public ColorInfoVisual
         ColorInfoVisualAnalogous(QWidget * parent = 0);
         ~ColorInfoVisualAnalogous();
 
+        QVector<QColor> colors() const;
+
     public slots:
         void setColor(const QColor & color);
 
     private:
-        KColorPatch * m_analogous1ColorPatch;
-        KColorPatch * m_analogous2ColorPatch;
+        ColorWidget * m_analogous1ColorWidget;
+        ColorWidget * m_analogous2ColorWidget;
 };
 
 #endif // COLOR_INFO_VISUAL_H

@@ -74,6 +74,8 @@ void KColorEditMainWnd::openFile()
 
                 m_paletteGridView->setModel(m_paletteDocument->model());
 
+                m_kColorEditWidget->setModel(m_paletteDocument->model());
+
                 // NOTE little hack to force the signal dataChange and then update the gridView
                 if (m_paletteDocument->model()->rowCount() > 0)
                     m_paletteDocument->model()->setData(m_paletteDocument->model()->index(0, 0), m_paletteDocument->model()->index(0, 0).data());
@@ -235,6 +237,7 @@ void KColorEditMainWnd::setupWidgets()
     //init central widget
 
     m_kColorEditWidget = new KColorEditWidget(this);
+    m_kColorEditWidget->setModel(m_paletteDocument->model());
 
     setCentralWidget(m_kColorEditWidget);
 

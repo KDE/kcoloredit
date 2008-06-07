@@ -22,6 +22,7 @@
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QVBoxLayout>
 
+#include "palettemodel.h"
 #include "multipagewidget.h"
 #include "kdecolorselector.h"
 #include "gtkcolorselector.h"
@@ -69,24 +70,23 @@ KColorEditWidget::KColorEditWidget(QWidget * parent)
     colorInfoTexts->addPage(infoTextCMY);
     colorInfoTexts->addPage(infoTextHTML);
 
-    MultiPageWidget* colorInfoVisuals = new MultiPageWidget(this);
+    MultiPageWidget * colorInfoVisuals = new MultiPageWidget(this);
     colorInfoVisuals->setMaximumHeight(128); // NOTE default value here;
     colorInfoVisuals->setPrevToolTip(i18n("Prev visual style"));
     colorInfoVisuals->setNextToolTip(i18n("Next visual style"));
 
-    ColorInfoVisualComplement * colorInfoVisualComplement = new ColorInfoVisualComplement(colorInfoVisuals);
+    m_colorInfoVisualComplement = new ColorInfoVisualComplement(colorInfoVisuals);
 
-    ColorInfoVisualTriadic * colorInfoVisualTriadic = new ColorInfoVisualTriadic(colorInfoVisuals);
+    m_colorInfoVisualTriadic = new ColorInfoVisualTriadic(colorInfoVisuals);
 
-    ColorInfoVisualTetradic * colorInfoVisualTetradic = new ColorInfoVisualTetradic(colorInfoVisuals);
+    m_colorInfoVisualTetradic = new ColorInfoVisualTetradic(colorInfoVisuals);
 
-    ColorInfoVisualAnalogous * colorInfoVisualAnalogous = new ColorInfoVisualAnalogous(colorInfoVisuals);
+    m_colorInfoVisualAnalogous = new ColorInfoVisualAnalogous(colorInfoVisuals);
 
-    colorInfoVisuals->addPage(colorInfoVisualComplement);
-    colorInfoVisuals->addPage(colorInfoVisualTriadic);
-    colorInfoVisuals->addPage(colorInfoVisualTetradic);
-    colorInfoVisuals->addPage(colorInfoVisualAnalogous);
-
+    colorInfoVisuals->addPage(m_colorInfoVisualComplement);
+    colorInfoVisuals->addPage(m_colorInfoVisualTriadic);
+    colorInfoVisuals->addPage(m_colorInfoVisualTetradic);
+    colorInfoVisuals->addPage(m_colorInfoVisualAnalogous);
 
     QVBoxLayout * mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(colorSelectors);
@@ -102,6 +102,16 @@ KColorEditWidget::KColorEditWidget(QWidget * parent)
 
     for (int j = 0; j < colorInfoVisuals->count(); j++)
         connect(m_colorDispatcher, SIGNAL( colorChanged(QColor) ), colorInfoVisuals->page(j), SLOT( setColor(QColor) ));
+
+    connect(m_colorInfoVisualComplement->addColorAction(), SIGNAL( triggered(bool) ), this, SLOT( addComplement() ));
+    connect(m_colorInfoVisualTriadic->addColorAction(), SIGNAL( triggered(bool) ), this, SLOT( addTriadics() ));
+    connect(m_colorInfoVisualTetradic->addColorAction(), SIGNAL( triggered(bool) ), this, SLOT( addTetradics() ));
+    connect(m_colorInfoVisualAnalogous->addColorAction(), SIGNAL( triggered(bool) ), this, SLOT( addAnalogous() ));
+}
+
+void KColorEditWidget::setModel(PaletteModel * model)
+{
+    m_model = model;
 }
 
 QColor KColorEditWidget::selectedColor() const
@@ -114,6 +124,68 @@ void KColorEditWidget::setColor(const QColor & color)
     m_kdeColorSelector->setColor(color);
     m_gtkColorSelector->setColor(color);
     m_blenderColorSelector->setColor(color);
+}
+
+// NOTE duplicated code
+
+void KColorEditWidget::addComplement()
+{
+    for (int i = 0;  i < m_colorInfoVisualComplement->colors().count(); i++)
+    {
+        m_model->insertColorRows(m_model->rowCount(), 1);
+
+        QVariantMap vmap;
+
+        vmap.insert("type", QString("color"));
+        vmap.insert("color", m_colorInfoVisualComplement->colors()[i]);
+
+        m_model->setData(m_model->index(m_model->rowCount() - 1, 0), vmap);
+    }
+}
+
+void KColorEditWidget::addTriadics()
+{
+    for (int i = 0;  i < m_colorInfoVisualTriadic->colors().count(); i++)
+    {
+        m_model->insertColorRows(m_model->rowCount(), 1);
+
+        QVariantMap vmap;
+
+        vmap.insert("type", QString("color"));
+        vmap.insert("color", m_colorInfoVisualTriadic->colors()[i]);
+
+        m_model->setData(m_model->index(m_model->rowCount() - 1, 0), vmap);
+    }
+}
+
+void KColorEditWidget::addTetradics()
+{
+    for (int i = 0;  i < m_colorInfoVisualTetradic->colors().count(); i++)
+    {
+        m_model->insertColorRows(m_model->rowCount(), 1);
+
+        QVariantMap vmap;
+
+        vmap.insert("type", QString("color"));
+        vmap.insert("color", m_colorInfoVisualTetradic->colors()[i]);
+
+        m_model->setData(m_model->index(m_model->rowCount() - 1, 0), vmap);
+    }
+}
+
+void KColorEditWidget::addAnalogous()
+{
+    for (int i = 0;  i < m_colorInfoVisualAnalogous->colors().count(); i++)
+    {
+        m_model->insertColorRows(m_model->rowCount(), 1);
+
+        QVariantMap vmap;
+
+        vmap.insert("type", QString("color"));
+        vmap.insert("color", m_colorInfoVisualAnalogous->colors()[i]);
+
+        m_model->setData(m_model->index(m_model->rowCount() - 1, 0), vmap);
+    }
 }
 
 #include "kcoloreditwidget.moc"

@@ -22,13 +22,17 @@
 KColorEditPage::KColorEditPage(QWidget * parent)
     : QWidget(parent)
 {
+    m_header = new KPushButton(parent);
+    m_header->setMaximumHeight(28);
+
+    m_header->setMenu(new KMenu(this));
 }
 
 KColorEditPage::~KColorEditPage()
 {
 }
 
-QWidget * KColorEditPage::header() const
+KPushButton * KColorEditPage::header() const
 {
     return m_header;
 }

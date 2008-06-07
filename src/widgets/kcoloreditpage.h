@@ -23,7 +23,11 @@
 #include <QtGui/QWidget>
 
 #include <KLocalizedString>
-#include <KGuiItem>
+#include <KAction>
+#include <KMenu>
+#include <KPushButton>
+
+class KPushButton;
 
 class KColorEditPage : public QWidget
 {
@@ -33,13 +37,10 @@ class KColorEditPage : public QWidget
         KColorEditPage(QWidget * parent = 0);
         ~KColorEditPage();
 
-        virtual QWidget * header() const;
+        virtual KPushButton * header() const;
 
     protected:
-        virtual void setupHeader(const KGuiItem & item) = 0;
-
-    protected:
-        QWidget * m_header;
+        KPushButton * m_header;
 };
 
 #endif // KCOLOREDIT_PAGE_H

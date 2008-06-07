@@ -37,8 +37,12 @@ class GtkColorSelector : public ColorSelector
     private slots:
         void updateColor(const QColor & color);
 
+        void generateRandomColor();
+
     private:
         TriangleColorWidget * m_triangleColorWidget;
+
+        KAction * m_generateRandomColorAction;
 };
 
 #endif // GTK_COLOR_SELECTOR

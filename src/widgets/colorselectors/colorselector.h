@@ -34,9 +34,6 @@ class ColorSelector : public KColorEditPage
 
     signals:
         void colorSelected(const QColor & color);
-
-    protected:
-        void setupHeader(const KGuiItem & item);
 };
 
 #endif // COLOR_SELECTOR_H

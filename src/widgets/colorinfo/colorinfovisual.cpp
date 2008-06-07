@@ -21,26 +21,34 @@
 
 #include <QtGui/QHBoxLayout>
 
-#include <KColorPatch>
-#include <KPushButton>
+#include <colorwidget.h>
 
 ColorInfoVisual::ColorInfoVisual(QWidget * parent)
     : ColorInfo(parent)
 {
     setLayout(new QHBoxLayout(this));
+
+    m_addColorsAction = new KAction(KIcon("list-add"), i18n("Add Colors"), header()->menu());
+
+    header()->menu()->addAction(m_addColorsAction);
 }
 
 ColorInfoVisual::~ColorInfoVisual()
 {
 }
 
-KColorPatch * ColorInfoVisual::buildColorPatch(QWidget * parent)
+KAction * ColorInfoVisual::addColorAction() const
 {
-    KColorPatch * tmpColorPatch = new KColorPatch(parent);
-    tmpColorPatch->setMinimumSize(64, 64);
-    tmpColorPatch->setAcceptDrops(false);
+    return m_addColorsAction;
+}
 
-    return tmpColorPatch;
+ColorWidget * ColorInfoVisual::buildColorWidget(QWidget * parent)
+{
+    ColorWidget * tmpColorWidget = new ColorWidget(parent);
+    tmpColorWidget->setMinimumSize(64, 64);
+    tmpColorWidget->setAcceptDrops(false);
+
+    return tmpColorWidget;
 }
 
 inline int ColorInfoVisual::validHue(int hue)
@@ -61,15 +69,23 @@ inline int ColorInfoVisual::validHue(int hue)
 ColorInfoVisualComplement::ColorInfoVisualComplement(QWidget * parent)
     : ColorInfoVisual(parent)
 {
-    m_complementColorPatch = buildColorPatch(this);
+    m_complementColorWidget = buildColorWidget(this);
 
-    setupHeader(KGuiItem(i18n("Complement"), KIcon()));
+    header()->setText(i18n("Complement"));
 
-    layout()->addWidget(m_complementColorPatch);
+    layout()->addWidget(m_complementColorWidget);
 }
 
 ColorInfoVisualComplement::~ColorInfoVisualComplement()
 {
+}
+
+QVector<QColor> ColorInfoVisualComplement::colors() const
+{
+    QVector<QColor> tmpColors;
+    tmpColors.append(m_complementColorWidget->color());
+
+    return tmpColors;
 }
 
 void ColorInfoVisualComplement::setColor(const QColor & color)
@@ -78,7 +94,7 @@ void ColorInfoVisualComplement::setColor(const QColor & color)
     int saturation = color.saturation();
     int value = color.value();
 
-    m_complementColorPatch->setColor(QColor::fromHsv(validHue(hue + 180), saturation, value));
+    m_complementColorWidget->setColor(QColor::fromHsv(validHue(hue + 180), saturation, value));
 }
 
 //END public class ColorInfoVisualComplement
@@ -88,17 +104,26 @@ void ColorInfoVisualComplement::setColor(const QColor & color)
 ColorInfoVisualTriadic::ColorInfoVisualTriadic(QWidget * parent)
     : ColorInfoVisual(parent)
 {
-    m_triad1ColorPatch = buildColorPatch(this);
-    m_triad2ColorPatch = buildColorPatch(this);
+    m_triad1ColorWidget = buildColorWidget(this);
+    m_triad2ColorWidget = buildColorWidget(this);
 
-    setupHeader(KGuiItem(i18n("Triadic"), KIcon()));
+    header()->setText(i18n("Triadic"));
 
-    layout()->addWidget(m_triad1ColorPatch);
-    layout()->addWidget(m_triad2ColorPatch);
+    layout()->addWidget(m_triad1ColorWidget);
+    layout()->addWidget(m_triad2ColorWidget);
 }
 
 ColorInfoVisualTriadic::~ColorInfoVisualTriadic()
 {
+}
+
+QVector<QColor> ColorInfoVisualTriadic::colors() const
+{
+    QVector<QColor> tmpColors;
+    tmpColors.append(m_triad1ColorWidget->color());
+    tmpColors.append(m_triad2ColorWidget->color());
+
+    return tmpColors;
 }
 
 void ColorInfoVisualTriadic::setColor(const QColor & color)
@@ -107,8 +132,8 @@ void ColorInfoVisualTriadic::setColor(const QColor & color)
     int saturation = color.saturation();
     int value = color.value();
 
-    m_triad1ColorPatch->setColor(QColor::fromHsv(validHue(hue + 120), saturation, value));
-    m_triad2ColorPatch->setColor(QColor::fromHsv(validHue(hue - 120), saturation, value));
+    m_triad1ColorWidget->setColor(QColor::fromHsv(validHue(hue + 120), saturation, value));
+    m_triad2ColorWidget->setColor(QColor::fromHsv(validHue(hue - 120), saturation, value));
 }
 
 //END public class ColorInfoVisualTriadic
@@ -119,19 +144,29 @@ void ColorInfoVisualTriadic::setColor(const QColor & color)
 ColorInfoVisualTetradic::ColorInfoVisualTetradic(QWidget * parent)
     : ColorInfoVisual(parent)
 {
-    m_tetrad1ColorPatch = buildColorPatch(this);
-    m_tetrad2ColorPatch = buildColorPatch(this);
-    m_tetrad3ColorPatch = buildColorPatch(this);
+    m_tetrad1ColorWidget = buildColorWidget(this);
+    m_tetrad2ColorWidget = buildColorWidget(this);
+    m_tetrad3ColorWidget = buildColorWidget(this);
 
-    setupHeader(KGuiItem(i18n("Tetradic"), KIcon()));
+    header()->setText(i18n("Tetradic"));
 
-    layout()->addWidget(m_tetrad1ColorPatch);
-    layout()->addWidget(m_tetrad2ColorPatch);
-    layout()->addWidget(m_tetrad3ColorPatch);
+    layout()->addWidget(m_tetrad1ColorWidget);
+    layout()->addWidget(m_tetrad2ColorWidget);
+    layout()->addWidget(m_tetrad3ColorWidget);
 }
 
 ColorInfoVisualTetradic::~ColorInfoVisualTetradic()
 {
+}
+
+QVector<QColor> ColorInfoVisualTetradic::colors() const
+{
+    QVector<QColor> tmpColors;
+    tmpColors.append(m_tetrad1ColorWidget->color());
+    tmpColors.append(m_tetrad2ColorWidget->color());
+    tmpColors.append(m_tetrad3ColorWidget->color());
+
+    return tmpColors;
 }
 
 void ColorInfoVisualTetradic::setColor(const QColor & color)
@@ -140,9 +175,9 @@ void ColorInfoVisualTetradic::setColor(const QColor & color)
     int saturation = color.saturation();
     int value = color.value();
 
-    m_tetrad1ColorPatch->setColor(QColor::fromHsv(validHue(hue + 90), saturation, value));
-    m_tetrad2ColorPatch->setColor(QColor::fromHsv(validHue(hue + 180), saturation, value));
-    m_tetrad3ColorPatch->setColor(QColor::fromHsv(validHue(hue + 270), saturation, value));
+    m_tetrad1ColorWidget->setColor(QColor::fromHsv(validHue(hue + 90), saturation, value));
+    m_tetrad2ColorWidget->setColor(QColor::fromHsv(validHue(hue + 180), saturation, value));
+    m_tetrad3ColorWidget->setColor(QColor::fromHsv(validHue(hue + 270), saturation, value));
 }
 
 //END public class ColorInfoVisualTetradic
@@ -164,17 +199,26 @@ void ColorInfoVisualTetradic::setColor(const QColor & color)
 ColorInfoVisualAnalogous::ColorInfoVisualAnalogous(QWidget * parent)
     : ColorInfoVisual(parent)
 {
-    m_analogous1ColorPatch = buildColorPatch(this);
-    m_analogous2ColorPatch = buildColorPatch(this);
+    m_analogous1ColorWidget = buildColorWidget(this);
+    m_analogous2ColorWidget = buildColorWidget(this);
 
-    setupHeader(KGuiItem(i18n("Analogous"), KIcon()));
+    header()->setText(i18n("Analogous"));
 
-    layout()->addWidget(m_analogous1ColorPatch);
-    layout()->addWidget(m_analogous2ColorPatch);
+    layout()->addWidget(m_analogous1ColorWidget);
+    layout()->addWidget(m_analogous2ColorWidget);
 }
 
 ColorInfoVisualAnalogous::~ColorInfoVisualAnalogous()
 {
+}
+
+QVector<QColor> ColorInfoVisualAnalogous::colors() const
+{
+    QVector<QColor> tmpColors;
+    tmpColors.append(m_analogous1ColorWidget->color());
+    tmpColors.append(m_analogous2ColorWidget->color());
+
+    return tmpColors;
 }
 
 void ColorInfoVisualAnalogous::setColor(const QColor & color)
@@ -183,8 +227,8 @@ void ColorInfoVisualAnalogous::setColor(const QColor & color)
     int saturation = color.saturation();
     int value = color.value();
 
-    m_analogous1ColorPatch->setColor(QColor::fromHsv(validHue(hue - 30), saturation, value));
-    m_analogous2ColorPatch->setColor(QColor::fromHsv(validHue(hue + 30), saturation, value));
+    m_analogous1ColorWidget->setColor(QColor::fromHsv(validHue(hue - 30), saturation, value));
+    m_analogous2ColorWidget->setColor(QColor::fromHsv(validHue(hue + 30), saturation, value));
 }
 
 //END public class ColorInfoVisualAnalogous

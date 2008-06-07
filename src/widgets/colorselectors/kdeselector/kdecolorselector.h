@@ -37,10 +37,27 @@ class KdeColorSelector : public ColorSelector
 
     private slots:
         void updateColor(const QColor & color);
-        void changeColorMode(int index);
+
+        void changeToClassicMode();
+        void changeToHueMode();
+        void changeToSaturationMode();
+        void changeToValueMode();
+        void changeToRedMode();
+        void changeToGreenMode();
+        void changeToBlueMode();
 
     private:
+        QColor m_lastSelectedColor; //  para actualziar correctamente
+
         RectangleColorWidget * m_rectangleColorWidget;
+
+        KAction * m_ClassicModeAction;
+        KAction * m_HueModeAction;
+        KAction * m_SaturationModeAction;
+        KAction * m_ValueModeAction;
+        KAction * m_RedModeAction;
+        KAction * m_GreenModeAction;
+        KAction * m_BlueModeAction;
 };
 
 #endif // KDE_COLOR_SELECTOR_H

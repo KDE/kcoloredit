@@ -22,10 +22,18 @@
 
 #include <QtGui/QWidget>
 
+class PaletteModel;
+
 class ColorWidget;
+
 class KdeColorSelector;
 class GtkColorSelector;
 class BlenderColorSelector;
+
+class ColorInfoVisualComplement;
+class ColorInfoVisualTriadic;
+class ColorInfoVisualTetradic;
+class ColorInfoVisualAnalogous;
 
 class KColorEditWidget : public QWidget
 {
@@ -34,17 +42,32 @@ class KColorEditWidget : public QWidget
     public:
         KColorEditWidget(QWidget * parent = 0);
 
+        void setModel(PaletteModel * model);
+
         QColor selectedColor() const;
 
     public slots:
         void setColor(const QColor & color);
 
+    private slots:
+        void addComplement();
+        void addTriadics();
+        void addTetradics();
+        void addAnalogous();
+
     private:
+        PaletteModel * m_model;
+
         ColorWidget * m_colorDispatcher;
 
         KdeColorSelector * m_kdeColorSelector;
         GtkColorSelector * m_gtkColorSelector;
         BlenderColorSelector * m_blenderColorSelector;
+
+        ColorInfoVisualComplement * m_colorInfoVisualComplement;
+        ColorInfoVisualTriadic * m_colorInfoVisualTriadic;
+        ColorInfoVisualTetradic * m_colorInfoVisualTetradic;
+        ColorInfoVisualAnalogous * m_colorInfoVisualAnalogous;
 };
 
 #endif // KCOLOREDIT_WIDGET_H
