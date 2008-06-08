@@ -42,16 +42,12 @@ MultiPageWidget::MultiPageWidget(QWidget * parent)
     m_previousPushButton->setMaximumWidth(64);
     m_previousPushButton->setToolTip(i18n("Prev page"));
 
-    m_stackedHeaderLayout = new QStackedLayout();
-
     m_stackedBodyLayout = new QStackedLayout();
 
-
-    setLayout(new QGridLayout(this));
-    dynamic_cast< QGridLayout* >(layout())->addWidget(m_previousPushButton, 0, 0, Qt::AlignTop);
-    dynamic_cast< QGridLayout* >(layout())->addLayout(m_stackedHeaderLayout, 0, 1, Qt::AlignCenter);
-    dynamic_cast< QGridLayout* >(layout())->addWidget(m_nextPushButton, 0, 2, Qt::AlignTop);
-    dynamic_cast< QGridLayout* >(layout())->addLayout(m_stackedBodyLayout, 1, 0, 1, 3);
+    QGridLayout * layout = new QGridLayout(this);
+    layout->addWidget(m_previousPushButton, 0, 0, Qt::AlignTop);
+    layout->addWidget(m_nextPushButton, 0, 2, Qt::AlignTop);
+    layout->addLayout(m_stackedBodyLayout, 1, 0, 1, 3);
 
     connect(m_nextPushButton, SIGNAL( pressed() ), this, SLOT( switchToNextWidget() ));
     connect(m_previousPushButton, SIGNAL( pressed() ), this, SLOT( switchToPreviousWidget() ));
@@ -69,13 +65,18 @@ QWidget * MultiPageWidget::page(int index) const
 
 void MultiPageWidget::addPage(KColorEditPage * page)
 {
-    if (!m_stackedBodyLayout->isEmpty())
+    if (m_headers.isEmpty())
+        m_currentHeader = page->header();
+    else
     {
         m_nextPushButton->setEnabled(true);
         m_previousPushButton->setEnabled(true);
+
+        page->header()->setVisible(false);
     }
 
-    m_stackedHeaderLayout->addWidget(page->header());
+    m_headers.append(page->header());
+    dynamic_cast< QGridLayout* >(layout())->addWidget(m_currentHeader, 0, 1, Qt::AlignCenter);
     m_stackedBodyLayout->addWidget(page);
 }
 
@@ -93,6 +94,8 @@ void MultiPageWidget::switchToNextWidget()
 {
     if (!m_stackedBodyLayout->isEmpty())
     {
+        m_headers[m_stackedBodyLayout->currentIndex()]->setVisible(false);
+
         int index = m_stackedBodyLayout->currentIndex() + 1;
 
         if (index >= m_stackedBodyLayout->count())
@@ -106,6 +109,8 @@ void MultiPageWidget::switchToPreviousWidget()
 {
     if (!m_stackedBodyLayout->isEmpty())
     {
+        m_headers[m_stackedBodyLayout->currentIndex()]->setVisible(false);
+
         int index = m_stackedBodyLayout->currentIndex() - 1;
 
         if (index < 0)
@@ -117,12 +122,10 @@ void MultiPageWidget::switchToPreviousWidget()
 
 void MultiPageWidget::switchToPage(int index)
 {
-    //KFadeWidgetEffect * headerEffect = new KFadeWidgetEffect(m_currentHeader);
-
-    m_stackedHeaderLayout->setCurrentIndex(index);
+    m_currentHeader = m_headers[index];
+    m_currentHeader->setVisible(true);
+    dynamic_cast< QGridLayout* >(layout())->addWidget(m_currentHeader, 0, 1, Qt::AlignCenter);
     m_stackedBodyLayout->setCurrentIndex(index);
-
-    //headerEffect->start(364);
 }
 
 #include "multipagewidget.moc"

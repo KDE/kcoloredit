@@ -56,7 +56,11 @@ class MultiPageWidget : public QFrame
         void switchToPage(int index);
 
     private:
-        QStackedLayout * m_stackedHeaderLayout;
+        // TODO use QStackedLayout but make a bug when resize
+        //QStackedLayout * m_stackedHeaderLayout;
+        QVector< KPushButton * > m_headers;
+        KPushButton * m_currentHeader;
+
         QStackedLayout * m_stackedBodyLayout;
 
         KPushButton * m_nextPushButton;
