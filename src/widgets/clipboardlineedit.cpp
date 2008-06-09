@@ -34,7 +34,7 @@ ClipboardLineEdit::ClipboardLineEdit(QWidget * parent)
     m_lineEdit->setReadOnly(true);
 
     m_clipboardButton = new KPushButton(KIcon(QString("edit-copy")), QString(), this);
-    m_clipboardButton->setMaximumWidth(32);
+    m_clipboardButton->setMaximumWidth(38);
     m_clipboardButton->setToolTip(i18n("To Clipboard"));
 
     QHBoxLayout * layout = new QHBoxLayout(this);

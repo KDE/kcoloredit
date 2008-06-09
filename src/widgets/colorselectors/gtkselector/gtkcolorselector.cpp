@@ -56,8 +56,10 @@ void GtkColorSelector::updateColor(const QColor & color)
 
 void GtkColorSelector::generateRandomColor()
 {
-    // TODO
-    //emmit
+    QColor randColor(qrand() % 255, qrand()  % 255, qrand() % 255);
+
+    m_triangleColorWidget->setColor(randColor);
+    emit colorSelected(randColor);
 }
 
 #include "gtkcolorselector.moc"

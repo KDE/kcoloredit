@@ -34,11 +34,18 @@ class ColorInfoText : public ColorInfo
         ColorInfoText(QWidget * parent = 0);
         virtual ~ColorInfoText();
 
+    protected slots:
+        virtual void toClipboard();
+
     protected:
+        QString textToClipboard() const;
+
         void setComponentNames(const QString & nameComponent1, const QString & nameComponent2, const QString & nameComponent3);
         void setComponentValues(const QString & valueComponent1, const QString & valueComponent2, const QString & valueComponent3);
 
     protected:
+        KAction * m_toClipboardAction;
+
         QLabel * m_componentName1;
         QLabel * m_componentName2;
         QLabel * m_componentName3;
@@ -94,6 +101,9 @@ class ColorInfoTextHTML : public ColorInfoText
 
     public slots:
         void setColor(const QColor & color);
+
+    private slots:
+        void toClipboard();
 };
 
 #endif // COLOR_INFO_TEXT_H

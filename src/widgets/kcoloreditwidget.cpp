@@ -53,7 +53,7 @@ KColorEditWidget::KColorEditWidget(QWidget * parent)
     m_colorDispatcher = new ColorWidget(this);
 
     MultiPageWidget * colorInfoTexts = new MultiPageWidget(this);
-    colorInfoTexts->setMaximumHeight(100); // NOTE default value here;
+    colorInfoTexts->setMaximumHeight(110); // NOTE default value here;
     colorInfoTexts->setPrevToolTip(i18n("Prev text style"));
     colorInfoTexts->setNextToolTip(i18n("Next text style"));
 

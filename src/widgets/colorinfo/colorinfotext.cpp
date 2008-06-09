@@ -19,8 +19,11 @@
 
 #include "colorinfotext.h"
 
+#include <QtGui/QClipboard>
 #include <QtGui/QGridLayout>
 #include <QtGui/QLabel>
+
+#include <KApplication>
 
 #include "clipboardlineedit.h"
 
@@ -28,6 +31,10 @@
 
 ColorInfoText::ColorInfoText(QWidget * parent) : ColorInfo(parent)
 {
+    m_toClipboardAction = new KAction(KIcon("edit-copy"), i18n(""), header()->menu());
+
+    header()->menu()->addAction(m_toClipboardAction);
+
     m_componentName1 = new QLabel(this);
 
     m_componentName2 = new QLabel(this);
@@ -47,10 +54,24 @@ ColorInfoText::ColorInfoText(QWidget * parent) : ColorInfo(parent)
     layout->addWidget(m_componentValue1, 1, 0, Qt::AlignLeft);
     layout->addWidget(m_componentValue2, 1, 1, Qt::AlignLeft);
     layout->addWidget(m_componentValue3, 1, 2, Qt::AlignLeft);
+
+    connect(m_toClipboardAction, SIGNAL( triggered(bool)  ), this, SLOT( toClipboard() ));
 }
 
 ColorInfoText::~ColorInfoText()
 {
+}
+
+void ColorInfoText::toClipboard()
+{
+    QClipboard * clipboard = KApplication::clipboard();
+    clipboard->setText(textToClipboard(), QClipboard::Clipboard);
+    clipboard->setText(textToClipboard(), QClipboard::Selection);
+}
+
+QString ColorInfoText::textToClipboard() const
+{
+    return m_componentValue1->text() + ", " + m_componentValue2->text() + ", " + m_componentValue3->text();
 }
 
 void ColorInfoText::setComponentNames(const QString & nameComponent1, const QString & nameComponent2, const QString & nameComponent3)
@@ -65,6 +86,8 @@ void ColorInfoText::setComponentValues(const QString & valueComponent1, const QS
     m_componentValue1->setText(valueComponent1);
     m_componentValue2->setText(valueComponent2);
     m_componentValue3->setText(valueComponent3);
+
+    m_toClipboardAction->setText(textToClipboard());
 }
 
 //END ColorInfoText
@@ -131,12 +154,10 @@ void ColorInfoTextCMY::setColor(const QColor & color)
 ColorInfoTextHTML::ColorInfoTextHTML(QWidget * parent) : ColorInfoText(parent)
 {
     m_header->setText(i18n("Other"));
-    setComponentNames(i18n("HTML"), "", "");
+    setComponentNames(i18n("HTML"), i18n("Hexadecimal"), "");
 
-    m_componentName2->setVisible(false);
     m_componentName3->setVisible(false);
 
-    m_componentValue2->setVisible(false);
     m_componentValue3->setVisible(false);
 }
 
@@ -146,7 +167,17 @@ ColorInfoTextHTML::~ColorInfoTextHTML()
 
 void ColorInfoTextHTML::setColor(const QColor & color)
 {
-    setComponentValues(color.name(), "", "");
+    setComponentValues(color.name(), color.name().remove(0, 1), "");
+
+    m_toClipboardAction->setText(m_componentValue1->text() + ", " + m_componentValue2->text());
+}
+
+void ColorInfoTextHTML::toClipboard()
+{
+    QClipboard * clipboard = KApplication::clipboard();
+
+    clipboard->setText(m_componentValue1->text() + ", " + m_componentValue2->text(), QClipboard::Clipboard);
+    clipboard->setText(m_componentValue1->text() + ", " + m_componentValue2->text(), QClipboard::Selection);
 }
 
 //END ColorInfoTextHTML
