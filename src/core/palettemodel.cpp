@@ -43,8 +43,10 @@ Qt::ItemFlags PaletteModel::flags(const QModelIndex & index) const
     return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
 }
 
-QVariant PaletteModel::data(const QModelIndex & index, int /* role */) const
+QVariant PaletteModel::data(const QModelIndex & index, int role) const
 {
+    Q_UNUSED(role);
+
     if (!index.isValid())
         return QVariant();
 
@@ -133,13 +135,17 @@ QVariant PaletteModel::headerData(int section, Qt::Orientation orientation, int 
     return QVariant();
 }
 
-int PaletteModel::rowCount(const QModelIndex & /* parent */) const
+int PaletteModel::rowCount(const QModelIndex & parent) const
 {
+    Q_UNUSED(parent);
+
     return m_palette.count();
 }
 
-bool PaletteModel::insertColorRows(int row, int count, const QModelIndex & /* parent */)
+bool PaletteModel::insertColorRows(int row, int count, const QModelIndex & parent)
 {
+    Q_UNUSED(parent);
+
     beginInsertRows(QModelIndex(), row, row + count - 1);
 
     for (int i = 0; i < count; i++)
@@ -150,8 +156,10 @@ bool PaletteModel::insertColorRows(int row, int count, const QModelIndex & /* pa
     return true;
 }
 
-bool PaletteModel::insertCommentRows(int row, int count, const QModelIndex & /* parent */)
+bool PaletteModel::insertCommentRows(int row, int count, const QModelIndex & parent)
 {
+    Q_UNUSED(parent);
+
     beginInsertRows(QModelIndex(), row, row + count - 1);
 
     for (int i = 0; i < count; i++)
@@ -162,8 +170,10 @@ bool PaletteModel::insertCommentRows(int row, int count, const QModelIndex & /* 
     return true;
 }
 
-bool PaletteModel::removeRows(int row, int count, const QModelIndex & /* parent */)
+bool PaletteModel::removeRows(int row, int count, const QModelIndex & parent)
 {
+    Q_UNUSED(parent);
+
     beginRemoveRows(QModelIndex(), row, row + count - 1);
 
     for (int i = 0; i < count; i++)
@@ -174,8 +184,10 @@ bool PaletteModel::removeRows(int row, int count, const QModelIndex & /* parent 
     return true;
 }
 
-int PaletteModel::columnCount(const QModelIndex & /* parent */) const
+int PaletteModel::columnCount(const QModelIndex & parent) const
 {
+    Q_UNUSED(parent);
+
     return 1;
 }
 

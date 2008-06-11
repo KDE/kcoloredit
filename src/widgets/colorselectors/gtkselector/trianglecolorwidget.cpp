@@ -222,7 +222,7 @@ void TriangleColorWidget::generateTriangle()
     QImage img(m_sizeColorSelector, m_sizeColorSelector, QImage::Format_ARGB32_Premultiplied);
     // Length of triangle
     int hue_ = hue();
-    
+
     for(int y = 0; y < m_sizeColorSelector; y++)
     {
         double ynormalize = ( m_triangleTop - y ) / ( m_triangleTop - m_triangleBottom );

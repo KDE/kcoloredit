@@ -31,8 +31,10 @@ PaletteDelegate::PaletteDelegate(QObject * parent)
 {
 }
 
-QWidget * PaletteDelegate::createEditor(QWidget * parent, const QStyleOptionViewItem & /* option */, const QModelIndex & index) const
+QWidget * PaletteDelegate::createEditor(QWidget * parent, const QStyleOptionViewItem & option, const QModelIndex & index) const
 {
+    Q_UNUSED(option);
+
     QVariantMap vmap = index.data().toMap();
 
     if (vmap.value("type").toString() == QString("color"))   return new ColorItemEditor(parent);
@@ -136,16 +138,16 @@ void PaletteDelegate::paint(QPainter * painter, const QStyleOptionViewItem & opt
         luminance = 0.2126*baseWndColor.red() + 0.7152*baseWndColor.green() + 0.0722*baseWndColor.blue();
 
         QBrush brush;
-        brush.setStyle(Qt::Dense7Pattern);
+        brush.setStyle(Qt::Dense1Pattern);
 
         if (luminance > (255 / 2.0))
         {
-            painter->setPen(Qt::black);
+            painter->setPen(Qt::white);
             brush.setColor(Qt::black);
         }
         else
         {
-            painter->setPen(Qt::white);
+            painter->setPen(Qt::black);
             brush.setColor(Qt::white);
         }
 

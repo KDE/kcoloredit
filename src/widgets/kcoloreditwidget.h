@@ -50,6 +50,10 @@ class KColorEditWidget : public QWidget
         void setColor(const QColor & color);
 
     private slots:
+        void addAllColorRange();
+        void addLowestColorRange();
+        void addHighestColorRange();
+
         void addComplement();
         void addTriadics();
         void addTetradics();

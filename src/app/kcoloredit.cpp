@@ -76,7 +76,7 @@ void KColorEditMainWnd::openFile()
 
                 m_kColorEditWidget->setModel(m_paletteDocument->model());
 
-                // NOTE little hack to force the signal dataChange and then update the gridView
+                // NOTE little hack to force the signal dataChange to update the gridView
                 if (m_paletteDocument->model()->rowCount() > 0)
                     m_paletteDocument->model()->setData(m_paletteDocument->model()->index(0, 0), m_paletteDocument->model()->index(0, 0).data());
 
@@ -142,16 +142,46 @@ void KColorEditMainWnd::settingsPreferences()
 
 void KColorEditMainWnd::cleanPalette()
 {
-    // TODO popup a dialog here
-
     if (m_paletteDocument->model()->rowCount() > 0)
-        m_paletteDocument->model()->removeRows(0, m_paletteDocument->model()->rowCount());
+        if (KMessageBox::questionYesNo(this
+            , i18n("This action will delete all items (colors and comments) of the current palette.")
+            , QString()
+            , KGuiItem(i18n("Clean Palette"), KIcon("edit-clear"))
+            , KStandardGuiItem::cancel())
+            == KMessageBox::Yes)
+            m_paletteDocument->model()->removeRows(0, m_paletteDocument->model()->rowCount());
 }
 
 void KColorEditMainWnd::generateColorNames()
 {
-    // TODO popup a dialog here
+    if (m_paletteDocument->model()->rowCount() > 0)
+        if (KMessageBox::questionYesNo(this
+            , i18n("This action will replace the name of all color items with names in this format #RRGGBB.")
+            , QString()
+            , KGuiItem(i18n("Generate Color Names"), KIcon("format-stroke-color"))
+            , KStandardGuiItem::cancel())
+            == KMessageBox::Yes)
+        {
+            QVariantMap vmap;
 
+            int rows = m_paletteDocument->model()->rowCount();
+
+            for (int i = 0; i < rows; i++)
+            {
+                vmap = m_paletteDocument->model()->index(i, 0).data().toMap();
+
+                if (vmap.value("type").toString() == QString("color"))
+                {
+                    vmap.insert("name", vmap.value("color").value<QColor>().name());
+
+                    m_paletteDocument->model()->setData(m_paletteDocument->model()->index(i, 0), vmap);
+                }
+            }
+        }
+}
+
+void KColorEditMainWnd::completeColorNames()
+{
     if (m_paletteDocument->model()->rowCount() > 0)
     {
         QVariantMap vmap;
@@ -163,11 +193,12 @@ void KColorEditMainWnd::generateColorNames()
             vmap = m_paletteDocument->model()->index(i, 0).data().toMap();
 
             if (vmap.value("type").toString() == QString("color"))
-            {
-                vmap.insert("name", vmap.value("color").value<QColor>().name());
+                if (vmap.value("name").toString().isEmpty())
+                {
+                    vmap.insert("name", vmap.value("color").value<QColor>().name());
 
-                m_paletteDocument->model()->setData(m_paletteDocument->model()->index(i, 0), vmap);
-            }
+                    m_paletteDocument->model()->setData(m_paletteDocument->model()->index(i, 0), vmap);
+                }
         }
     }
 }
@@ -260,22 +291,7 @@ void KColorEditMainWnd::setupWidgets()
 
     tabifyDockWidget(m_paletteListDockWidget, m_paletteTableDockWidget);
 
-    //setDockOptions(QMainWindow::AnimatedDocks | QMainWindow::VerticalTabs | QMainWindow::AllowNestedDocks | QMainWindow::AllowTabbedDocks);
-    // NOTE ussability
     setDockOptions(QMainWindow::AnimatedDocks | QMainWindow::AllowNestedDocks | QMainWindow::AllowTabbedDocks);
-
-/// ///
-/*
-// DEPRECATED
-  connect(m_paletteDetailView, SIGNAL( selectedItem(int) ), m_paletteGridView, SLOT( slotSetSelectedItem(int) ));
-
-    connect(m_paletteGridView, SIGNAL( selectedItem(int) ), m_paletteDetailView, SLOT( slotSetSelectedItem(int) ));
-    connect(m_paletteGridView, SIGNAL( trackedColorIndex(int) ), m_paletteDetailView, SLOT( slotScrollToColor(int) ));
-
-    // NOTE center widget
-
-    connect(m_paletteGridView, SIGNAL( trackedColor(QColor) ), m_kColorEditWidget, SLOT( slotSetColor(QColor) ));
-*/
 
     connect(m_paletteDocument, SIGNAL( modified() ), this, SLOT( updateTittleWhenChangeDocState() ));
 
@@ -284,8 +300,7 @@ void KColorEditMainWnd::setupWidgets()
 
     connect(m_paletteGridView, SIGNAL( selectedItem(int) ), m_paletteDetailView, SLOT( setSelectedItem(int) ));
 
-
-    // setup default colors colors
+    // NOTE setup default colors colors
     m_kColorEditWidget->setColor(Qt::blue);
 }
 
@@ -302,6 +317,10 @@ void KColorEditMainWnd::setupActions()
     tmpAction = actionCollection()->addAction("generate-color-names");
     tmpAction->setIcon(KIcon("format-stroke-color"));
     tmpAction->setText(i18n("Generate Color Names"));
+
+    tmpAction = actionCollection()->addAction("complete-color-names");
+    tmpAction->setIcon(KIcon("format-stroke-color"));
+    tmpAction->setText(i18n("Complete Color Names"));
 
     /// palette toolbar
 
@@ -344,6 +363,7 @@ void KColorEditMainWnd::setupActions()
     /// palette menu
     connect(dynamic_cast<KAction *>(actionCollection()->action("clean-palette"))        , SIGNAL( triggered(bool) ), this, SLOT( cleanPalette() ));
     connect(dynamic_cast<KAction *>(actionCollection()->action("generate-color-names")) , SIGNAL( triggered(bool) ), this, SLOT( generateColorNames() ));
+    connect(dynamic_cast<KAction *>(actionCollection()->action("complete-color-names")) , SIGNAL( triggered(bool) ), this, SLOT( completeColorNames() ));
 
     /// palette toolbar
 

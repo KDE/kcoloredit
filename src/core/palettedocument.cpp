@@ -227,13 +227,20 @@ QString PaletteDocument::lastErrorString() const
     return m_lastErrorString;
 }
 
-void PaletteDocument::updateDocStateWhenInsertItem(const QModelIndex & /* topLeft */, const QModelIndex & /* bottomRight */)
+void PaletteDocument::updateDocStateWhenInsertItem(const QModelIndex & topLeft, const QModelIndex & bottomRight)
 {
+    Q_UNUSED(topLeft);
+    Q_UNUSED(bottomRight);
+
     emit modified();
 }
 
-void PaletteDocument::updateDocStateWhenRemoveItem(const QModelIndex & /* parent */, int /* start */, int /* end */)
+void PaletteDocument::updateDocStateWhenRemoveItem(const QModelIndex & parent, int start, int end)
 {
+    Q_UNUSED(parent);
+    Q_UNUSED(start);
+    Q_UNUSED(end);
+
     emit modified();
 }
 

@@ -50,6 +50,7 @@ class KColorEditMainWnd : public KXmlGuiWindow
 
         void cleanPalette();
         void generateColorNames();
+        void completeColorNames();
 
         void addColorItem();
         void addCommentItem();

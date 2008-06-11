@@ -71,8 +71,6 @@ class PaletteGridView : public QWidget
         KPushButton * m_zoomInButton;
         QCheckBox * m_quickNavigationCheckBox;
         QCheckBox * m_showCommentsCheckBox;
-
-        bool m_showComments;
 };
 
 #endif // PALETTE_GRID_VIEW_H

@@ -10,6 +10,7 @@
             <text>Palette</text>
             <Action name="clean-palette"/>
             <Action name="generate-color-names"/>
+            <Action name="complete-color-names"/>
         </Menu>
         <Menu name="tools">
             <Action name="show-brief-view"/>

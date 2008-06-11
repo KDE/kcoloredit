@@ -29,8 +29,9 @@ ColorInfo::~ColorInfo()
 {
 }
 
-void ColorInfo::setColor(const QColor & /* color */)
+void ColorInfo::setColor(const QColor & color)
 {
+    Q_UNUSED(color);
 }
 
 #include "colorinfo.moc"

@@ -49,7 +49,6 @@ KColorEditWidget::KColorEditWidget(QWidget * parent)
     colorSelectors->addPage(m_gtkColorSelector);
     colorSelectors->addPage(m_blenderColorSelector);
 
-
     m_colorDispatcher = new ColorWidget(this);
 
     MultiPageWidget * colorInfoTexts = new MultiPageWidget(this);
@@ -94,6 +93,10 @@ KColorEditWidget::KColorEditWidget(QWidget * parent)
     mainLayout->addWidget(colorInfoTexts);
     mainLayout->addWidget(colorInfoVisuals);
 
+    connect(m_blenderColorSelector->addAllColorRangeAction(), SIGNAL( triggered(bool) ), this, SLOT( addAllColorRange() ));
+    connect(m_blenderColorSelector->addLowestColorRangeAction(), SIGNAL( triggered(bool) ), this, SLOT( addLowestColorRange() ));
+    connect(m_blenderColorSelector->addHighestColorRangeAction(), SIGNAL( triggered(bool) ), this, SLOT( addHighestColorRange() ));
+
     for (int i = 0; i < colorSelectors->count(); i++)
         connect(colorSelectors->page(i), SIGNAL( colorSelected(QColor) ), m_colorDispatcher, SLOT( setColor(QColor) ));
 
@@ -121,12 +124,61 @@ QColor KColorEditWidget::selectedColor() const
 
 void KColorEditWidget::setColor(const QColor & color)
 {
-    m_kdeColorSelector->setColor(color);
-    m_gtkColorSelector->setColor(color);
-    m_blenderColorSelector->setColor(color);
+    // NOTE this is necesary couse the comments make invalid color when track arroud brief view
+    if (color.isValid())
+    {
+        m_kdeColorSelector->setColor(color);
+        m_gtkColorSelector->setColor(color);
+        m_blenderColorSelector->setColor(color);
+    }
 }
 
 // NOTE duplicated code
+
+void KColorEditWidget::addAllColorRange()
+{
+    for (int i = 0;  i < m_blenderColorSelector->allColorRange().count(); i++)
+    {
+        m_model->insertColorRows(m_model->rowCount(), 1);
+
+        QVariantMap vmap;
+
+        vmap.insert("type", QString("color"));
+        vmap.insert("color", m_blenderColorSelector->allColorRange()[i]);
+
+        m_model->setData(m_model->index(m_model->rowCount() - 1, 0), vmap);
+    }
+}
+
+void KColorEditWidget::addLowestColorRange()
+{
+    for (int i = 0;  i < m_blenderColorSelector->lowestColorRange().count(); i++)
+    {
+        m_model->insertColorRows(m_model->rowCount(), 1);
+
+        QVariantMap vmap;
+
+        vmap.insert("type", QString("color"));
+        vmap.insert("color", m_blenderColorSelector->lowestColorRange()[i]);
+
+        m_model->setData(m_model->index(m_model->rowCount() - 1, 0), vmap);
+    }
+}
+
+void KColorEditWidget::addHighestColorRange()
+{
+    for (int i = 0;  i < m_blenderColorSelector->highestColorRange().count(); i++)
+    {
+        m_model->insertColorRows(m_model->rowCount(), 1);
+
+        QVariantMap vmap;
+
+        vmap.insert("type", QString("color"));
+        vmap.insert("color", m_blenderColorSelector->highestColorRange()[i]);
+
+        m_model->setData(m_model->index(m_model->rowCount() - 1, 0), vmap);
+    }
+}
 
 void KColorEditWidget::addComplement()
 {

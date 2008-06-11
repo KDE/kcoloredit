@@ -34,10 +34,18 @@ BlenderColorSelector::BlenderColorSelector(QWidget * parent)
     m_header->setText(i18n("Mix Colors"));
     m_header->setIcon(KIcon("fill-color"));
 
+    m_addAllColorRangeAction = new KAction(KIcon("list-add"), i18n("Add All Color Range"), header()->menu());
+    m_addLowestColorRangeAction = new KAction(KIcon("list-add"), i18n("Add Lowest Color Range"), header()->menu());
+    m_addHighestColorRangeAction = new KAction(KIcon("list-add"), i18n("Add Highest Color Range"), header()->menu());
+
+    header()->menu()->addAction(m_addAllColorRangeAction);
+    header()->menu()->addAction(m_addLowestColorRangeAction);
+    header()->menu()->addAction(m_addHighestColorRangeAction);
+
     m_baseColor = new KColorButton(this);
     m_baseColor->setMinimumHeight(64);
 
-    QSlider * m_linearMixer = new QSlider(Qt::Horizontal, this);
+    m_linearMixer = new QSlider(Qt::Horizontal, this);
     m_linearMixer->setRange(1, 100);
     m_linearMixer->setTickInterval(1);
 
@@ -55,6 +63,51 @@ BlenderColorSelector::BlenderColorSelector(QWidget * parent)
     connect(m_overlayedColor, SIGNAL( changed(QColor) ), this, SLOT( updateMixWhenChangeColor(QColor) ));
 }
 
+KAction * BlenderColorSelector::addAllColorRangeAction() const
+{
+    return m_addAllColorRangeAction;
+}
+
+KAction * BlenderColorSelector::addLowestColorRangeAction() const
+{
+    return m_addLowestColorRangeAction;
+}
+
+KAction * BlenderColorSelector::addHighestColorRangeAction() const
+{
+    return m_addHighestColorRangeAction;
+}
+
+QVector<QColor> BlenderColorSelector::allColorRange() const
+{
+    QVector<QColor> tmpColorRange;
+
+    for (int i = 1; i <= 100; i++)
+        tmpColorRange.append(KColorUtils::mix(m_baseColor->color(), m_overlayedColor->color(), static_cast<float>(i)/100.0f));
+
+    return tmpColorRange;
+}
+
+QVector<QColor> BlenderColorSelector::lowestColorRange() const
+{
+    QVector<QColor> tmpColorRange;
+
+    for (int i = 1; i <= m_linearMixer->value(); i++)
+        tmpColorRange.append(KColorUtils::mix(m_baseColor->color(), m_overlayedColor->color(), static_cast<float>(i)/100.0f));
+
+    return tmpColorRange;
+}
+
+QVector<QColor> BlenderColorSelector::highestColorRange() const
+{
+    QVector<QColor> tmpColorRange;
+
+    for (int i = m_linearMixer->value(); i <= 100; i++)
+        tmpColorRange.append(KColorUtils::mix(m_baseColor->color(), m_overlayedColor->color(), static_cast<float>(i)/100.0f));
+
+    return tmpColorRange;
+}
+
 void BlenderColorSelector::setColor(const QColor & color)
 {
     m_baseColor->setColor(color);
@@ -68,8 +121,10 @@ void BlenderColorSelector::updateMixWhenChangeBias(int factor)
     performMix();
 }
 
-void BlenderColorSelector::updateMixWhenChangeColor(const QColor & /* color */)
+void BlenderColorSelector::updateMixWhenChangeColor(const QColor & color)
 {
+    Q_UNUSED(color);
+
     performMix();
 }
 

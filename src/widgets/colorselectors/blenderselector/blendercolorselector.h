@@ -22,6 +22,8 @@
 
 #include "colorselector.h"
 
+class QSlider;
+
 class KColorButton;
 
 class BlenderColorSelector : public ColorSelector
@@ -30,6 +32,14 @@ class BlenderColorSelector : public ColorSelector
 
     public:
         BlenderColorSelector(QWidget * parent = 0);
+
+        KAction * addAllColorRangeAction() const;
+        KAction * addLowestColorRangeAction() const;
+        KAction * addHighestColorRangeAction() const;
+
+        QVector<QColor> allColorRange() const;
+        QVector<QColor> lowestColorRange() const;
+        QVector<QColor> highestColorRange() const;
 
     public slots:
         void setColor(const QColor & color);
@@ -44,8 +54,14 @@ class BlenderColorSelector : public ColorSelector
     private:
         float m_bias;
 
+        QSlider * m_linearMixer;
+
         KColorButton * m_baseColor;
         KColorButton * m_overlayedColor;
+
+        KAction * m_addAllColorRangeAction;
+        KAction * m_addLowestColorRangeAction;
+        KAction * m_addHighestColorRangeAction;
 };
 
 #endif // BLENDER_COLOR_SELECTOR_H

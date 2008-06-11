@@ -246,8 +246,11 @@ void PaletteDetailView::slotScrollToItem(int index)
         m_view->scrollTo(m_model->index(index, 0), QAbstractItemView::PositionAtTop);
 }
 
-void PaletteDetailView::updateHeaders(const QModelIndex & /* topLeft */, const QModelIndex & /* bottomRight */)
+void PaletteDetailView::updateHeaders(const QModelIndex & topLeft, const QModelIndex & bottomRight)
 {
+    Q_UNUSED(topLeft);
+    Q_UNUSED(bottomRight);
+
     m_view->horizontalHeader()->setResizeMode(0, QHeaderView::Stretch);
 
     for (int i = 0; i < m_view->model()->rowCount(); i++)
@@ -268,8 +271,11 @@ void PaletteDetailView::setDescriptionMode(int index)
         m_paletteDescriptionTextEdit->setDocument(m_fullDescriptionDocument);
 }
 
-void PaletteDetailView::updateDescriptions(const QModelIndex & /* topLeft */, const QModelIndex & /* bottomRight */)
+void PaletteDetailView::updateDescriptions(const QModelIndex & topLeft, const QModelIndex & bottomRight)
 {
+    Q_UNUSED(topLeft);
+    Q_UNUSED(bottomRight);
+
     m_briefDescriptionDocument->setPlainText(m_model->briefDescription());
     m_fullDescriptionDocument->setPlainText(m_model->fullDescription());
 }

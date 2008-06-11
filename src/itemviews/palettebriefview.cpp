@@ -36,17 +36,16 @@
 PaletteGridView::PaletteGridView(PaletteModel * model, QWidget * parent)
     : QWidget(parent)
     , m_model(model)
-    , m_showComments(false)
 {
     m_quickNavigationCheckBox = new QCheckBox(this);
     m_quickNavigationCheckBox->setText(i18n("Quick navigation"));
     m_quickNavigationCheckBox->setChecked(false);
-    m_quickNavigationCheckBox->setStatusTip(i18n("It would disable automatically if you selected a item"));
+    m_quickNavigationCheckBox->setStatusTip(i18n("It would disable automatically if you clicked a item"));
 
     m_showCommentsCheckBox = new QCheckBox(this);
     m_showCommentsCheckBox->setText(i18n("Show comments"));
-    m_showCommentsCheckBox->setChecked(m_showComments);
-    m_showCommentsCheckBox->setStatusTip(i18n("If is checked, you can cut,copy and paste"));
+    m_showCommentsCheckBox->setChecked(false);
+    m_showCommentsCheckBox->setStatusTip(i18n("If is checked, selection enabled and you can cut,copy and paste items"));
 
     m_setColumnSlider = new QSlider(Qt::Horizontal, this);
     m_setColumnSlider->setRange(1, 20);
@@ -62,9 +61,9 @@ PaletteGridView::PaletteGridView(PaletteModel * model, QWidget * parent)
     m_colorCells = new KColorCells(this, 0, 1);
     m_colorCells->setMouseTracking(true);
     m_colorCells->setMinimumWidth(256);
-    m_colorCells->setAcceptDrags(false); // TODO
-    m_colorCells->setAcceptDrops(false); // TODO
-    m_colorCells->setSelectionMode(QAbstractItemView::ContiguousSelection);
+    m_colorCells->setAcceptDrags(false);
+    m_colorCells->setAcceptDrops(false);
+    m_colorCells->setSelectionMode(QAbstractItemView::NoSelection);
 
     QHBoxLayout * layoutHeader = new QHBoxLayout();
     layoutHeader->addWidget(m_quickNavigationCheckBox);
@@ -124,13 +123,20 @@ void PaletteGridView::zoomIn()
         m_setColumnSlider->setValue(m_setColumnSlider->value() + m_setColumnSlider->singleStep());
 }
 
-void PaletteGridView::updateWhenInsertItem(const QModelIndex & /* topLeft */, const QModelIndex & /* bottomRight */)
+void PaletteGridView::updateWhenInsertItem(const QModelIndex & topLeft, const QModelIndex & bottomRight)
 {
+    Q_UNUSED(topLeft);
+    Q_UNUSED(bottomRight);
+
     loadDataFromModel();
 }
 
-void PaletteGridView::updateWhenRemoveItem(const QModelIndex & /* parent */, int /* start */, int /* end */)
+void PaletteGridView::updateWhenRemoveItem(const QModelIndex & parent, int start, int end)
 {
+    Q_UNUSED(parent);
+    Q_UNUSED(start);
+    Q_UNUSED(end);
+
     loadDataFromModel();
 }
 
@@ -138,9 +144,12 @@ void PaletteGridView::updateIndex(int row, int column)
 {
     m_quickNavigationCheckBox->setChecked(false);
 
-    int index = row * m_colorCells->columnCount() + column;
+    if (m_showCommentsCheckBox->isChecked())
+    {
+        int index = row * m_colorCells->columnCount() + column;
 
-    emit selectedItem(index);
+        emit selectedItem(index);
+    }
 }
 
 void PaletteGridView::trackColor(int row, int column)
@@ -162,9 +171,12 @@ void PaletteGridView::showComments(bool show)
 {
     if (m_model->rowCount() > 0)
     {
-        m_showComments = show;
-
         loadDataFromModel();
+
+        if (show)
+            m_colorCells->setSelectionMode(QAbstractItemView::ContiguousSelection);
+        else
+            m_colorCells->setSelectionMode(QAbstractItemView::NoSelection);
     }
 }
 
@@ -185,7 +197,7 @@ void PaletteGridView::loadDataFromModel()
             colors++;
     }
 
-    if (!m_showComments)
+    if (!m_showCommentsCheckBox->isChecked())
     {
         if (colors > 0)
         {
@@ -217,7 +229,7 @@ void PaletteGridView::loadDataFromModel()
     KColorScheme systemColorScheme(QPalette::Active);
     QColor baseWndColor = systemColorScheme.background(KColorScheme::NormalBackground).color();
 
-    if (!m_showComments)
+    if (!m_showCommentsCheckBox->isChecked())
     {
         int colorCount = 0;
 
@@ -269,7 +281,7 @@ void PaletteGridView::loadDataFromModel()
                 int luminance = 0.2126*baseWndColor.red() + 0.7152*baseWndColor.green() + 0.0722*baseWndColor.blue();
 
                 QBrush brush;
-                brush.setStyle(Qt::Dense7Pattern);
+                brush.setStyle(Qt::Dense1Pattern);
 
                 if (luminance > (255 / 2.0))
                     brush.setColor(Qt::black);
