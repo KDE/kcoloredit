@@ -31,7 +31,7 @@
 
 ColorInfoText::ColorInfoText(QWidget * parent) : ColorInfo(parent)
 {
-    m_toClipboardAction = new KAction(KIcon("edit-copy"), i18n(""), header()->menu());
+    m_toClipboardAction = new KAction(KIcon("edit-copy"), QString(), header()->menu());
 
     header()->menu()->addAction(m_toClipboardAction);
 
