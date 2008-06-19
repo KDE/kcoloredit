@@ -26,7 +26,7 @@ class QDockWidget;
 
 class PaletteDocument;
 class PaletteDetailView;
-class PaletteGridView;
+class PaletteBriefView;
 
 class KColorEditWidget;
 
@@ -75,7 +75,7 @@ class KColorEditMainWnd : public KXmlGuiWindow
     private:
         PaletteDocument * m_paletteDocument;
 
-        PaletteGridView * m_paletteGridView;
+        PaletteBriefView * m_paletteBriefView;
         PaletteDetailView * m_paletteDetailView;
 
         KColorEditWidget * m_kColorEditWidget;

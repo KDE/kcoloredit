@@ -63,14 +63,14 @@ PaletteModel * PaletteDocument::model()
 
 bool PaletteDocument::openPaletteFile(const QString & fileName)
 {
-    QFile paletteFile(fileName);
-    paletteFile.open(QIODevice::ReadOnly);
+    QFile file(fileName);
+    file.open(QIODevice::ReadOnly);
 
     QString line;
 
     // Read first line
     // Expected "GIMP Palette"
-    line = QString::fromLocal8Bit(paletteFile.readLine());
+    line = QString::fromLocal8Bit(file.readLine());
 
     if (line.indexOf(" Palette") == -1)
     {
@@ -96,27 +96,27 @@ bool PaletteDocument::openPaletteFile(const QString & fileName)
     //if (m_model->rowCount() > 0)
     //   m_model->removeRows(0, m_model->rowCount());
 
-    line = QString::fromLocal8Bit(paletteFile.readLine());
-
-    QStringList strLst = line.split(": ");
-
-    if (strLst[0] == "Name")
-    {
-        QString palName = strLst[1];
-        palName.remove('\n');
-
-        m_model->setPaletteName(palName);
-    }
-
     int rows = 0;
     int r, g, b;
     int pos = 0;
 
     QVariantMap vmap;
 
-    while( !paletteFile.atEnd() )
+    while( !file.atEnd() )
     {
-        line = QString::fromLocal8Bit(paletteFile.readLine());
+        line = QString::fromLocal8Bit(file.readLine());
+
+        //BEGIN WARNING inefficient
+        QStringList strLst = line.split(": ");
+
+        if (strLst[0] == "Name")
+        {
+            QString palName = strLst[1];
+            palName.remove('\n');
+
+            m_model->setPaletteName(palName);
+        }
+        //END WARNING inefficient
 
         if (line[0] != '#')
         {
@@ -169,21 +169,20 @@ bool PaletteDocument::openPaletteFile(const QString & fileName)
 
 bool PaletteDocument::saveFileAs(const QString & fileName)
 {
-    KSaveFile sf(fileName);
+    KSaveFile saveFile(fileName);
 
-    if (!sf.open())
+    if (!saveFile.open())
     {
-        m_lastErrorString = sf.errorString();
+        m_lastErrorString = saveFile.errorString();
 
         return false;
     }
 
-    QTextStream str(&sf);
-
-    str << "KDE RGB Palette\n";
-    str << "Name: " << m_model->paletteName() << "\n";
-
     QVariantMap vmap;
+
+    QTextStream textStream(&saveFile);
+    textStream << "KDE RGB Palette" << endl;
+    textStream << "Name: " << m_model->paletteName() << endl;
 
     for(int i = 0; i < m_model->rowCount(); i++)
     {
@@ -194,24 +193,24 @@ bool PaletteDocument::saveFileAs(const QString & fileName)
             QColor color = vmap.value("color").value<QColor>();
             QString colorName = vmap.value("name").toString();
 
-            str << color.red() << " " << color.green() << " " << color.blue() << " " << colorName << "\n";
+            textStream << color.red() << " " << color.green() << " " << color.blue() << " " << colorName << endl;
         }
 
         if (vmap.value("type").toString() == QString("comment"))
         {
             QString comment = vmap.value("comment").toString();
 
-            str << "#" << comment << "\n";
+            textStream << "#" << comment << endl;
         }
     }
 
-    sf.flush();
+    saveFile.flush();
 
-    bool finalize = sf.finalize();
+    bool finalize = saveFile.finalize();
 
     if (!finalize)
     {
-        m_lastErrorString = sf.errorString();
+        m_lastErrorString = saveFile.errorString();
 
         return false;
     }

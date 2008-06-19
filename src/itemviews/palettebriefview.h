@@ -21,22 +21,46 @@
 #define PALETTE_GRID_VIEW_H
 
 #include <QtCore/QModelIndex>
-#include <QtGui/QWidget>
+
+#include <KColorCells>
 
 class QSlider;
 class QCheckBox;
 
+class KAction;
+class KMenu;
 class KPushButton;
-class KColorCells;
 
 class PaletteModel;
 
-class PaletteGridView : public QWidget
+class ColorCellsAdapter : public KColorCells
 {
     Q_OBJECT
 
     public:
-        PaletteGridView(PaletteModel * model, QWidget * parent = 0);
+        ColorCellsAdapter(QWidget * parent = 0, int row = 0, int column = 0);
+
+        KAction * cutAction() const;
+        KAction * copyAction() const;
+        KAction * pasteAction() const;
+
+    protected:
+        virtual void mousePressEvent(QMouseEvent * event);
+
+    private:
+        KAction * m_cutAction;
+        KAction * m_copyAction;
+        KAction * m_pasteAction;
+
+        KMenu * m_menu;
+};
+
+class PaletteBriefView : public QWidget
+{
+    Q_OBJECT
+
+    public:
+        PaletteBriefView(PaletteModel * model, QWidget * parent = 0);
 
         void setModel(PaletteModel * model);
 
@@ -58,13 +82,17 @@ class PaletteGridView : public QWidget
         void trackColor(int row, int column);
         void showComments(bool show); // NOTE if show commenten then can't copy/cut/paste
 
+        void cut();
+        void copy();
+        void paste();
+
     private:
         void loadDataFromModel();
 
     private:
         PaletteModel * m_model;
 
-        KColorCells * m_colorCells;
+        ColorCellsAdapter * m_colorCellsAdapter;
 
         QSlider * m_setColumnSlider;
         KPushButton * m_zoomOutButton;

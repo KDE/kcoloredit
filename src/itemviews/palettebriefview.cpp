@@ -19,6 +19,7 @@
 
 #include "palettebriefview.h"
 
+#include <QtGui/QMouseEvent>
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QGridLayout>
@@ -27,20 +28,69 @@
 #include <QtGui/QCheckBox>
 
 #include <KLocalizedString>
+#include <KAction>
+#include <KMenu>
 #include <KColorScheme>
 #include <KPushButton>
 #include <KColorCells>
 
 #include "palettemodel.h"
 
-PaletteGridView::PaletteGridView(PaletteModel * model, QWidget * parent)
+//BEGIN class ColorCellsAdapter
+
+ColorCellsAdapter::ColorCellsAdapter(QWidget * parent, int row, int column)
+    : KColorCells(parent, row, column)
+{
+    setMouseTracking(true);
+    setMinimumWidth(256);
+    setAcceptDrops(false);
+    setSelectionMode(QAbstractItemView::NoSelection);
+
+    m_cutAction = new KAction(KIcon(QString("edit-cut")), i18n("Cut"), this);
+    m_copyAction = new KAction(KIcon(QString("edit-copy")), i18n("Copy"), this);
+    m_pasteAction = new KAction(KIcon(QString("edit-paste")), i18n("Paste"), this);
+
+    m_menu = new KMenu(this);
+    m_menu->addAction(m_cutAction);
+    m_menu->addAction(m_copyAction);
+    m_menu->addAction(m_pasteAction);
+}
+
+KAction * ColorCellsAdapter::cutAction() const
+{
+    return m_cutAction;
+}
+
+KAction * ColorCellsAdapter::copyAction() const
+{
+    return m_copyAction;
+}
+
+KAction * ColorCellsAdapter::pasteAction() const
+{
+    return m_pasteAction;
+}
+
+void ColorCellsAdapter::mousePressEvent(QMouseEvent * event)
+{
+    if (event->button() == Qt::RightButton)
+        if (!selectedItems().empty())
+            m_menu->popup(mapToGlobal(event->pos()));
+
+    if (event->button() == Qt::LeftButton)
+        KColorCells::mousePressEvent(event);
+}
+
+//END class ColorCellsAdapter
+
+PaletteBriefView::PaletteBriefView(PaletteModel * model, QWidget * parent)
     : QWidget(parent)
     , m_model(model)
 {
     m_quickNavigationCheckBox = new QCheckBox(this);
     m_quickNavigationCheckBox->setText(i18n("Quick navigation"));
     m_quickNavigationCheckBox->setChecked(false);
-    m_quickNavigationCheckBox->setStatusTip(i18n("It would disable automatically if you clicked a item"));
+    m_quickNavigationCheckBox->setStatusTip(i18n("It will disable automatically if you clicked over a item"));
 
     m_showCommentsCheckBox = new QCheckBox(this);
     m_showCommentsCheckBox->setText(i18n("Show comments"));
@@ -58,12 +108,7 @@ PaletteGridView::PaletteGridView(PaletteModel * model, QWidget * parent)
 
     m_zoomInButton = new KPushButton(KIcon(QString("zoom-in")), QString(), this);
 
-    m_colorCells = new KColorCells(this, 0, 1);
-    m_colorCells->setMouseTracking(true);
-    m_colorCells->setMinimumWidth(256);
-    m_colorCells->setAcceptDrags(false);
-    m_colorCells->setAcceptDrops(false);
-    m_colorCells->setSelectionMode(QAbstractItemView::NoSelection);
+    m_colorCellsAdapter = new ColorCellsAdapter(this, 0, 1);
 
     QHBoxLayout * layoutHeader = new QHBoxLayout();
     layoutHeader->addWidget(m_quickNavigationCheckBox);
@@ -71,7 +116,7 @@ PaletteGridView::PaletteGridView(PaletteModel * model, QWidget * parent)
 
     QVBoxLayout * layout = new QVBoxLayout(this);
     layout->addLayout(layoutHeader);
-    layout->addWidget(m_colorCells);
+    layout->addWidget(m_colorCellsAdapter);
 
     QHBoxLayout * layoutZoom = new QHBoxLayout();
     layoutZoom->addWidget(m_zoomOutButton);
@@ -87,13 +132,18 @@ PaletteGridView::PaletteGridView(PaletteModel * model, QWidget * parent)
     connect(m_zoomOutButton, SIGNAL( pressed () ), this, SLOT( zoomOut() ));
     connect(m_zoomInButton, SIGNAL( pressed () ), this, SLOT( zoomIn() ));
 
-    connect(m_colorCells, SIGNAL( cellEntered(int, int) ), this, SLOT( trackColor(int, int) ));
-    connect(m_colorCells, SIGNAL( cellPressed(int, int) ), this, SLOT( updateIndex(int, int) ));
+    connect(m_colorCellsAdapter, SIGNAL( cellEntered(int, int) ), this, SLOT( trackColor(int, int) ));
+    connect(m_colorCellsAdapter, SIGNAL( cellPressed(int, int) ), this, SLOT( updateIndex(int, int) ));
 
     connect(m_showCommentsCheckBox, SIGNAL( toggled(bool) ), this, SLOT( showComments(bool) ));
+
+// TODO see avobe ColorCellsAdapter class
+//     connect(m_cutAction,   SIGNAL( triggered() ), this, SLOT( cut()   ));
+//     connect(m_copyAction,  SIGNAL( triggered() ), this, SLOT( copy()  ));
+//     connect(m_pasteAction, SIGNAL( triggered() ), this, SLOT( paste() ));
 }
 
-void PaletteGridView::setModel(PaletteModel * model)
+void PaletteBriefView::setModel(PaletteModel * model)
 {
     m_model = model;
 
@@ -101,29 +151,29 @@ void PaletteGridView::setModel(PaletteModel * model)
     connect(m_model, SIGNAL( rowsRemoved(QModelIndex, int, int) ), this, SLOT( updateWhenRemoveItem(QModelIndex, int, int) ));
 }
 
-void PaletteGridView::setZoomFactor(int factor)
+void PaletteBriefView::setZoomFactor(int factor)
 {
     if (m_model->rowCount() > 0)
     {
-        m_colorCells->setColumnCount(factor);
+        m_colorCellsAdapter->setColumnCount(factor);
 
         loadDataFromModel();
     }
 }
 
-void PaletteGridView::zoomOut()
+void PaletteBriefView::zoomOut()
 {
     if (m_model->rowCount() > 0)
         m_setColumnSlider->setValue(m_setColumnSlider->value() - m_setColumnSlider->singleStep());
 }
 
-void PaletteGridView::zoomIn()
+void PaletteBriefView::zoomIn()
 {
     if (m_model->rowCount() > 0)
         m_setColumnSlider->setValue(m_setColumnSlider->value() + m_setColumnSlider->singleStep());
 }
 
-void PaletteGridView::updateWhenInsertItem(const QModelIndex & topLeft, const QModelIndex & bottomRight)
+void PaletteBriefView::updateWhenInsertItem(const QModelIndex & topLeft, const QModelIndex & bottomRight)
 {
     Q_UNUSED(topLeft);
     Q_UNUSED(bottomRight);
@@ -131,7 +181,7 @@ void PaletteGridView::updateWhenInsertItem(const QModelIndex & topLeft, const QM
     loadDataFromModel();
 }
 
-void PaletteGridView::updateWhenRemoveItem(const QModelIndex & parent, int start, int end)
+void PaletteBriefView::updateWhenRemoveItem(const QModelIndex & parent, int start, int end)
 {
     Q_UNUSED(parent);
     Q_UNUSED(start);
@@ -140,49 +190,79 @@ void PaletteGridView::updateWhenRemoveItem(const QModelIndex & parent, int start
     loadDataFromModel();
 }
 
-void PaletteGridView::updateIndex(int row, int column)
+void PaletteBriefView::updateIndex(int row, int column)
 {
     m_quickNavigationCheckBox->setChecked(false);
 
     if (m_showCommentsCheckBox->isChecked())
     {
-        int index = row * m_colorCells->columnCount() + column;
+        int index = row * m_colorCellsAdapter->columnCount() + column;
 
         emit selectedItem(index);
     }
 }
 
-void PaletteGridView::trackColor(int row, int column)
+void PaletteBriefView::trackColor(int row, int column)
 {
     if (m_quickNavigationCheckBox->isChecked())
     {
-        int i = row * m_colorCells->columnCount() + column;
+        int i = row * m_colorCellsAdapter->columnCount() + column;
 
         // WARNING should use tableitemwidget?
 
-        emit trackedColor(m_colorCells->color(i));
+        emit trackedColor(m_colorCellsAdapter->color(i));
 
         if (m_showCommentsCheckBox->isChecked())
             emit trackedItem(i);
     }
 }
 
-void PaletteGridView::showComments(bool show)
+void PaletteBriefView::showComments(bool show)
 {
     if (m_model->rowCount() > 0)
     {
         loadDataFromModel();
 
         if (show)
-            m_colorCells->setSelectionMode(QAbstractItemView::ContiguousSelection);
+        {
+            m_colorCellsAdapter->setSelectionMode(QAbstractItemView::ExtendedSelection);
+            m_colorCellsAdapter->setAcceptDrags(false);
+        }
         else
-            m_colorCells->setSelectionMode(QAbstractItemView::NoSelection);
+        {
+            m_colorCellsAdapter->setSelectionMode(QAbstractItemView::NoSelection);
+            m_colorCellsAdapter->setAcceptDrags(true);
+        }
     }
 }
 
-void PaletteGridView::loadDataFromModel()
+void PaletteBriefView::cut()
 {
-    m_colorCells->clear();
+//     m_buffer = m_colorCellsAdapter->selectedItems();
+}
+
+void PaletteBriefView::copy()
+{
+}
+
+void PaletteBriefView::paste()
+{
+/*    int row = m_buffer[0]->row();
+    int column = m_buffer[0]->column();
+    int index = row * m_colorCellsAdapter->columnCount() + column;
+*/
+//     QVariantMap vmap = m_model->index(index, 0).data().toMap();
+// 
+//     if (vmap["type"] == QString("color"))
+
+
+
+}
+
+
+void PaletteBriefView::loadDataFromModel()
+{
+    m_colorCellsAdapter->clear();
 
     int rows = m_model->rowCount();
     int colors = 0;
@@ -201,10 +281,10 @@ void PaletteGridView::loadDataFromModel()
     {
         if (colors > 0)
         {
-            if (colors % m_colorCells->columnCount() == 0)
-                m_colorCells->setRowCount(colors/m_colorCells->columnCount());
+            if (colors % m_colorCellsAdapter->columnCount() == 0)
+                m_colorCellsAdapter->setRowCount(colors/m_colorCellsAdapter->columnCount());
             else
-                m_colorCells->setRowCount(1 + colors/m_colorCells->columnCount());
+                m_colorCellsAdapter->setRowCount(1 + colors/m_colorCellsAdapter->columnCount());
         }
         else
             return ;
@@ -213,10 +293,10 @@ void PaletteGridView::loadDataFromModel()
     {
         if (rows > 0)
         {
-            if (rows % m_colorCells->columnCount() == 0)
-                m_colorCells->setRowCount(rows/m_colorCells->columnCount());
+            if (rows % m_colorCellsAdapter->columnCount() == 0)
+                m_colorCellsAdapter->setRowCount(rows/m_colorCellsAdapter->columnCount());
             else
-                m_colorCells->setRowCount(1 + rows/m_colorCells->columnCount());
+                m_colorCellsAdapter->setRowCount(1 + rows/m_colorCellsAdapter->columnCount());
         }
         else
             return ;
@@ -239,12 +319,12 @@ void PaletteGridView::loadDataFromModel()
 
             if (vmap.value("type").toString() == QString("color"))
             {
-                tableRow = colorCount / m_colorCells->columnCount();
-                tableColumn = colorCount % m_colorCells->columnCount();
+                tableRow = colorCount / m_colorCellsAdapter->columnCount();
+                tableColumn = colorCount % m_colorCellsAdapter->columnCount();
 
-                m_colorCells->setColor(colorCount, vmap.value("color").value<QColor>());
+                m_colorCellsAdapter->setColor(colorCount, vmap.value("color").value<QColor>());
 
-                QTableWidgetItem * colorItem = m_colorCells->item(tableRow, tableColumn);
+                QTableWidgetItem * colorItem = m_colorCellsAdapter->item(tableRow, tableColumn);
 
                 if ((!vmap.value("name").toString().isEmpty()) && (colorItem))
                     colorItem->setToolTip(i18n("Name : ") + vmap.value("name").toString());
@@ -257,16 +337,16 @@ void PaletteGridView::loadDataFromModel()
     {
         for (int i = 0; i < rows; i++)
         {
-            tableRow = i / m_colorCells->columnCount();
-            tableColumn = i % m_colorCells->columnCount();
+            tableRow = i / m_colorCellsAdapter->columnCount();
+            tableColumn = i % m_colorCellsAdapter->columnCount();
 
             vmap = m_model->index(i, 0).data().toMap();
 
             if (vmap.value("type").toString() == QString("color"))
             {
-                m_colorCells->setColor(i, vmap.value("color").value<QColor>());
+                m_colorCellsAdapter->setColor(i, vmap.value("color").value<QColor>());
 
-                QTableWidgetItem * colorItem = m_colorCells->item(tableRow, tableColumn);
+                QTableWidgetItem * colorItem = m_colorCellsAdapter->item(tableRow, tableColumn);
 
                 if ((!vmap.value("name").toString().isEmpty()) && (colorItem))
                     colorItem->setToolTip(i18n("Name : ") + vmap.value("name").toString());
@@ -276,7 +356,7 @@ void PaletteGridView::loadDataFromModel()
             {
                 QTableWidgetItem * commentItem = new QTableWidgetItem();
 
-                m_colorCells->setItem(tableRow, tableColumn, commentItem);
+                m_colorCellsAdapter->setItem(tableRow, tableColumn, commentItem);
 
                 int luminance = 0.2126*baseWndColor.red() + 0.7152*baseWndColor.green() + 0.0722*baseWndColor.blue();
 
@@ -296,16 +376,16 @@ void PaletteGridView::loadDataFromModel()
         }
     }
 
-    int hFactor = m_colorCells->width() / m_colorCells->columnCount();
-    int vFactor = m_colorCells->height() / m_colorCells->rowCount();
-    int tableColumns = m_colorCells->columnCount();
-    int tableRows = m_colorCells->rowCount();
+    int hFactor = m_colorCellsAdapter->width() / m_colorCellsAdapter->columnCount();
+    int vFactor = m_colorCellsAdapter->height() / m_colorCellsAdapter->rowCount();
+    int tableColumns = m_colorCellsAdapter->columnCount();
+    int tableRows = m_colorCellsAdapter->rowCount();
 
     for (int i = 0 ; i < tableColumns ; i++)
-        m_colorCells->horizontalHeader()->resizeSection(i, hFactor);
+        m_colorCellsAdapter->horizontalHeader()->resizeSection(i, hFactor);
 
     for (int i = 0 ; i < tableRows ; i++)
-        m_colorCells->verticalHeader()->resizeSection(i, vFactor);
+        m_colorCellsAdapter->verticalHeader()->resizeSection(i, vFactor);
 }
 
 #include "palettebriefview.moc"

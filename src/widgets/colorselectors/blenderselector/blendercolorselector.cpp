@@ -21,12 +21,12 @@
 
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QVBoxLayout>
-#include <QtGui/QSlider>
 #include <QtGui/QLabel>
 
 #include <KColorUtils>
 #include <KPushButton>
 #include <KColorButton>
+#include <KGradientSelector>
 
 BlenderColorSelector::BlenderColorSelector(QWidget * parent)
     : ColorSelector(parent)
@@ -42,15 +42,20 @@ BlenderColorSelector::BlenderColorSelector(QWidget * parent)
     header()->menu()->addAction(m_addLowestColorRangeAction);
     header()->menu()->addAction(m_addHighestColorRangeAction);
 
-    m_baseColor = new KColorButton(this);
-    m_baseColor->setMinimumHeight(64);
-
-    m_linearMixer = new QSlider(Qt::Horizontal, this);
+    m_linearMixer = new KGradientSelector(this);
     m_linearMixer->setRange(1, 100);
-    m_linearMixer->setTickInterval(1);
+    m_linearMixer->setArrowDirection(Qt::UpArrow);
+    m_linearMixer->setColors(Qt::red, Qt::white);
+
+    m_baseColor = new KColorButton(this);
+    m_baseColor->setMinimumHeight(200);
+    m_baseColor->setMaximumWidth(32);
+    m_baseColor->setColor(Qt::red);
 
     m_overlayedColor = new KColorButton(this);
-    m_overlayedColor->setMinimumHeight(64);
+    m_overlayedColor->setMinimumHeight(200);
+    m_overlayedColor->setMaximumWidth(32);
+    m_overlayedColor->setColor(Qt::white);
 
     QHBoxLayout * layout = new QHBoxLayout(this);
     layout->addWidget(m_baseColor);
@@ -110,8 +115,7 @@ QVector<QColor> BlenderColorSelector::highestColorRange() const
 
 void BlenderColorSelector::setColor(const QColor & color)
 {
-    m_baseColor->setColor(color);
-    m_overlayedColor->setColor(QColor(255 - color.red(), 255 - color.green(), 255 - color.blue()));
+    Q_UNUSED(color);
 }
 
 void BlenderColorSelector::updateMixWhenChangeBias(int factor)
@@ -124,6 +128,8 @@ void BlenderColorSelector::updateMixWhenChangeBias(int factor)
 void BlenderColorSelector::updateMixWhenChangeColor(const QColor & color)
 {
     Q_UNUSED(color);
+
+    m_linearMixer->setColors(m_baseColor->color(), m_overlayedColor->color());
 
     performMix();
 }

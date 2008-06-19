@@ -19,7 +19,6 @@
 
 #include "kcoloreditwidget.h"
 
-#include <QtGui/QHBoxLayout>
 #include <QtGui/QVBoxLayout>
 
 #include "palettemodel.h"
@@ -129,7 +128,7 @@ void KColorEditWidget::setColor(const QColor & color)
     {
         m_kdeColorSelector->setColor(color);
         m_gtkColorSelector->setColor(color);
-        m_blenderColorSelector->setColor(color);
+        //m_blenderColorSelector->setColor(color); // DEPRECATED
     }
 }
 

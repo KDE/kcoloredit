@@ -22,9 +22,8 @@
 
 #include "colorselector.h"
 
-class QSlider;
-
 class KColorButton;
+class KGradientSelector;
 
 class BlenderColorSelector : public ColorSelector
 {
@@ -54,7 +53,7 @@ class BlenderColorSelector : public ColorSelector
     private:
         float m_bias;
 
-        QSlider * m_linearMixer;
+        KGradientSelector * m_linearMixer;
 
         KColorButton * m_baseColor;
         KColorButton * m_overlayedColor;
