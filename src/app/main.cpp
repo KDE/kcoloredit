@@ -25,7 +25,7 @@
 
 #include <KIcon>
 
-inline KAboutData kcoloreditAboutData( const char* name, const char* iname )
+inline KAboutData kcoloreditAboutData( const char * name, const char * iname )
 {
     KAboutData about(name, 0, ki18n(iname), "1.70.00 (KColorEdit 1.7)",
         ki18n(I18N_NOOP("KColorEdit, great tool for editing color palettes.")),

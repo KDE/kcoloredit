@@ -64,7 +64,20 @@ PaletteModel * PaletteDocument::model()
 bool PaletteDocument::openPaletteFile(const QString & fileName)
 {
     QFile file(fileName);
-    file.open(QIODevice::ReadOnly);
+
+    if (!file.exists())
+    {
+        m_lastErrorString = i18n("File not found");
+
+        return false;
+    }
+
+    if (!file.open(QIODevice::ReadOnly))
+    {
+        m_lastErrorString = i18n("Couldn't open the file");
+
+        return false;
+    }
 
     QString line;
 
@@ -96,7 +109,6 @@ bool PaletteDocument::openPaletteFile(const QString & fileName)
     //if (m_model->rowCount() > 0)
     //   m_model->removeRows(0, m_model->rowCount());
 
-    int rows = 0;
     int r, g, b;
     int pos = 0;
 
@@ -106,16 +118,20 @@ bool PaletteDocument::openPaletteFile(const QString & fileName)
     {
         line = QString::fromLocal8Bit(file.readLine());
 
-        //BEGIN WARNING inefficient
-        QStringList strLst = line.split(": ");
-
-        if (strLst[0] == "Name")
+        // NOTE looking for the palette name
+        if (line[0] == 'N')
         {
-            QString palName = strLst[1];
-            palName.remove('\n');
+            QStringList strLst = line.split(": ");
 
-            m_model->setPaletteName(palName);
+            if (strLst[0] == "Name")
+            {
+                QString palName = strLst[1];
+                palName.remove('\n');
+
+                m_model->setPaletteName(palName);
+            }
         }
+
         //END WARNING inefficient
 
         if (line[0] != '#')
@@ -132,13 +148,14 @@ bool PaletteDocument::openPaletteFile(const QString & fileName)
                 g = qBound(0, g, 255);
                 b = qBound(0, b, 255);
 
-                m_model->insertColorRows(rows, 1);
+                m_model->insertColorRows(m_model->rowCount(), 1);
 
                 vmap.insert("type", QString("color"));  // NOTE
                 vmap.insert("color", QColor(r, g, b));
                 vmap.insert("name", line.mid(pos).trimmed());
 
-                m_model->setData(m_model->index(rows - 1, 0), vmap);
+                //m_model->setData(m_model->index(rows - 1, 0), vmap);
+                m_model->setData(m_model->index(m_model->rowCount() - 1, 0), vmap);
             }
         }
         else
@@ -149,16 +166,15 @@ bool PaletteDocument::openPaletteFile(const QString & fileName)
 
             if (!line.isEmpty())
             {
-                m_model->insertCommentRows(rows, 1);
+                m_model->insertCommentRows(m_model->rowCount(), 1);
 
                 vmap.insert("type", QString("comment"));  // NOTE
                 vmap.insert("comment", line);
 
-                m_model->setData(m_model->index(rows - 1, 0), vmap);
+                //m_model->setData(m_model->index(rows - 1, 0), vmap);
+                m_model->setData(m_model->index(m_model->rowCount() - 1, 0), vmap);
             }
         }
-
-        rows++;
     }
 
     m_fullPathFile = fileName;
