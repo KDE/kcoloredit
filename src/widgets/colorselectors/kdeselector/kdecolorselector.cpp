@@ -34,7 +34,6 @@ KdeColorSelector::KdeColorSelector(QWidget * parent) : ColorSelector(parent)
     m_header->setText(i18n("KDE Style"));
     m_header->setIcon(KIcon("kde"));
 
-    m_ClassicModeAction = new KAction(KIcon("view-filter"), i18n("Classic"), header()->menu());
     m_HueModeAction = new KAction(KIcon("view-filter"), i18n("Hue"), header()->menu());
     m_SaturationModeAction = new KAction(KIcon("view-filter"), i18n("Saturation"), header()->menu());
     m_ValueModeAction = new KAction(KIcon("view-filter"), i18n("Value"), header()->menu());
@@ -42,7 +41,6 @@ KdeColorSelector::KdeColorSelector(QWidget * parent) : ColorSelector(parent)
     m_GreenModeAction = new KAction(KIcon("view-filter"), i18n("Green"), header()->menu());
     m_BlueModeAction = new KAction(KIcon("view-filter"), i18n("Blue"), header()->menu());
 
-    header()->menu()->addAction(m_ClassicModeAction);
     header()->menu()->addAction(m_HueModeAction);
     header()->menu()->addAction(m_SaturationModeAction);
     header()->menu()->addAction(m_ValueModeAction);
@@ -55,7 +53,6 @@ KdeColorSelector::KdeColorSelector(QWidget * parent) : ColorSelector(parent)
 
     connect(m_rectangleColorWidget, SIGNAL(colorSelected(QColor)), this, SLOT( updateColor(QColor) ));
 
-    connect(m_ClassicModeAction, SIGNAL( triggered(bool) ), this, SLOT( changeToClassicMode() ));
     connect(m_HueModeAction, SIGNAL( triggered(bool) ), this, SLOT( changeToHueMode() ));
     connect(m_SaturationModeAction, SIGNAL( triggered(bool) ), this, SLOT( changeToSaturationMode() ));
     connect(m_ValueModeAction, SIGNAL( triggered(bool) ), this, SLOT( changeToValueMode() ));
@@ -80,12 +77,6 @@ void KdeColorSelector::updateColor(const QColor & color)
     m_lastSelectedColor = color;
 
     emit colorSelected(m_lastSelectedColor);
-}
-
-void KdeColorSelector::changeToClassicMode()
-{
-    m_rectangleColorWidget->setChooserMode(ChooserClassic);
-    m_rectangleColorWidget->setColor(m_lastSelectedColor);
 }
 
 void KdeColorSelector::changeToHueMode()

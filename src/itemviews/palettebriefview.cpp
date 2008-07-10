@@ -224,15 +224,9 @@ void PaletteBriefView::showComments(bool show)
         loadDataFromModel();
 
         if (show)
-        {
             m_colorCellsAdapter->setSelectionMode(QAbstractItemView::ExtendedSelection);
-            m_colorCellsAdapter->setAcceptDrags(false);
-        }
         else
-        {
             m_colorCellsAdapter->setSelectionMode(QAbstractItemView::NoSelection);
-            m_colorCellsAdapter->setAcceptDrags(true);
-        }
     }
 }
 

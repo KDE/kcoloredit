@@ -38,7 +38,6 @@ class KdeColorSelector : public ColorSelector
     private slots:
         void updateColor(const QColor & color);
 
-        void changeToClassicMode();
         void changeToHueMode();
         void changeToSaturationMode();
         void changeToValueMode();
@@ -51,7 +50,6 @@ class KdeColorSelector : public ColorSelector
 
         RectangleColorWidget * m_rectangleColorWidget;
 
-        KAction * m_ClassicModeAction;
         KAction * m_HueModeAction;
         KAction * m_SaturationModeAction;
         KAction * m_ValueModeAction;

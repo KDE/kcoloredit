@@ -65,6 +65,7 @@ void KColorEditMainWnd::openFile()
     QString tmpFile;
 
     if (!fileNameFromDialog.isEmpty())
+    {
         if (KIO::NetAccess::download(fileNameFromDialog, tmpFile, this))
         {
             if (m_paletteDocument->openPaletteFile(tmpFile))
@@ -89,6 +90,7 @@ void KColorEditMainWnd::openFile()
         }
         else
             KMessageBox::error(this, KIO::NetAccess::lastErrorString());
+    }
 }
 
 void KColorEditMainWnd::saveFile()
@@ -118,10 +120,12 @@ void KColorEditMainWnd::saveFileAs()
     QString paletteFile = KFileDialog::getSaveFileName(url, filter);
 
     if (!paletteFile.isEmpty())
+    {
         if (!m_paletteDocument->saveFileAs(paletteFile))
             KMessageBox::error(this, m_paletteDocument->lastErrorString());
         else
             updateTittleWhenOpenSaveDoc();
+    }
 }
 
 void KColorEditMainWnd::newWindow()
@@ -329,7 +333,7 @@ void KColorEditMainWnd::setupActions()
     tmpAction->setText(i18n("Add Color"));
 
     tmpAction = actionCollection()->addAction("add-comment");
-    tmpAction->setIcon(KIcon("list-add-font"));
+    tmpAction->setIcon(KIcon("insert-text"));
     tmpAction->setText(i18n("Add Comment"));
 
     tmpAction = actionCollection()->addAction("insert-color");
@@ -337,7 +341,7 @@ void KColorEditMainWnd::setupActions()
     tmpAction->setText(i18n("Insert Color"));
 
     tmpAction = actionCollection()->addAction("insert-comment");
-    tmpAction->setIcon(KIcon("list-add-font"));
+    tmpAction->setIcon(KIcon("insert-text"));
     tmpAction->setText(i18n("Insert Comment"));
 
     tmpAction = actionCollection()->addAction("remove-item");
