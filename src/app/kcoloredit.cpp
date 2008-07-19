@@ -52,6 +52,42 @@ KColorEditMainWnd::~KColorEditMainWnd()
 {
 }
 
+void KColorEditMainWnd::openPaletteFile(const QString & file)
+{
+    QString fileNameFromDialog = file;
+
+    QString tmpFile;
+
+    if (!fileNameFromDialog.isEmpty())
+    {
+        if (KIO::NetAccess::download(fileNameFromDialog, tmpFile, this))
+        {
+            if (m_paletteDocument->openPaletteFile(tmpFile))
+            {
+                m_paletteDetailView->setModel(m_paletteDocument->model());
+                m_paletteDetailView->updateHeaders(QModelIndex(), QModelIndex());
+
+                m_paletteBriefView->setModel(m_paletteDocument->model());
+
+                m_kColorEditWidget->setModel(m_paletteDocument->model());
+
+                // NOTE little hack to force the signal dataChange to update the gridView
+                if (m_paletteDocument->model()->rowCount() > 0)
+                    m_paletteDocument->model()->setData(m_paletteDocument->model()->index(0, 0), m_paletteDocument->model()->index(0, 0).data());
+
+                updateTittleWhenOpenSaveDoc();
+            }
+            else
+                KMessageBox::error(this, m_paletteDocument->lastErrorString());
+
+            KIO::NetAccess::removeTempFile(tmpFile);
+        }
+        else
+            KMessageBox::error(this, KIO::NetAccess::lastErrorString());
+    }
+
+}
+
 //BEGIN public slots
 
 void KColorEditMainWnd::newFile()
@@ -160,51 +196,18 @@ void KColorEditMainWnd::generateColorNames()
 {
     if (m_paletteDocument->model()->rowCount() > 0)
         if (KMessageBox::questionYesNo(this
-            , i18n("This action will replace the name of all color items with names in this format #RRGGBB.")
-            , QString()
-            , KGuiItem(i18n("Generate Color Names"), KIcon("format-stroke-color"))
-            , KStandardGuiItem::cancel())
-            == KMessageBox::Yes)
-        {
-            QVariantMap vmap;
-
-            int rows = m_paletteDocument->model()->rowCount();
-
-            for (int i = 0; i < rows; i++)
-            {
-                vmap = m_paletteDocument->model()->index(i, 0).data().toMap();
-
-                if (vmap.value("type").toString() == QString("color"))
-                {
-                    vmap.insert("name", vmap.value("color").value<QColor>().name());
-
-                    m_paletteDocument->model()->setData(m_paletteDocument->model()->index(i, 0), vmap);
-                }
-            }
-        }
+        , i18n("This action will replace the name of all color items with names in this format #RRGGBB.")
+        , QString()
+        , KGuiItem(i18n("Generate Color Names"), KIcon("format-stroke-color"))
+        , KStandardGuiItem::cancel())
+        == KMessageBox::Yes)
+            m_paletteDocument->model()->generateColorNames();
 }
 
 void KColorEditMainWnd::completeColorNames()
 {
     if (m_paletteDocument->model()->rowCount() > 0)
-    {
-        QVariantMap vmap;
-
-        int rows = m_paletteDocument->model()->rowCount();
-
-        for (int i = 0; i < rows; i++)
-        {
-            vmap = m_paletteDocument->model()->index(i, 0).data().toMap();
-
-            if (vmap.value("type").toString() == QString("color"))
-                if (vmap.value("name").toString().isEmpty())
-                {
-                    vmap.insert("name", vmap.value("color").value<QColor>().name());
-
-                    m_paletteDocument->model()->setData(m_paletteDocument->model()->index(i, 0), vmap);
-                }
-        }
-    }
+        m_paletteDocument->model()->completeColorNames();
 }
 
 void KColorEditMainWnd::addColorItem()

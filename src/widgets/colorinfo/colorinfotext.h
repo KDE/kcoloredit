@@ -29,7 +29,7 @@ class ClipboardLineEdit;
 class ColorInfoText : public ColorInfo
 {
     Q_OBJECT
-
+//KIntSpinBox
     public:
         ColorInfoText(QWidget * parent = 0);
         virtual ~ColorInfoText();

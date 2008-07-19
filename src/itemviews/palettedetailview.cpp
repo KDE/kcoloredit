@@ -54,13 +54,13 @@ PaletteDetailView::PaletteDetailView(PaletteModel * model, QWidget * parent)
     // NOTE update headers when start the app
     updateHeaders(QModelIndex(), QModelIndex());
 
-    QLabel * m_paletteNameLabel = new QLabel(i18n("Palette Name"), this);
+    QLabel * m_paletteNameLabel = new QLabel(i18n("Name"), this);
 
     m_paletteNameLineEdit = new KLineEdit(this);
     m_paletteNameLineEdit->setClearButtonShown(true);
     m_paletteNameLineEdit->setText(m_model->paletteName());
 
-    QLabel * m_paletteDescriptionLabel = new QLabel(i18n("Palette Description"), this);
+    QLabel * m_paletteDescriptionLabel = new QLabel(i18n("Description"), this);
     m_paletteDescriptionLabel->setAlignment(Qt::AlignCenter);
 
     KComboBox * descriptionModeComboBox = new KComboBox(this);

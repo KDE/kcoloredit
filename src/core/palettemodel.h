@@ -55,6 +55,9 @@ class PaletteModel : public QAbstractTableModel
         QString briefDescription() const;
         QString fullDescription() const;
 
+        void generateColorNames();
+        void completeColorNames();
+
     private:
         Palette m_palette;
 };

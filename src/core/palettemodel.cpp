@@ -83,9 +83,7 @@ bool PaletteModel::setData(const QModelIndex & index, const QVariant & value, in
 
         if (m_palette.itemType(index.row()) == PaletteItem::ColorType)
         {
-            //vmap.insert("type", QString("color"));
-
-            index.model()->data(index, Qt::BackgroundRole).toMap().insert("type", QString("color"));  // NOTE
+            data(index, Qt::BackgroundRole).toMap().insert("type", QString("color"));  // NOTE
 
             PaletteColorItem * colorItem = m_palette.colorItem(index.row());
 
@@ -102,9 +100,7 @@ bool PaletteModel::setData(const QModelIndex & index, const QVariant & value, in
 
         if (m_palette.itemType(index.row()) == PaletteItem::CommentType)
         {
-            //vmap.insert("type", QString("comment"));
-
-            index.model()->data(index, Qt::BackgroundRole).toMap().insert("type", QString("comment"));  // NOTE
+            data(index, Qt::BackgroundRole).toMap().insert("type", QString("comment"));  // NOTE
 
             PaletteCommentItem * commentItem = m_palette.commentItem(index.row());
 
@@ -127,7 +123,7 @@ QVariant PaletteModel::headerData(int section, Qt::Orientation orientation, int 
 
     if (orientation == Qt::Horizontal)
         if (section == 0)
-            return i18n("Palette items");
+            return i18n("Items");
 
      if (orientation == Qt::Vertical)
         return QString("%1").arg(section + 1);
@@ -216,6 +212,25 @@ QString PaletteModel::briefDescription() const
 QString PaletteModel::fullDescription() const
 {
     return m_palette.fullDescription();
+}
+
+void PaletteModel::generateColorNames()
+{
+    for (int i = 0; i < m_palette.count(); i++)
+        if (m_palette.itemType(i) == PaletteItem::ColorType)
+            m_palette.colorItem(i)->setColorName(m_palette.colorItem(i)->color().name());
+
+    emit dataChanged(QModelIndex(), QModelIndex());
+}
+
+void PaletteModel::completeColorNames()
+{
+    for (int i = 0; i < m_palette.count(); i++)
+        if (m_palette.itemType(i) == PaletteItem::ColorType)
+            if (m_palette.colorItem(i)->colorName().isEmpty())
+                m_palette.colorItem(i)->setColorName(m_palette.colorItem(i)->color().name());
+
+    emit dataChanged(QModelIndex(), QModelIndex());
 }
 
 //END public methods
