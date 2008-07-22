@@ -21,15 +21,13 @@
 
 #include <QtGui/QDockWidget>
 
+#include <KLocalizedString>
 #include <KIO/NetAccess>
 #include <KApplication>
 #include <KMessageBox>
 #include <KAction>
 #include <KActionCollection>
 #include <KFileDialog>
-
-#include <KCmdLineArgs>
-#include <KAboutData>
 
 #include "palettedocument.h"
 #include "palettemodel.h"
@@ -40,8 +38,6 @@
 
 KColorEditMainWnd::KColorEditMainWnd(QWidget * parent, Qt::WindowFlags f) : KXmlGuiWindow(parent, f)
 {
-    m_appName = KCmdLineArgs::aboutData()->catalogName();
-
     setupWidgets();
     setupActions();
 
@@ -259,7 +255,7 @@ void KColorEditMainWnd::moveEnd()
 
 void KColorEditMainWnd::updateTittleWhenChangeDocState()
 {
-    setWindowTitle(m_appName + " - " + m_paletteDocument->fileName() + i18n(" [modified]"));
+    setWindowTitle(QString("KColorEdit") + " - " + m_paletteDocument->fileName() + i18n(" [modified]"));
 }
 
 void KColorEditMainWnd::setupWidgets()
@@ -403,7 +399,7 @@ void KColorEditMainWnd::setupActions()
 void KColorEditMainWnd::updateTittleWhenOpenSaveDoc()
 {
     // setup the window title acording to the file name
-    setWindowTitle(m_appName + " - " + m_paletteDocument->fileName());
+    setWindowTitle(QString("KColorEdit") + " - " + m_paletteDocument->fileName());
 }
 
 #include "kcoloredit.moc"

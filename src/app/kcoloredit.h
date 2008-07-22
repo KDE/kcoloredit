@@ -84,8 +84,6 @@ class KColorEditMainWnd : public KXmlGuiWindow
 
         QDockWidget * m_paletteTableDockWidget;
         QDockWidget * m_paletteListDockWidget;
-
-        QString m_appName; // save memory
 };
 
 #endif // KCOLOREDIT_H
