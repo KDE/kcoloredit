@@ -29,19 +29,19 @@ GtkColorSelector::GtkColorSelector(QWidget* parent) : ColorSelector(parent)
 {
     m_triangleColorWidget = new TriangleColorWidget(this);
 
-    m_header->setText(i18n("GTK Style"));
-    m_header->setIcon(KIcon("fill-color"));
+    setWindowTitle(i18n("GTK Style"));
+    setWindowIcon(KIcon("fill-color"));
 
-    m_generateRandomColorAction = new KAction(KIcon("roll"), i18n("Generate Random Color"), header()->menu());
+//     m_generateRandomColorAction = new KAction(KIcon("roll"), i18n("Generate Random Color"), header()->menu());
 
-    header()->menu()->addAction(m_generateRandomColorAction);
+//     header()->menu()->addAction(m_generateRandomColorAction);
 
     QVBoxLayout * mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(m_triangleColorWidget);
 
     connect(m_triangleColorWidget, SIGNAL(colorChanged(QColor)), this, SLOT( updateColor(QColor) ));
 
-    connect(m_generateRandomColorAction, SIGNAL( triggered(bool) ), this, SLOT( generateRandomColor() ));
+//     connect(m_generateRandomColorAction, SIGNAL( triggered(bool) ), this, SLOT( generateRandomColor() ));
 }
 
 void GtkColorSelector::setColor(const QColor & color)

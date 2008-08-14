@@ -28,9 +28,9 @@ ColorInfoVisual::ColorInfoVisual(QWidget * parent)
 {
     setLayout(new QHBoxLayout(this));
 
-    m_addColorsAction = new KAction(KIcon("list-add"), i18n("Add Colors"), header()->menu());
+//     m_addColorsAction = new KAction(KIcon("list-add"), i18n("Add Colors"), header()->menu());
 
-    header()->menu()->addAction(m_addColorsAction);
+//     header()->menu()->addAction(m_addColorsAction);
 }
 
 ColorInfoVisual::~ColorInfoVisual()
@@ -71,7 +71,7 @@ ColorInfoVisualComplement::ColorInfoVisualComplement(QWidget * parent)
 {
     m_complementColorWidget = buildColorWidget(this);
 
-    header()->setText(i18n("Complement"));
+    setWindowTitle(i18n("Complement"));
 
     layout()->addWidget(m_complementColorWidget);
 }
@@ -107,7 +107,7 @@ ColorInfoVisualTriadic::ColorInfoVisualTriadic(QWidget * parent)
     m_triad1ColorWidget = buildColorWidget(this);
     m_triad2ColorWidget = buildColorWidget(this);
 
-    header()->setText(i18n("Triadic"));
+    setWindowTitle(i18n("Triadic"));
 
     layout()->addWidget(m_triad1ColorWidget);
     layout()->addWidget(m_triad2ColorWidget);
@@ -148,7 +148,7 @@ ColorInfoVisualTetradic::ColorInfoVisualTetradic(QWidget * parent)
     m_tetrad2ColorWidget = buildColorWidget(this);
     m_tetrad3ColorWidget = buildColorWidget(this);
 
-    header()->setText(i18n("Tetradic"));
+    setWindowTitle(i18n("Tetradic"));
 
     layout()->addWidget(m_tetrad1ColorWidget);
     layout()->addWidget(m_tetrad2ColorWidget);
@@ -182,18 +182,6 @@ void ColorInfoVisualTetradic::setColor(const QColor & color)
 
 //END public class ColorInfoVisualTetradic
 
-    const short int maxGdkColorValue = 65535;
-    /** The highest value that can be assigned to an RGB colorByte */
-    const int maxRgbValue = 255;
-    /** The highest value that can be assigned to a Hue colorByte */
-    const int maxHueValue = 360;
-    /** The highest value that can be assigned to a Saturation or Value
-     * colorByte */
-    const int maxSvValue = 100;
-    /** The lowest value that can be assigned to a colorByte */
-    const int minColorValue = 0;
-
-
 //BEGIN public class ColorInfoVisualAnalogous
 
 ColorInfoVisualAnalogous::ColorInfoVisualAnalogous(QWidget * parent)
@@ -202,7 +190,7 @@ ColorInfoVisualAnalogous::ColorInfoVisualAnalogous(QWidget * parent)
     m_analogous1ColorWidget = buildColorWidget(this);
     m_analogous2ColorWidget = buildColorWidget(this);
 
-    header()->setText(i18n("Analogous"));
+    setWindowTitle(i18n("Analogous"));
 
     layout()->addWidget(m_analogous1ColorWidget);
     layout()->addWidget(m_analogous2ColorWidget);

@@ -36,6 +36,8 @@ inline KAboutData kcoloreditAboutData( const char * name, const char * iname )
     return about;
 }
 
+#include <kpagewidget.h>
+
 int main(int argc, char * argv[])
 {
     KAboutData about = kcoloreditAboutData("kcoloredit", I18N_NOOP("KColorEdit"));

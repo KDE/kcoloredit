@@ -22,11 +22,12 @@
 
 #include <QtGui/QWidget>
 
+
 #include <KLocalizedString>
 #include <KAction>
 #include <KMenu>
-#include <KPushButton>
 
+/*
 class KPushButton;
 
 class KColorEditPage : public QWidget
@@ -42,5 +43,6 @@ class KColorEditPage : public QWidget
     protected:
         KPushButton * m_header;
 };
+*/
 
 #endif // KCOLOREDIT_PAGE_H

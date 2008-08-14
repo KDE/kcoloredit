@@ -24,28 +24,25 @@
 #include <QtGui/QLabel>
 
 #include <KApplication>
-
-#include "clipboardlineedit.h"
+#include <KIntSpinBox>
+#include <KLineEdit>
 
 //BEGIN ColorInfoText
 
-ColorInfoText::ColorInfoText(QWidget * parent) : ColorInfo(parent)
+ColorInfoText::ColorInfoText(QWidget * parent)
+    : ColorInfo(parent)
 {
-    m_toClipboardAction = new KAction(KIcon("edit-copy"), QString(), header()->menu());
-
-    header()->menu()->addAction(m_toClipboardAction);
-
     m_componentName1 = new QLabel(this);
-
     m_componentName2 = new QLabel(this);
-
     m_componentName3 = new QLabel(this);
 
-    m_componentValue1 = new ClipboardLineEdit(this);
+    m_componentValue1 = new KIntSpinBox(this);
+    m_componentValue2 = new KIntSpinBox(this);
+    m_componentValue3 = new KIntSpinBox(this);
 
-    m_componentValue2 = new ClipboardLineEdit(this);
-
-    m_componentValue3 = new ClipboardLineEdit(this);
+    m_componentValue1->setRange(0, 255);
+    m_componentValue2->setRange(0, 255);
+    m_componentValue3->setRange(0, 255);
 
     QGridLayout * layout = new QGridLayout(this);
     layout->addWidget(m_componentName1, 0, 0, Qt::AlignLeft);
@@ -54,8 +51,6 @@ ColorInfoText::ColorInfoText(QWidget * parent) : ColorInfo(parent)
     layout->addWidget(m_componentValue1, 1, 0, Qt::AlignLeft);
     layout->addWidget(m_componentValue2, 1, 1, Qt::AlignLeft);
     layout->addWidget(m_componentValue3, 1, 2, Qt::AlignLeft);
-
-    connect(m_toClipboardAction, SIGNAL( triggered(bool)  ), this, SLOT( toClipboard() ));
 }
 
 ColorInfoText::~ColorInfoText()
@@ -81,22 +76,24 @@ void ColorInfoText::setComponentNames(const QString & nameComponent1, const QStr
     m_componentName3->setText(nameComponent3);
 }
 
-void ColorInfoText::setComponentValues(const QString & valueComponent1, const QString & valueComponent2, const QString & valueComponent3)
+void ColorInfoText::setComponentValues(int valueComponent1, int valueComponent2, int valueComponent3)
 {
-    m_componentValue1->setText(valueComponent1);
-    m_componentValue2->setText(valueComponent2);
-    m_componentValue3->setText(valueComponent3);
+    m_componentValue1->setValue(valueComponent1);
+    m_componentValue2->setValue(valueComponent2);
+    m_componentValue3->setValue(valueComponent3);
 
-    m_toClipboardAction->setText(textToClipboard());
+    //m_toClipboardAction->setText(textToClipboard());
 }
 
 //END ColorInfoText
 
 //BEGIN ColorInfoTextRGB
 
-ColorInfoTextRGB::ColorInfoTextRGB(QWidget * parent) : ColorInfoText(parent)
+ColorInfoTextRGB::ColorInfoTextRGB(QWidget * parent)
+    : ColorInfoText(parent)
 {
-    m_header->setText(i18n("RGB Model"));
+    setWindowTitle(i18n("RGB Model"));
+    setWindowIcon(KIcon("asd"));
     setComponentNames(i18n("Red"), i18n("Green"), i18n("Blue"));
 }
 
@@ -106,7 +103,7 @@ ColorInfoTextRGB::~ColorInfoTextRGB()
 
 void ColorInfoTextRGB::setColor(const QColor & color)
 {
-    setComponentValues(QString::number(color.red()), QString::number(color.green()), QString::number(color.blue()));
+    setComponentValues(color.red(), color.green(), color.blue());
 }
 
 //END ColorInfoTextRGB
@@ -115,8 +112,10 @@ void ColorInfoTextRGB::setColor(const QColor & color)
 
 ColorInfoTextHSV::ColorInfoTextHSV(QWidget * parent) : ColorInfoText(parent)
 {
-    m_header->setText(i18n("HSV Model"));
+    setWindowTitle(i18n("HSV Model"));
+    setWindowIcon(KIcon("asd"));
     setComponentNames(i18n("Hue"), i18n("Saturation"), i18n("Value"));
+    m_componentValue1->setMaximum(359);
 }
 
 ColorInfoTextHSV::~ColorInfoTextHSV()
@@ -125,40 +124,54 @@ ColorInfoTextHSV::~ColorInfoTextHSV()
 
 void ColorInfoTextHSV::setColor(const QColor & color)
 {
-    setComponentValues(QString::number(color.hue()), QString::number(color.saturation()), QString::number(color.value()));
+    setComponentValues(color.hue(), color.saturation(), color.value());
 }
 
 //END ColorInfoTextHSV
 
-//BEGIN ColorInfoTextCMY
+//BEGIN ColorInfoTextCMYK
 
-ColorInfoTextCMY::ColorInfoTextCMY(QWidget * parent) : ColorInfoText(parent)
+ColorInfoTextCMYK::ColorInfoTextCMYK(QWidget * parent)
+    : ColorInfoText(parent)
 {
-    m_header->setText(i18n("CMY Model"));
+    setWindowTitle(i18n("CMYK Model"));
+    setWindowIcon(KIcon("asd"));
     setComponentNames(i18n("Cyan"), i18n("Magenta"), i18n("Yellow"));
 }
 
-ColorInfoTextCMY::~ColorInfoTextCMY()
+ColorInfoTextCMYK::~ColorInfoTextCMYK()
 {
 }
 
-void ColorInfoTextCMY::setColor(const QColor & color)
+void ColorInfoTextCMYK::setColor(const QColor & color)
 {
-    setComponentValues(QString::number(color.cyan()), QString::number(color.magenta()), QString::number(color.yellow()));
+    setComponentValues(color.cyan(), color.magenta(), color.yellow());
 }
 
-//END ColorInfoTextCMY
+//END ColorInfoTextCMYK
 
 //END ColorInfoTextHTML
 
-ColorInfoTextHTML::ColorInfoTextHTML(QWidget * parent) : ColorInfoText(parent)
+ColorInfoTextHTML::ColorInfoTextHTML(QWidget * parent)
+    : ColorInfo(parent)
 {
-    m_header->setText(i18n("Other"));
-    setComponentNames(i18n("HTML"), i18n("Hexadecimal"), "");
+    setWindowTitle(i18n("Textual"));
+    setWindowIcon(KIcon("asd"));
 
-    m_componentName3->setVisible(false);
+    m_componentName1 = new QLabel(this);
+    m_componentName2 = new QLabel(this);
 
-    m_componentValue3->setVisible(false);
+    m_componentValue1 = new KLineEdit(this);
+    m_componentValue2 = new KLineEdit(this);
+
+    m_componentName1->setText(i18n("HTML"));
+    m_componentName2->setText("Hexadecimal");
+
+    QGridLayout * layout = new QGridLayout(this);
+    layout->addWidget(m_componentName1, 0, 0, Qt::AlignLeft);
+    layout->addWidget(m_componentName2, 0, 1, Qt::AlignLeft);
+    layout->addWidget(m_componentValue1, 1, 0, Qt::AlignLeft);
+    layout->addWidget(m_componentValue2, 1, 1, Qt::AlignLeft);
 }
 
 ColorInfoTextHTML::~ColorInfoTextHTML()
@@ -167,9 +180,9 @@ ColorInfoTextHTML::~ColorInfoTextHTML()
 
 void ColorInfoTextHTML::setColor(const QColor & color)
 {
-    setComponentValues(color.name(), color.name().remove(0, 1), "");
+//    setComponentValues(color.name(), color.name().remove(0, 1), "");
 
-    m_toClipboardAction->setText(m_componentValue1->text() + ", " + m_componentValue2->text());
+    //m_toClipboardAction->setText(m_componentValue1->text() + ", " + m_componentValue2->text());
 }
 
 void ColorInfoTextHTML::toClipboard()

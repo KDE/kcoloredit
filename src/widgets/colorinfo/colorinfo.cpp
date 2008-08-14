@@ -20,7 +20,7 @@
 #include "colorinfo.h"
 
 ColorInfo::ColorInfo(QWidget * parent)
-    : KColorEditPage(parent)
+    : QWidget(parent)
 {
 
 }

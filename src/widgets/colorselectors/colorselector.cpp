@@ -22,7 +22,7 @@
 #include <KPushButton>
 
 ColorSelector::ColorSelector(QWidget * parent)
-    : KColorEditPage(parent)
+    : QWidget(parent)
 {
 }
 

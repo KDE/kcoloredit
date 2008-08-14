@@ -31,16 +31,16 @@
 BlenderColorSelector::BlenderColorSelector(QWidget * parent)
     : ColorSelector(parent)
 {
-    m_header->setText(i18n("Mix Colors"));
-    m_header->setIcon(KIcon("fill-color"));
+    setWindowTitle(i18n("Mix Colors"));
+    setWindowIcon(KIcon("fill-color"));
 
-    m_addAllColorRangeAction = new KAction(KIcon("list-add"), i18n("Add All Color Range"), header()->menu());
-    m_addLowestColorRangeAction = new KAction(KIcon("list-add"), i18n("Add Lowest Color Range"), header()->menu());
-    m_addHighestColorRangeAction = new KAction(KIcon("list-add"), i18n("Add Highest Color Range"), header()->menu());
+//     m_addAllColorRangeAction = new KAction(KIcon("list-add"), i18n("Add All Color Range"), header()->menu());
+//     m_addLowestColorRangeAction = new KAction(KIcon("list-add"), i18n("Add Lowest Color Range"), header()->menu());
+//     m_addHighestColorRangeAction = new KAction(KIcon("list-add"), i18n("Add Highest Color Range"), header()->menu());
 
-    header()->menu()->addAction(m_addAllColorRangeAction);
-    header()->menu()->addAction(m_addLowestColorRangeAction);
-    header()->menu()->addAction(m_addHighestColorRangeAction);
+//     header()->menu()->addAction(m_addAllColorRangeAction);
+//     header()->menu()->addAction(m_addLowestColorRangeAction);
+//     header()->menu()->addAction(m_addHighestColorRangeAction);
 
     m_linearMixer = new KGradientSelector(this);
     m_linearMixer->setRange(1, 100);

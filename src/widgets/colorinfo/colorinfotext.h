@@ -24,12 +24,13 @@
 
 class QLabel;
 
-class ClipboardLineEdit;
+class KLineEdit;
+class KIntSpinBox;
 
 class ColorInfoText : public ColorInfo
 {
     Q_OBJECT
-//KIntSpinBox
+
     public:
         ColorInfoText(QWidget * parent = 0);
         virtual ~ColorInfoText();
@@ -41,18 +42,16 @@ class ColorInfoText : public ColorInfo
         QString textToClipboard() const;
 
         void setComponentNames(const QString & nameComponent1, const QString & nameComponent2, const QString & nameComponent3);
-        void setComponentValues(const QString & valueComponent1, const QString & valueComponent2, const QString & valueComponent3);
+        void setComponentValues(int valueComponent1, int valueComponent2, int valueComponent3);
 
     protected:
-        KAction * m_toClipboardAction;
-
         QLabel * m_componentName1;
         QLabel * m_componentName2;
         QLabel * m_componentName3;
 
-        ClipboardLineEdit * m_componentValue1;
-        ClipboardLineEdit * m_componentValue2;
-        ClipboardLineEdit * m_componentValue3;
+        KIntSpinBox * m_componentValue1;
+        KIntSpinBox * m_componentValue2;
+        KIntSpinBox * m_componentValue3;
 };
 
 class ColorInfoTextRGB : public ColorInfoText
@@ -79,19 +78,19 @@ class ColorInfoTextHSV : public ColorInfoText
         void setColor(const QColor & color);
 };
 
-class ColorInfoTextCMY : public ColorInfoText
+class ColorInfoTextCMYK : public ColorInfoText
 {
     Q_OBJECT
 
     public:
-        ColorInfoTextCMY(QWidget * parent = 0);
-        ~ColorInfoTextCMY();
+        ColorInfoTextCMYK(QWidget * parent = 0);
+        ~ColorInfoTextCMYK();
 
     public slots:
         void setColor(const QColor & color);
 };
 
-class ColorInfoTextHTML : public ColorInfoText
+class ColorInfoTextHTML : public ColorInfo
 {
     Q_OBJECT
 
@@ -104,6 +103,13 @@ class ColorInfoTextHTML : public ColorInfoText
 
     private slots:
         void toClipboard();
+
+    private:
+        QLabel * m_componentName1;
+        QLabel * m_componentName2;
+
+        KLineEdit * m_componentValue1;
+        KLineEdit * m_componentValue2;
 };
 
 #endif // COLOR_INFO_TEXT_H

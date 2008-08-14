@@ -31,34 +31,34 @@ KdeColorSelector::KdeColorSelector(QWidget * parent) : ColorSelector(parent)
 {
     m_rectangleColorWidget = new RectangleColorWidget(this);
 
-    m_header->setText(i18n("KDE Style"));
-    m_header->setIcon(KIcon("kde"));
+    setWindowTitle(i18n("KDE Style"));
+    setWindowIcon(KIcon("kde"));
 
-    m_HueModeAction = new KAction(KIcon("view-filter"), i18n("Hue"), header()->menu());
-    m_SaturationModeAction = new KAction(KIcon("view-filter"), i18n("Saturation"), header()->menu());
-    m_ValueModeAction = new KAction(KIcon("view-filter"), i18n("Value"), header()->menu());
-    m_RedModeAction = new KAction(KIcon("view-filter"), i18n("Red"), header()->menu());
-    m_GreenModeAction = new KAction(KIcon("view-filter"), i18n("Green"), header()->menu());
-    m_BlueModeAction = new KAction(KIcon("view-filter"), i18n("Blue"), header()->menu());
+//     m_HueModeAction = new KAction(KIcon("view-filter"), i18n("Hue"), header()->menu());
+//     m_SaturationModeAction = new KAction(KIcon("view-filter"), i18n("Saturation"), header()->menu());
+//     m_ValueModeAction = new KAction(KIcon("view-filter"), i18n("Value"), header()->menu());
+//     m_RedModeAction = new KAction(KIcon("view-filter"), i18n("Red"), header()->menu());
+//     m_GreenModeAction = new KAction(KIcon("view-filter"), i18n("Green"), header()->menu());
+//     m_BlueModeAction = new KAction(KIcon("view-filter"), i18n("Blue"), header()->menu());
 
-    header()->menu()->addAction(m_HueModeAction);
-    header()->menu()->addAction(m_SaturationModeAction);
-    header()->menu()->addAction(m_ValueModeAction);
-    header()->menu()->addAction(m_RedModeAction);
-    header()->menu()->addAction(m_GreenModeAction);
-    header()->menu()->addAction(m_BlueModeAction);
+//     header()->menu()->addAction(m_HueModeAction);
+//     header()->menu()->addAction(m_SaturationModeAction);
+//     header()->menu()->addAction(m_ValueModeAction);
+//     header()->menu()->addAction(m_RedModeAction);
+//     header()->menu()->addAction(m_GreenModeAction);
+//     header()->menu()->addAction(m_BlueModeAction);
 
     QVBoxLayout * mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(m_rectangleColorWidget);
 
     connect(m_rectangleColorWidget, SIGNAL(colorSelected(QColor)), this, SLOT( updateColor(QColor) ));
 
-    connect(m_HueModeAction, SIGNAL( triggered(bool) ), this, SLOT( changeToHueMode() ));
-    connect(m_SaturationModeAction, SIGNAL( triggered(bool) ), this, SLOT( changeToSaturationMode() ));
-    connect(m_ValueModeAction, SIGNAL( triggered(bool) ), this, SLOT( changeToValueMode() ));
-    connect(m_RedModeAction, SIGNAL( triggered(bool) ), this, SLOT( changeToRedMode() ));
-    connect(m_GreenModeAction, SIGNAL( triggered(bool) ), this, SLOT( changeToGreenMode() ));
-    connect(m_BlueModeAction, SIGNAL( triggered(bool) ), this, SLOT( changeToBlueMode() ));
+//     connect(m_HueModeAction, SIGNAL( triggered(bool) ), this, SLOT( changeToHueMode() ));
+//     connect(m_SaturationModeAction, SIGNAL( triggered(bool) ), this, SLOT( changeToSaturationMode() ));
+//     connect(m_ValueModeAction, SIGNAL( triggered(bool) ), this, SLOT( changeToValueMode() ));
+//     connect(m_RedModeAction, SIGNAL( triggered(bool) ), this, SLOT( changeToRedMode() ));
+//     connect(m_GreenModeAction, SIGNAL( triggered(bool) ), this, SLOT( changeToGreenMode() ));
+//     connect(m_BlueModeAction, SIGNAL( triggered(bool) ), this, SLOT( changeToBlueMode() ));
 }
 
 KdeColorSelector::~KdeColorSelector()

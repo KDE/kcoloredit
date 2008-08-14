@@ -34,9 +34,9 @@ KColorEditWidget::KColorEditWidget(QWidget * parent)
     : QWidget(parent)
 {
 
-    MultiPageWidget * colorSelectors = new MultiPageWidget(this);
-    colorSelectors->setPrevToolTip(i18n("Prev selector"));
-    colorSelectors->setNextToolTip(i18n("Next selector"));
+    MultiPageWidget * colorSelectors = new MultiPageWidget(this, i18n("Color selector:"));
+    //colorSelectors->setPrevToolTip(i18n("Prev selector"));
+    //colorSelectors->setNextToolTip(i18n("Next selector"));
 
     m_kdeColorSelector = new KdeColorSelector(colorSelectors);
 
@@ -50,28 +50,28 @@ KColorEditWidget::KColorEditWidget(QWidget * parent)
 
     m_colorDispatcher = new ColorWidget(this);
 
-    MultiPageWidget * colorInfoTexts = new MultiPageWidget(this);
+    MultiPageWidget * colorInfoTexts = new MultiPageWidget(this, i18n("Color information:"));
     colorInfoTexts->setMaximumHeight(110); // NOTE default value here;
-    colorInfoTexts->setPrevToolTip(i18n("Prev text style"));
-    colorInfoTexts->setNextToolTip(i18n("Next text style"));
+    //colorInfoTexts->setPrevToolTip(i18n("Prev text style"));
+    //colorInfoTexts->setNextToolTip(i18n("Next text style"));
 
     ColorInfoTextRGB * infoTextRGB = new ColorInfoTextRGB(colorInfoTexts);
 
     ColorInfoTextHSV * infoTextHSV = new ColorInfoTextHSV(colorInfoTexts);
 
-    ColorInfoTextCMY * infoTextCMY = new ColorInfoTextCMY(colorInfoTexts);
+    ColorInfoTextCMYK * infoTextCMYK = new ColorInfoTextCMYK(colorInfoTexts);
 
     ColorInfoTextHTML * infoTextHTML = new ColorInfoTextHTML(colorInfoTexts);
 
     colorInfoTexts->addPage(infoTextRGB);
     colorInfoTexts->addPage(infoTextHSV);
-    colorInfoTexts->addPage(infoTextCMY);
+    colorInfoTexts->addPage(infoTextCMYK);
     colorInfoTexts->addPage(infoTextHTML);
 
-    MultiPageWidget * colorInfoVisuals = new MultiPageWidget(this);
+    MultiPageWidget * colorInfoVisuals = new MultiPageWidget(this, i18n("Color scheme:"));
     colorInfoVisuals->setMaximumHeight(128); // NOTE default value here;
-    colorInfoVisuals->setPrevToolTip(i18n("Prev visual style"));
-    colorInfoVisuals->setNextToolTip(i18n("Next visual style"));
+    //colorInfoVisuals->setPrevToolTip(i18n("Prev visual style"));
+    //colorInfoVisuals->setNextToolTip(i18n("Next visual style"));
 
     m_colorInfoVisualComplement = new ColorInfoVisualComplement(colorInfoVisuals);
 
@@ -92,23 +92,24 @@ KColorEditWidget::KColorEditWidget(QWidget * parent)
     mainLayout->addWidget(colorInfoTexts);
     mainLayout->addWidget(colorInfoVisuals);
 
-    connect(m_blenderColorSelector->addAllColorRangeAction(), SIGNAL( triggered(bool) ), this, SLOT( addAllColorRange() ));
-    connect(m_blenderColorSelector->addLowestColorRangeAction(), SIGNAL( triggered(bool) ), this, SLOT( addLowestColorRange() ));
-    connect(m_blenderColorSelector->addHighestColorRangeAction(), SIGNAL( triggered(bool) ), this, SLOT( addHighestColorRange() ));
+//     connect(m_blenderColorSelector->addAllColorRangeAction(), SIGNAL( triggered(bool) ), this, SLOT( addAllColorRange() ));
+//     connect(m_blenderColorSelector->addLowestColorRangeAction(), SIGNAL( triggered(bool) ), this, SLOT( addLowestColorRange() ));
+//     connect(m_blenderColorSelector->addHighestColorRangeAction(), SIGNAL( triggered(bool) ), this, SLOT( addHighestColorRange() ));
 
     for (int i = 0; i < colorSelectors->count(); i++)
-        connect(colorSelectors->page(i), SIGNAL( colorSelected(QColor) ), m_colorDispatcher, SLOT( setColor(QColor) ));
+        connect(colorSelectors->widget(i), SIGNAL( colorSelected(QColor) ), m_colorDispatcher, SLOT( setColor(QColor) ));
 
     for (int k = 0; k < colorInfoTexts->count(); k++)
-        connect(m_colorDispatcher, SIGNAL( colorChanged(QColor) ), colorInfoTexts->page(k), SLOT( setColor(QColor) ));
+        connect(m_colorDispatcher, SIGNAL( colorChanged(QColor) ), colorInfoTexts->widget(k), SLOT( setColor(QColor) ));
 
     for (int j = 0; j < colorInfoVisuals->count(); j++)
-        connect(m_colorDispatcher, SIGNAL( colorChanged(QColor) ), colorInfoVisuals->page(j), SLOT( setColor(QColor) ));
+        connect(m_colorDispatcher, SIGNAL( colorChanged(QColor) ), colorInfoVisuals->widget(j), SLOT( setColor(QColor) ));
 
-    connect(m_colorInfoVisualComplement->addColorAction(), SIGNAL( triggered(bool) ), this, SLOT( addComplement() ));
-    connect(m_colorInfoVisualTriadic->addColorAction(), SIGNAL( triggered(bool) ), this, SLOT( addTriadics() ));
-    connect(m_colorInfoVisualTetradic->addColorAction(), SIGNAL( triggered(bool) ), this, SLOT( addTetradics() ));
-    connect(m_colorInfoVisualAnalogous->addColorAction(), SIGNAL( triggered(bool) ), this, SLOT( addAnalogous() ));
+//     connect(m_colorInfoVisualComplement->addColorAction(), SIGNAL( triggered(bool) ), this, SLOT( addComplement() ));
+//     connect(m_colorInfoVisualTriadic->addColorAction(), SIGNAL( triggered(bool) ), this, SLOT( addTriadics() ));
+//     connect(m_colorInfoVisualTetradic->addColorAction(), SIGNAL( triggered(bool) ), this, SLOT( addTetradics() ));
+//     connect(m_colorInfoVisualAnalogous->addColorAction(), SIGNAL( triggered(bool) ), this, SLOT( addAnalogous() ));
+//     
 }
 
 void KColorEditWidget::setModel(PaletteModel * model)

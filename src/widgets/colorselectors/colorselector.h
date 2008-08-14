@@ -22,7 +22,7 @@
 
 #include "kcoloreditpage.h"
 
-class ColorSelector : public KColorEditPage
+class ColorSelector : public QWidget
 {
     Q_OBJECT
 
