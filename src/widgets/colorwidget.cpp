@@ -19,19 +19,47 @@
 
 #include "colorwidget.h"
 
+#include <QtGui/QClipboard>
 #include <QtGui/QVBoxLayout>
 
+#include <KLocalizedString>
+#include <KApplication>
 #include <KColorPatch>
+#include <KPushButton>
 
-ColorWidget::ColorWidget(QWidget * parent)
+ColorWidget::ColorWidget(QWidget * parent, ColorWidget::Mode mode)
     : QWidget(parent)
 {
     m_colorPatch = new KColorPatch(this);
-    setMinimumHeight(64);
     m_colorPatch->setColor(Qt::red); // default color
+    m_colorPatch->setAcceptDrops(false);
 
-    QVBoxLayout * layout = new QVBoxLayout(this);
-    layout->addWidget(m_colorPatch);
+    setMinimumSize(64, 64);
+
+    QHBoxLayout * layout = new QHBoxLayout(this);
+    layout->addWidget(m_colorPatch, Qt::AlignJustify);
+
+    if (mode == ColorWidget::WithActions)
+    {
+        m_buttonAdd = new KPushButton(this);
+        m_buttonAdd->setIcon(KIcon("list-add"));
+        m_buttonAdd->setMaximumWidth(36);
+        m_buttonAdd->setToolTip(i18n("Add color"));
+
+        m_buttonToClipboard = new KPushButton(this);
+        m_buttonToClipboard->setMaximumWidth(36);
+        m_buttonToClipboard->setIcon(KIcon("edit-copy"));
+        m_buttonToClipboard->setToolTip(i18n("Copy color name to clipboard"));
+
+        QVBoxLayout * vlayout = new QVBoxLayout();
+        vlayout->addWidget(m_buttonAdd);
+        vlayout->addWidget(m_buttonToClipboard);
+
+        layout->addLayout(vlayout);
+
+        connect(m_buttonAdd, SIGNAL( pressed () ), this, SLOT( addColor() ));
+        connect(m_buttonToClipboard, SIGNAL( pressed () ), this, SLOT( copyColorNameToClipboard() ));
+    }
 
     connect(m_colorPatch, SIGNAL( colorChanged(QColor) ), this, SLOT( updateColor(QColor) ));
 }
@@ -55,6 +83,18 @@ void ColorWidget::updateColor(const QColor & color)
     m_color = color;
 
     emit colorChanged(m_color);
+}
+
+void ColorWidget::addColor()
+{
+    emit colorAdded(m_color);
+}
+
+void ColorWidget::copyColorNameToClipboard()
+{
+    QClipboard * clipboard = KApplication::clipboard();
+    clipboard->setText(m_color.name(), QClipboard::Clipboard);
+    clipboard->setText(m_color.name(), QClipboard::Selection);
 }
 
 #include "colorwidget.moc"

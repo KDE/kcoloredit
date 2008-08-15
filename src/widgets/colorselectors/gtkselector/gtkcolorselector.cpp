@@ -29,7 +29,7 @@ GtkColorSelector::GtkColorSelector(QWidget* parent) : ColorSelector(parent)
 {
     m_triangleColorWidget = new TriangleColorWidget(this);
 
-    setWindowTitle(i18n("GTK Style"));
+    setWindowTitle(i18n("GTK selector"));
     setWindowIcon(KIcon("fill-color"));
 
 //     m_generateRandomColorAction = new KAction(KIcon("roll"), i18n("Generate Random Color"), header()->menu());

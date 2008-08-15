@@ -28,7 +28,7 @@
 
 class KHueSaturationSelector;
 class KColorValueSelector;
- 
+
 class RectangleColorWidget : public QWidget
 {
     Q_OBJECT

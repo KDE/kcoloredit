@@ -32,17 +32,14 @@ class ColorInfoVisual : public ColorInfo
         ColorInfoVisual(QWidget * parent = 0);
         virtual ~ColorInfoVisual();
 
-        virtual QVector<QColor> colors() const = 0;
+    signals:
+        void colorAdded(const QColor color);
 
-        KAction * addColorAction() const;
+    protected slots:
+        void addColor(const QColor color);
 
     protected:
-        ColorWidget * buildColorWidget(QWidget * parent);
-
         inline int validHue(int hue);
-
-    protected:
-        KAction * m_addColorsAction;
 };
 
 class ColorInfoVisualComplement : public ColorInfoVisual
@@ -52,8 +49,6 @@ class ColorInfoVisualComplement : public ColorInfoVisual
     public:
         ColorInfoVisualComplement(QWidget * parent = 0);
         ~ColorInfoVisualComplement();
-
-        QVector<QColor> colors() const;
 
     public slots:
         void setColor(const QColor & color);
@@ -69,8 +64,6 @@ class ColorInfoVisualTriadic : public ColorInfoVisual
     public:
         ColorInfoVisualTriadic(QWidget * parent = 0);
         ~ColorInfoVisualTriadic();
-
-        QVector<QColor> colors() const;
 
     public slots:
         void setColor(const QColor & color);
@@ -88,8 +81,6 @@ class ColorInfoVisualTetradic : public ColorInfoVisual
         ColorInfoVisualTetradic(QWidget * parent = 0);
         ~ColorInfoVisualTetradic();
 
-        QVector<QColor> colors() const;
-
     public slots:
         void setColor(const QColor & color);
 
@@ -106,8 +97,6 @@ class ColorInfoVisualAnalogous : public ColorInfoVisual
     public:
         ColorInfoVisualAnalogous(QWidget * parent = 0);
         ~ColorInfoVisualAnalogous();
-
-        QVector<QColor> colors() const;
 
     public slots:
         void setColor(const QColor & color);

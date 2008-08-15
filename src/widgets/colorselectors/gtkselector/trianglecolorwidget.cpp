@@ -195,6 +195,9 @@ void TriangleColorWidget::setColor(const QColor& c)
         generateTriangle();
         update();
     }
+
+    // NOTE added for version 2.0
+    emit colorChanged(c);
 }
 
 void TriangleColorWidget::resizeEvent( QResizeEvent * event )
@@ -309,13 +312,8 @@ void TriangleColorWidget::mousePressEvent( QMouseEvent * event )
     {
         m_handle = NoHandle;
         selectColorAt( event->x(), event->y());
-
-
-
     }
     QWidget::mousePressEvent( event );
-
-
 }
 
 void TriangleColorWidget::mouseMoveEvent( QMouseEvent * event )

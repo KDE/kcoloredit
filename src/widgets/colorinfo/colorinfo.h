@@ -21,7 +21,7 @@
 #define COLOR_INFO_H
 
 #include <QtGui/QWidget>
-#include <KAction>
+
 #include <KLocalizedString>
 
 class ColorInfo : public QWidget

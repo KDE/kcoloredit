@@ -24,8 +24,8 @@
 #include <QtGui/QLabel>
 
 #include <KApplication>
-#include <KIntSpinBox>
 #include <KLineEdit>
+#include <KPushButton>
 
 //BEGIN ColorInfoText
 
@@ -36,13 +36,19 @@ ColorInfoText::ColorInfoText(QWidget * parent)
     m_componentName2 = new QLabel(this);
     m_componentName3 = new QLabel(this);
 
-    m_componentValue1 = new KIntSpinBox(this);
-    m_componentValue2 = new KIntSpinBox(this);
-    m_componentValue3 = new KIntSpinBox(this);
+    m_componentValue1 = new KLineEdit(this);
+    m_componentValue1->setReadOnly(true);
 
-    m_componentValue1->setRange(0, 255);
-    m_componentValue2->setRange(0, 255);
-    m_componentValue3->setRange(0, 255);
+    m_componentValue2 = new KLineEdit(this);
+    m_componentValue2->setReadOnly(true);
+
+    m_componentValue3 = new KLineEdit(this);
+    m_componentValue3->setReadOnly(true);
+
+    m_buttonToClipboard = new KPushButton(this);
+    m_buttonToClipboard->setMaximumWidth(36);
+    m_buttonToClipboard->setIcon(KIcon("edit-copy"));
+    m_buttonToClipboard->setToolTip(i18n("Copy color values to clipboard"));
 
     QGridLayout * layout = new QGridLayout(this);
     layout->addWidget(m_componentName1, 0, 0, Qt::AlignLeft);
@@ -51,22 +57,22 @@ ColorInfoText::ColorInfoText(QWidget * parent)
     layout->addWidget(m_componentValue1, 1, 0, Qt::AlignLeft);
     layout->addWidget(m_componentValue2, 1, 1, Qt::AlignLeft);
     layout->addWidget(m_componentValue3, 1, 2, Qt::AlignLeft);
+    layout->addWidget(m_buttonToClipboard, 1, 3, Qt::AlignRight);
+
+    connect(m_buttonToClipboard, SIGNAL( pressed () ), this, SLOT( copyColorValuesToClipboard() ));
 }
 
 ColorInfoText::~ColorInfoText()
 {
 }
 
-void ColorInfoText::toClipboard()
+void ColorInfoText::copyColorValuesToClipboard()
 {
-    QClipboard * clipboard = KApplication::clipboard();
-    clipboard->setText(textToClipboard(), QClipboard::Clipboard);
-    clipboard->setText(textToClipboard(), QClipboard::Selection);
-}
+    QString tmpString = m_componentValue1->text() + ", " + m_componentValue2->text() + ", " + m_componentValue3->text();
 
-QString ColorInfoText::textToClipboard() const
-{
-    return m_componentValue1->text() + ", " + m_componentValue2->text() + ", " + m_componentValue3->text();
+    QClipboard * clipboard = KApplication::clipboard();
+    clipboard->setText(tmpString, QClipboard::Clipboard);
+    clipboard->setText(tmpString, QClipboard::Selection);
 }
 
 void ColorInfoText::setComponentNames(const QString & nameComponent1, const QString & nameComponent2, const QString & nameComponent3)
@@ -78,11 +84,9 @@ void ColorInfoText::setComponentNames(const QString & nameComponent1, const QStr
 
 void ColorInfoText::setComponentValues(int valueComponent1, int valueComponent2, int valueComponent3)
 {
-    m_componentValue1->setValue(valueComponent1);
-    m_componentValue2->setValue(valueComponent2);
-    m_componentValue3->setValue(valueComponent3);
-
-    //m_toClipboardAction->setText(textToClipboard());
+    m_componentValue1->setText(QString::number(valueComponent1));
+    m_componentValue2->setText(QString::number(valueComponent2));
+    m_componentValue3->setText(QString::number(valueComponent3));
 }
 
 //END ColorInfoText
@@ -93,7 +97,6 @@ ColorInfoTextRGB::ColorInfoTextRGB(QWidget * parent)
     : ColorInfoText(parent)
 {
     setWindowTitle(i18n("RGB Model"));
-    setWindowIcon(KIcon("asd"));
     setComponentNames(i18n("Red"), i18n("Green"), i18n("Blue"));
 }
 
@@ -113,9 +116,7 @@ void ColorInfoTextRGB::setColor(const QColor & color)
 ColorInfoTextHSV::ColorInfoTextHSV(QWidget * parent) : ColorInfoText(parent)
 {
     setWindowTitle(i18n("HSV Model"));
-    setWindowIcon(KIcon("asd"));
-    setComponentNames(i18n("Hue"), i18n("Saturation"), i18nc("The V of Value", "Value"));
-    m_componentValue1->setMaximum(359);
+    setComponentNames(i18n("Hue"), i18n("Saturation"), i18n("Value"));
 }
 
 ColorInfoTextHSV::~ColorInfoTextHSV()
@@ -135,7 +136,6 @@ ColorInfoTextCMYK::ColorInfoTextCMYK(QWidget * parent)
     : ColorInfoText(parent)
 {
     setWindowTitle(i18n("CMYK Model"));
-    setWindowIcon(KIcon("asd"));
     setComponentNames(i18n("Cyan"), i18n("Magenta"), i18n("Yellow"));
 }
 
@@ -156,22 +156,40 @@ ColorInfoTextHTML::ColorInfoTextHTML(QWidget * parent)
     : ColorInfo(parent)
 {
     setWindowTitle(i18n("Textual"));
-    setWindowIcon(KIcon("asd"));
+    setWindowIcon(KIcon("format-text-color"));
 
     m_componentName1 = new QLabel(this);
     m_componentName2 = new QLabel(this);
 
     m_componentValue1 = new KLineEdit(this);
+    m_componentValue1->setReadOnly(true);
+
     m_componentValue2 = new KLineEdit(this);
+    m_componentValue2->setReadOnly(true);
 
     m_componentName1->setText(i18n("HTML"));
-    m_componentName2->setText("Hexadecimal");
+    m_componentName2->setText(i18n("Hexadecimal"));
+
+    m_buttonValue1ToClipboard = new KPushButton(this);
+    m_buttonValue1ToClipboard->setMaximumWidth(36);
+    m_buttonValue1ToClipboard->setIcon(KIcon("edit-copy"));
+    m_buttonValue1ToClipboard->setToolTip(i18n("Copy HTML value to clipboard"));
+
+    m_buttonValue2ToClipboard  = new KPushButton(this);
+    m_buttonValue2ToClipboard->setMaximumWidth(36);
+    m_buttonValue2ToClipboard->setIcon(KIcon("edit-copy"));
+    m_buttonValue2ToClipboard->setToolTip(i18n("Copy color hexadecimal value to clipboard"));
 
     QGridLayout * layout = new QGridLayout(this);
-    layout->addWidget(m_componentName1, 0, 0, Qt::AlignLeft);
-    layout->addWidget(m_componentName2, 0, 1, Qt::AlignLeft);
-    layout->addWidget(m_componentValue1, 1, 0, Qt::AlignLeft);
-    layout->addWidget(m_componentValue2, 1, 1, Qt::AlignLeft);
+    layout->addWidget(m_componentName1, 0, 0, 1, 2, Qt::AlignLeft);
+    layout->addWidget(m_componentName2, 0, 1, 1, 2, Qt::AlignLeft);
+    layout->addWidget(m_componentValue1, 1, 0, Qt::AlignJustify);
+    layout->addWidget(m_buttonValue1ToClipboard, 1, 1, Qt::AlignLeft);
+    layout->addWidget(m_componentValue2, 1, 2, Qt::AlignJustify);
+    layout->addWidget(m_buttonValue2ToClipboard, 1, 3, Qt::AlignLeft);
+
+    connect(m_buttonValue1ToClipboard, SIGNAL( pressed () ), this, SLOT( copyColorValue1ToClipboard() ));
+    connect(m_buttonValue2ToClipboard, SIGNAL( pressed () ), this, SLOT( copyColorValue2ToClipboard() ));
 }
 
 ColorInfoTextHTML::~ColorInfoTextHTML()
@@ -180,17 +198,29 @@ ColorInfoTextHTML::~ColorInfoTextHTML()
 
 void ColorInfoTextHTML::setColor(const QColor & color)
 {
-//    setComponentValues(color.name(), color.name().remove(0, 1), "");
-
-    //m_toClipboardAction->setText(m_componentValue1->text() + ", " + m_componentValue2->text());
+    m_componentValue1->setText(color.name());
+    m_componentValue2->setText(color.name().remove(0, 1));
 }
 
-void ColorInfoTextHTML::toClipboard()
+void toClipboard()
+{
+
+}
+
+void ColorInfoTextHTML::copyColorValue1ToClipboard()
 {
     QClipboard * clipboard = KApplication::clipboard();
 
-    clipboard->setText(m_componentValue1->text() + ", " + m_componentValue2->text(), QClipboard::Clipboard);
-    clipboard->setText(m_componentValue1->text() + ", " + m_componentValue2->text(), QClipboard::Selection);
+    clipboard->setText(m_componentValue1->text(), QClipboard::Clipboard);
+    clipboard->setText(m_componentValue1->text(), QClipboard::Selection);
+}
+
+void ColorInfoTextHTML::copyColorValue2ToClipboard()
+{
+    QClipboard * clipboard = KApplication::clipboard();
+
+    clipboard->setText(m_componentValue2->text(), QClipboard::Clipboard);
+    clipboard->setText(m_componentValue2->text(), QClipboard::Selection);
 }
 
 //END ColorInfoTextHTML

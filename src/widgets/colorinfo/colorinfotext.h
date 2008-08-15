@@ -25,7 +25,7 @@
 class QLabel;
 
 class KLineEdit;
-class KIntSpinBox;
+class KPushButton;
 
 class ColorInfoText : public ColorInfo
 {
@@ -36,11 +36,9 @@ class ColorInfoText : public ColorInfo
         virtual ~ColorInfoText();
 
     protected slots:
-        virtual void toClipboard();
+        void copyColorValuesToClipboard();
 
     protected:
-        QString textToClipboard() const;
-
         void setComponentNames(const QString & nameComponent1, const QString & nameComponent2, const QString & nameComponent3);
         void setComponentValues(int valueComponent1, int valueComponent2, int valueComponent3);
 
@@ -49,9 +47,11 @@ class ColorInfoText : public ColorInfo
         QLabel * m_componentName2;
         QLabel * m_componentName3;
 
-        KIntSpinBox * m_componentValue1;
-        KIntSpinBox * m_componentValue2;
-        KIntSpinBox * m_componentValue3;
+        KLineEdit * m_componentValue1;
+        KLineEdit * m_componentValue2;
+        KLineEdit * m_componentValue3;
+
+        KPushButton * m_buttonToClipboard;
 };
 
 class ColorInfoTextRGB : public ColorInfoText
@@ -102,7 +102,8 @@ class ColorInfoTextHTML : public ColorInfo
         void setColor(const QColor & color);
 
     private slots:
-        void toClipboard();
+        void copyColorValue1ToClipboard();
+        void copyColorValue2ToClipboard();
 
     private:
         QLabel * m_componentName1;
@@ -110,6 +111,9 @@ class ColorInfoTextHTML : public ColorInfo
 
         KLineEdit * m_componentValue1;
         KLineEdit * m_componentValue2;
+
+        KPushButton * m_buttonValue1ToClipboard;
+        KPushButton * m_buttonValue2ToClipboard;
 };
 
 #endif // COLOR_INFO_TEXT_H

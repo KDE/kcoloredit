@@ -26,29 +26,16 @@
 ColorInfoVisual::ColorInfoVisual(QWidget * parent)
     : ColorInfo(parent)
 {
-    //setLayout(new QHBoxLayout(this));
-
-//     m_addColorsAction = new KAction(KIcon("list-add"), i18n("Add Colors"), header()->menu());
-
-//     header()->menu()->addAction(m_addColorsAction);
+    setLayout(new QHBoxLayout(this));
 }
 
 ColorInfoVisual::~ColorInfoVisual()
 {
 }
 
-KAction * ColorInfoVisual::addColorAction() const
+void ColorInfoVisual::addColor(const QColor color)
 {
-    return m_addColorsAction;
-}
-
-ColorWidget * ColorInfoVisual::buildColorWidget(QWidget * parent)
-{
-    ColorWidget * tmpColorWidget = new ColorWidget(parent);
-    tmpColorWidget->setMinimumSize(64, 64);
-    tmpColorWidget->setAcceptDrops(false);
-
-    return tmpColorWidget;
+    emit colorAdded(color);
 }
 
 inline int ColorInfoVisual::validHue(int hue)
@@ -66,7 +53,6 @@ inline int ColorInfoVisual::validHue(int hue)
 
 //BEGIN public class ColorInfoVisualComplement
 
-#include <KPushButton>
 #include <QGridLayout>
 
 ColorInfoVisualComplement::ColorInfoVisualComplement(QWidget * parent)
@@ -74,39 +60,15 @@ ColorInfoVisualComplement::ColorInfoVisualComplement(QWidget * parent)
 {
     setWindowTitle(i18n("Complement"));
 
-    m_complementColorWidget = buildColorWidget(this);
+    m_complementColorWidget = new ColorWidget(this);
 
-    KPushButton * btn = new KPushButton(m_complementColorWidget);
-    btn->setIcon(KIcon("list-add"));
-    btn->setMaximumWidth(40);
+    layout()->addWidget(m_complementColorWidget);
 
-    KPushButton * btn0 = new KPushButton(m_complementColorWidget);
-    btn0->setIcon(KIcon("edit-copy"));
-    btn0->setMaximumWidth(40);
-
-
-    QVBoxLayout * vl = new QVBoxLayout();
-    vl->addWidget(btn);
-    vl->addWidget(btn0);
-
-    QHBoxLayout * hl = new QHBoxLayout(this);
-    hl->addWidget(m_complementColorWidget, Qt::AlignJustify);
-    hl->addLayout(vl, Qt::AlignRight);
-
-
-    //layout()->addWidget(m_complementColorWidget);
+    connect(m_complementColorWidget, SIGNAL( colorAdded(QColor) ), this, SLOT( addColor(QColor) ));
 }
 
 ColorInfoVisualComplement::~ColorInfoVisualComplement()
 {
-}
-
-QVector<QColor> ColorInfoVisualComplement::colors() const
-{
-    QVector<QColor> tmpColors;
-    tmpColors.append(m_complementColorWidget->color());
-
-    return tmpColors;
 }
 
 void ColorInfoVisualComplement::setColor(const QColor & color)
@@ -125,26 +87,20 @@ void ColorInfoVisualComplement::setColor(const QColor & color)
 ColorInfoVisualTriadic::ColorInfoVisualTriadic(QWidget * parent)
     : ColorInfoVisual(parent)
 {
-    m_triad1ColorWidget = buildColorWidget(this);
-    m_triad2ColorWidget = buildColorWidget(this);
+    m_triad1ColorWidget = new ColorWidget(this);
+    m_triad2ColorWidget = new ColorWidget(this);
 
     setWindowTitle(i18n("Triadic"));
 
-//     layout()->addWidget(m_triad1ColorWidget);
-//     layout()->addWidget(m_triad2ColorWidget);
+    layout()->addWidget(m_triad1ColorWidget);
+    layout()->addWidget(m_triad2ColorWidget);
+
+    connect(m_triad1ColorWidget, SIGNAL( colorAdded(QColor) ), this, SLOT( addColor(QColor) ));
+    connect(m_triad2ColorWidget, SIGNAL( colorAdded(QColor) ), this, SLOT( addColor(QColor) ));
 }
 
 ColorInfoVisualTriadic::~ColorInfoVisualTriadic()
 {
-}
-
-QVector<QColor> ColorInfoVisualTriadic::colors() const
-{
-    QVector<QColor> tmpColors;
-    tmpColors.append(m_triad1ColorWidget->color());
-    tmpColors.append(m_triad2ColorWidget->color());
-
-    return tmpColors;
 }
 
 void ColorInfoVisualTriadic::setColor(const QColor & color)
@@ -165,29 +121,23 @@ void ColorInfoVisualTriadic::setColor(const QColor & color)
 ColorInfoVisualTetradic::ColorInfoVisualTetradic(QWidget * parent)
     : ColorInfoVisual(parent)
 {
-    m_tetrad1ColorWidget = buildColorWidget(this);
-    m_tetrad2ColorWidget = buildColorWidget(this);
-    m_tetrad3ColorWidget = buildColorWidget(this);
+    m_tetrad1ColorWidget = new ColorWidget(this);
+    m_tetrad2ColorWidget = new ColorWidget(this);
+    m_tetrad3ColorWidget = new ColorWidget(this);
 
     setWindowTitle(i18n("Tetradic"));
-/*
+
     layout()->addWidget(m_tetrad1ColorWidget);
     layout()->addWidget(m_tetrad2ColorWidget);
-    layout()->addWidget(m_tetrad3ColorWidget);*/
+    layout()->addWidget(m_tetrad3ColorWidget);
+
+    connect(m_tetrad1ColorWidget, SIGNAL( colorAdded(QColor) ), this, SLOT( addColor(QColor) ));
+    connect(m_tetrad2ColorWidget, SIGNAL( colorAdded(QColor) ), this, SLOT( addColor(QColor) ));
+    connect(m_tetrad3ColorWidget, SIGNAL( colorAdded(QColor) ), this, SLOT( addColor(QColor) ));
 }
 
 ColorInfoVisualTetradic::~ColorInfoVisualTetradic()
 {
-}
-
-QVector<QColor> ColorInfoVisualTetradic::colors() const
-{
-    QVector<QColor> tmpColors;
-    tmpColors.append(m_tetrad1ColorWidget->color());
-    tmpColors.append(m_tetrad2ColorWidget->color());
-    tmpColors.append(m_tetrad3ColorWidget->color());
-
-    return tmpColors;
 }
 
 void ColorInfoVisualTetradic::setColor(const QColor & color)
@@ -208,26 +158,20 @@ void ColorInfoVisualTetradic::setColor(const QColor & color)
 ColorInfoVisualAnalogous::ColorInfoVisualAnalogous(QWidget * parent)
     : ColorInfoVisual(parent)
 {
-    m_analogous1ColorWidget = buildColorWidget(this);
-    m_analogous2ColorWidget = buildColorWidget(this);
+    m_analogous1ColorWidget = new ColorWidget(this);
+    m_analogous2ColorWidget = new ColorWidget(this);
 
     setWindowTitle(i18n("Analogous"));
 
-//     layout()->addWidget(m_analogous1ColorWidget);
-//     layout()->addWidget(m_analogous2ColorWidget);
+    layout()->addWidget(m_analogous1ColorWidget);
+    layout()->addWidget(m_analogous2ColorWidget);
+
+    connect(m_analogous1ColorWidget, SIGNAL( colorAdded(QColor) ), this, SLOT( addColor(QColor) ));
+    connect(m_analogous2ColorWidget, SIGNAL( colorAdded(QColor) ), this, SLOT( addColor(QColor) ));
 }
 
 ColorInfoVisualAnalogous::~ColorInfoVisualAnalogous()
 {
-}
-
-QVector<QColor> ColorInfoVisualAnalogous::colors() const
-{
-    QVector<QColor> tmpColors;
-    tmpColors.append(m_analogous1ColorWidget->color());
-    tmpColors.append(m_analogous2ColorWidget->color());
-
-    return tmpColors;
 }
 
 void ColorInfoVisualAnalogous::setColor(const QColor & color)

@@ -102,23 +102,26 @@ void RectangleColorWidget::slotSetHs(int x, int y)
     case ChooserRed:
         col.setRgb(_r, x, y);
         break;
+
     case ChooserGreen:
         col.setRgb(x, _g, y);
         break;
+
     case ChooserBlue:
         col.setRgb(y, x, _b);
         break;
     case ChooserHue:
-        
+
         col.setHsv(_h, x, y);
         break;
     case ChooserSaturation:
-        
+
         col.setHsv(x, _s, y);
         break;
     case ChooserValue:
         col.setHsv(x, y, _v);
         break;
+
     case ChooserClassic:
         col.setHsv(x, y, _v);
         break;

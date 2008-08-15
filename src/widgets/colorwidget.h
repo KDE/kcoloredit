@@ -24,6 +24,8 @@
 
 class KColorPatch;
 
+class KPushButton;
+
 // NOTE dispatcher class
 
 class ColorWidget : public QWidget
@@ -31,7 +33,9 @@ class ColorWidget : public QWidget
     Q_OBJECT
 
     public:
-        ColorWidget(QWidget * parent = 0);
+        enum Mode {Simple = 0, WithActions};
+
+        ColorWidget(QWidget * parent = 0, ColorWidget::Mode mode = ColorWidget::WithActions);
 
         QColor color() const;
 
@@ -40,14 +44,21 @@ class ColorWidget : public QWidget
 
     private slots:
         void updateColor(const QColor & color);
+        void addColor();
+        void copyColorNameToClipboard();
 
     signals:
         void colorChanged(const QColor & color);
+        void colorAdded(const QColor color);
 
     private:
         QColor m_color;
 
         KColorPatch * m_colorPatch;
+
+        KPushButton * m_buttonAdd;
+        KPushButton * m_buttonToClipboard;
 };
 
 #endif // COLOR_WIDGET_H
+

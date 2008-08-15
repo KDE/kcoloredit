@@ -31,7 +31,7 @@
 BlenderColorSelector::BlenderColorSelector(QWidget * parent)
     : ColorSelector(parent)
 {
-    setWindowTitle(i18n("Mix Colors"));
+    setWindowTitle(i18n("Gradient selector"));
     setWindowIcon(KIcon("fill-color"));
 
 //     m_addAllColorRangeAction = new KAction(KIcon("list-add"), i18n("Add All Color Range"), header()->menu());
