@@ -114,7 +114,7 @@ ColorInfoTextHSV::ColorInfoTextHSV(QWidget * parent) : ColorInfoText(parent)
 {
     setWindowTitle(i18n("HSV Model"));
     setWindowIcon(KIcon("asd"));
-    setComponentNames(i18n("Hue"), i18n("Saturation"), i18n("Value"));
+    setComponentNames(i18n("Hue"), i18n("Saturation"), i18nc("The V of Value", "Value"));
     m_componentValue1->setMaximum(359);
 }
 

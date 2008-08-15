@@ -36,7 +36,7 @@ KdeColorSelector::KdeColorSelector(QWidget * parent) : ColorSelector(parent)
 
 //     m_HueModeAction = new KAction(KIcon("view-filter"), i18n("Hue"), header()->menu());
 //     m_SaturationModeAction = new KAction(KIcon("view-filter"), i18n("Saturation"), header()->menu());
-//     m_ValueModeAction = new KAction(KIcon("view-filter"), i18n("Value"), header()->menu());
+//     m_ValueModeAction = new KAction(KIcon("view-filter"), i18nc("The V of HSV", "Value"), header()->menu());
 //     m_RedModeAction = new KAction(KIcon("view-filter"), i18n("Red"), header()->menu());
 //     m_GreenModeAction = new KAction(KIcon("view-filter"), i18n("Green"), header()->menu());
 //     m_BlueModeAction = new KAction(KIcon("view-filter"), i18n("Blue"), header()->menu());
