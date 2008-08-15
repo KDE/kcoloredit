@@ -20,7 +20,11 @@
 #ifndef COLOR_SELECTOR_H
 #define COLOR_SELECTOR_H
 
-#include "kcoloreditpage.h"
+#include <QtGui/QWidget>
+
+#include <KLocalizedString>
+
+#include <KAction>
 
 class ColorSelector : public QWidget
 {

@@ -26,7 +26,7 @@
 ColorInfoVisual::ColorInfoVisual(QWidget * parent)
     : ColorInfo(parent)
 {
-    setLayout(new QHBoxLayout(this));
+    //setLayout(new QHBoxLayout(this));
 
 //     m_addColorsAction = new KAction(KIcon("list-add"), i18n("Add Colors"), header()->menu());
 
@@ -66,14 +66,35 @@ inline int ColorInfoVisual::validHue(int hue)
 
 //BEGIN public class ColorInfoVisualComplement
 
+#include <KPushButton>
+#include <QGridLayout>
+
 ColorInfoVisualComplement::ColorInfoVisualComplement(QWidget * parent)
     : ColorInfoVisual(parent)
 {
-    m_complementColorWidget = buildColorWidget(this);
-
     setWindowTitle(i18n("Complement"));
 
-    layout()->addWidget(m_complementColorWidget);
+    m_complementColorWidget = buildColorWidget(this);
+
+    KPushButton * btn = new KPushButton(m_complementColorWidget);
+    btn->setIcon(KIcon("list-add"));
+    btn->setMaximumWidth(40);
+
+    KPushButton * btn0 = new KPushButton(m_complementColorWidget);
+    btn0->setIcon(KIcon("edit-copy"));
+    btn0->setMaximumWidth(40);
+
+
+    QVBoxLayout * vl = new QVBoxLayout();
+    vl->addWidget(btn);
+    vl->addWidget(btn0);
+
+    QHBoxLayout * hl = new QHBoxLayout(this);
+    hl->addWidget(m_complementColorWidget, Qt::AlignJustify);
+    hl->addLayout(vl, Qt::AlignRight);
+
+
+    //layout()->addWidget(m_complementColorWidget);
 }
 
 ColorInfoVisualComplement::~ColorInfoVisualComplement()
@@ -109,8 +130,8 @@ ColorInfoVisualTriadic::ColorInfoVisualTriadic(QWidget * parent)
 
     setWindowTitle(i18n("Triadic"));
 
-    layout()->addWidget(m_triad1ColorWidget);
-    layout()->addWidget(m_triad2ColorWidget);
+//     layout()->addWidget(m_triad1ColorWidget);
+//     layout()->addWidget(m_triad2ColorWidget);
 }
 
 ColorInfoVisualTriadic::~ColorInfoVisualTriadic()
@@ -149,10 +170,10 @@ ColorInfoVisualTetradic::ColorInfoVisualTetradic(QWidget * parent)
     m_tetrad3ColorWidget = buildColorWidget(this);
 
     setWindowTitle(i18n("Tetradic"));
-
+/*
     layout()->addWidget(m_tetrad1ColorWidget);
     layout()->addWidget(m_tetrad2ColorWidget);
-    layout()->addWidget(m_tetrad3ColorWidget);
+    layout()->addWidget(m_tetrad3ColorWidget);*/
 }
 
 ColorInfoVisualTetradic::~ColorInfoVisualTetradic()
@@ -192,8 +213,8 @@ ColorInfoVisualAnalogous::ColorInfoVisualAnalogous(QWidget * parent)
 
     setWindowTitle(i18n("Analogous"));
 
-    layout()->addWidget(m_analogous1ColorWidget);
-    layout()->addWidget(m_analogous2ColorWidget);
+//     layout()->addWidget(m_analogous1ColorWidget);
+//     layout()->addWidget(m_analogous2ColorWidget);
 }
 
 ColorInfoVisualAnalogous::~ColorInfoVisualAnalogous()

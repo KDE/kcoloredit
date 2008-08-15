@@ -20,7 +20,9 @@
 #ifndef COLOR_INFO_H
 #define COLOR_INFO_H
 
-#include "kcoloreditpage.h"
+#include <QtGui/QWidget>
+#include <KAction>
+#include <KLocalizedString>
 
 class ColorInfo : public QWidget
 {

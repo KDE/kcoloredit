@@ -33,7 +33,6 @@ set (
   widgets/colorinfo/colorinfovisual.cpp
   widgets/colorinfo/colorinfotext.cpp
   widgets/palettedelegateeditors.cpp
-  widgets/clipboardlineedit.cpp
   widgets/colorwidget.cpp
   widgets/multipagewidget.cpp
   widgets/kcoloreditwidget.cpp
