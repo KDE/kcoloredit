@@ -49,12 +49,12 @@ BlenderColorSelector::BlenderColorSelector(QWidget * parent)
 
     m_baseColor = new KColorButton(this);
     m_baseColor->setMinimumHeight(200);
-    m_baseColor->setMaximumWidth(32);
+    m_baseColor->setMaximumWidth(45);
     m_baseColor->setColor(Qt::red);
 
     m_overlayedColor = new KColorButton(this);
     m_overlayedColor->setMinimumHeight(200);
-    m_overlayedColor->setMaximumWidth(32);
+    m_overlayedColor->setMaximumWidth(45);
     m_overlayedColor->setColor(Qt::white);
 
     QHBoxLayout * layout = new QHBoxLayout(this);

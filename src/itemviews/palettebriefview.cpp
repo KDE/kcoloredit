@@ -55,7 +55,7 @@ PaletteBriefView::PaletteBriefView(PaletteModel * model, QWidget * parent)
     m_setColumnSlider->setSingleStep(1);
     m_setColumnSlider->setPageStep(1);
     m_setColumnSlider->setTickInterval(1);
-    m_setColumnSlider->setValue(1); // NOTE check this default value
+    m_setColumnSlider->setValue(1); // TODO NOTE check this default value
 
     m_zoomOutButton = new KPushButton(KIcon(QString("zoom-out")), QString(), this);
 
@@ -93,11 +93,6 @@ PaletteBriefView::PaletteBriefView(PaletteModel * model, QWidget * parent)
     connect(m_colorCells, SIGNAL( cellPressed(int, int) ), this, SLOT( updateIndex(int, int) ));
 
     connect(m_showCommentsCheckBox, SIGNAL( toggled(bool) ), this, SLOT( showComments(bool) ));
-
-// TODO see avobe ColorCellsAdapter class
-//     connect(m_cutAction,   SIGNAL( triggered() ), this, SLOT( cut()   ));
-//     connect(m_copyAction,  SIGNAL( triggered() ), this, SLOT( copy()  ));
-//     connect(m_pasteAction, SIGNAL( triggered() ), this, SLOT( paste() ));
 }
 
 void PaletteBriefView::setModel(PaletteModel * model)
@@ -151,12 +146,12 @@ void PaletteBriefView::updateIndex(int row, int column)
 {
     m_quickNavigationCheckBox->setChecked(false);
 
-    if (m_showCommentsCheckBox->isChecked())
-    {
-        int index = row * m_colorCells->columnCount() + column;
+    int index = row * m_colorCells->columnCount() + column;
 
-        emit selectedItem(index);
-    }
+    if (m_showCommentsCheckBox->isChecked())
+        emit itemSelected(index);
+
+    emit colorSelected(m_colorCells->color(index));
 }
 
 void PaletteBriefView::trackColor(int row, int column)
@@ -167,24 +162,17 @@ void PaletteBriefView::trackColor(int row, int column)
 
         // WARNING should use tableitemwidget?
 
-        emit trackedColor(m_colorCells->color(i));
+        emit colorTracked(m_colorCells->color(i));
 
         if (m_showCommentsCheckBox->isChecked())
-            emit trackedItem(i);
+            emit itemTracked(i);
     }
 }
 
 void PaletteBriefView::showComments(bool show)
 {
     if (m_model->rowCount() > 0)
-    {
         loadDataFromModel();
-
-        if (show)
-            m_colorCells->setSelectionMode(QAbstractItemView::ExtendedSelection);
-        else
-            m_colorCells->setSelectionMode(QAbstractItemView::NoSelection);
-    }
 }
 
 void PaletteBriefView::loadDataFromModel()

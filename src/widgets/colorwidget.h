@@ -22,11 +22,9 @@
 
 #include <QtGui/QWidget>
 
+class QToolButton;
+
 class KColorPatch;
-
-class KPushButton;
-
-// NOTE dispatcher class
 
 class ColorWidget : public QWidget
 {
@@ -56,8 +54,8 @@ class ColorWidget : public QWidget
 
         KColorPatch * m_colorPatch;
 
-        KPushButton * m_buttonAdd;
-        KPushButton * m_buttonToClipboard;
+        QToolButton * m_buttonAdd;
+        QToolButton * m_buttonToClipboard;
 };
 
 #endif // COLOR_WIDGET_H

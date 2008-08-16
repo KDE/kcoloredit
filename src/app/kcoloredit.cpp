@@ -298,10 +298,11 @@ void KColorEditMainWnd::setupWidgets()
 
     connect(m_paletteDocument, SIGNAL( modified() ), this, SLOT( updateTittleWhenChangeDocState() ));
 
-    connect(m_paletteBriefView, SIGNAL( trackedColor(QColor) ), m_kColorEditWidget, SLOT( setColor(QColor) ));
-    connect(m_paletteBriefView, SIGNAL( trackedItem(int) ), m_paletteDetailView, SLOT( slotScrollToItem(int) ));
+    connect(m_paletteBriefView, SIGNAL( colorTracked(QColor) ), m_kColorEditWidget, SLOT( setColor(QColor) ));
+    connect(m_paletteBriefView, SIGNAL( itemTracked(int) ), m_paletteDetailView, SLOT( slotScrollToItem(int) ));
 
-    connect(m_paletteBriefView, SIGNAL( selectedItem(int) ), m_paletteDetailView, SLOT( setSelectedItem(int) ));
+    connect(m_paletteBriefView, SIGNAL( itemSelected(int) ), m_paletteDetailView, SLOT( setSelectedItem(int) ));
+    connect(m_paletteBriefView, SIGNAL( colorSelected(QColor) ), m_kColorEditWidget, SLOT( setColor(QColor) ));
 
     // NOTE setup default colors colors
     m_kColorEditWidget->setColor(Qt::blue);

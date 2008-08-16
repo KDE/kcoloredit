@@ -26,6 +26,7 @@
 #include "kdecolorselector.h"
 #include "gtkcolorselector.h"
 #include "blendercolorselector.h"
+#include "colortoolwidget.h"
 #include "colorwidget.h"
 #include "colorinfovisual.h"
 #include "colorinfotext.h"
@@ -34,17 +35,18 @@ KColorEditWidget::KColorEditWidget(QWidget * parent)
     : QWidget(parent)
 {
 
-    MultiPageWidget * colorSelectors = new MultiPageWidget(this, i18n("Color tool:"));
+    MultiPageWidget * colorTools = new MultiPageWidget(this, i18n("Color tool:"));
 
-    m_kdeColorSelector = new KdeColorSelector(colorSelectors);
+    m_kdeColorSelector = new KdeColorSelector(colorTools);
+    m_gtkColorSelector = new GtkColorSelector(colorTools);
+    m_blenderColorSelector = new BlenderColorSelector(colorTools);
 
-    m_gtkColorSelector = new GtkColorSelector(colorSelectors);
+    m_colorToolWidget = new ColorToolWidget(colorTools);
 
-    m_blenderColorSelector = new BlenderColorSelector(colorSelectors);
-
-    colorSelectors->addPage(m_kdeColorSelector);
-    colorSelectors->addPage(m_gtkColorSelector);
-    colorSelectors->addPage(m_blenderColorSelector);
+    colorTools->addPage(m_kdeColorSelector);
+    colorTools->addPage(m_gtkColorSelector);
+    colorTools->addPage(m_blenderColorSelector);
+    colorTools->addPage(m_colorToolWidget);
 
     m_colorDispatcher = new ColorWidget(this, ColorWidget::Simple);
 
@@ -75,7 +77,7 @@ KColorEditWidget::KColorEditWidget(QWidget * parent)
     colorInfoVisuals->addPage(m_colorInfoVisualAnalogous);
 
     QVBoxLayout * mainLayout = new QVBoxLayout(this);
-    mainLayout->addWidget(colorSelectors);
+    mainLayout->addWidget(colorTools);
     mainLayout->addWidget(m_colorDispatcher);
     mainLayout->addWidget(colorInfoTexts);
     mainLayout->addWidget(colorInfoVisuals);
@@ -84,8 +86,8 @@ KColorEditWidget::KColorEditWidget(QWidget * parent)
 //     connect(m_blenderColorSelector->addLowestColorRangeAction(), SIGNAL( triggered(bool) ), this, SLOT( addLowestColorRange() ));
 //     connect(m_blenderColorSelector->addHighestColorRangeAction(), SIGNAL( triggered(bool) ), this, SLOT( addHighestColorRange() ));
 
-    for (int i = 0; i < colorSelectors->count(); i++)
-        connect(colorSelectors->widget(i), SIGNAL( colorSelected(QColor) ), m_colorDispatcher, SLOT( setColor(QColor) ));
+    for (int i = 0; i < colorTools->count(); i++)
+        connect(colorTools->widget(i), SIGNAL( colorSelected(QColor) ), m_colorDispatcher, SLOT( setColor(QColor) ));
 
     for (int j = 0; j < colorInfoTexts->count(); j++)
         connect(m_colorDispatcher, SIGNAL( colorChanged(QColor) ), colorInfoTexts->widget(j), SLOT( setColor(QColor) ));

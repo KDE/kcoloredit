@@ -48,9 +48,10 @@ class PaletteBriefView : public QWidget
         void zoomIn();
 
     signals:
-        void selectedItem(int index);
-        void trackedItem(int index);
-        void trackedColor(const QColor & color);
+        void itemSelected(int index);
+        void colorSelected(const QColor & color);
+        void itemTracked(int index);
+        void colorTracked(const QColor & color);
 
     private slots:
         void updateWhenInsertItem(const QModelIndex & topLeft, const QModelIndex & bottomRight);

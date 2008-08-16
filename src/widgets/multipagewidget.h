@@ -44,7 +44,7 @@
 #ifndef MULTIPAGEWIDGET_H
 #define MULTIPAGEWIDGET_H
 
-#include <QWidget>
+#include <QtGui/QGroupBox>
 
 QT_BEGIN_NAMESPACE
 class QComboBox;
@@ -53,7 +53,7 @@ class QVBoxLayout;
 QT_END_NAMESPACE
 
 //! [0]
-class MultiPageWidget : public QWidget
+class MultiPageWidget : public QGroupBox
 {
     Q_OBJECT
     Q_PROPERTY(int currentIndex READ currentIndex WRITE setCurrentIndex)

@@ -30,6 +30,8 @@ class KdeColorSelector;
 class GtkColorSelector;
 class BlenderColorSelector;
 
+class ColorToolWidget;
+
 class ColorInfoVisualComplement;
 class ColorInfoVisualTriadic;
 class ColorInfoVisualTetradic;
@@ -64,6 +66,8 @@ class KColorEditWidget : public QWidget
         KdeColorSelector * m_kdeColorSelector;
         GtkColorSelector * m_gtkColorSelector;
         BlenderColorSelector * m_blenderColorSelector;
+
+        ColorToolWidget * m_colorToolWidget;
 
         ColorInfoVisualComplement * m_colorInfoVisualComplement;
         ColorInfoVisualTriadic * m_colorInfoVisualTriadic;

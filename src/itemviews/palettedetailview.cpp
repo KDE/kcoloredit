@@ -53,8 +53,6 @@ PaletteDetailView::PaletteDetailView(PaletteModel * model, QWidget * parent)
     // NOTE update headers when start the app
     updateHeaders(QModelIndex(), QModelIndex());
 
-    QLabel * paletteNameLabel = new QLabel(i18n("Name"), this);
-
     m_paletteNameLineEdit = new KLineEdit(this);
     m_paletteNameLineEdit->setClearButtonShown(true);
     m_paletteNameLineEdit->setText(m_model->paletteName());
@@ -65,7 +63,6 @@ PaletteDetailView::PaletteDetailView(PaletteModel * model, QWidget * parent)
     else
         m_paletteDescriptionLinkLabel = new KUrlLabel(QString(), i18n("Edit description"), this);
 
-    m_paletteDescriptionLinkLabel->setAlignment(Qt::AlignCenter);
 
     // TODO
 //    if (model->rowCount() > 0)
@@ -74,17 +71,21 @@ PaletteDetailView::PaletteDetailView(PaletteModel * model, QWidget * parent)
     setMinimumHeight(290);
 
     QHBoxLayout * nameLayout = new QHBoxLayout();
-    nameLayout->addWidget(paletteNameLabel);
+    nameLayout->addWidget(new QLabel(i18n("Palette Name:"), this));
     nameLayout->addWidget(m_paletteNameLineEdit);
+
+    QHBoxLayout * descriptionLayout = new QHBoxLayout();
+    descriptionLayout->addWidget(m_paletteDescriptionLinkLabel);
+    descriptionLayout->addWidget(new QLabel(i18n(" for this palette"), this), Qt::AlignLeft);
 
     QVBoxLayout * mainLayout = new QVBoxLayout(this);
     mainLayout->addLayout(nameLayout);
-    mainLayout->addWidget(m_paletteDescriptionLinkLabel);
+    mainLayout->addLayout(descriptionLayout);
     mainLayout->addWidget(m_view);
 
 
     //connect(descriptionModeComboBox, SIGNAL( currentIndexChanged(int) ), this, SLOT( setDescriptionMode(int) ));
-    //connect(m_paletteNameLineEdit, SIGNAL( textEdited(QString) ), this, SLOT( updatePaletteName(QString) ));
+    connect(m_paletteNameLineEdit, SIGNAL( textEdited(QString) ), this, SLOT( updatePaletteName(QString) ));
     connect(m_model, SIGNAL( dataChanged(QModelIndex, QModelIndex) ), this, SLOT( updateHeaders(QModelIndex, QModelIndex) ));
     connect(m_model, SIGNAL( dataChanged(QModelIndex, QModelIndex) ), this, SLOT( updateDescriptions(QModelIndex, QModelIndex) ));
 }

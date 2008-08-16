@@ -51,7 +51,7 @@
 #include "multipagewidget.h"
 
 MultiPageWidget::MultiPageWidget(QWidget * parent, const QString name)
-    : QWidget(parent)
+    : QGroupBox(parent)
 {
     comboBox = new QComboBox();
     comboBox->setObjectName("__qt__passive_comboBox");
