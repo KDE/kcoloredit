@@ -52,8 +52,8 @@ class PaletteModel : public QAbstractTableModel
         QString paletteName() const;
         void setPaletteName(const QString & paletteName);
 
-        QString briefDescription() const;
-        QString fullDescription() const;
+        QString description() const;
+        QString comments() const;
 
         void generateColorNames();
         void completeColorNames();

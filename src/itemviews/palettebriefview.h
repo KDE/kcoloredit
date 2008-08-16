@@ -33,28 +33,6 @@ class KPushButton;
 
 class PaletteModel;
 
-class ColorCellsAdapter : public KColorCells
-{
-    Q_OBJECT
-
-    public:
-        ColorCellsAdapter(QWidget * parent = 0, int row = 0, int column = 0);
-
-        KAction * cutAction() const;
-        KAction * copyAction() const;
-        KAction * pasteAction() const;
-
-    protected:
-        virtual void mousePressEvent(QMouseEvent * event);
-
-    private:
-        KAction * m_cutAction;
-        KAction * m_copyAction;
-        KAction * m_pasteAction;
-
-        KMenu * m_menu;
-};
-
 class PaletteBriefView : public QWidget
 {
     Q_OBJECT
@@ -80,11 +58,7 @@ class PaletteBriefView : public QWidget
 
         void updateIndex(int row, int column);
         void trackColor(int row, int column);
-        void showComments(bool show); // NOTE if show commenten then can't copy/cut/paste
-
-        void cut();
-        void copy();
-        void paste();
+        void showComments(bool show);
 
     private:
         void loadDataFromModel();
@@ -92,7 +66,7 @@ class PaletteBriefView : public QWidget
     private:
         PaletteModel * m_model;
 
-        ColorCellsAdapter * m_colorCellsAdapter;
+        KColorCells * m_colorCells;
 
         QSlider * m_setColumnSlider;
         KPushButton * m_zoomOutButton;

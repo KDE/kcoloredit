@@ -23,13 +23,12 @@
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QHeaderView>
 #include <QtGui/QLabel>
-#include <QtGui/QSplitter>
 #include <QtGui/QTableView>
 
 #include <KLocalizedString>
 #include <KLineEdit>
-#include <KTextEdit>
 #include <KComboBox>
+#include <KUrlLabel>
 
 #include "palettemodel.h"
 #include "palettedelegate.h"
@@ -54,63 +53,40 @@ PaletteDetailView::PaletteDetailView(PaletteModel * model, QWidget * parent)
     // NOTE update headers when start the app
     updateHeaders(QModelIndex(), QModelIndex());
 
-    QLabel * m_paletteNameLabel = new QLabel(i18n("Name"), this);
+    QLabel * paletteNameLabel = new QLabel(i18n("Name"), this);
 
     m_paletteNameLineEdit = new KLineEdit(this);
     m_paletteNameLineEdit->setClearButtonShown(true);
     m_paletteNameLineEdit->setText(m_model->paletteName());
 
-    QLabel * m_paletteDescriptionLabel = new QLabel(i18n("Description"), this);
-    m_paletteDescriptionLabel->setAlignment(Qt::AlignCenter);
+    // TODO fix this should be more tha 1 comment wowwwwwwa
+    if (m_model->rowCount() == 0)
+        m_paletteDescriptionLinkLabel = new KUrlLabel(QString(), i18n("Add description"), this);
+    else
+        m_paletteDescriptionLinkLabel = new KUrlLabel(QString(), i18n("Edit description"), this);
 
-    KComboBox * descriptionModeComboBox = new KComboBox(this);
-    descriptionModeComboBox->addItem(i18n("Brief Description"));
-    descriptionModeComboBox->addItem(i18n("Full Description"));
+    m_paletteDescriptionLinkLabel->setAlignment(Qt::AlignCenter);
 
-    m_briefDescriptionDocument = new QTextDocument(this);
-
-    m_fullDescriptionDocument = new QTextDocument(this);
-
-    if (model->rowCount() > 0)
-        updateDescriptions(QModelIndex(), QModelIndex());
-
-    m_paletteDescriptionTextEdit = new KTextEdit(this);
-    m_paletteDescriptionTextEdit->setMaximumHeight(100);
-    m_paletteDescriptionTextEdit->setReadOnly(true);
-    m_paletteDescriptionTextEdit->setDocument(m_briefDescriptionDocument);
-
-    QSplitter * descriptionAndViewSplitter = new QSplitter(Qt::Vertical, this);
-    descriptionAndViewSplitter->addWidget(m_paletteDescriptionTextEdit);
-    descriptionAndViewSplitter->addWidget(m_view);
-    descriptionAndViewSplitter->setCollapsible(0, false);
-    descriptionAndViewSplitter->setCollapsible(1, false);
+    // TODO
+//    if (model->rowCount() > 0)
+  //      updateDescriptions(QModelIndex(), QModelIndex());
 
     setMinimumHeight(290);
 
     QHBoxLayout * nameLayout = new QHBoxLayout();
-    nameLayout->addWidget(m_paletteNameLabel);
+    nameLayout->addWidget(paletteNameLabel);
     nameLayout->addWidget(m_paletteNameLineEdit);
 
     QVBoxLayout * mainLayout = new QVBoxLayout(this);
     mainLayout->addLayout(nameLayout);
-    mainLayout->addWidget(m_paletteDescriptionLabel);
-    mainLayout->addWidget(descriptionModeComboBox);
-    mainLayout->addWidget(descriptionAndViewSplitter);
+    mainLayout->addWidget(m_paletteDescriptionLinkLabel);
+    mainLayout->addWidget(m_view);
 
 
-    connect(descriptionModeComboBox, SIGNAL( currentIndexChanged(int) ), this, SLOT( setDescriptionMode(int) ));
-    connect(m_paletteNameLineEdit, SIGNAL( textEdited(QString) ), this, SLOT( updatePaletteName(QString) ));
+    //connect(descriptionModeComboBox, SIGNAL( currentIndexChanged(int) ), this, SLOT( setDescriptionMode(int) ));
+    //connect(m_paletteNameLineEdit, SIGNAL( textEdited(QString) ), this, SLOT( updatePaletteName(QString) ));
     connect(m_model, SIGNAL( dataChanged(QModelIndex, QModelIndex) ), this, SLOT( updateHeaders(QModelIndex, QModelIndex) ));
     connect(m_model, SIGNAL( dataChanged(QModelIndex, QModelIndex) ), this, SLOT( updateDescriptions(QModelIndex, QModelIndex) ));
-
-/*
-    PaletteModel * model = dynamic_cast<PaletteModel *>(m_model);
-
-    connect(model, SIGNAL( paletteChanged(Palette) ), this, SLOT( slotUpdatePaletteChanged(Palette) ));
-
-    connect(m_view, SIGNAL( entered(QModelIndex) ), this, SLOT( slotGetSelectedColor(QModelIndex) ));
-    connect(m_view, SIGNAL( pressed(QModelIndex) ), this, SLOT( slotGetSelectedColor(QModelIndex) ));
-*/
 }
 
 void PaletteDetailView::setModel(PaletteModel * model)
@@ -264,11 +240,12 @@ void PaletteDetailView::updatePaletteName(const QString & text)
 
 void PaletteDetailView::setDescriptionMode(int index)
 {
-    if (index == 0)
-        m_paletteDescriptionTextEdit->setDocument(m_briefDescriptionDocument);
-
-    if (index == 1)
-        m_paletteDescriptionTextEdit->setDocument(m_fullDescriptionDocument);
+// TODO
+//     if (index == 0)
+//         m_paletteDescriptionTextEdit->setDocument(m_briefDescriptionDocument);
+// 
+//     if (index == 1)
+//         m_paletteDescriptionTextEdit->setDocument(m_fullDescriptionDocument);
 }
 
 void PaletteDetailView::updateDescriptions(const QModelIndex & topLeft, const QModelIndex & bottomRight)
@@ -276,8 +253,9 @@ void PaletteDetailView::updateDescriptions(const QModelIndex & topLeft, const QM
     Q_UNUSED(topLeft);
     Q_UNUSED(bottomRight);
 
-    m_briefDescriptionDocument->setPlainText(m_model->briefDescription());
-    m_fullDescriptionDocument->setPlainText(m_model->fullDescription());
+    // TODO WARNING fixthis uncomment ...
+    //m_briefDescriptionDocument->setPlainText(m_model->briefDescription());
+    //m_fullDescriptionDocument->setPlainText(m_model->fullDescription());
 }
 
 #include "palettedetailview.moc"

@@ -44,7 +44,7 @@ ColorWidget::ColorWidget(QWidget * parent, ColorWidget::Mode mode)
         m_buttonAdd = new KPushButton(this);
         m_buttonAdd->setIcon(KIcon("list-add"));
         m_buttonAdd->setMaximumWidth(36);
-        m_buttonAdd->setToolTip(i18n("Add color"));
+        m_buttonAdd->setToolTip(i18n("Append color"));
 
         m_buttonToClipboard = new KPushButton(this);
         m_buttonToClipboard->setMaximumWidth(36);

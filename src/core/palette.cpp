@@ -98,7 +98,7 @@ QString Palette::description() const
     return tmpDescription;
 }
 
-QString Palette::fullDescription() const
+QString Palette::comments() const
 {
     if (m_items.isEmpty())
         return QString();

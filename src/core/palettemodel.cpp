@@ -204,14 +204,14 @@ void PaletteModel::setPaletteName(const QString & paletteName)
     m_palette.setName(paletteName);
 }
 
-QString PaletteModel::briefDescription() const
+QString PaletteModel::description() const
 {
     return m_palette.description();
 }
 
-QString PaletteModel::fullDescription() const
+QString PaletteModel::comments() const
 {
-    return m_palette.fullDescription();
+    return m_palette.comments();
 }
 
 void PaletteModel::generateColorNames()

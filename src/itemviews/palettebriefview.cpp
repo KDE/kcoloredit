@@ -36,53 +36,6 @@
 
 #include "palettemodel.h"
 
-//BEGIN class ColorCellsAdapter
-
-ColorCellsAdapter::ColorCellsAdapter(QWidget * parent, int row, int column)
-    : KColorCells(parent, row, column)
-{
-    setMouseTracking(true);
-    setMinimumWidth(256);
-    setAcceptDrops(false);
-    setSelectionMode(QAbstractItemView::NoSelection);
-
-    m_cutAction = new KAction(KIcon(QString("edit-cut")), i18n("Cut"), this);
-    m_copyAction = new KAction(KIcon(QString("edit-copy")), i18n("Copy"), this);
-    m_pasteAction = new KAction(KIcon(QString("edit-paste")), i18n("Paste"), this);
-
-    m_menu = new KMenu(this);
-    m_menu->addAction(m_cutAction);
-    m_menu->addAction(m_copyAction);
-    m_menu->addAction(m_pasteAction);
-}
-
-KAction * ColorCellsAdapter::cutAction() const
-{
-    return m_cutAction;
-}
-
-KAction * ColorCellsAdapter::copyAction() const
-{
-    return m_copyAction;
-}
-
-KAction * ColorCellsAdapter::pasteAction() const
-{
-    return m_pasteAction;
-}
-
-void ColorCellsAdapter::mousePressEvent(QMouseEvent * event)
-{
-    if (event->button() == Qt::RightButton)
-        if (!selectedItems().empty())
-            m_menu->popup(mapToGlobal(event->pos()));
-
-    if (event->button() == Qt::LeftButton)
-        KColorCells::mousePressEvent(event);
-}
-
-//END class ColorCellsAdapter
-
 PaletteBriefView::PaletteBriefView(PaletteModel * model, QWidget * parent)
     : QWidget(parent)
     , m_model(model)
@@ -95,7 +48,7 @@ PaletteBriefView::PaletteBriefView(PaletteModel * model, QWidget * parent)
     m_showCommentsCheckBox = new QCheckBox(this);
     m_showCommentsCheckBox->setText(i18n("Show comments"));
     m_showCommentsCheckBox->setChecked(false);
-    m_showCommentsCheckBox->setStatusTip(i18n("If is checked, selection enabled and you can cut,copy and paste items"));
+    m_showCommentsCheckBox->setStatusTip(i18n("If is checked, views will be synchronized"));
 
     m_setColumnSlider = new QSlider(Qt::Horizontal, this);
     m_setColumnSlider->setRange(1, 20);
@@ -108,7 +61,11 @@ PaletteBriefView::PaletteBriefView(PaletteModel * model, QWidget * parent)
 
     m_zoomInButton = new KPushButton(KIcon(QString("zoom-in")), QString(), this);
 
-    m_colorCellsAdapter = new ColorCellsAdapter(this, 0, 1);
+    m_colorCells = new KColorCells(this, 0, 1);
+    m_colorCells->setMouseTracking(true);
+    m_colorCells->setMinimumWidth(256);
+    m_colorCells->setAcceptDrops(false);
+    m_colorCells->setSelectionMode(QAbstractItemView::NoSelection);
 
     QHBoxLayout * layoutHeader = new QHBoxLayout();
     layoutHeader->addWidget(m_quickNavigationCheckBox);
@@ -116,7 +73,7 @@ PaletteBriefView::PaletteBriefView(PaletteModel * model, QWidget * parent)
 
     QVBoxLayout * layout = new QVBoxLayout(this);
     layout->addLayout(layoutHeader);
-    layout->addWidget(m_colorCellsAdapter);
+    layout->addWidget(m_colorCells);
 
     QHBoxLayout * layoutZoom = new QHBoxLayout();
     layoutZoom->addWidget(m_zoomOutButton);
@@ -132,8 +89,8 @@ PaletteBriefView::PaletteBriefView(PaletteModel * model, QWidget * parent)
     connect(m_zoomOutButton, SIGNAL( pressed () ), this, SLOT( zoomOut() ));
     connect(m_zoomInButton, SIGNAL( pressed () ), this, SLOT( zoomIn() ));
 
-    connect(m_colorCellsAdapter, SIGNAL( cellEntered(int, int) ), this, SLOT( trackColor(int, int) ));
-    connect(m_colorCellsAdapter, SIGNAL( cellPressed(int, int) ), this, SLOT( updateIndex(int, int) ));
+    connect(m_colorCells, SIGNAL( cellEntered(int, int) ), this, SLOT( trackColor(int, int) ));
+    connect(m_colorCells, SIGNAL( cellPressed(int, int) ), this, SLOT( updateIndex(int, int) ));
 
     connect(m_showCommentsCheckBox, SIGNAL( toggled(bool) ), this, SLOT( showComments(bool) ));
 
@@ -155,7 +112,7 @@ void PaletteBriefView::setZoomFactor(int factor)
 {
     if (m_model->rowCount() > 0)
     {
-        m_colorCellsAdapter->setColumnCount(factor);
+        m_colorCells->setColumnCount(factor);
 
         loadDataFromModel();
     }
@@ -196,7 +153,7 @@ void PaletteBriefView::updateIndex(int row, int column)
 
     if (m_showCommentsCheckBox->isChecked())
     {
-        int index = row * m_colorCellsAdapter->columnCount() + column;
+        int index = row * m_colorCells->columnCount() + column;
 
         emit selectedItem(index);
     }
@@ -206,11 +163,11 @@ void PaletteBriefView::trackColor(int row, int column)
 {
     if (m_quickNavigationCheckBox->isChecked())
     {
-        int i = row * m_colorCellsAdapter->columnCount() + column;
+        int i = row * m_colorCells->columnCount() + column;
 
         // WARNING should use tableitemwidget?
 
-        emit trackedColor(m_colorCellsAdapter->color(i));
+        emit trackedColor(m_colorCells->color(i));
 
         if (m_showCommentsCheckBox->isChecked())
             emit trackedItem(i);
@@ -224,39 +181,15 @@ void PaletteBriefView::showComments(bool show)
         loadDataFromModel();
 
         if (show)
-            m_colorCellsAdapter->setSelectionMode(QAbstractItemView::ExtendedSelection);
+            m_colorCells->setSelectionMode(QAbstractItemView::ExtendedSelection);
         else
-            m_colorCellsAdapter->setSelectionMode(QAbstractItemView::NoSelection);
+            m_colorCells->setSelectionMode(QAbstractItemView::NoSelection);
     }
 }
 
-void PaletteBriefView::cut()
-{
-//     m_buffer = m_colorCellsAdapter->selectedItems();
-}
-
-void PaletteBriefView::copy()
-{
-}
-
-void PaletteBriefView::paste()
-{
-/*    int row = m_buffer[0]->row();
-    int column = m_buffer[0]->column();
-    int index = row * m_colorCellsAdapter->columnCount() + column;
-*/
-//     QVariantMap vmap = m_model->index(index, 0).data().toMap();
-// 
-//     if (vmap["type"] == QString("color"))
-
-
-
-}
-
-
 void PaletteBriefView::loadDataFromModel()
 {
-    m_colorCellsAdapter->clear();
+    m_colorCells->clear();
 
     int rows = m_model->rowCount();
     int colors = 0;
@@ -275,10 +208,10 @@ void PaletteBriefView::loadDataFromModel()
     {
         if (colors > 0)
         {
-            if (colors % m_colorCellsAdapter->columnCount() == 0)
-                m_colorCellsAdapter->setRowCount(colors/m_colorCellsAdapter->columnCount());
+            if (colors % m_colorCells->columnCount() == 0)
+                m_colorCells->setRowCount(colors/m_colorCells->columnCount());
             else
-                m_colorCellsAdapter->setRowCount(1 + colors/m_colorCellsAdapter->columnCount());
+                m_colorCells->setRowCount(1 + colors/m_colorCells->columnCount());
         }
         else
             return ;
@@ -287,10 +220,10 @@ void PaletteBriefView::loadDataFromModel()
     {
         if (rows > 0)
         {
-            if (rows % m_colorCellsAdapter->columnCount() == 0)
-                m_colorCellsAdapter->setRowCount(rows/m_colorCellsAdapter->columnCount());
+            if (rows % m_colorCells->columnCount() == 0)
+                m_colorCells->setRowCount(rows/m_colorCells->columnCount());
             else
-                m_colorCellsAdapter->setRowCount(1 + rows/m_colorCellsAdapter->columnCount());
+                m_colorCells->setRowCount(1 + rows/m_colorCells->columnCount());
         }
         else
             return ;
@@ -313,12 +246,12 @@ void PaletteBriefView::loadDataFromModel()
 
             if (vmap.value("type").toString() == QString("color"))
             {
-                tableRow = colorCount / m_colorCellsAdapter->columnCount();
-                tableColumn = colorCount % m_colorCellsAdapter->columnCount();
+                tableRow = colorCount / m_colorCells->columnCount();
+                tableColumn = colorCount % m_colorCells->columnCount();
 
-                m_colorCellsAdapter->setColor(colorCount, vmap.value("color").value<QColor>());
+                m_colorCells->setColor(colorCount, vmap.value("color").value<QColor>());
 
-                QTableWidgetItem * colorItem = m_colorCellsAdapter->item(tableRow, tableColumn);
+                QTableWidgetItem * colorItem = m_colorCells->item(tableRow, tableColumn);
 
                 if ((!vmap.value("name").toString().isEmpty()) && (colorItem))
                     colorItem->setToolTip(i18n("Name : ") + vmap.value("name").toString());
@@ -331,16 +264,16 @@ void PaletteBriefView::loadDataFromModel()
     {
         for (int i = 0; i < rows; i++)
         {
-            tableRow = i / m_colorCellsAdapter->columnCount();
-            tableColumn = i % m_colorCellsAdapter->columnCount();
+            tableRow = i / m_colorCells->columnCount();
+            tableColumn = i % m_colorCells->columnCount();
 
             vmap = m_model->index(i, 0).data().toMap();
 
             if (vmap.value("type").toString() == QString("color"))
             {
-                m_colorCellsAdapter->setColor(i, vmap.value("color").value<QColor>());
+                m_colorCells->setColor(i, vmap.value("color").value<QColor>());
 
-                QTableWidgetItem * colorItem = m_colorCellsAdapter->item(tableRow, tableColumn);
+                QTableWidgetItem * colorItem = m_colorCells->item(tableRow, tableColumn);
 
                 if ((!vmap.value("name").toString().isEmpty()) && (colorItem))
                     colorItem->setToolTip(i18n("Name : ") + vmap.value("name").toString());
@@ -350,7 +283,7 @@ void PaletteBriefView::loadDataFromModel()
             {
                 QTableWidgetItem * commentItem = new QTableWidgetItem();
 
-                m_colorCellsAdapter->setItem(tableRow, tableColumn, commentItem);
+                m_colorCells->setItem(tableRow, tableColumn, commentItem);
 
                 int luminance = 0.2126*baseWndColor.red() + 0.7152*baseWndColor.green() + 0.0722*baseWndColor.blue();
 
@@ -370,16 +303,16 @@ void PaletteBriefView::loadDataFromModel()
         }
     }
 
-    int hFactor = m_colorCellsAdapter->width() / m_colorCellsAdapter->columnCount();
-    int vFactor = m_colorCellsAdapter->height() / m_colorCellsAdapter->rowCount();
-    int tableColumns = m_colorCellsAdapter->columnCount();
-    int tableRows = m_colorCellsAdapter->rowCount();
+    int hFactor = m_colorCells->width() / m_colorCells->columnCount();
+    int vFactor = m_colorCells->height() / m_colorCells->rowCount();
+    int tableColumns = m_colorCells->columnCount();
+    int tableRows = m_colorCells->rowCount();
 
     for (int i = 0 ; i < tableColumns ; i++)
-        m_colorCellsAdapter->horizontalHeader()->resizeSection(i, hFactor);
+        m_colorCells->horizontalHeader()->resizeSection(i, hFactor);
 
     for (int i = 0 ; i < tableRows ; i++)
-        m_colorCellsAdapter->verticalHeader()->resizeSection(i, vFactor);
+        m_colorCells->verticalHeader()->resizeSection(i, vFactor);
 }
 
 #include "palettebriefview.moc"

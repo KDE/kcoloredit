@@ -27,7 +27,7 @@
 
 inline KAboutData kcoloreditAboutData( const char * name, const char * iname )
 {
-    KAboutData about(name, 0, ki18n(iname), "1.95.00 (KColorEdit 2.0 Alfa)",
+    KAboutData about(name, 0, ki18n(iname), "1.98.00 (KColorEdit 2.0 Beta)",
         ki18n(I18N_NOOP("KColorEdit, great tool for editing color palettes.")),
         KAboutData::License_GPL, ki18n("(C) 2008, Percy Camilo Triveño Aucahuasi\n" "(C) 2000, Artur Rataj"));
     about.addAuthor(ki18n("Percy Camilo Triveño Aucahuasi"), ki18n("Current maintainer - Upgraded and developed the new version."), "orgyforever@gmail.com");

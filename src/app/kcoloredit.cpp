@@ -329,18 +329,18 @@ void KColorEditMainWnd::setupActions()
 
     tmpAction = actionCollection()->addAction("add-color");
     tmpAction->setIcon(KIcon("list-add"));
-    tmpAction->setText(i18n("Add Color"));
+    tmpAction->setText(i18n("Append Color"));
 
     tmpAction = actionCollection()->addAction("add-comment");
     tmpAction->setIcon(KIcon("insert-text"));
-    tmpAction->setText(i18n("Add Comment"));
+    tmpAction->setText(i18n("Append Comment"));
 
     tmpAction = actionCollection()->addAction("insert-color");
-    tmpAction->setIcon(KIcon("list-add"));
+    tmpAction->setIcon(KIcon("insert-horizontal-rule"));
     tmpAction->setText(i18n("Insert Color"));
 
     tmpAction = actionCollection()->addAction("insert-comment");
-    tmpAction->setIcon(KIcon("insert-text"));
+    tmpAction->setIcon(KIcon("list-add-font"));
     tmpAction->setText(i18n("Insert Comment"));
 
     tmpAction = actionCollection()->addAction("remove-item");

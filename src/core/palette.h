@@ -36,8 +36,7 @@ class Palette
         void setName(const QString & name);
 
         QString description() const;
-
-        QString fullDescription() const;
+        QString comments() const;
 
         int count() const;
         bool isEmpty() const;

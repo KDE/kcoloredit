@@ -195,9 +195,6 @@ void TriangleColorWidget::setColor(const QColor& c)
         generateTriangle();
         update();
     }
-
-    // NOTE added for version 2.0
-    emit colorChanged(c);
 }
 
 void TriangleColorWidget::resizeEvent( QResizeEvent * event )

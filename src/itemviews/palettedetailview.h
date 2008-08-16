@@ -25,11 +25,10 @@
 
 #include "palette.h"
 
-class QTextDocument;
 class QTableView;
 
 class KLineEdit;
-class KTextEdit;
+class KUrlLabel;
 
 class PaletteModel;
 
@@ -67,11 +66,10 @@ class PaletteDetailView : public QWidget
 
     private:
         KLineEdit * m_paletteNameLineEdit;
-        QTextDocument * m_briefDescriptionDocument;
-        QTextDocument * m_fullDescriptionDocument;
-        KTextEdit * m_paletteDescriptionTextEdit;
         QTableView * m_view;
         PaletteModel * m_model;
+
+        KUrlLabel * m_paletteDescriptionLinkLabel;
 };
 
 #endif // PALETTE_DETAIL_VIEW_H
