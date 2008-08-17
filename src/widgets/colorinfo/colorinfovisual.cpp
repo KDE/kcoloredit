@@ -21,16 +21,23 @@
 
 #include <QtGui/QHBoxLayout>
 
-#include <colorwidget.h>
+#include <KLocalizedString>
+
+#include "colorwidget.h"
 
 ColorInfoVisual::ColorInfoVisual(QWidget * parent)
-    : ColorInfo(parent)
+    : QWidget(parent)
 {
     setLayout(new QHBoxLayout(this));
 }
 
 ColorInfoVisual::~ColorInfoVisual()
 {
+}
+
+void ColorInfoVisual::setColor(const QColor & color)
+{
+    Q_UNUSED(color);
 }
 
 void ColorInfoVisual::addColor(const QColor color)

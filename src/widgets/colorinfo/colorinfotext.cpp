@@ -23,6 +23,7 @@
 #include <QtGui/QGridLayout>
 #include <QtGui/QLabel>
 
+#include <KLocalizedString>
 #include <KApplication>
 #include <KLineEdit>
 #include <KPushButton>
@@ -30,7 +31,7 @@
 //BEGIN ColorInfoText
 
 ColorInfoText::ColorInfoText(QWidget * parent)
-    : ColorInfo(parent)
+    : QWidget(parent)
 {
     m_componentName1 = new QLabel(this);
     m_componentName2 = new QLabel(this);
@@ -64,6 +65,11 @@ ColorInfoText::ColorInfoText(QWidget * parent)
 
 ColorInfoText::~ColorInfoText()
 {
+}
+
+void ColorInfoText::setColor(const QColor & color)
+{
+    Q_UNUSED(color);
 }
 
 void ColorInfoText::copyColorValuesToClipboard()
@@ -153,7 +159,7 @@ void ColorInfoTextCMYK::setColor(const QColor & color)
 //END ColorInfoTextHTML
 
 ColorInfoTextHTML::ColorInfoTextHTML(QWidget * parent)
-    : ColorInfo(parent)
+    : QWidget(parent)
 {
     setWindowTitle(i18n("Textual"));
     setWindowIcon(KIcon("format-text-color"));
@@ -200,11 +206,6 @@ void ColorInfoTextHTML::setColor(const QColor & color)
 {
     m_componentValue1->setText(color.name());
     m_componentValue2->setText(color.name().remove(0, 1));
-}
-
-void toClipboard()
-{
-
 }
 
 void ColorInfoTextHTML::copyColorValue1ToClipboard()

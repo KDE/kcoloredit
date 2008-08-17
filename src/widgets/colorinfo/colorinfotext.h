@@ -20,14 +20,14 @@
 #ifndef COLOR_INFO_TEXT_H
 #define COLOR_INFO_TEXT_H
 
-#include "colorinfo.h"
+#include <QtGui/QWidget>
 
 class QLabel;
 
 class KLineEdit;
 class KPushButton;
 
-class ColorInfoText : public ColorInfo
+class ColorInfoText : public QWidget
 {
     Q_OBJECT
 
@@ -36,6 +36,7 @@ class ColorInfoText : public ColorInfo
         virtual ~ColorInfoText();
 
     protected slots:
+        virtual void setColor(const QColor & color);
         void copyColorValuesToClipboard();
 
     protected:
@@ -90,7 +91,7 @@ class ColorInfoTextCMYK : public ColorInfoText
         void setColor(const QColor & color);
 };
 
-class ColorInfoTextHTML : public ColorInfo
+class ColorInfoTextHTML : public QWidget
 {
     Q_OBJECT
 

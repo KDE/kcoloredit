@@ -20,11 +20,11 @@
 #ifndef COLOR_INFO_VISUAL_H
 #define COLOR_INFO_VISUAL_H
 
-#include "colorinfo.h"
+#include <QtGui/QWidget>
 
 class ColorWidget;
 
-class ColorInfoVisual : public ColorInfo
+class ColorInfoVisual : public QWidget
 {
     Q_OBJECT
 
@@ -36,6 +36,7 @@ class ColorInfoVisual : public ColorInfo
         void colorAdded(const QColor color);
 
     protected slots:
+        virtual void setColor(const QColor & color);
         void addColor(const QColor color);
 
     protected:

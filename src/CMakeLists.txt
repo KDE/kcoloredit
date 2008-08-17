@@ -30,7 +30,6 @@ set (
   widgets/colorselectors/blenderselector/blendercolorselector.cpp
   widgets/colorselectors/colorselector.cpp
   widgets/colortoolwidget.cpp
-  widgets/colorinfo/colorinfo.cpp
   widgets/colorinfo/colorinfovisual.cpp
   widgets/colorinfo/colorinfotext.cpp
   widgets/palettedelegateeditors.cpp
