@@ -47,7 +47,7 @@ class ColorWidget : public QWidget
 
     signals:
         void colorChanged(const QColor & color);
-        void colorAdded(const QColor color);
+        void colorAdded(const QColor & color);
 
     private:
         QColor m_color;

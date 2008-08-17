@@ -23,7 +23,7 @@
 
 #include <KLocalizedString>
 #include <KComboBox>
-#include <KPushButton>
+#include <KIcon>
 
 #include "rectanglecolorwidget.h"
 

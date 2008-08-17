@@ -21,7 +21,8 @@
 
 #include <QtGui/QVBoxLayout>
 
-#include <KPushButton>
+#include <KLocalizedString>
+#include <KIcon>
 
 #include "trianglecolorwidget.h"
 
@@ -32,16 +33,10 @@ GtkColorSelector::GtkColorSelector(QWidget* parent) : ColorSelector(parent)
     setWindowTitle(i18n("GTK selector"));
     setWindowIcon(KIcon("fill-color"));
 
-//     m_generateRandomColorAction = new KAction(KIcon("roll"), i18n("Generate Random Color"), header()->menu());
-
-//     header()->menu()->addAction(m_generateRandomColorAction);
-
     QVBoxLayout * mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(m_triangleColorWidget);
 
     connect(m_triangleColorWidget, SIGNAL(colorChanged(QColor)), this, SLOT( updateColor(QColor) ));
-
-//     connect(m_generateRandomColorAction, SIGNAL( triggered(bool) ), this, SLOT( generateRandomColor() ));
 }
 
 void GtkColorSelector::setColor(const QColor & color)

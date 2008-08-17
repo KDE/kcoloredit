@@ -50,12 +50,12 @@ class KdeColorSelector : public ColorSelector
 
         RectangleColorWidget * m_rectangleColorWidget;
 
-        KAction * m_HueModeAction;
-        KAction * m_SaturationModeAction;
-        KAction * m_ValueModeAction;
-        KAction * m_RedModeAction;
-        KAction * m_GreenModeAction;
-        KAction * m_BlueModeAction;
+//         KAction * m_HueModeAction;
+//         KAction * m_SaturationModeAction;
+//         KAction * m_ValueModeAction;
+//         KAction * m_RedModeAction;
+//         KAction * m_GreenModeAction;
+//         KAction * m_BlueModeAction;
 };
 
 #endif // KDE_COLOR_SELECTOR_H

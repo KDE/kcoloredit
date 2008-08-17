@@ -32,9 +32,9 @@ class BlenderColorSelector : public ColorSelector
     public:
         BlenderColorSelector(QWidget * parent = 0);
 
-        KAction * addAllColorRangeAction() const;
-        KAction * addLowestColorRangeAction() const;
-        KAction * addHighestColorRangeAction() const;
+//         KAction * addAllColorRangeAction() const;
+//         KAction * addLowestColorRangeAction() const;
+//         KAction * addHighestColorRangeAction() const;
 
         QVector<QColor> allColorRange() const;
         QVector<QColor> lowestColorRange() const;
@@ -58,9 +58,9 @@ class BlenderColorSelector : public ColorSelector
         KColorButton * m_baseColor;
         KColorButton * m_overlayedColor;
 
-        KAction * m_addAllColorRangeAction;
-        KAction * m_addLowestColorRangeAction;
-        KAction * m_addHighestColorRangeAction;
+//         KAction * m_addAllColorRangeAction;
+//         KAction * m_addLowestColorRangeAction;
+//         KAction * m_addHighestColorRangeAction;
 };
 
 #endif // BLENDER_COLOR_SELECTOR_H

@@ -19,8 +19,6 @@
 
 #include "colorselector.h"
 
-#include <KPushButton>
-
 ColorSelector::ColorSelector(QWidget * parent)
     : QWidget(parent)
 {

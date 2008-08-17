@@ -22,10 +22,6 @@
 
 #include <QtGui/QWidget>
 
-#include <KLocalizedString>
-
-#include <KAction>
-
 class ColorSelector : public QWidget
 {
     Q_OBJECT

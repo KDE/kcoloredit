@@ -23,6 +23,7 @@
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QLabel>
 
+#include <KLocalizedString>
 #include <KColorUtils>
 #include <KPushButton>
 #include <KColorButton>
@@ -68,6 +69,7 @@ BlenderColorSelector::BlenderColorSelector(QWidget * parent)
     connect(m_overlayedColor, SIGNAL( changed(QColor) ), this, SLOT( updateMixWhenChangeColor(QColor) ));
 }
 
+/*
 KAction * BlenderColorSelector::addAllColorRangeAction() const
 {
     return m_addAllColorRangeAction;
@@ -82,6 +84,7 @@ KAction * BlenderColorSelector::addHighestColorRangeAction() const
 {
     return m_addHighestColorRangeAction;
 }
+*/
 
 QVector<QColor> BlenderColorSelector::allColorRange() const
 {

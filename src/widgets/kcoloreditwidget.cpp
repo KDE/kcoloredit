@@ -21,6 +21,8 @@
 
 #include <QtGui/QVBoxLayout>
 
+#include <KLocalizedString>
+
 #include "palettemodel.h"
 #include "multipagewidget.h"
 #include "kdecolorselector.h"
@@ -169,7 +171,7 @@ void KColorEditWidget::addHighestColorRange()
     }
 }
 
-void KColorEditWidget::addColorFromSchemes(const QColor color)
+void KColorEditWidget::addColorFromSchemes(const QColor & color)
 {
 
     m_model->insertColorRows(m_model->rowCount(), 1);

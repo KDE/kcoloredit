@@ -56,7 +56,7 @@ class KColorEditWidget : public QWidget
         void addLowestColorRange();
         void addHighestColorRange();
 
-        void addColorFromSchemes(const QColor color);
+        void addColorFromSchemes(const QColor & color);
 
     private:
         PaletteModel * m_model;
