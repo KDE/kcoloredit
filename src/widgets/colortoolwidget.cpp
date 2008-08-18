@@ -37,7 +37,7 @@ public:
 ColorToolWidget::ColorToolWidget(QWidget * parent)
     : QWidget(parent)
 {
-    setWindowTitle(i18n("Lighting tol"));
+    setWindowTitle(i18n("Lighting tool"));
 
     m_decreaseBrightnessButton = new KPushButton(this);
     m_increaseBrightnessButton = new KPushButton(this);
@@ -50,16 +50,16 @@ ColorToolWidget::ColorToolWidget(QWidget * parent)
     KPushButton * pickColorButton = new KPushButton(this);
 
     QHBoxLayout * grabColorLayout = new QHBoxLayout();
-    grabColorLayout->addWidget(new QLabel(i18n("pick a color fron desktop"), this));
+    grabColorLayout->addWidget(new QLabel(i18n("pick a color from desktop"), this));
     grabColorLayout->addWidget(pickColorButton);
     grabColorLayout->addWidget(new QCheckBox(this));
 
     QHBoxLayout * randomColorLayout = new QHBoxLayout();
-    randomColorLayout->addWidget(new QLabel(i18n("random colorss"), this));
+    randomColorLayout->addWidget(new QLabel(i18n("random colors"), this));
     randomColorLayout->addWidget(m_generateRandomColorButton);
 
     QHBoxLayout * brilay = new QHBoxLayout();
-    brilay->addWidget(new QLabel("Brighness:", this));
+    brilay->addWidget(new QLabel("Brightness:", this));
     brilay->addWidget(m_decreaseBrightnessButton);
     brilay->addWidget(m_increaseBrightnessButton);
     brilay->addWidget(new QLabel("45%", this));
