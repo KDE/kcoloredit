@@ -32,6 +32,7 @@
 
 #include "palettemodel.h"
 #include "palettedelegate.h"
+#include "palettedescriptionwidget.h"
 
 PaletteDetailView::PaletteDetailView(PaletteModel * model, QWidget * parent)
     : QWidget(parent)
@@ -88,6 +89,8 @@ PaletteDetailView::PaletteDetailView(PaletteModel * model, QWidget * parent)
     connect(m_paletteNameLineEdit, SIGNAL( textEdited(QString) ), this, SLOT( updatePaletteName(QString) ));
     connect(m_model, SIGNAL( dataChanged(QModelIndex, QModelIndex) ), this, SLOT( updateHeaders(QModelIndex, QModelIndex) ));
     connect(m_model, SIGNAL( dataChanged(QModelIndex, QModelIndex) ), this, SLOT( updateDescriptions(QModelIndex, QModelIndex) ));
+
+    connect( m_paletteDescriptionLinkLabel, SIGNAL( leftClickedUrl() ), this, SLOT( showPaletteDescriptionWidget() ) );
 }
 
 void PaletteDetailView::setModel(PaletteModel * model)
@@ -101,6 +104,17 @@ void PaletteDetailView::setModel(PaletteModel * model)
 
     m_paletteNameLineEdit->clear();
     m_paletteNameLineEdit->setText(m_model->paletteName());
+
+    if (m_model->rowCount() == 0)
+        m_paletteDescriptionLinkLabel->setText(i18n("Add description"));
+    else
+    {
+                QVariantMap vmap = m_model->index(0, 0).data().toMap();
+
+
+            if (vmap.value("type").toString() == QString("comment"))
+                m_paletteDescriptionLinkLabel->setText(i18n("Edit description"));
+    }
 }
 
 int PaletteDetailView::selectedIndex() const
@@ -257,6 +271,38 @@ void PaletteDetailView::updateDescriptions(const QModelIndex & topLeft, const QM
     // TODO WARNING fixthis uncomment ...
     //m_briefDescriptionDocument->setPlainText(m_model->briefDescription());
     //m_fullDescriptionDocument->setPlainText(m_model->fullDescription());
+}
+
+void PaletteDetailView::showPaletteDescriptionWidget()
+{
+    PaletteDescriptionWidget w;
+
+    if (!m_model->hasDescription())
+        w.setDescription(m_model->description());
+
+    if ( w.exec(QCursor::pos()) )
+    {
+        if (m_model->rowCount() > 0)
+        {
+            QVariantMap vmap = m_model->index(0, 0).data().toMap();
+
+            if (vmap.value("type").toString() == QString("color"))
+                insertCommentItem(0, w.description());
+
+            if (vmap.value("type").toString() == QString("comment"))
+            {
+                vmap.insert("type", QString("comment"));
+                vmap.insert("comment", w.description());
+                m_model->setData(m_model->index(0, 0), vmap);
+            }
+        }
+        else
+            insertCommentItem(0, w.description());
+
+        m_paletteDescriptionLinkLabel->setText(i18n("Edit description"));
+
+        update();
+    }
 }
 
 #include "palettedetailview.moc"

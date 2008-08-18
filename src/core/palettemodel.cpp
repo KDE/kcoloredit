@@ -187,13 +187,6 @@ int PaletteModel::columnCount(const QModelIndex & parent) const
     return 1;
 }
 
-void PaletteModel::moveItem(const QModelIndex & itemIndex, Palette::MoveOperation operation)
-{
-    m_palette.moveItem(itemIndex.row(), operation);
-
-    emit dataChanged(QModelIndex(), QModelIndex());
-}
-
 QString PaletteModel::paletteName() const
 {
     return m_palette.name();
@@ -212,6 +205,90 @@ QString PaletteModel::description() const
 QString PaletteModel::comments() const
 {
     return m_palette.comments();
+}
+
+bool PaletteModel::hasDescription() const
+{
+    if (m_palette.description().isEmpty())
+        return false;
+
+    return true;
+}
+
+QVariantMap PaletteModel::colorItem(int pos) const
+{
+    QVariantMap vmap = index(pos, 0).data().toMap();
+
+    if (vmap.value("type").toString() == QString("color"))
+        return vmap;
+
+    return QVariantMap();
+}
+
+void PaletteModel::appendColorItem(const QColor & color, const QString & colorName)
+{
+    insertColorItem(rowCount(), color, colorName);
+}
+
+void PaletteModel::insertColorItem(int pos, const QColor & color, const QString & colorName)
+{
+    insertColorRows(pos, 1);
+
+    QVariantMap vmap;
+
+    vmap.insert("type", QString("color"));
+    vmap.insert("color", color);
+    vmap.insert("name", colorName);
+
+    setData(index(pos , 0), vmap);
+}
+
+void PaletteModel::setColorItem(int pos, const QColor & color, const QString & colorName)
+{
+    QVariantMap vmap = index(pos, 0).data().toMap();
+
+    if (vmap.value("type").toString() == QString("color"))
+    {
+    }
+}
+
+QVariantMap PaletteModel::commentItem(int pos) const
+{
+    QVariantMap vmap = index(pos, 0).data().toMap();
+
+    if (vmap.value("type").toString() == QString("comment"))
+        return vmap;
+
+    return QVariantMap();
+}
+
+void PaletteModel::appendCommentItem(const QString & comment)
+{
+    insertCommentItem(rowCount(), comment);
+}
+
+void PaletteModel::insertCommentItem(int pos, const QString & comment)
+{
+    insertCommentRows(pos, 1);
+
+    QVariantMap vmap;
+
+    vmap.insert("type", QString("comment"));
+    vmap.insert("comment", comment);
+
+    setData(index(pos, 0), vmap);
+}
+
+void PaletteModel::setCommentItem(int pos, const QString & comment)
+{
+
+}
+
+void PaletteModel::moveItem(const QModelIndex & itemIndex, Palette::MoveOperation operation)
+{
+    m_palette.moveItem(itemIndex.row(), operation);
+
+    emit dataChanged(QModelIndex(), QModelIndex());
 }
 
 void PaletteModel::generateColorNames()

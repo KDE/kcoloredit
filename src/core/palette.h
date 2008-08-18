@@ -43,18 +43,18 @@ class Palette
 
         PaletteItem * item(int index) const;
         void insertItem(int index, PaletteItem * item);
-        void replaceItem(int index, PaletteItem * item);
+        void setItem(int index, PaletteItem * item);
         PaletteItem::ItemType itemType(int index) const;
 
         PaletteColorItem * colorItem(int index) const;
-        void addColorItem(PaletteColorItem * colorItem);
+        void appendColorItem(PaletteColorItem * colorItem);
         void insertColorItem(int index, PaletteColorItem * colorItem);
-        void replaceColorItem(int index, PaletteColorItem * colorItem);
+        void setColorItem(int index, PaletteColorItem * colorItem);
 
         PaletteCommentItem * commentItem(int index) const;
-        void addCommentItem(PaletteCommentItem * commentItem);
+        void appendCommentItem(PaletteCommentItem * commentItem);
         void insertCommentItem(int index, PaletteCommentItem * commentItem);
-        void replaceCommentItem(int index, PaletteCommentItem * commentItem);
+        void setCommentItem(int index, PaletteCommentItem * commentItem);
 
         void moveItem(int index, Palette::MoveOperation operation);
 

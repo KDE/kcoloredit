@@ -47,13 +47,25 @@ class PaletteModel : public QAbstractTableModel
 
         int columnCount(const QModelIndex & parent = QModelIndex()) const;
 
-        void moveItem(const QModelIndex & itemIndex, Palette::MoveOperation operation);
-
         QString paletteName() const;
         void setPaletteName(const QString & paletteName);
 
         QString description() const;
         QString comments() const;
+
+        bool hasDescription() const;
+
+        QVariantMap colorItem(int pos) const;
+        void appendColorItem(const QColor & color = Qt::white, const QString & colorName = QString());
+        void insertColorItem(int pos, const QColor & color = Qt::white, const QString & colorName = QString());
+        void setColorItem(int pos, const QColor & color, const QString & colorName);
+
+        QVariantMap commentItem(int pos) const;
+        void appendCommentItem(const QString & comment = QString());
+        void insertCommentItem(int pos, const QString & comment = QString());
+        void setCommentItem(int pos, const QString & comment);
+
+        void moveItem(const QModelIndex & itemIndex, Palette::MoveOperation operation);
 
         void generateColorNames();
         void completeColorNames();

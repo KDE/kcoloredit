@@ -61,9 +61,14 @@ QString Palette::description() const
     if (m_items.isEmpty())
         return QString();
 
-    if (itemType(0) != PaletteItem::CommentType)
-        return QString();
-    else
+    if (itemType(0) == PaletteItem::CommentType)
+        return commentItem(0)->comment();
+
+    return QString();
+
+/*        
+
+        
     {
         if (m_items.count() == 1)
         {
@@ -95,7 +100,7 @@ QString Palette::description() const
         }
     }
 
-    return tmpDescription;
+    return tmpDescription;*/
 }
 
 QString Palette::comments() const
@@ -135,7 +140,7 @@ void Palette::insertItem(int index, PaletteItem * item)
     m_items.insert(index, item);
 }
 
-void Palette::replaceItem(int index, PaletteItem * item)
+void Palette::setItem(int index, PaletteItem * item)
 {
     if (!item)
         return;
@@ -158,7 +163,7 @@ PaletteColorItem * Palette::colorItem(int index) const
     return dynamic_cast<PaletteColorItem *>(item(index));
 }
 
-void Palette::addColorItem(PaletteColorItem * colorItem)
+void Palette::appendColorItem(PaletteColorItem * colorItem)
 {
     m_items.append(colorItem);
 }
@@ -168,12 +173,12 @@ void Palette::insertColorItem(int index, PaletteColorItem * colorItem)
     m_items.insert(index, colorItem);
 }
 
-void Palette::replaceColorItem(int index, PaletteColorItem * colorItem)
+void Palette::setColorItem(int index, PaletteColorItem * colorItem)
 {
     if (itemType(index) != PaletteItem::ColorType)
         return ;
 
-    replaceItem(index, colorItem);
+    setItem(index, colorItem);
 }
 
 PaletteCommentItem * Palette::commentItem(int index) const
@@ -184,7 +189,7 @@ PaletteCommentItem * Palette::commentItem(int index) const
     return dynamic_cast<PaletteCommentItem *>(item(index));
 }
 
-void Palette::addCommentItem(PaletteCommentItem * commentItem)
+void Palette::appendCommentItem(PaletteCommentItem * commentItem)
 {
     m_items.append(commentItem);
 }
@@ -194,12 +199,12 @@ void Palette::insertCommentItem(int index, PaletteCommentItem * commentItem)
     m_items.insert(index, commentItem);
 }
 
-void Palette::replaceCommentItem(int index, PaletteCommentItem * commentItem)
+void Palette::setCommentItem(int index, PaletteCommentItem * commentItem)
 {
     if (itemType(index) != PaletteItem::CommentType)
         return ;
 
-    replaceItem(index, commentItem);
+    setItem(index, commentItem);
 }
 
 void Palette::moveItem(int index, Palette::MoveOperation operation)
@@ -272,9 +277,9 @@ Palette & Palette::operator = (const Palette & palette)
     for (int i = 0; i < palette.count(); i++)
     {
         if (palette.itemType(i) == PaletteItem::ColorType)
-            addColorItem(new PaletteColorItem(palette.colorItem(i)->color(), palette.colorItem(i)->colorName()));
+            appendColorItem(new PaletteColorItem(palette.colorItem(i)->color(), palette.colorItem(i)->colorName()));
         if (palette.itemType(i) == PaletteItem::CommentType)
-            addCommentItem(new PaletteCommentItem(palette.commentItem(i)->comment()));
+            appendCommentItem(new PaletteCommentItem(palette.commentItem(i)->comment()));
     }
 
     m_name = palette.name();

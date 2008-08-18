@@ -63,6 +63,7 @@ class PaletteDetailView : public QWidget
         void updatePaletteName(const QString & text);
         void setDescriptionMode(int index);
         void updateDescriptions(const QModelIndex & topLeft, const QModelIndex & bottomRight);
+        void showPaletteDescriptionWidget();
 
     private:
         KLineEdit * m_paletteNameLineEdit;

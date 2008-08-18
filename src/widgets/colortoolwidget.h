@@ -3,6 +3,8 @@
 
 #include <QtGui/QWidget>
 
+class QEvent;
+
 class KPushButton;
 
 class ColorToolWidget : public QWidget
@@ -15,8 +17,12 @@ class ColorToolWidget : public QWidget
     signals:
         void colorSelected(const QColor & color);
 
+    protected:
+        virtual bool eventFilter(QObject *watched, QEvent *event);
+
     private slots:
         void generateRandomColor();
+        void pickColorFromDesktop();
 
     private:
         KPushButton * m_decreaseBrightnessButton;
