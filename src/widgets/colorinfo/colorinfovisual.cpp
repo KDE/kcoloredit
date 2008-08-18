@@ -19,7 +19,7 @@
 
 #include "colorinfovisual.h"
 
-#include <QtGui/QHBoxLayout>
+#include <QtGui/QLayout>
 
 #include <KLocalizedString>
 

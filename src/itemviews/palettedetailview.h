@@ -20,7 +20,6 @@
 #ifndef PALETTE_DETAIL_VIEW_H
 #define PALETTE_DETAIL_VIEW_H
 
-#include <QtCore/QModelIndex>
 #include <QtGui/QWidget>
 
 #include "palette.h"
@@ -43,10 +42,10 @@ class PaletteDetailView : public QWidget
 
         int selectedIndex() const;
 
-        void addColorItem(const QColor & color = Qt::white, const QString & colorName = QString());
+        void appendColorItem(const QColor & color = Qt::white, const QString & colorName = QString());
         void insertColorItem(int index, const QColor & color = Qt::white, const QString & colorName = QString());
 
-        void addCommentItem(const QString & comment = QString());
+        void appendCommentItem(const QString & comment = QString());
         void insertCommentItem(int index, const QString & comment = QString());
 
         void removeItem(int index);
@@ -55,22 +54,23 @@ class PaletteDetailView : public QWidget
 
     public slots:
         void setSelectedItem(int index);
-        void slotScrollToItem(int index);
+        void scrollToItem(int index);
 
-        void updateHeaders(const QModelIndex & topLeft, const QModelIndex & bottomRight);
+        void updatePaletteDetails();
 
     private slots:
         void updatePaletteName(const QString & text);
-        void setDescriptionMode(int index);
-        void updateDescriptions(const QModelIndex & topLeft, const QModelIndex & bottomRight);
         void showPaletteDescriptionWidget();
+
+    private:
+        void updateDescriptionLink();
 
     private:
         KLineEdit * m_paletteNameLineEdit;
         QTableView * m_view;
         PaletteModel * m_model;
 
-        KUrlLabel * m_paletteDescriptionLinkLabel;
+        KUrlLabel * m_paletteDescriptionLink;
 };
 
 #endif // PALETTE_DETAIL_VIEW_H

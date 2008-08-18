@@ -20,7 +20,7 @@
 #include "colorinfotext.h"
 
 #include <QtGui/QClipboard>
-#include <QtGui/QGridLayout>
+#include <QtGui/QLayout>
 #include <QtGui/QLabel>
 
 #include <KLocalizedString>

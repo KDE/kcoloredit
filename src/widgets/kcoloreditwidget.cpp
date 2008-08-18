@@ -19,7 +19,7 @@
 
 #include "kcoloreditwidget.h"
 
-#include <QtGui/QVBoxLayout>
+#include <QtGui/QLayout>
 
 #include <KLocalizedString>
 
@@ -115,12 +115,11 @@ QColor KColorEditWidget::selectedColor() const
 
 void KColorEditWidget::setColor(const QColor & color)
 {
-    // NOTE this is necesary couse the comments make invalid color when track arroud brief view
+    // NOTE this is necesary couse the comments make invalid color when track/hover inside briefview
     if (color.isValid())
     {
         m_kdeColorSelector->setColor(color);
         m_gtkColorSelector->setColor(color);
-        //m_blenderColorSelector->setColor(color); // DEPRECATED
     }
 }
 
@@ -173,13 +172,7 @@ void KColorEditWidget::addHighestColorRange()
 
 void KColorEditWidget::addColorFromSchemes(const QColor & color)
 {
-
-    m_model->insertColorRows(m_model->rowCount(), 1);
-    QVariantMap vmap;
-    vmap.insert("type", QString("color"));
-    vmap.insert("color", color);
-    m_model->setData(m_model->index(m_model->rowCount() - 1, 0), vmap);
-
+    m_model->appendColorItem(color);
 }
 
 #include "kcoloreditwidget.moc"

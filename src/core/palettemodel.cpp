@@ -281,7 +281,14 @@ void PaletteModel::insertCommentItem(int pos, const QString & comment)
 
 void PaletteModel::setCommentItem(int pos, const QString & comment)
 {
+    QVariantMap vmap = index(0, 0).data().toMap();
 
+    if (vmap.value("type").toString() == QString("comment"))
+    {
+        // TODO cheack espacesssssssssssssss WARNING
+        vmap.insert("comment", comment.trimmed());
+        setData(index(0, 0), vmap);
+    }
 }
 
 void PaletteModel::moveItem(const QModelIndex & itemIndex, Palette::MoveOperation operation)

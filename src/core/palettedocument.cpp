@@ -34,8 +34,8 @@ PaletteDocument::PaletteDocument(QObject * parent)
     , m_model(new PaletteModel(this))
     , m_fullPathFile(QString())
 {
-    connect(m_model, SIGNAL( dataChanged(QModelIndex, QModelIndex) ), this, SLOT( updateDocStateWhenInsertItem(QModelIndex, QModelIndex) ));
-    connect(m_model, SIGNAL( rowsRemoved(QModelIndex, int, int) ), this, SLOT( updateDocStateWhenRemoveItem(QModelIndex, int, int) ));
+    connect(m_model, SIGNAL( dataChanged(QModelIndex, QModelIndex) ), this, SLOT( updatePaletteDocument() ));
+    connect(m_model, SIGNAL( rowsRemoved(QModelIndex, int, int) ), this, SLOT( updatePaletteDocument() ));
 }
 
 PaletteDocument::~PaletteDocument()
@@ -101,8 +101,8 @@ bool PaletteDocument::openPaletteFile(const QString & fileName)
 
     m_model = new PaletteModel(this);
 
-    connect(m_model, SIGNAL( dataChanged(QModelIndex, QModelIndex) ), this, SLOT( updateDocStateWhenInsertItem(QModelIndex, QModelIndex) ));
-    connect(m_model, SIGNAL( rowsRemoved(QModelIndex, int, int) ), this, SLOT( updateDocStateWhenRemoveItem(QModelIndex, int, int) ));
+    connect(m_model, SIGNAL( dataChanged(QModelIndex, QModelIndex) ), this, SLOT( updatePaletteDocument() ));
+    connect(m_model, SIGNAL( rowsRemoved(QModelIndex, int, int) ), this, SLOT( updatePaletteDocument() ));
 
     // TOO SLOWWWW load time no wayy
     // NOTE now we simply remove items not delete the model
@@ -242,20 +242,8 @@ QString PaletteDocument::lastErrorString() const
     return m_lastErrorString;
 }
 
-void PaletteDocument::updateDocStateWhenInsertItem(const QModelIndex & topLeft, const QModelIndex & bottomRight)
+void PaletteDocument::updatePaletteDocument()
 {
-    Q_UNUSED(topLeft);
-    Q_UNUSED(bottomRight);
-
-    emit modified();
-}
-
-void PaletteDocument::updateDocStateWhenRemoveItem(const QModelIndex & parent, int start, int end)
-{
-    Q_UNUSED(parent);
-    Q_UNUSED(start);
-    Q_UNUSED(end);
-
     emit modified();
 }
 

@@ -27,8 +27,6 @@
 class QSlider;
 class QCheckBox;
 
-class KAction;
-class KMenu;
 class KPushButton;
 
 class PaletteModel;
@@ -54,8 +52,7 @@ class PaletteBriefView : public QWidget
         void colorTracked(const QColor & color);
 
     private slots:
-        void updateWhenInsertItem(const QModelIndex & topLeft, const QModelIndex & bottomRight);
-        void updateWhenRemoveItem(const QModelIndex & parent, int start, int end);
+        void updatePaletteView();
 
         void updateIndex(int row, int column);
         void trackColor(int row, int column);

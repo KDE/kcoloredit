@@ -21,7 +21,6 @@
 #define PALETTE_DOCUMENT_H
 
 #include <QtCore/QObject>
-#include <QtCore/QModelIndex>
 
 class PaletteModel;
 
@@ -48,8 +47,7 @@ class PaletteDocument : public QObject
         void modified();
 
     private slots:
-        void updateDocStateWhenInsertItem(const QModelIndex & topLeft, const QModelIndex & bottomRight);
-        void updateDocStateWhenRemoveItem(const QModelIndex & parent, int start, int end);
+        void updatePaletteDocument();
 
     private:
         PaletteModel * m_model;

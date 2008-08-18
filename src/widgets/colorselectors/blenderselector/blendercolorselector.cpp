@@ -19,8 +19,7 @@
 
 #include "blendercolorselector.h"
 
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QVBoxLayout>
+#include <QtGui/QLayout>
 #include <QtGui/QLabel>
 
 #include <KLocalizedString>

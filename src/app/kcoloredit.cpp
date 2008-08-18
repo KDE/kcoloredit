@@ -61,7 +61,7 @@ void KColorEditMainWnd::openPaletteFile(const QString & file)
             if (m_paletteDocument->openPaletteFile(tmpFile))
             {
                 m_paletteDetailView->setModel(m_paletteDocument->model());
-                m_paletteDetailView->updateHeaders(QModelIndex(), QModelIndex());
+                m_paletteDetailView->updatePaletteDetails();
 
                 m_paletteBriefView->setModel(m_paletteDocument->model());
 
@@ -103,7 +103,7 @@ void KColorEditMainWnd::openFile()
             if (m_paletteDocument->openPaletteFile(tmpFile))
             {
                 m_paletteDetailView->setModel(m_paletteDocument->model());
-                m_paletteDetailView->updateHeaders(QModelIndex(), QModelIndex());
+                m_paletteDetailView->updatePaletteDetails();
 
                 m_paletteBriefView->setModel(m_paletteDocument->model());
 
@@ -208,12 +208,12 @@ void KColorEditMainWnd::completeColorNames()
 
 void KColorEditMainWnd::addColorItem()
 {
-    m_paletteDetailView->addColorItem(m_kColorEditWidget->selectedColor());
+    m_paletteDetailView->appendColorItem(m_kColorEditWidget->selectedColor());
 }
 
 void KColorEditMainWnd::addCommentItem()
 {
-    m_paletteDetailView->addCommentItem();
+    m_paletteDetailView->appendCommentItem();
 }
 
 void KColorEditMainWnd::insertColorItem()
@@ -299,7 +299,7 @@ void KColorEditMainWnd::setupWidgets()
     connect(m_paletteDocument, SIGNAL( modified() ), this, SLOT( updateTittleWhenChangeDocState() ));
 
     connect(m_paletteBriefView, SIGNAL( colorTracked(QColor) ), m_kColorEditWidget, SLOT( setColor(QColor) ));
-    connect(m_paletteBriefView, SIGNAL( itemTracked(int) ), m_paletteDetailView, SLOT( slotScrollToItem(int) ));
+    connect(m_paletteBriefView, SIGNAL( itemTracked(int) ), m_paletteDetailView, SLOT( scrollToItem(int) ));
 
     connect(m_paletteBriefView, SIGNAL( itemSelected(int) ), m_paletteDetailView, SLOT( setSelectedItem(int) ));
     connect(m_paletteBriefView, SIGNAL( colorSelected(QColor) ), m_kColorEditWidget, SLOT( setColor(QColor) ));

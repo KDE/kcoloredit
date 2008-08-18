@@ -19,17 +19,12 @@
 
 #include "palettebriefview.h"
 
-#include <QtGui/QMouseEvent>
-#include <QtGui/QVBoxLayout>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QGridLayout>
+#include <QtGui/QLayout>
 #include <QtGui/QHeaderView>
 #include <QtGui/QSlider>
 #include <QtGui/QCheckBox>
 
 #include <KLocalizedString>
-#include <KAction>
-#include <KMenu>
 #include <KColorScheme>
 #include <KPushButton>
 #include <KColorCells>
@@ -51,6 +46,7 @@ PaletteBriefView::PaletteBriefView(PaletteModel * model, QWidget * parent)
     m_showCommentsCheckBox->setStatusTip(i18n("If is checked, views will be synchronized"));
 
     m_setColumnSlider = new QSlider(Qt::Horizontal, this);
+    // HERE TODO
     m_setColumnSlider->setRange(1, 20);
     m_setColumnSlider->setSingleStep(1);
     m_setColumnSlider->setPageStep(1);
@@ -71,19 +67,18 @@ PaletteBriefView::PaletteBriefView(PaletteModel * model, QWidget * parent)
     layoutHeader->addWidget(m_quickNavigationCheckBox);
     layoutHeader->addWidget(m_showCommentsCheckBox);
 
-    QVBoxLayout * layout = new QVBoxLayout(this);
-    layout->addLayout(layoutHeader);
-    layout->addWidget(m_colorCells);
-
     QHBoxLayout * layoutZoom = new QHBoxLayout();
     layoutZoom->addWidget(m_zoomOutButton);
     layoutZoom->addWidget(m_setColumnSlider);
     layoutZoom->addWidget(m_zoomInButton);
 
+    QVBoxLayout * layout = new QVBoxLayout(this);
+    layout->addLayout(layoutHeader);
+    layout->addWidget(m_colorCells);
     layout->addLayout(layoutZoom);
 
-    connect(m_model, SIGNAL( dataChanged(QModelIndex, QModelIndex) ), this, SLOT( updateWhenInsertItem(QModelIndex, QModelIndex) ));
-    connect(m_model, SIGNAL( rowsRemoved(QModelIndex, int, int) ), this, SLOT( updateWhenRemoveItem(QModelIndex, int, int) ));
+    connect(m_model, SIGNAL( dataChanged(QModelIndex, QModelIndex) ), this, SLOT( updatePaletteView() ));
+    connect(m_model, SIGNAL( rowsRemoved(QModelIndex, int, int) ), this, SLOT( updatePaletteView() ));
 
     connect(m_setColumnSlider, SIGNAL( valueChanged(int) ), this, SLOT( setZoomFactor(int) ));
     connect(m_zoomOutButton, SIGNAL( pressed () ), this, SLOT( zoomOut() ));
@@ -125,20 +120,8 @@ void PaletteBriefView::zoomIn()
         m_setColumnSlider->setValue(m_setColumnSlider->value() + m_setColumnSlider->singleStep());
 }
 
-void PaletteBriefView::updateWhenInsertItem(const QModelIndex & topLeft, const QModelIndex & bottomRight)
+void PaletteBriefView::updatePaletteView()
 {
-    Q_UNUSED(topLeft);
-    Q_UNUSED(bottomRight);
-
-    loadDataFromModel();
-}
-
-void PaletteBriefView::updateWhenRemoveItem(const QModelIndex & parent, int start, int end)
-{
-    Q_UNUSED(parent);
-    Q_UNUSED(start);
-    Q_UNUSED(end);
-
     loadDataFromModel();
 }
 
@@ -160,8 +143,6 @@ void PaletteBriefView::trackColor(int row, int column)
     {
         int i = row * m_colorCells->columnCount() + column;
 
-        // WARNING should use tableitemwidget?
-
         emit colorTracked(m_colorCells->color(i));
 
         if (m_showCommentsCheckBox->isChecked())
@@ -171,7 +152,7 @@ void PaletteBriefView::trackColor(int row, int column)
 
 void PaletteBriefView::showComments(bool show)
 {
-    if (m_model->rowCount() > 0)
+    if ((m_model->rowCount() > 0) && show)
         loadDataFromModel();
 }
 
@@ -223,6 +204,7 @@ void PaletteBriefView::loadDataFromModel()
     // NOTE same code in delegate ... utils.h ?
     KColorScheme systemColorScheme(QPalette::Active);
     QColor baseWndColor = systemColorScheme.background(KColorScheme::NormalBackground).color();
+    int luminance = 0.2126*baseWndColor.red() + 0.7152*baseWndColor.green() + 0.0722*baseWndColor.blue();
 
     if (!m_showCommentsCheckBox->isChecked())
     {
@@ -272,8 +254,6 @@ void PaletteBriefView::loadDataFromModel()
                 QTableWidgetItem * commentItem = new QTableWidgetItem();
 
                 m_colorCells->setItem(tableRow, tableColumn, commentItem);
-
-                int luminance = 0.2126*baseWndColor.red() + 0.7152*baseWndColor.green() + 0.0722*baseWndColor.blue();
 
                 QBrush brush;
                 brush.setStyle(Qt::Dense1Pattern);
