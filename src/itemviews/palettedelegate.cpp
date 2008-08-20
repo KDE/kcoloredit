@@ -19,11 +19,11 @@
 
 #include "palettedelegate.h"
 
-#include <QtCore/QModelIndex>
 #include <QtGui/QPainter>
 
 #include <KColorScheme>
 
+#include "palettemodel.h"
 #include "palettedelegateeditors.h"
 
 PaletteDelegate::PaletteDelegate(QObject * parent)
@@ -51,7 +51,6 @@ void PaletteDelegate::setEditorData(QWidget * editor, const QModelIndex & index)
     {
         ColorItemEditor * colorEditor = dynamic_cast<ColorItemEditor *>(editor);
 
-        //NOTE necesary to perform the move of items
         if (colorEditor)
         {
             colorEditor->setColor(vmap.value("color").value<QColor>());
@@ -76,27 +75,17 @@ void PaletteDelegate::setModelData(QWidget * editor, QAbstractItemModel * model,
     {
         ColorItemEditor * colorEditor = dynamic_cast<ColorItemEditor *>(editor);
 
-        vmap.insert("type", QString("color"));
-
         if (colorEditor)
-        {
-            vmap.insert("color", colorEditor->color());
-            vmap.insert("name", colorEditor->colorName());
-        }
+            dynamic_cast<PaletteModel *>(model)->setColorItem(index.row(), colorEditor->color(), colorEditor->colorName());
 
-        model->setData(index, vmap, Qt::EditRole);
     }
 
     if (vmap.value("type").toString() == QString("comment"))
     {
         CommentItemEditor * commentEditor = dynamic_cast<CommentItemEditor *>(editor);
 
-        vmap.insert("type", QString("comment"));
-
         if (commentEditor)
-            vmap.insert("comment", commentEditor->comment());
-
-        model->setData(index, vmap, Qt::EditRole);
+            dynamic_cast<PaletteModel *>(model)->setCommentItem(index.row(), commentEditor->comment());
     }
 }
 
@@ -140,7 +129,7 @@ void PaletteDelegate::paint(QPainter * painter, const QStyleOptionViewItem & opt
         QBrush brush;
         brush.setStyle(Qt::Dense1Pattern);
 
-        if (luminance > (255 / 2.0))
+        if (luminance > (255.0 / 2.0))
         {
             painter->setPen(Qt::white);
             brush.setColor(Qt::black);

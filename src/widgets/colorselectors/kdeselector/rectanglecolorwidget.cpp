@@ -22,7 +22,7 @@
 
 #include "rectanglecolorwidget.h"
 
-#include <QtGui/QHBoxLayout>
+#include <QtGui/QLayout>
 
 #include <KColorValueSelector>
 #include <khuesaturationselect.h>

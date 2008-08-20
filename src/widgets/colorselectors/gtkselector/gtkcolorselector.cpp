@@ -21,17 +21,11 @@
 
 #include <QtGui/QVBoxLayout>
 
-#include <KLocalizedString>
-#include <KIcon>
-
 #include "trianglecolorwidget.h"
 
 GtkColorSelector::GtkColorSelector(QWidget* parent) : ColorSelector(parent)
 {
     m_triangleColorWidget = new TriangleColorWidget(this);
-
-    setWindowTitle(i18n("GTK selector"));
-    setWindowIcon(KIcon("fill-color"));
 
     QVBoxLayout * mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(m_triangleColorWidget);

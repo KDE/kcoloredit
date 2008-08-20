@@ -19,9 +19,9 @@
 
 #include "palettedescriptionwidget.h"
 
+#include <QtGui/QLayout>
 #include <QtGui/QTextEdit>
 #include <QtGui/QToolButton>
-#include <QtGui/QVBoxLayout>
 #include <QtCore/QEventLoop>
 #include <QtCore/QPointer>
 #include <QtGui/QApplication>

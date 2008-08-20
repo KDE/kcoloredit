@@ -269,7 +269,7 @@ void Palette::clear()
 
 Palette & Palette::operator = (const Palette & palette)
 {
-    // WARNING TODO test this
+    // WARNING TODO test this method
 
     for (int i = 0; i < m_items.count(); i++)
         removeItem(i);

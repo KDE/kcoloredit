@@ -22,7 +22,6 @@
 #include <QtGui/QLayout>
 #include <QtGui/QLabel>
 
-#include <KLocalizedString>
 #include <KColorUtils>
 #include <KPushButton>
 #include <KColorButton>
@@ -31,8 +30,6 @@
 BlenderColorSelector::BlenderColorSelector(QWidget * parent)
     : ColorSelector(parent)
 {
-    setWindowTitle(i18n("Gradient selector"));
-    setWindowIcon(KIcon("fill-color"));
 
 //     m_addAllColorRangeAction = new KAction(KIcon("list-add"), i18n("Add All Color Range"), header()->menu());
 //     m_addLowestColorRangeAction = new KAction(KIcon("list-add"), i18n("Add Lowest Color Range"), header()->menu());

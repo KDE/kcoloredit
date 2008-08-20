@@ -19,7 +19,7 @@
 
 #include <palettedelegateeditors.h>
 
-#include <QtGui/QHBoxLayout>
+#include <QtGui/QLayout>
 
 #include <KColorButton>
 #include <KLineEdit>

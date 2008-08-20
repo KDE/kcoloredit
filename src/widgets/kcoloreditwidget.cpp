@@ -22,6 +22,7 @@
 #include <QtGui/QLayout>
 
 #include <KLocalizedString>
+#include <KIcon>
 
 #include "palettemodel.h"
 #include "multipagewidget.h"
@@ -40,10 +41,19 @@ KColorEditWidget::KColorEditWidget(QWidget * parent)
     MultiPageWidget * colorTools = new MultiPageWidget(this, i18n("Color tool:"));
 
     m_kdeColorSelector = new KdeColorSelector(colorTools);
+    m_kdeColorSelector->setWindowTitle(i18n("KDE selector"));
+    m_kdeColorSelector->setWindowIcon(KIcon("kde"));
+
     m_gtkColorSelector = new GtkColorSelector(colorTools);
+    m_gtkColorSelector->setWindowTitle(i18n("GTK selector"));
+    m_gtkColorSelector->setWindowIcon(KIcon("fill-color"));
+
     m_blenderColorSelector = new BlenderColorSelector(colorTools);
+    m_blenderColorSelector->setWindowTitle(i18n("Gradient selector"));
+    m_blenderColorSelector->setWindowIcon(KIcon("fill-color"));
 
     m_colorToolWidget = new ColorToolWidget(colorTools);
+    m_colorToolWidget->setWindowTitle(i18nc("Set of extra tools apart of color selectors", "Extra"));
 
     colorTools->addPage(m_kdeColorSelector);
     colorTools->addPage(m_gtkColorSelector);
@@ -120,6 +130,7 @@ void KColorEditWidget::setColor(const QColor & color)
     {
         m_kdeColorSelector->setColor(color);
         m_gtkColorSelector->setColor(color);
+        m_colorToolWidget->setColor(color);
     }
 }
 

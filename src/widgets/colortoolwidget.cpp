@@ -1,83 +1,99 @@
+/*********************************************************************************
+*  Copyright (C) 2008 by Percy Camilo Triveño Aucahuasi <orgyforever@gmail.com>  *
+*                                                                                *
+*  This program is free software; you can redistribute it and/or modify          *
+*  it under the terms of the GNU General Public License as published by          *
+*  the Free Software Foundation; either version 2 of the License, or             *
+*  (at your option) any later version.                                           *
+*                                                                                *
+*  This program is distributed in the hope that it will be useful,               *
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of                *
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                 *
+*  GNU General Public License for more details.                                  *
+*                                                                                *
+*  You should have received a copy of the GNU General Public License             *
+*  along with this program; if not, write to the                                 *
+*  Free Software Foundation, Inc.,                                               *
+*  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.                 *
+*********************************************************************************/
+
 #include "colortoolwidget.h"
 
 #include <QtGui/QGridLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QCheckBox>
+#include <QtGui/QGroupBox>
 
+#include <KIcon>
 #include <KLocalizedString>
 #include <KPushButton>
 
-#include <QMouseEvent>
-#include <KApplication>
-#include <QDesktopWidget>
-#include <QImage>
-
-#if defined(Q_WS_X11)
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
-#include <QX11Info>
-
-class KCDPickerFilter: public QWidget
-{
-public:
-    KCDPickerFilter(QWidget* parent): QWidget(parent) {}
-
-    virtual bool x11Event(XEvent* event) {
-        if (event->type == ButtonRelease) {
-            QMouseEvent e(QEvent::MouseButtonRelease, QPoint(),
-                          QPoint(event->xmotion.x_root, event->xmotion.y_root) , Qt::NoButton, Qt::NoButton, Qt::NoModifier);
-            QApplication::sendEvent(parentWidget(), &e);
-            return true;
-        } else return false;
-    }
-};
-
-#endif
 
 ColorToolWidget::ColorToolWidget(QWidget * parent)
     : QWidget(parent)
 {
-    setWindowTitle(i18n("Lighting tool"));
+    //BEGIN Brightness settings
 
-    m_decreaseBrightnessButton = new KPushButton(this);
-    m_increaseBrightnessButton = new KPushButton(this);
+    QGroupBox * brightnessBox = new QGroupBox(i18n("Brightness"), this);
 
-    m_decreaseSaturationButton = new KPushButton(this);
-    m_increaseSaturationButton = new KPushButton(this);
+    KPushButton * decreaseBrightnessButton = new KPushButton(brightnessBox);
+    KPushButton * increaseBrightnessButton = new KPushButton(brightnessBox);
 
-    m_generateRandomColorButton = new KPushButton(this);
+    QHBoxLayout * brightnessLayout = new QHBoxLayout(brightnessBox);
+    brightnessLayout->addWidget(decreaseBrightnessButton);
+    brightnessLayout->addWidget(increaseBrightnessButton);
+    brightnessLayout->addWidget(new QLabel("45%", brightnessBox));
 
-    KPushButton * pickColorButton = new KPushButton(this);
+    //END Brightness settings
 
-    QHBoxLayout * grabColorLayout = new QHBoxLayout();
-    grabColorLayout->addWidget(new QLabel(i18n("pick a color from desktop"), this));
-    grabColorLayout->addWidget(pickColorButton);
-    grabColorLayout->addWidget(new QCheckBox(this));
+    //BEGIN Saturation settings
 
-    QHBoxLayout * randomColorLayout = new QHBoxLayout();
-    randomColorLayout->addWidget(new QLabel(i18n("random colors"), this));
-    randomColorLayout->addWidget(m_generateRandomColorButton);
+    QGroupBox * saturationBox = new QGroupBox(i18n("Saturation"), this);
 
-    QHBoxLayout * brilay = new QHBoxLayout();
-    brilay->addWidget(new QLabel("Brightness:", this));
-    brilay->addWidget(m_decreaseBrightnessButton);
-    brilay->addWidget(m_increaseBrightnessButton);
-    brilay->addWidget(new QLabel("45%", this));
+    KPushButton * decreaseSaturationButton = new KPushButton(saturationBox);
+    KPushButton * increaseSaturationButton = new KPushButton(saturationBox);
 
-    QHBoxLayout * satlay = new QHBoxLayout();
-    satlay->addWidget(new QLabel("Saturation:", this));
-    satlay->addWidget(m_decreaseSaturationButton);
-    satlay->addWidget(m_increaseSaturationButton);
-    satlay->addWidget(new QLabel("15%", this));
+    QHBoxLayout * saturationLayout = new QHBoxLayout(saturationBox);
+    saturationLayout->addWidget(decreaseSaturationButton);
+    saturationLayout->addWidget(increaseSaturationButton);
+    saturationLayout->addWidget(new QLabel("15%", saturationBox));
 
-    QVBoxLayout * layout = new QVBoxLayout(this);
-    layout->addLayout(brilay);
-    layout->addLayout(satlay);
-    layout->addLayout(grabColorLayout);
-    layout->addLayout(randomColorLayout);
+    connect(decreaseSaturationButton, SIGNAL( pressed () ), SLOT( decreaseSaturation() ));
+    connect(increaseSaturationButton, SIGNAL( pressed () ), SLOT( increaseSaturation() ));
 
-    connect(m_generateRandomColorButton, SIGNAL( pressed () ), this, SLOT( generateRandomColor() ));
+    //END Saturation settings
+
+    //BEGIN Extra color selectors settings
+
+    QGroupBox * extraSelectorsBox = new QGroupBox(i18n("Extra color selectors"), this);
+
+    KPushButton * pickColorButton = new KPushButton(KIcon("pick-color"), i18n("pick a color from desktop"), extraSelectorsBox);
+    KPushButton * generateRandomColorButton = new KPushButton(KIcon("roll"), i18n("Generate a random color"), extraSelectorsBox);
+
+    QHBoxLayout * pickColorLayout = new QHBoxLayout();
+    pickColorLayout->addWidget(pickColorButton);
+    pickColorLayout->addWidget(new QCheckBox(extraSelectorsBox));
+
+    QVBoxLayout * extraSelectorsLayout = new QVBoxLayout(extraSelectorsBox);
+    extraSelectorsLayout->addLayout(pickColorLayout);
+    extraSelectorsLayout->addWidget(generateRandomColorButton);
+
+    connect(generateRandomColorButton, SIGNAL( pressed () ), this, SLOT( generateRandomColor() ));
     connect(pickColorButton, SIGNAL( pressed () ), this, SLOT( pickColorFromDesktop() ));
+
+    //END Extra color selectors settings
+
+    QVBoxLayout * mainLayout = new QVBoxLayout(this);
+    mainLayout->addWidget(brightnessBox);
+    mainLayout->addWidget(saturationBox);
+    mainLayout->addWidget(extraSelectorsBox);
+
+
+}
+
+void ColorToolWidget::setColor(const QColor & color)
+{
+    m_color = color;
 }
 
 void ColorToolWidget::generateRandomColor()
@@ -87,85 +103,22 @@ void ColorToolWidget::generateRandomColor()
     emit colorSelected(randColor);
 }
 
-#include <QEvent>
-
-bool ColorToolWidget::eventFilter(QObject *watched, QEvent *event)
-{
-    if (event->type() == QEvent::MouseButtonRelease)
-    {
-        QMouseEvent *me = static_cast<QMouseEvent *>(event);
-
-    QColor tempColor;
-
-    QPoint point = QCursor::pos();
-
-#if defined(Q_WS_X11)
-/*
-  It seems the Qt4 stuff returns a null grabbed pixmap when the Display
-  has ARGB visuals.
-  Then, access directly to the screen pixels using the X API.
-*/
-    Window root = RootWindow(QX11Info::display(), QX11Info::appScreen());
-    XImage *ximg = XGetImage(QX11Info::display(), root, point.x(), point.y(), 1, 1, -1, ZPixmap);
-    unsigned long xpixel = XGetPixel(ximg, 0, 0);
-    XDestroyImage(ximg);
-    XColor xcol;
-    xcol.pixel = xpixel;
-    xcol.flags = DoRed | DoGreen | DoBlue;
-    XQueryColor(QX11Info::display(), DefaultColormap(QX11Info::display(), QX11Info::appScreen()), &xcol);
-    tempColor =  QColor::fromRgbF(xcol.red / 65535.0, xcol.green / 65535.0, xcol.blue / 65535.0);
-
-
-
-#else
-    QDesktopWidget *desktop = KApplication::desktop();
-    QPixmap pix = QPixmap::grabWindow(desktop->winId(), point.x(), point.y(), 1, 1);
-    QImage img = pix.toImage();
-    tempColor = QColor(img.pixel(0, 0));
-#endif
-
-    grabMouse(Qt::CrossCursor);
-    grabKeyboard();
-
-
-    }
-    return QWidget::eventFilter(watched, event);
-}
-
 void ColorToolWidget::pickColorFromDesktop()
 {
-//     QColor tempColor;
-// 
-//     QPoint point = QCursor::pos();
-// 
-// #if defined(Q_WS_X11)
-// /*
-//   It seems the Qt4 stuff returns a null grabbed pixmap when the Display
-//   has ARGB visuals.
-//   Then, access directly to the screen pixels using the X API.
-// */
-//     Window root = RootWindow(QX11Info::display(), QX11Info::appScreen());
-//     XImage *ximg = XGetImage(QX11Info::display(), root, point.x(), point.y(), 1, 1, -1, ZPixmap);
-//     unsigned long xpixel = XGetPixel(ximg, 0, 0);
-//     XDestroyImage(ximg);
-//     XColor xcol;
-//     xcol.pixel = xpixel;
-//     xcol.flags = DoRed | DoGreen | DoBlue;
-//     XQueryColor(QX11Info::display(), DefaultColormap(QX11Info::display(), QX11Info::appScreen()), &xcol);
-//     tempColor =  QColor::fromRgbF(xcol.red / 65535.0, xcol.green / 65535.0, xcol.blue / 65535.0);
-// 
-// 
-//     KCDPickerFilter * filter = new KCDPickerFilter(this);
-//     kapp->installX11EventFilter(filter);
-// #else
-//     QDesktopWidget *desktop = KApplication::desktop();
-//     QPixmap pix = QPixmap::grabWindow(desktop->winId(), point.x(), point.y(), 1, 1);
-//     QImage img = pix.toImage();
-//     tempColor = QColor(img.pixel(0, 0));
-// #endif
-// 
-//     grabMouse(Qt::CrossCursor);
-//     grabKeyboard();
+
+}
+
+void ColorToolWidget::decreaseSaturation()
+{
+    //emit colorSelected(randColor);
+}
+
+void ColorToolWidget::increaseSaturation()
+{
+    static QColor saturatedColor = m_color;
+    m_color.setHsv(m_color.hue(), m_color.saturation() + 0.05 * 100, m_color.value());
+
+    emit colorSelected(m_color);
 }
 
 #include "colortoolwidget.moc"

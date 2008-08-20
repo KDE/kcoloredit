@@ -21,18 +21,13 @@
 
 #include <QtGui/QVBoxLayout>
 
-#include <KLocalizedString>
 #include <KComboBox>
-#include <KIcon>
 
 #include "rectanglecolorwidget.h"
 
 KdeColorSelector::KdeColorSelector(QWidget * parent) : ColorSelector(parent)
 {
     m_rectangleColorWidget = new RectangleColorWidget(this);
-
-    setWindowTitle(i18n("KDE selector"));
-    setWindowIcon(KIcon("kde"));
 
 //     m_HueModeAction = new KAction(KIcon("view-filter"), i18n("Hue"), header()->menu());
 //     m_SaturationModeAction = new KAction(KIcon("view-filter"), i18n("Saturation"), header()->menu());
