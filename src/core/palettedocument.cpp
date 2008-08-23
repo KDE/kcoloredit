@@ -176,7 +176,8 @@ bool PaletteDocument::openPaletteFile(const QString & fileName)
         }
     }
 
-    m_model->removeRows(0, a);
+    if (a != 0) // NOTE wowo niccc
+        m_model->removeRows(0, a);
 
 ///
 
