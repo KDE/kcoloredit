@@ -190,8 +190,6 @@ void PaletteDetailView::updatePaletteDetails()
 
     for (int i = 0; i < m_view->model()->rowCount(); i++)
         m_view->verticalHeader()->resizeSection(i, 44);
-
-    updateDescriptionLink();
 }
 
 void PaletteDetailView::updatePaletteName(const QString & text)
@@ -201,9 +199,6 @@ void PaletteDetailView::updatePaletteName(const QString & text)
 
 void PaletteDetailView::updateDescriptionLink()
 {
-    if (m_model->rowCount() == 0)
-        return ;
-
     if (m_model->hasDescription())
         m_paletteDescriptionLink->setText(i18n("Edit description"));
     else
@@ -212,17 +207,18 @@ void PaletteDetailView::updateDescriptionLink()
 
 void PaletteDetailView::showPaletteDescriptionWidget()
 {
-    if (m_model->rowCount() == 0)
-        m_model->insertCommentItem(0, QString());
+    // NOTE
+//if (m_model->rowCount() == 0)
+      //  m_model->insertCommentItem(0, QString());
 
     PaletteDescriptionWidget w;
 
     if (m_model->hasDescription())
-        w.setDescription(m_model->description());
+        w.setDescription(m_model->paletteDescription());
 
     if ( w.exec(QCursor::pos()) )
     {
-        m_model->setCommentItem(0, w.description());
+        m_model->setPaletteDescription(w.description());
 
         updateDescriptionLink();
 

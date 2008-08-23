@@ -59,8 +59,6 @@ PaletteModel * PaletteDocument::model()
 
 #include <kdebug.h>
 
-#include <QTime>
-
 bool PaletteDocument::openPaletteFile(const QString & fileName)
 {
     QFile file(fileName);
@@ -132,7 +130,7 @@ bool PaletteDocument::openPaletteFile(const QString & fileName)
             }
         }
 
-        //END WARNING inefficient
+        //WARNING inefficient
 
         if (line[0] != '#')
         {
@@ -148,14 +146,7 @@ bool PaletteDocument::openPaletteFile(const QString & fileName)
                 g = qBound(0, g, 255);
                 b = qBound(0, b, 255);
 
-                m_model->insertColorRows(m_model->rowCount(), 1);
-
-                vmap.insert("type", QString("color"));  // NOTE
-                vmap.insert("color", QColor(r, g, b));
-                vmap.insert("name", line.mid(pos).trimmed());
-
-                //m_model->setData(m_model->index(rows - 1, 0), vmap);
-                m_model->setData(m_model->index(m_model->rowCount() - 1, 0), vmap);
+                m_model->appendColorItem(QColor(r, g, b), line.mid(pos).trimmed());
             }
         }
         else
@@ -164,18 +155,30 @@ bool PaletteDocument::openPaletteFile(const QString & fileName)
             line = line.mid(1); // Strip '#'
             line = line.trimmed(); // Strip remaining white space..
 
-            if (!line.isEmpty())
-            {
-                m_model->insertCommentRows(m_model->rowCount(), 1);
-
-                vmap.insert("type", QString("comment"));  // NOTE
-                vmap.insert("comment", line);
-
-                //m_model->setData(m_model->index(rows - 1, 0), vmap);
-                m_model->setData(m_model->index(m_model->rowCount() - 1, 0), vmap);
-            }
+            //if (!line.isEmpty())
+                m_model->appendCommentItem(line);
         }
     }
+
+///
+
+    m_model->setPaletteDescription(descriptionOfPaletteFile());
+
+    int a; // NOTE WIIIIIIIIII
+
+    for (int i = 0; i < m_model->rowCount(); i++)
+    {
+        if (m_model->itemType(i) != PaletteItem::CommentType)
+        {
+            a = i;
+            kDebug() << i;
+            break ;
+        }
+    }
+
+    m_model->removeRows(0, a);
+
+///
 
     m_fullPathFile = fileName;
     m_file = m_fullPathFile.split("/")[m_fullPathFile.split("/").count() - 1];
@@ -199,6 +202,13 @@ bool PaletteDocument::saveFileAs(const QString & fileName)
     QTextStream textStream(&saveFile);
     textStream << "KDE RGB Palette" << endl;
     textStream << "Name: " << m_model->paletteName() << endl;
+
+///
+    QStringList description = m_model->paletteDescription().split('\n');
+
+    for(int i = 0; i < description.count(); i++)
+        textStream << "#" << description[i] << endl;
+///
 
     for(int i = 0; i < m_model->rowCount(); i++)
     {
@@ -245,6 +255,59 @@ QString PaletteDocument::lastErrorString() const
 void PaletteDocument::updatePaletteDocument()
 {
     emit modified();
+}
+
+QString PaletteDocument::descriptionOfPaletteFile() const
+{
+    if (!m_model)
+        return QString();
+
+    if (m_model->rowCount() == 0)
+        return QString();
+
+    if (m_model->itemType(0) != PaletteItem::CommentType)
+        return QString();
+    else
+    {
+        if (m_model->rowCount() == 1)
+        {
+            if (m_model->itemType(0) == PaletteItem::CommentType)
+                return m_model->commentItem(0).value("comment").toString();
+            else
+                return QString();
+        }
+
+        if (m_model->rowCount() > 1)
+            if (m_model->itemType(1) == PaletteItem::ColorType)
+                return m_model->commentItem(0).value("comment").toString();
+    }
+
+    QStringList comments;
+
+    int j = 0;
+
+    for (int i = 0; i < m_model->rowCount(); i++)
+    {
+        if (m_model->itemType(i) == PaletteItem::CommentType)
+        {
+            j++;
+
+            if (i != (j - 1))
+                break;
+
+            comments.append(m_model->commentItem(i).value("comment").toString());
+        }
+    }
+
+    QString tmpDescription;
+
+    for (int i = 0; i < comments.count(); i++)
+        if (i + 1 == comments.count())
+            tmpDescription += comments[i];
+        else
+            tmpDescription += comments[i] + "\n";
+
+    return tmpDescription;
 }
 
 #include "palettedocument.moc"

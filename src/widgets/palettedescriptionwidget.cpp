@@ -226,7 +226,8 @@ bool PaletteDescriptionWidget::eventFilter( QObject* watched, QEvent* event )
 {
     if ( watched == d->textEdit && event->type() == QEvent::KeyPress ) {
         QKeyEvent* ke = static_cast<QKeyEvent*>( event );
-        kDebug() << "keypress:" << ke->key() << ke->modifiers();
+        // NOTE temp uncomment this by percy
+        //kDebug() << "keypress:" << ke->key() << ke->modifiers();
         if ( ( ke->key() == Qt::Key_Enter ||
                ke->key() == Qt::Key_Return ) &&
              ke->modifiers() & Qt::ControlModifier ) {

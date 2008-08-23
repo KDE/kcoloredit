@@ -58,49 +58,12 @@ void Palette::setName(const QString & name)
 
 QString Palette::description() const
 {
-    if (m_items.isEmpty())
-        return QString();
+    return m_description;
+}
 
-    if (itemType(0) == PaletteItem::CommentType)
-        return commentItem(0)->comment();
-
-    return QString();
-
-/*        
-
-        
-    {
-        if (m_items.count() == 1)
-        {
-            if (itemType(0) == PaletteItem::CommentType)
-                return commentItem(0)->comment();
-            else
-                return QString();
-        }
-
-        if (m_items.count() > 1)
-            if (itemType(1) == PaletteItem::ColorType)
-                return commentItem(0)->comment();
-    }
-
-    QString tmpDescription;
-
-    int j = 0;
-
-    for (int i = 0; i < m_items.count(); i++)
-    {
-        if (itemType(i) == PaletteItem::CommentType)
-        {
-            j++;
-
-            if (i != (j - 1))
-                break;
-
-            tmpDescription +=  commentItem(i)->comment() + "\n";
-        }
-    }
-
-    return tmpDescription;*/
+void Palette::setDescription(const QString & description)
+{
+    m_description = description;
 }
 
 QString Palette::comments() const

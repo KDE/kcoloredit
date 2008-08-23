@@ -197,9 +197,14 @@ void PaletteModel::setPaletteName(const QString & paletteName)
     m_palette.setName(paletteName);
 }
 
-QString PaletteModel::description() const
+QString PaletteModel::paletteDescription() const
 {
     return m_palette.description();
+}
+
+void PaletteModel::setPaletteDescription(const QString & description)
+{
+    m_palette.setDescription(description);
 }
 
 QString PaletteModel::comments() const
@@ -213,6 +218,16 @@ bool PaletteModel::hasDescription() const
         return false;
 
     return true;
+}
+
+PaletteItem::ItemType PaletteModel::itemType(int pos) const
+{
+    QVariantMap vmap = index(pos, 0).data().toMap();
+
+    if (vmap.value("type").toString() == QString("color"))
+        return PaletteItem::ColorType;
+
+    return PaletteItem::CommentType;
 }
 
 QVariantMap PaletteModel::colorItem(int pos) const

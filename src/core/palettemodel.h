@@ -50,10 +50,14 @@ class PaletteModel : public QAbstractTableModel
         QString paletteName() const;
         void setPaletteName(const QString & paletteName);
 
-        QString description() const;
+        QString paletteDescription() const;
+        void setPaletteDescription(const QString & description);
+
         QString comments() const;
 
         bool hasDescription() const;
+
+        PaletteItem::ItemType itemType(int pos) const;
 
         QVariantMap colorItem(int pos) const;
         void appendColorItem(const QColor & color = Qt::white, const QString & colorName = QString());

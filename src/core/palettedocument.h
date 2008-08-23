@@ -50,6 +50,9 @@ class PaletteDocument : public QObject
         void updatePaletteDocument();
 
     private:
+        QString descriptionOfPaletteFile() const;
+
+    private:
         PaletteModel * m_model;
         QString m_fullPathFile;
         QString m_file;

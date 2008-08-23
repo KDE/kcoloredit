@@ -115,10 +115,10 @@ void ColorToolWidget::decreaseSaturation()
 
 void ColorToolWidget::increaseSaturation()
 {
-    static QColor saturatedColor = m_color;
-    m_color.setHsv(m_color.hue(), m_color.saturation() + 0.05 * 100, m_color.value());
+    static QColor saturatedColor;
+    saturatedColor.setHsv(m_color.hue(), m_color.saturation() + 0.05 * 100, m_color.value());
 
-    emit colorSelected(m_color);
+    emit colorSelected(saturatedColor);
 }
 
 #include "colortoolwidget.moc"

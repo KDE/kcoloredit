@@ -36,6 +36,8 @@ class Palette
         void setName(const QString & name);
 
         QString description() const;
+        void setDescription(const QString & description);
+
         QString comments() const;
 
         int count() const;
@@ -70,6 +72,7 @@ class Palette
     private:
         QList<PaletteItem *> m_items;
         QString m_name;
+        QString m_description; // NOTE set of comments in the beginig of the file
 };
 
 #endif // PALETTE_H

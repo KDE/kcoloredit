@@ -17,7 +17,7 @@
 *  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.                 *
 *********************************************************************************/
 
-#include <palettedelegateeditors.h>
+#include "palettedelegateeditors.h"
 
 #include <QtGui/QLayout>
 
@@ -91,3 +91,5 @@ void CommentItemEditor::setComment(const QString & comment)
 }
 
 //END public class CommentItemEditor
+
+#include "palettedelegateeditors.moc"

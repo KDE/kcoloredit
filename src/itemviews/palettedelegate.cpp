@@ -77,7 +77,6 @@ void PaletteDelegate::setModelData(QWidget * editor, QAbstractItemModel * model,
 
         if (colorEditor)
             dynamic_cast<PaletteModel *>(model)->setColorItem(index.row(), colorEditor->color(), colorEditor->colorName());
-
     }
 
     if (vmap.value("type").toString() == QString("comment"))
