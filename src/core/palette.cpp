@@ -90,84 +90,66 @@ bool Palette::isEmpty() const
     return m_items.isEmpty();
 }
 
-PaletteItem * Palette::item(int index) const
-{
-    return m_items[index];
-}
-
-void Palette::insertItem(int index, PaletteItem * item)
-{
-    if (!item)
-        return;
-
-    m_items.insert(index, item);
-}
-
-void Palette::setItem(int index, PaletteItem * item)
-{
-    if (!item)
-        return;
-
-    PaletteItem * wasteItem = m_items[index];
-
-    if (wasteItem)
-        delete wasteItem;
-
-    m_items[index] = item;
-}
-
 PaletteItem::ItemType Palette::itemType(int index) const
 {
     return m_items[index]->type();
 }
 
-PaletteColorItem * Palette::colorItem(int index) const
+ColorItem * Palette::colorItem(int index) const
 {
-    return dynamic_cast<PaletteColorItem *>(item(index));
+    if (itemType(index) != PaletteItem::ColorType)
+        return 0;
+
+    return dynamic_cast<ColorItem *>(m_items[index]);
 }
 
-void Palette::appendColorItem(PaletteColorItem * colorItem)
+void Palette::appendColorItem(const ColorItem & colorItem)
 {
-    m_items.append(colorItem);
+    m_items.append(new ColorItem(colorItem));
 }
 
-void Palette::insertColorItem(int index, PaletteColorItem * colorItem)
+void Palette::insertColorItem(int index, const ColorItem & colorItem)
 {
-    m_items.insert(index, colorItem);
+    m_items.insert(index, new ColorItem(colorItem));
 }
 
-void Palette::setColorItem(int index, PaletteColorItem * colorItem)
+void Palette::setColorItem(int index, const ColorItem & colorItem)
 {
     if (itemType(index) != PaletteItem::ColorType)
         return ;
 
-    setItem(index, colorItem);
+    if (ColorItem * tmpColorItem = dynamic_cast<ColorItem *>(m_items[index]))
+    {
+        tmpColorItem->setColor(colorItem.color());
+        tmpColorItem->setColorName(colorItem.colorName());
+    }
 }
 
-PaletteCommentItem * Palette::commentItem(int index) const
+CommentItem * Palette::commentItem(int index) const
 {
     if (itemType(index) != PaletteItem::CommentType)
         return 0;
 
-    return dynamic_cast<PaletteCommentItem *>(item(index));
+    return dynamic_cast<CommentItem *>(m_items[index]);
 }
 
-void Palette::appendCommentItem(PaletteCommentItem * commentItem)
+void Palette::appendCommentItem(const CommentItem & commentItem)
 {
-    m_items.append(commentItem);
+    m_items.append(new CommentItem(commentItem));
 }
 
-void Palette::insertCommentItem(int index, PaletteCommentItem * commentItem)
+void Palette::insertCommentItem(int index, const CommentItem & commentItem)
 {
-    m_items.insert(index, commentItem);
+    m_items.insert(index, new CommentItem(commentItem));
 }
 
-void Palette::setCommentItem(int index, PaletteCommentItem * commentItem)
+void Palette::setCommentItem(int index, const CommentItem & commentItem)
 {
     if (itemType(index) != PaletteItem::CommentType)
         return ;
 
-    setItem(index, commentItem);
+    if (CommentItem * tmpCommentItem = dynamic_cast<CommentItem *>(m_items[index]))
+        tmpCommentItem->setComment(commentItem.comment());
 }
 
 void Palette::moveItem(int index, Palette::MoveOperation operation)
@@ -229,28 +211,13 @@ void Palette::clear()
     m_items.clear();
 }
 
+//END public methods
 
-Palette & Palette::operator = (const Palette & palette)
-{
-    // WARNING TODO test this method
-
-    for (int i = 0; i < m_items.count(); i++)
-        removeItem(i);
-
-    for (int i = 0; i < palette.count(); i++)
-    {
-        if (palette.itemType(i) == PaletteItem::ColorType)
-            appendColorItem(new PaletteColorItem(palette.colorItem(i)->color(), palette.colorItem(i)->colorName()));
-        if (palette.itemType(i) == PaletteItem::CommentType)
-            appendCommentItem(new PaletteCommentItem(palette.commentItem(i)->comment()));
-    }
-
-    m_name = palette.name();
-
-    return *this;
-}
+//BEGIN private methods
 
 void Palette::swapItem(int i, int j)
 {
     m_items.swap(i, j);
 }
+
+//END private methods

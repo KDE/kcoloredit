@@ -34,13 +34,16 @@ class PaletteItem
     virtual PaletteItem::ItemType type() const = 0;
 };
 
-class PaletteColorItem : public PaletteItem
+class ColorItem : public PaletteItem
 {
     public:
-        PaletteColorItem(const QColor & color = Qt::white, const QString & colorName = QString())
+        ColorItem(const QColor & color = Qt::white, const QString & colorName = QString())
             : m_color(color)
             , m_colorName(colorName) {}
-        ~PaletteColorItem() {}
+        ColorItem(const ColorItem & colorItem)
+            : m_color(colorItem.color())
+            , m_colorName(colorItem.colorName()) {}
+        ~ColorItem() {}
 
         PaletteItem::ItemType type() const { return PaletteItem::ColorType; }
 
@@ -55,12 +58,14 @@ class PaletteColorItem : public PaletteItem
         QString m_colorName;
 };
 
-class PaletteCommentItem : public PaletteItem
+class CommentItem : public PaletteItem
 {
     public:
-        PaletteCommentItem(const QString & comment = QString())
+        CommentItem(const QString & comment = QString())
             : m_comment(comment) {}
-        ~PaletteCommentItem() {}
+        CommentItem(const CommentItem & commentItem)
+            : m_comment(commentItem.comment()) {}
+        ~CommentItem() {}
 
         PaletteItem::ItemType type() const { return PaletteItem::CommentType; }
 

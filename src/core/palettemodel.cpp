@@ -85,7 +85,7 @@ bool PaletteModel::setData(const QModelIndex & index, const QVariant & value, in
         {
             data(index, Qt::BackgroundRole).toMap().insert("type", QString("color"));  // NOTE
 
-            PaletteColorItem * colorItem = m_palette.colorItem(index.row());
+            ColorItem * colorItem = m_palette.colorItem(index.row());
 
             if (colorItem)
             {
@@ -102,7 +102,7 @@ bool PaletteModel::setData(const QModelIndex & index, const QVariant & value, in
         {
             data(index, Qt::BackgroundRole).toMap().insert("type", QString("comment"));  // NOTE
 
-            PaletteCommentItem * commentItem = m_palette.commentItem(index.row());
+            CommentItem * commentItem = m_palette.commentItem(index.row());
 
             if (commentItem)
                 commentItem->setComment(vmap.value("comment").toString());
@@ -145,7 +145,7 @@ bool PaletteModel::insertColorRows(int row, int count, const QModelIndex & paren
     beginInsertRows(QModelIndex(), row, row + count - 1);
 
     for (int i = 0; i < count; i++)
-        m_palette.insertColorItem(row, new PaletteColorItem());
+        m_palette.insertColorItem(row, ColorItem());
 
     endInsertRows();
 
@@ -159,7 +159,7 @@ bool PaletteModel::insertCommentRows(int row, int count, const QModelIndex & par
     beginInsertRows(QModelIndex(), row, row + count - 1);
 
     for (int i = 0; i < count; i++)
-        m_palette.insertCommentItem(row, new PaletteCommentItem());
+        m_palette.insertCommentItem(row, CommentItem());
 
     endInsertRows();
 
@@ -260,14 +260,9 @@ void PaletteModel::insertColorItem(int pos, const QColor & color, const QString 
 
 void PaletteModel::setColorItem(int pos, const QColor & color, const QString & colorName)
 {
-    QVariantMap vmap = index(pos, 0).data().toMap();
+    m_palette.setColorItem(pos, ColorItem(color, colorName));
 
-    if (vmap.value("type").toString() == QString("color"))
-    {
-        vmap.insert("color", color);
-        vmap.insert("name", colorName);
-        setData(index(pos, 0), vmap);
-    }
+    emit dataChanged(QModelIndex(), QModelIndex());
 }
 
 QVariantMap PaletteModel::commentItem(int pos) const
@@ -299,13 +294,9 @@ void PaletteModel::insertCommentItem(int pos, const QString & comment)
 
 void PaletteModel::setCommentItem(int pos, const QString & comment)
 {
-    QVariantMap vmap = index(pos, 0).data().toMap();
+    m_palette.setCommentItem(pos, CommentItem(comment));
 
-    if (vmap.value("type").toString() == QString("comment"))
-    {
-        vmap.insert("comment", comment);
-        setData(index(pos, 0), vmap);
-    }
+    emit dataChanged(QModelIndex(), QModelIndex());
 }
 
 void PaletteModel::moveItem(const QModelIndex & itemIndex, Palette::MoveOperation operation)

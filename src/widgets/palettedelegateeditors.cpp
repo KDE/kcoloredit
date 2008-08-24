@@ -91,5 +91,3 @@ void CommentItemEditor::setComment(const QString & comment)
 }
 
 //END public class CommentItemEditor
-
-#include "palettedelegateeditors.moc"

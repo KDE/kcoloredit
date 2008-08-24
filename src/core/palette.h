@@ -43,20 +43,17 @@ class Palette
         int count() const;
         bool isEmpty() const;
 
-        PaletteItem * item(int index) const;
-        void insertItem(int index, PaletteItem * item);
-        void setItem(int index, PaletteItem * item);
         PaletteItem::ItemType itemType(int index) const;
 
-        PaletteColorItem * colorItem(int index) const;
-        void appendColorItem(PaletteColorItem * colorItem);
-        void insertColorItem(int index, PaletteColorItem * colorItem);
-        void setColorItem(int index, PaletteColorItem * colorItem);
+        ColorItem * colorItem(int index) const;
+        void appendColorItem(const ColorItem & colorItem);
+        void insertColorItem(int index, const ColorItem & colorItem);
+        void setColorItem(int index, const ColorItem & colorItem);
 
-        PaletteCommentItem * commentItem(int index) const;
-        void appendCommentItem(PaletteCommentItem * commentItem);
-        void insertCommentItem(int index, PaletteCommentItem * commentItem);
-        void setCommentItem(int index, PaletteCommentItem * commentItem);
+        CommentItem * commentItem(int index) const;
+        void appendCommentItem(const CommentItem & commentItem);
+        void insertCommentItem(int index, const CommentItem & commentItem);
+        void setCommentItem(int index, const CommentItem & commentItem);
 
         void moveItem(int index, Palette::MoveOperation operation);
 
@@ -64,15 +61,13 @@ class Palette
 
         void clear();
 
-        Palette & operator = (const Palette & palette);
-
     private:
         void swapItem(int i, int j);
 
     private:
         QList<PaletteItem *> m_items;
         QString m_name;
-        QString m_description; // NOTE set of comments in the beginig of the file
+        QString m_description;
 };
 
 #endif // PALETTE_H
