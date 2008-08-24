@@ -38,9 +38,6 @@ class ColorInfoVisual : public QWidget
     protected slots:
         virtual void setColor(const QColor & color);
         void addColor(const QColor color);
-
-    protected:
-        inline int validHue(int hue);
 };
 
 class ColorInfoVisualComplement : public ColorInfoVisual

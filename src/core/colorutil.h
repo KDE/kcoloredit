@@ -17,28 +17,27 @@
 *  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.                 *
 *********************************************************************************/
 
-#ifndef GTK_COLOR_SELECTOR_H
-#define GTK_COLOR_SELECTOR_H
+#ifndef COLOR_UTILS_H
+#define COLOR_UTILS_H
 
-#include "colorselector.h"
+#include <QtGui/QColor>
+#include <QtCore/QVector>
 
-class TriangleColorWidget;
-
-class GtkColorSelector : public ColorSelector
+class ColorUtils
 {
-    Q_OBJECT
-
     public:
-        GtkColorSelector(QWidget* parent);
+        static float luminance(const QColor & color);
+        static QColor contrastColor(const QColor & color);
 
-    public slots:
-        void setColor(const QColor & color);
+        static QColor complementColor(const QColor & color);
+        static QVector<QColor> triadicColors(const QColor & color);
+        static QVector<QColor> tetradicColors(const QColor & color);
+        static QVector<QColor> analogousColors(const QColor & color);
 
-    private slots:
-        void updateColor(const QColor & color);
+        static QColor backgroundColorOfWindow();
 
     private:
-        TriangleColorWidget * m_triangleColorWidget;
+        static inline int validHueValue(int hue);
 };
 
-#endif // GTK_COLOR_SELECTOR_H
+#endif // COLOR_UTILS_H

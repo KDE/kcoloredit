@@ -23,9 +23,8 @@
 
 #include <KLocalizedString>
 
-#include "colorwidget.h"
-
 #include "colorutils.h"
+#include "colorwidget.h"
 
 ColorInfoVisual::ColorInfoVisual(QWidget * parent)
     : QWidget(parent)
@@ -47,22 +46,7 @@ void ColorInfoVisual::addColor(const QColor color)
     emit colorAdded(color);
 }
 
-inline int ColorInfoVisual::validHue(int hue)
-{
-    int tmpHue = hue;
-
-    if (tmpHue > 359)
-        tmpHue -= 360;
-
-    if (tmpHue < 0)
-        tmpHue += 360;
-
-    return tmpHue;
-}
-
 //BEGIN public class ColorInfoVisualComplement
-
-#include <QGridLayout>
 
 ColorInfoVisualComplement::ColorInfoVisualComplement(QWidget * parent)
     : ColorInfoVisual(parent)
@@ -82,11 +66,7 @@ ColorInfoVisualComplement::~ColorInfoVisualComplement()
 
 void ColorInfoVisualComplement::setColor(const QColor & color)
 {
-    int hue = color.hue();
-    int saturation = color.saturation();
-    int value = color.value();
-
-    m_complementColorWidget->setColor(QColor::fromHsv(validHue(hue + 180), saturation, value));
+    m_complementColorWidget->setColor(ColorUtils::complementColor(color));
 }
 
 //END public class ColorInfoVisualComplement
@@ -114,12 +94,8 @@ ColorInfoVisualTriadic::~ColorInfoVisualTriadic()
 
 void ColorInfoVisualTriadic::setColor(const QColor & color)
 {
-    int hue = color.hue();
-    int saturation = color.saturation();
-    int value = color.value();
-
-    m_triad1ColorWidget->setColor(QColor::fromHsv(validHue(hue + 120), saturation, value));
-    m_triad2ColorWidget->setColor(QColor::fromHsv(validHue(hue - 120), saturation, value));
+    m_triad1ColorWidget->setColor(ColorUtils::triadicColors(color)[0]);
+    m_triad2ColorWidget->setColor(ColorUtils::triadicColors(color)[1]);
 }
 
 //END public class ColorInfoVisualTriadic
@@ -151,13 +127,9 @@ ColorInfoVisualTetradic::~ColorInfoVisualTetradic()
 
 void ColorInfoVisualTetradic::setColor(const QColor & color)
 {
-    int hue = color.hue();
-    int saturation = color.saturation();
-    int value = color.value();
-
-    m_tetrad1ColorWidget->setColor(QColor::fromHsv(validHue(hue + 90), saturation, value));
-    m_tetrad2ColorWidget->setColor(QColor::fromHsv(validHue(hue + 180), saturation, value));
-    m_tetrad3ColorWidget->setColor(QColor::fromHsv(validHue(hue + 270), saturation, value));
+    m_tetrad1ColorWidget->setColor(ColorUtils::tetradicColors(color)[0]);
+    m_tetrad2ColorWidget->setColor(ColorUtils::tetradicColors(color)[1]);
+    m_tetrad3ColorWidget->setColor(ColorUtils::tetradicColors(color)[2]);
 }
 
 //END public class ColorInfoVisualTetradic
@@ -185,12 +157,8 @@ ColorInfoVisualAnalogous::~ColorInfoVisualAnalogous()
 
 void ColorInfoVisualAnalogous::setColor(const QColor & color)
 {
-    int hue = color.hue();
-    int saturation = color.saturation();
-    int value = color.value();
-
-    m_analogous1ColorWidget->setColor(QColor::fromHsv(validHue(hue - 30), saturation, value));
-    m_analogous2ColorWidget->setColor(QColor::fromHsv(validHue(hue + 30), saturation, value));
+    m_analogous1ColorWidget->setColor(ColorUtils::analogousColors(color)[0]);
+    m_analogous2ColorWidget->setColor(ColorUtils::analogousColors(color)[1]);
 }
 
 //END public class ColorInfoVisualAnalogous

@@ -25,10 +25,10 @@
 #include <QtGui/QCheckBox>
 
 #include <KLocalizedString>
-#include <KColorScheme>
 #include <KPushButton>
 #include <KColorCells>
 
+#include "colorutils.h"
 #include "palettemodel.h"
 
 PaletteBriefView::PaletteBriefView(PaletteModel * model, QWidget * parent)
@@ -201,11 +201,6 @@ void PaletteBriefView::loadDataFromModel()
     int tableRow;
     int tableColumn;
 
-    // NOTE same code in delegate ... utils.h ?
-    KColorScheme systemColorScheme(QPalette::Active);
-    QColor baseWndColor = systemColorScheme.background(KColorScheme::NormalBackground).color();
-    int luminance = 0.2126*baseWndColor.red() + 0.7152*baseWndColor.green() + 0.0722*baseWndColor.blue();
-
     if (!m_showCommentsCheckBox->isChecked())
     {
         int colorCount = 0;
@@ -257,11 +252,7 @@ void PaletteBriefView::loadDataFromModel()
 
                 QBrush brush;
                 brush.setStyle(Qt::Dense1Pattern);
-
-                if (luminance > (255 / 2.0))
-                    brush.setColor(Qt::black);
-                else
-                    brush.setColor(Qt::white);
+                brush.setColor(ColorUtils::contrastColor(ColorUtils::backgroundColorOfWindow()));
 
                 commentItem->setBackground(brush);
 

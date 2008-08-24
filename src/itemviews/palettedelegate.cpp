@@ -21,8 +21,7 @@
 
 #include <QtGui/QPainter>
 
-#include <KColorScheme>
-
+#include "colorutils.h"
 #include "palettemodel.h"
 #include "palettedelegateeditors.h"
 
@@ -97,48 +96,22 @@ void PaletteDelegate::paint(QPainter * painter, const QStyleOptionViewItem & opt
 {
     QVariantMap vmap = index.data().toMap();
 
-    float luminance;
-
     if (vmap.value("type").toString() == QString("color"))
     {
         QColor color = index.model()->data(index).toMap().value("color").value<QColor>();
 
-        // get the luminance source wikipedia
-        // Y = 0.2126 R + 0.7152 G + 0.0722 B
-        // thanks to agave developer
-        luminance = 0.2126*color.red() + 0.7152*color.green() + 0.0722*color.blue();
-
-        if (luminance > (255 / 2.0))
-            painter->setPen(Qt::black);
-        else
-            painter->setPen(Qt::white);
-
+        painter->setPen(ColorUtils::contrastColor(color));
         painter->fillRect(option.rect, color);
         painter->drawText(option.rect, Qt::AlignCenter, index.model()->data(index).toMap().value("name").toString());
     }
 
     if (vmap.value("type").toString() == QString("comment"))
     {
-        KColorScheme systemColorScheme(QPalette::Active);
-
-        QColor baseWndColor = systemColorScheme.background(KColorScheme::NormalBackground).color();
-
-        luminance = 0.2126*baseWndColor.red() + 0.7152*baseWndColor.green() + 0.0722*baseWndColor.blue();
-
         QBrush brush;
         brush.setStyle(Qt::Dense1Pattern);
+        brush.setColor(ColorUtils::contrastColor(ColorUtils::backgroundColorOfWindow()));
 
-        if (luminance > (255.0 / 2.0))
-        {
-            painter->setPen(Qt::white);
-            brush.setColor(Qt::black);
-        }
-        else
-        {
-            painter->setPen(Qt::black);
-            brush.setColor(Qt::white);
-        }
-
+        painter->setPen(ColorUtils::contrastColor(brush.color()));
         painter->fillRect(option.rect, brush);
         painter->drawText(option.rect, Qt::AlignCenter, index.model()->data(index).toMap().value("comment").toString());
     }
