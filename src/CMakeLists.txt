@@ -17,6 +17,7 @@ include_directories (
 set (
   kcoloredit_SRCS
 
+  core/colorutils.cpp
   core/palette.cpp
   core/palettemodel.cpp
   core/palettedocument.cpp

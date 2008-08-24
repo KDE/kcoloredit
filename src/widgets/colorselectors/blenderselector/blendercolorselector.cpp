@@ -27,6 +27,30 @@
 #include <KColorButton>
 #include <KGradientSelector>
 
+#include <QToolButton>
+#include <QPaintEvent>
+
+LinearMix::LinearMix(QWidget * parent)
+    : KGradientSelector(parent)
+{
+
+}
+
+void LinearMix::paintEvent(QPaintEvent * event)
+{
+    KGradientSelector::paintEvent(event);
+
+    QPainter painter;
+
+    // TODO
+    painter.begin(this);
+        QPen pen(Qt::blue);
+        pen.setWidth(4);
+        painter.setPen(pen);
+        painter.drawRect(contentsRect());
+    painter.end();
+}
+
 BlenderColorSelector::BlenderColorSelector(QWidget * parent)
     : ColorSelector(parent)
 {
@@ -39,10 +63,34 @@ BlenderColorSelector::BlenderColorSelector(QWidget * parent)
 //     header()->menu()->addAction(m_addLowestColorRangeAction);
 //     header()->menu()->addAction(m_addHighestColorRangeAction);
 
-    m_linearMixer = new KGradientSelector(this);
+    m_linearMixer = new LinearMix(this);
     m_linearMixer->setRange(1, 100);
     m_linearMixer->setArrowDirection(Qt::UpArrow);
     m_linearMixer->setColors(Qt::red, Qt::white);
+
+
+    QToolButton * m_buttonAdd = new QToolButton(m_linearMixer);
+    m_buttonAdd->setIcon(KIcon("list-add"));
+    m_buttonAdd->setAutoRaise(true);
+
+    QToolButton * m_buttonAdd0 = new QToolButton(m_linearMixer);
+    m_buttonAdd0->setIcon(KIcon("list-add"));
+    m_buttonAdd0->setAutoRaise(true);
+
+    QToolButton * m_buttonAdd4 = new QToolButton(m_linearMixer);
+    m_buttonAdd4->setIcon(KIcon("list-add"));
+    m_buttonAdd4->setAutoRaise(true);
+
+    QToolButton * m_buttonAdd1 = new QToolButton(m_linearMixer);
+    m_buttonAdd1->setIcon(KIcon("list-add"));
+    m_buttonAdd1->setAutoRaise(true);
+    //m_buttonAdd->setToolTip(i18n("Append color"));
+
+    QHBoxLayout * hl = new QHBoxLayout(m_linearMixer);
+    hl->addWidget(m_buttonAdd);
+    hl->addWidget(m_buttonAdd0);
+    hl->addWidget(m_buttonAdd4);
+    hl->addWidget(m_buttonAdd1);
 
     m_baseColor = new KColorButton(this);
     m_baseColor->setMinimumHeight(200);

@@ -25,6 +25,8 @@
 
 #include "colorwidget.h"
 
+#include "colorutils.h"
+
 ColorInfoVisual::ColorInfoVisual(QWidget * parent)
     : QWidget(parent)
 {

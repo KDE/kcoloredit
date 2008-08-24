@@ -22,8 +22,18 @@
 
 #include "colorselector.h"
 
+#include <KGradientSelector>
+
 class KColorButton;
-class KGradientSelector;
+
+class LinearMix : public KGradientSelector
+{
+    public:
+        LinearMix(QWidget * parent = 0);
+
+    protected:
+        void paintEvent(QPaintEvent * event);
+};
 
 class BlenderColorSelector : public ColorSelector
 {

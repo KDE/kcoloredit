@@ -39,6 +39,7 @@ KdeColorSelector::KdeColorSelector(QWidget * parent) : ColorSelector(parent)
     chooserModeComboBox->addItem(KIcon("view-filter"), i18n("Red"));
     chooserModeComboBox->addItem(KIcon("view-filter"), i18n("Green"));
     chooserModeComboBox->addItem(KIcon("view-filter"), i18n("Blue"));
+    chooserModeComboBox->setCurrentIndex(2);
 
     QHBoxLayout * chooserModeLayout = new QHBoxLayout();
     chooserModeLayout->addWidget(new QLabel(i18n("Chooser mode:"), this));
