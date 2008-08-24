@@ -28,7 +28,7 @@
 #include <KPushButton>
 #include <KColorCells>
 
-#include "colorutils.h"
+#include "colorutil.h"
 #include "palettemodel.h"
 
 PaletteBriefView::PaletteBriefView(PaletteModel * model, QWidget * parent)

@@ -21,7 +21,7 @@
 
 #include <QtGui/QPainter>
 
-#include "colorutils.h"
+#include "colorutil.h"
 #include "palettemodel.h"
 #include "palettedelegateeditors.h"
 

@@ -23,7 +23,7 @@
 
 #include <KLocalizedString>
 
-#include "colorutils.h"
+#include "colorutil.h"
 #include "colorwidget.h"
 
 ColorInfoVisual::ColorInfoVisual(QWidget * parent)
