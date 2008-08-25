@@ -94,7 +94,7 @@ KColorEditWidget::KColorEditWidget(QWidget * parent)
     mainLayout->addWidget(colorInfoTexts);
     mainLayout->addWidget(colorInfoVisuals);
 
-    connect(m_blenderColorSelector, SIGNAL( colorsAdded(QVector<QColor>) ), SLOT( addColorsFromGradientSelector(QVector<QColor>) ));
+    connect(m_blenderColorSelector, SIGNAL( colorsAdded(QVector<QColor>) ), SLOT( appendColorsFromGradientSelector(QVector<QColor>) ));
 
     for (int i = 0; i < colorTools->count(); i++)
         connect(colorTools->widget(i), SIGNAL( colorSelected(QColor) ), m_colorDispatcher, SLOT( setColor(QColor) ));
@@ -105,10 +105,10 @@ KColorEditWidget::KColorEditWidget(QWidget * parent)
     for (int l = 0; l < colorInfoVisuals->count(); l++)
         connect(m_colorDispatcher, SIGNAL( colorChanged(QColor) ), colorInfoVisuals->widget(l), SLOT( setColor(QColor) ));
 
-    connect(m_colorInfoVisualComplement, SIGNAL( colorAdded(QColor) ), SLOT( addColorFromSchemes(QColor) ));
-    connect(m_colorInfoVisualTriadic,    SIGNAL( colorAdded(QColor) ), SLOT( addColorFromSchemes(QColor) ));
-    connect(m_colorInfoVisualTetradic,   SIGNAL( colorAdded(QColor) ), SLOT( addColorFromSchemes(QColor) ));
-    connect(m_colorInfoVisualAnalogous,  SIGNAL( colorAdded(QColor) ), SLOT( addColorFromSchemes(QColor) ));
+    connect(m_colorInfoVisualComplement, SIGNAL( colorAdded(QColor) ), SLOT( appendColorFromSchemes(QColor) ));
+    connect(m_colorInfoVisualTriadic,    SIGNAL( colorAdded(QColor) ), SLOT( appendColorFromSchemes(QColor) ));
+    connect(m_colorInfoVisualTetradic,   SIGNAL( colorAdded(QColor) ), SLOT( appendColorFromSchemes(QColor) ));
+    connect(m_colorInfoVisualAnalogous,  SIGNAL( colorAdded(QColor) ), SLOT( appendColorFromSchemes(QColor) ));
 }
 
 void KColorEditWidget::setModel(PaletteModel * model)
@@ -132,61 +132,13 @@ void KColorEditWidget::setColor(const QColor & color)
     }
 }
 
-// NOTE duplicated code
-
-void KColorEditWidget::addAllColorRange()
-{
-//     for (int i = 0;  i < m_blenderColorSelector->allColorRange().count(); i++)
-//     {
-//         m_model->insertColorRows(m_model->rowCount(), 1);
-// 
-//         QVariantMap vmap;
-// 
-//         vmap.insert("type", QString("color"));
-//         vmap.insert("color", m_blenderColorSelector->allColorRange()[i]);
-// 
-//         m_model->setData(m_model->index(m_model->rowCount() - 1, 0), vmap);
-//     }
-}
-
-void KColorEditWidget::addLowestColorRange()
-{
-//     for (int i = 0;  i < m_blenderColorSelector->lowestColorRange().count(); i++)
-//     {
-//         m_model->insertColorRows(m_model->rowCount(), 1);
-// 
-//         QVariantMap vmap;
-// 
-//         vmap.insert("type", QString("color"));
-//         vmap.insert("color", m_blenderColorSelector->lowestColorRange()[i]);
-// 
-//         m_model->setData(m_model->index(m_model->rowCount() - 1, 0), vmap);
-//     }
-}
-
-void KColorEditWidget::addHighestColorRange()
-{
-
-//     for (int i = 0;  i < m_blenderColorSelector->highestColorRange().count(); i++)
-//     {
-//         m_model->insertColorRows(m_model->rowCount(), 1);
-// 
-//         QVariantMap vmap;
-// 
-//         vmap.insert("type", QString("color"));
-//         vmap.insert("color", m_blenderColorSelector->highestColorRange()[i]);
-// 
-//         m_model->setData(m_model->index(m_model->rowCount() - 1, 0), vmap);
-//     }
-}
-
-void KColorEditWidget::addColorsFromGradientSelector(const QVector<QColor> & colors)
+void KColorEditWidget::appendColorsFromGradientSelector(const QVector<QColor> & colors)
 {
     for (int i = 0; i < colors.count(); i++)
         m_model->appendColorItem(colors[i]);
 }
 
-void KColorEditWidget::addColorFromSchemes(const QColor & color)
+void KColorEditWidget::appendColorFromSchemes(const QColor & color)
 {
     m_model->appendColorItem(color);
 }

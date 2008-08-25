@@ -20,14 +20,13 @@
 #ifndef PALETTE_GRID_VIEW_H
 #define PALETTE_GRID_VIEW_H
 
-#include <QtCore/QModelIndex>
-
-#include <KColorCells>
+#include <QtGui/QWidget>
 
 class QSlider;
 class QCheckBox;
 
 class KPushButton;
+class KColorCells;
 
 class PaletteModel;
 
@@ -57,9 +56,6 @@ class PaletteBriefView : public QWidget
         void updateIndex(int row, int column);
         void trackColor(int row, int column);
         void showComments(bool show);
-
-    private:
-        void loadDataFromModel();
 
     private:
         PaletteModel * m_model;

@@ -77,25 +77,25 @@ PaletteBriefView::PaletteBriefView(PaletteModel * model, QWidget * parent)
     layout->addWidget(m_colorCells);
     layout->addLayout(layoutZoom);
 
-    connect(m_model, SIGNAL( dataChanged(QModelIndex, QModelIndex) ), this, SLOT( updatePaletteView() ));
-    connect(m_model, SIGNAL( rowsRemoved(QModelIndex, int, int) ), this, SLOT( updatePaletteView() ));
+    connect(m_model, SIGNAL( dataChanged(QModelIndex, QModelIndex) ), SLOT( updatePaletteView() ));
+    connect(m_model, SIGNAL( rowsRemoved(QModelIndex, int, int)    ), SLOT( updatePaletteView() ));
 
-    connect(m_setColumnSlider, SIGNAL( valueChanged(int) ), this, SLOT( setZoomFactor(int) ));
-    connect(m_zoomOutButton, SIGNAL( pressed () ), this, SLOT( zoomOut() ));
-    connect(m_zoomInButton, SIGNAL( pressed () ), this, SLOT( zoomIn() ));
+    connect(m_setColumnSlider, SIGNAL( valueChanged(int) ), SLOT( setZoomFactor(int) ));
+    connect(m_zoomOutButton, SIGNAL( pressed () ), SLOT( zoomOut() ));
+    connect(m_zoomInButton, SIGNAL( pressed () ), SLOT( zoomIn() ));
 
-    connect(m_colorCells, SIGNAL( cellEntered(int, int) ), this, SLOT( trackColor(int, int) ));
-    connect(m_colorCells, SIGNAL( cellPressed(int, int) ), this, SLOT( updateIndex(int, int) ));
+    connect(m_colorCells, SIGNAL( cellEntered(int, int) ), SLOT( trackColor(int, int) ));
+    connect(m_colorCells, SIGNAL( cellPressed(int, int) ), SLOT( updateIndex(int, int) ));
 
-    connect(m_showCommentsCheckBox, SIGNAL( toggled(bool) ), this, SLOT( showComments(bool) ));
+    connect(m_showCommentsCheckBox, SIGNAL( toggled(bool) ), SLOT( showComments(bool) ));
 }
 
 void PaletteBriefView::setModel(PaletteModel * model)
 {
     m_model = model;
 
-    connect(m_model, SIGNAL( dataChanged(QModelIndex, QModelIndex) ), this, SLOT( updateWhenInsertItem(QModelIndex, QModelIndex) ));
-    connect(m_model, SIGNAL( rowsRemoved(QModelIndex, int, int) ), this, SLOT( updateWhenRemoveItem(QModelIndex, int, int) ));
+    connect(m_model, SIGNAL( dataChanged(QModelIndex, QModelIndex) ), SLOT( updatePaletteView() ));
+    connect(m_model, SIGNAL( rowsRemoved(QModelIndex, int, int)    ), SLOT( updatePaletteView() ));
 }
 
 void PaletteBriefView::setZoomFactor(int factor)
@@ -104,7 +104,7 @@ void PaletteBriefView::setZoomFactor(int factor)
     {
         m_colorCells->setColumnCount(factor);
 
-        loadDataFromModel();
+        updatePaletteView();
     }
 }
 
@@ -122,42 +122,9 @@ void PaletteBriefView::zoomIn()
 
 void PaletteBriefView::updatePaletteView()
 {
-    loadDataFromModel();
-}
+    // TODO I will improve this method
+    // NOTE Here we load the data from PaletteModel
 
-void PaletteBriefView::updateIndex(int row, int column)
-{
-    m_quickNavigationCheckBox->setChecked(false);
-
-    int index = row * m_colorCells->columnCount() + column;
-
-    if (m_showCommentsCheckBox->isChecked())
-        emit itemSelected(index);
-
-    emit colorSelected(m_colorCells->color(index));
-}
-
-void PaletteBriefView::trackColor(int row, int column)
-{
-    if (m_quickNavigationCheckBox->isChecked())
-    {
-        int i = row * m_colorCells->columnCount() + column;
-
-        emit colorTracked(m_colorCells->color(i));
-
-        if (m_showCommentsCheckBox->isChecked())
-            emit itemTracked(i);
-    }
-}
-
-void PaletteBriefView::showComments(bool show)
-{
-    if ((m_model->rowCount() > 0) && show)
-        loadDataFromModel();
-}
-
-void PaletteBriefView::loadDataFromModel()
-{
     m_colorCells->clear();
 
     int rows = m_model->rowCount();
@@ -272,6 +239,39 @@ void PaletteBriefView::loadDataFromModel()
 
     for (int i = 0 ; i < tableRows ; i++)
         m_colorCells->verticalHeader()->resizeSection(i, vFactor);
+}
+
+void PaletteBriefView::updateIndex(int row, int column)
+{
+    m_quickNavigationCheckBox->setChecked(false);
+
+    int index = row * m_colorCells->columnCount() + column;
+
+    if (m_showCommentsCheckBox->isChecked())
+        emit itemSelected(index);
+
+    emit colorSelected(m_colorCells->color(index));
+}
+
+void PaletteBriefView::trackColor(int row, int column)
+{
+    if (m_quickNavigationCheckBox->isChecked())
+    {
+        int i = row * m_colorCells->columnCount() + column;
+
+        emit colorTracked(m_colorCells->color(i));
+
+        if (m_showCommentsCheckBox->isChecked())
+            emit itemTracked(i);
+    }
+}
+
+void PaletteBriefView::showComments(bool show)
+{
+    Q_UNUSED(show);
+
+    if ((m_model->rowCount() > 0))
+        updatePaletteView();
 }
 
 #include "palettebriefview.moc"

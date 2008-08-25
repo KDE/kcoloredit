@@ -89,7 +89,11 @@ void PaletteDelegate::setModelData(QWidget * editor, QAbstractItemModel * model,
 
 void PaletteDelegate::updateEditorGeometry(QWidget * editor, const QStyleOptionViewItem & option, const QModelIndex & /* index */) const
 {
-    editor->setGeometry(option.rect);
+    // NOTE correct the Y pos instead to update the height of each cell item in detailview
+    QRect rect = option.rect;
+    rect.setY(rect.y() - 5);
+
+    editor->setGeometry(rect);
 }
 
 void PaletteDelegate::paint(QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index) const

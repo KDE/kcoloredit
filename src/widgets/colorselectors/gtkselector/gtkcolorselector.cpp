@@ -19,7 +19,11 @@
 
 #include "gtkcolorselector.h"
 
-#include <QtGui/QVBoxLayout>
+#include <QtGui/QLayout>
+#include <QtGui/QToolButton>
+
+#include <KIcon>
+#include <KLocalizedString>
 
 #include "trianglecolorwidget.h"
 
@@ -27,10 +31,17 @@ GtkColorSelector::GtkColorSelector(QWidget* parent) : ColorSelector(parent)
 {
     m_triangleColorWidget = new TriangleColorWidget(this);
 
+    QToolButton * generateRandomColorButton = new QToolButton(m_triangleColorWidget);
+    generateRandomColorButton->setMinimumSize(42, 42);
+    generateRandomColorButton->setIcon(KIcon("roll"));
+    generateRandomColorButton->setToolTip(i18n("Generate a random color"));
+
     QVBoxLayout * mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(m_triangleColorWidget);
 
-    connect(m_triangleColorWidget, SIGNAL(colorChanged(QColor)), this, SLOT( updateColor(QColor) ));
+    connect(m_triangleColorWidget, SIGNAL(colorChanged(QColor)), SLOT( updateColor(QColor) ));
+
+    connect(generateRandomColorButton, SIGNAL( pressed () ), SLOT( generateRandomColor() ));
 }
 
 void GtkColorSelector::setColor(const QColor & color)
@@ -41,6 +52,14 @@ void GtkColorSelector::setColor(const QColor & color)
 void GtkColorSelector::updateColor(const QColor & color)
 {
     emit colorSelected(color);
+}
+
+void GtkColorSelector::generateRandomColor()
+{
+    QColor randColor(qrand() % 255, qrand()  % 255, qrand() % 255);
+
+    m_triangleColorWidget->setColor(randColor);
+    updateColor(randColor);
 }
 
 #include "gtkcolorselector.moc"

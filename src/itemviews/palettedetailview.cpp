@@ -21,7 +21,6 @@
 
 #include <QtGui/QLayout>
 #include <QtGui/QHeaderView>
-#include <QtGui/QLabel>
 #include <QtGui/QTableView>
 
 #include <KLocalizedString>
@@ -58,7 +57,7 @@ PaletteDetailView::PaletteDetailView(PaletteModel * model, QWidget * parent)
 
     updateDescriptionLink();
 
-    setMinimumHeight(290);
+    setMinimumHeight(290); // TODO consts ... avoid this numbers
 
     QHBoxLayout * nameLayout = new QHBoxLayout();
     nameLayout->addWidget(new QLabel(i18n("Palette Name:"), this));
@@ -73,12 +72,11 @@ PaletteDetailView::PaletteDetailView(PaletteModel * model, QWidget * parent)
     mainLayout->addLayout(descriptionLayout);
     mainLayout->addWidget(m_view);
 
-    connect(m_paletteNameLineEdit, SIGNAL( textEdited(QString) ), this, SLOT( updatePaletteName(QString) ));
+    connect(m_paletteNameLineEdit   , SIGNAL( textEdited(QString) ), SLOT( updatePaletteName(QString)     ));
+    connect(m_paletteDescriptionLink, SIGNAL( leftClickedUrl()    ), SLOT( showPaletteDescriptionWidget() ));
 
-    connect(m_model, SIGNAL( dataChanged(QModelIndex, QModelIndex) ), this, SLOT( updatePaletteDetails() ));
-    connect(m_model, SIGNAL( rowsRemoved(QModelIndex, int, int) ), this, SLOT( updatePaletteDetails() ));
-
-    connect( m_paletteDescriptionLink, SIGNAL( leftClickedUrl() ), this, SLOT( showPaletteDescriptionWidget() ) );
+    connect(m_model, SIGNAL( dataChanged(QModelIndex, QModelIndex) ), SLOT( updatePaletteDetails() ));
+    connect(m_model, SIGNAL( rowsRemoved(QModelIndex, int, int)    ), SLOT( updatePaletteDetails() ));
 }
 
 void PaletteDetailView::setModel(PaletteModel * model)
@@ -87,8 +85,8 @@ void PaletteDetailView::setModel(PaletteModel * model)
 
     m_view->setModel(m_model);
 
-    connect(m_model, SIGNAL( dataChanged(QModelIndex, QModelIndex) ), this, SLOT( updatePaletteDetails() ));
-    connect(m_model, SIGNAL( rowsRemoved(QModelIndex, int, int) ), this, SLOT( updatePaletteDetails() ));
+    connect(m_model, SIGNAL( dataChanged(QModelIndex, QModelIndex) ), SLOT( updatePaletteDetails() ));
+    connect(m_model, SIGNAL( rowsRemoved(QModelIndex, int, int)    ), SLOT( updatePaletteDetails() ));
 
     m_paletteNameLineEdit->clear();
     m_paletteNameLineEdit->setText(m_model->paletteName());
@@ -188,8 +186,12 @@ void PaletteDetailView::updatePaletteDetails()
 {
     m_view->horizontalHeader()->setResizeMode(0, QHeaderView::Stretch);
 
-    for (int i = 0; i < m_view->model()->rowCount(); i++)
-        m_view->verticalHeader()->resizeSection(i, 44);
+    // NOTE DEPRECATED code clean this in future revisions
+    // Now isn't necesary update the heigh of every item
+    // and avoid a litle flickering when scrool the tableview
+    // See PaletteDelegate::updateEditorGeometry
+    //for (int i = 0; i < m_view->model()->rowCount(); i++)
+    //    m_view->verticalHeader()->resizeSection(i, 44);
 }
 
 void PaletteDetailView::updatePaletteName(const QString & text)
@@ -207,10 +209,7 @@ void PaletteDetailView::updateDescriptionLink()
 
 void PaletteDetailView::showPaletteDescriptionWidget()
 {
-    // NOTE
-//if (m_model->rowCount() == 0)
-      //  m_model->insertCommentItem(0, QString());
-
+    // TODO close a few details of this ... 
     PaletteDescriptionWidget w;
 
     if (m_model->hasDescription())

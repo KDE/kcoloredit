@@ -68,7 +68,6 @@ ColorToolWidget::ColorToolWidget(QWidget * parent)
     QGroupBox * extraSelectorsBox = new QGroupBox(i18n("Extra color selectors"), this);
 
     KPushButton * pickColorButton = new KPushButton(KIcon("pick-color"), i18n("pick a color from desktop"), extraSelectorsBox);
-    KPushButton * generateRandomColorButton = new KPushButton(KIcon("roll"), i18n("Generate a random color"), extraSelectorsBox);
 
     QHBoxLayout * pickColorLayout = new QHBoxLayout();
     pickColorLayout->addWidget(pickColorButton);
@@ -76,9 +75,8 @@ ColorToolWidget::ColorToolWidget(QWidget * parent)
 
     QVBoxLayout * extraSelectorsLayout = new QVBoxLayout(extraSelectorsBox);
     extraSelectorsLayout->addLayout(pickColorLayout);
-    extraSelectorsLayout->addWidget(generateRandomColorButton);
+    //extraSelectorsLayout->addWidget(Choose from image);
 
-    connect(generateRandomColorButton, SIGNAL( pressed () ), this, SLOT( generateRandomColor() ));
     connect(pickColorButton, SIGNAL( pressed () ), this, SLOT( pickColorFromDesktop() ));
 
     //END Extra color selectors settings
@@ -94,13 +92,6 @@ ColorToolWidget::ColorToolWidget(QWidget * parent)
 void ColorToolWidget::setColor(const QColor & color)
 {
     m_color = color;
-}
-
-void ColorToolWidget::generateRandomColor()
-{
-    QColor randColor(qrand() % 255, qrand()  % 255, qrand() % 255);
-
-    emit colorSelected(randColor);
 }
 
 void ColorToolWidget::pickColorFromDesktop()

@@ -41,7 +41,6 @@ class ColorToolWidget : public QWidget
         void decreaseSaturation();
         void increaseSaturation();
 
-        void generateRandomColor();
         void pickColorFromDesktop();
 
     private:
