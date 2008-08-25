@@ -53,8 +53,6 @@ class PaletteModel : public QAbstractTableModel
         QString paletteDescription() const;
         void setPaletteDescription(const QString & description);
 
-        QString comments() const;
-
         bool hasDescription() const;
 
         PaletteItem::ItemType itemType(int pos) const;

@@ -252,7 +252,7 @@ void PaletteBriefView::loadDataFromModel()
 
                 QBrush brush;
                 brush.setStyle(Qt::Dense1Pattern);
-                brush.setColor(ColorUtils::contrastColor(ColorUtils::backgroundColorOfWindow()));
+                brush.setColor(ColorUtil::contrastColor(ColorUtil::backgroundColorOfWindow()));
 
                 commentItem->setBackground(brush);
 

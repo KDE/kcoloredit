@@ -26,13 +26,24 @@
 
 class KColorButton;
 
-class LinearMix : public KGradientSelector
+class HighlighterGradientSelector : public KGradientSelector
 {
     public:
-        LinearMix(QWidget * parent = 0);
+        enum Region { FirstQuarterRegion = 0, SecondQuarterRegion, ThirdQuarterRegion, FourthQuarterRegion, FirstRegion, SecondRegion, EntireRegion, NoneRegion };
+
+        HighlighterGradientSelector(QWidget * parent = 0);
+
+        void setRegion(HighlighterGradientSelector::Region region);
 
     protected:
-        void paintEvent(QPaintEvent * event);
+        virtual void mouseMoveEvent(QMouseEvent * event);
+        virtual void mousePressEvent(QMouseEvent * event);
+        virtual void mouseReleaseEvent(QMouseEvent * event);
+        virtual void paintEvent(QPaintEvent * event);
+
+    private:
+        HighlighterGradientSelector::Region m_region;
+        bool m_leftButtonPressed;
 };
 
 class BlenderColorSelector : public ColorSelector
@@ -42,35 +53,43 @@ class BlenderColorSelector : public ColorSelector
     public:
         BlenderColorSelector(QWidget * parent = 0);
 
-//         KAction * addAllColorRangeAction() const;
-//         KAction * addLowestColorRangeAction() const;
-//         KAction * addHighestColorRangeAction() const;
-
-        QVector<QColor> allColorRange() const;
-        QVector<QColor> lowestColorRange() const;
-        QVector<QColor> highestColorRange() const;
-
     public slots:
         void setColor(const QColor & color);
+
+    signals:
+        void colorsAdded(const QVector<QColor> & colors);
 
     private slots:
         void updateMixWhenChangeBias(int factor);
         void updateMixWhenChangeColor(const QColor & color);
 
+        void highlightFirstQuarterRegion();
+        void highlightSecondQuarterRegion();
+        void highlightThirdQuarterRegion();
+        void highlightFourthQuarterRegion();
+        void highlightFirstRegion();
+        void highlightSecondRegion();
+        void highlightEntireRegion();
+
+        void appendFirstQuarterRegion();
+        void appendSecondQuarterRegion();
+        void appendThirdQuarterRegion();
+        void appendFourthQuarterRegion();
+        void appendFirstRegion();
+        void appendSecondRegion();
+        void appendEntireRegion();
+
     private:
         void performMix();
+        void appendColorsOfRegion(HighlighterGradientSelector::Region region);
 
     private:
         float m_bias;
 
-        KGradientSelector * m_linearMixer;
+        HighlighterGradientSelector * m_highlighterGradientSelector;
 
-        KColorButton * m_baseColor;
-        KColorButton * m_overlayedColor;
-
-//         KAction * m_addAllColorRangeAction;
-//         KAction * m_addLowestColorRangeAction;
-//         KAction * m_addHighestColorRangeAction;
+        KColorButton * m_firstColor;
+        KColorButton * m_secondColor;
 };
 
 #endif // BLENDER_COLOR_SELECTOR_H

@@ -19,145 +19,202 @@
 
 #include "blendercolorselector.h"
 
+#include <QtGui/QMouseEvent>
 #include <QtGui/QLayout>
-#include <QtGui/QLabel>
+#include <QtGui/QToolButton>
 
+#include <KAction>
 #include <KColorUtils>
-#include <KPushButton>
 #include <KColorButton>
-#include <KGradientSelector>
 
-#include <QToolButton>
-#include <QPaintEvent>
-
-LinearMix::LinearMix(QWidget * parent)
+HighlighterGradientSelector::HighlighterGradientSelector(QWidget * parent)
     : KGradientSelector(parent)
+    , m_region(HighlighterGradientSelector::NoneRegion)
+    , m_leftButtonPressed(false)
 {
-
+    setMouseTracking(true);
+    setArrowDirection(Qt::UpArrow);
+    setRange(1, 100);
+    setValue(50);
 }
 
-void LinearMix::paintEvent(QPaintEvent * event)
+void HighlighterGradientSelector::setRegion(HighlighterGradientSelector::Region region)
+{
+    if (m_region == region)
+        return ;
+
+    m_region = region;
+
+    repaint();
+}
+
+void HighlighterGradientSelector::mouseMoveEvent(QMouseEvent * event)
+{
+    if (m_leftButtonPressed)
+    {
+        KGradientSelector::mouseMoveEvent(event);
+
+        return ;
+    }
+
+    m_region = HighlighterGradientSelector::NoneRegion;
+
+    update();
+}
+
+void HighlighterGradientSelector::mousePressEvent(QMouseEvent * event)
+{
+    KGradientSelector::mousePressEvent(event);
+
+    if (event->button() == Qt::LeftButton)
+        m_leftButtonPressed = true;
+    else
+        m_leftButtonPressed = false;
+}
+
+void HighlighterGradientSelector::mouseReleaseEvent(QMouseEvent * event)
+{
+    KGradientSelector::mouseReleaseEvent(event);
+
+    m_leftButtonPressed = false;
+}
+
+void HighlighterGradientSelector::paintEvent(QPaintEvent * event)
 {
     KGradientSelector::paintEvent(event);
 
-    QPainter painter;
+    if (m_region == HighlighterGradientSelector::NoneRegion)
+        return ;
 
-    // TODO
+    QPainter painter;
+    QRect rect;
+
+    int x = contentsRect().x();
+    int y = contentsRect().y();
+    int width = contentsRect().width();
+    int height = contentsRect().height();
+
+    switch (m_region)
+    {
+        case HighlighterGradientSelector::FirstQuarterRegion:
+            rect = QRect(x, y, width/4, height);
+            break;
+        case HighlighterGradientSelector::SecondQuarterRegion:
+            rect = QRect(x + width/4, y, width/4, height);
+            break;
+        case HighlighterGradientSelector::ThirdQuarterRegion:
+            rect = QRect(x + width/2, y, width/4, height);
+            break;
+        case HighlighterGradientSelector::FourthQuarterRegion:
+            rect = QRect(x + width*3/4, y, width/4, height);
+            break;
+        case HighlighterGradientSelector::FirstRegion:
+            rect = QRect(x, y, width*value()/100, height);
+            break;
+        case HighlighterGradientSelector::SecondRegion:
+            rect = QRect(x + width*value()/100, y, width - width*value()/100, height);
+            break;
+        case HighlighterGradientSelector::EntireRegion:
+            rect = contentsRect();
+            break;
+        case HighlighterGradientSelector::NoneRegion:
+            break;
+    }
+
+    // TODO i have to improve this effect
     painter.begin(this);
-        QPen pen(Qt::blue);
+        QPen pen(Qt::blue); // TODO here we have to use colorutils ...
         pen.setWidth(4);
         painter.setPen(pen);
-        painter.drawRect(contentsRect());
+        painter.drawRect(rect);
     painter.end();
 }
 
 BlenderColorSelector::BlenderColorSelector(QWidget * parent)
     : ColorSelector(parent)
 {
+    m_highlighterGradientSelector = new HighlighterGradientSelector(this);
 
-//     m_addAllColorRangeAction = new KAction(KIcon("list-add"), i18n("Add All Color Range"), header()->menu());
-//     m_addLowestColorRangeAction = new KAction(KIcon("list-add"), i18n("Add Lowest Color Range"), header()->menu());
-//     m_addHighestColorRangeAction = new KAction(KIcon("list-add"), i18n("Add Highest Color Range"), header()->menu());
+    // TODO set default thing color utils??
+    m_highlighterGradientSelector->setColors(Qt::red, Qt::white);
 
-//     header()->menu()->addAction(m_addAllColorRangeAction);
-//     header()->menu()->addAction(m_addLowestColorRangeAction);
-//     header()->menu()->addAction(m_addHighestColorRangeAction);
+    QToolButton * buttonAppendFirstQuarterRegion = new QToolButton(m_highlighterGradientSelector);
+    QToolButton * buttonAppendSecondQuarterRegion = new QToolButton(m_highlighterGradientSelector);
+    QToolButton * buttonAppendThirdQuarterRegion = new QToolButton(m_highlighterGradientSelector);
+    QToolButton * buttonAppendFourthQuarterRegion = new QToolButton(m_highlighterGradientSelector);
+    QToolButton * buttonAppendFirstRegion = new QToolButton(m_highlighterGradientSelector);
+    QToolButton * buttonAppendSecondRegion = new QToolButton(m_highlighterGradientSelector);
+    QToolButton * buttonAppendEntireRegion = new QToolButton(m_highlighterGradientSelector);
 
-    m_linearMixer = new LinearMix(this);
-    m_linearMixer->setRange(1, 100);
-    m_linearMixer->setArrowDirection(Qt::UpArrow);
-    m_linearMixer->setColors(Qt::red, Qt::white);
+    buttonAppendFirstQuarterRegion->setAutoRaise(true);
+    buttonAppendSecondQuarterRegion->setAutoRaise(true);
+    buttonAppendThirdQuarterRegion->setAutoRaise(true);
+    buttonAppendFourthQuarterRegion->setAutoRaise(true);
+    buttonAppendFirstRegion->setAutoRaise(true);
+    buttonAppendSecondRegion->setAutoRaise(true);
+    buttonAppendEntireRegion->setAutoRaise(true);
 
+    buttonAppendFirstQuarterRegion->setDefaultAction(new KAction(KIcon("list-add"), QString(), this));
+    buttonAppendSecondQuarterRegion->setDefaultAction(new KAction(KIcon("list-add"), QString(), this));
+    buttonAppendThirdQuarterRegion->setDefaultAction(new KAction(KIcon("list-add"), QString(), this));
+    buttonAppendFourthQuarterRegion->setDefaultAction(new KAction(KIcon("list-add"), QString(), this));
+    buttonAppendFirstRegion->setDefaultAction(new KAction(KIcon("list-add"), QString(), this));
+    buttonAppendSecondRegion->setDefaultAction(new KAction(KIcon("list-add"), QString(), this));
+    buttonAppendEntireRegion->setDefaultAction(new KAction(KIcon("list-add"), QString(), this));
 
-    QToolButton * m_buttonAdd = new QToolButton(m_linearMixer);
-    m_buttonAdd->setIcon(KIcon("list-add"));
-    m_buttonAdd->setAutoRaise(true);
+    QHBoxLayout * quartersLayout = new QHBoxLayout();
+    quartersLayout->addWidget(buttonAppendFirstQuarterRegion);
+    quartersLayout->addWidget(buttonAppendSecondQuarterRegion);
+    quartersLayout->addWidget(buttonAppendThirdQuarterRegion);
+    quartersLayout->addWidget(buttonAppendFourthQuarterRegion);
 
-    QToolButton * m_buttonAdd0 = new QToolButton(m_linearMixer);
-    m_buttonAdd0->setIcon(KIcon("list-add"));
-    m_buttonAdd0->setAutoRaise(true);
+    QHBoxLayout * halfsLayout = new QHBoxLayout();
+    halfsLayout->addWidget(buttonAppendFirstRegion);
+    halfsLayout->addWidget(buttonAppendSecondRegion);
 
-    QToolButton * m_buttonAdd4 = new QToolButton(m_linearMixer);
-    m_buttonAdd4->setIcon(KIcon("list-add"));
-    m_buttonAdd4->setAutoRaise(true);
+    QHBoxLayout * entireRegionLayout = new QHBoxLayout();
+    entireRegionLayout->addWidget(buttonAppendEntireRegion);
 
-    QToolButton * m_buttonAdd1 = new QToolButton(m_linearMixer);
-    m_buttonAdd1->setIcon(KIcon("list-add"));
-    m_buttonAdd1->setAutoRaise(true);
-    //m_buttonAdd->setToolTip(i18n("Append color"));
+    QVBoxLayout * mixerLayout = new QVBoxLayout(m_highlighterGradientSelector);
+    mixerLayout->addLayout(quartersLayout);
+    mixerLayout->addLayout(halfsLayout);
+    mixerLayout->addLayout(entireRegionLayout);
 
-    QHBoxLayout * hl = new QHBoxLayout(m_linearMixer);
-    hl->addWidget(m_buttonAdd);
-    hl->addWidget(m_buttonAdd0);
-    hl->addWidget(m_buttonAdd4);
-    hl->addWidget(m_buttonAdd1);
+    m_firstColor = new KColorButton(this);
+    m_firstColor->setMinimumHeight(200);
+    m_firstColor->setMaximumWidth(45);
+    m_firstColor->setColor(Qt::red); // TODO defaults colors 
 
-    m_baseColor = new KColorButton(this);
-    m_baseColor->setMinimumHeight(200);
-    m_baseColor->setMaximumWidth(45);
-    m_baseColor->setColor(Qt::red);
-
-    m_overlayedColor = new KColorButton(this);
-    m_overlayedColor->setMinimumHeight(200);
-    m_overlayedColor->setMaximumWidth(45);
-    m_overlayedColor->setColor(Qt::white);
+    m_secondColor = new KColorButton(this);
+    m_secondColor->setMinimumHeight(200);
+    m_secondColor->setMaximumWidth(45);
+    m_secondColor->setColor(Qt::white); // TODO defaults colors 
 
     QHBoxLayout * layout = new QHBoxLayout(this);
-    layout->addWidget(m_baseColor);
-    layout->addWidget(m_linearMixer);
-    layout->addWidget(m_overlayedColor);
+    layout->addWidget(m_firstColor);
+    layout->addWidget(m_highlighterGradientSelector);
+    layout->addWidget(m_secondColor);
 
-    connect(m_linearMixer, SIGNAL( valueChanged(int) ), this, SLOT( updateMixWhenChangeBias(int) ));
+    connect(m_highlighterGradientSelector, SIGNAL( valueChanged(int) ), this, SLOT( updateMixWhenChangeBias(int) ));
 
-    connect(m_baseColor, SIGNAL( changed(QColor) ), this, SLOT( updateMixWhenChangeColor(QColor) ));
-    connect(m_overlayedColor, SIGNAL( changed(QColor) ), this, SLOT( updateMixWhenChangeColor(QColor) ));
-}
+    connect(m_firstColor , SIGNAL( changed(QColor) ), this, SLOT( updateMixWhenChangeColor(QColor) ));
+    connect(m_secondColor, SIGNAL( changed(QColor) ), this, SLOT( updateMixWhenChangeColor(QColor) ));
 
-/*
-KAction * BlenderColorSelector::addAllColorRangeAction() const
-{
-    return m_addAllColorRangeAction;
-}
+    connect(buttonAppendFirstQuarterRegion->defaultAction() , SIGNAL( hovered() ), SLOT( highlightFirstQuarterRegion()  ));
+    connect(buttonAppendSecondQuarterRegion->defaultAction(), SIGNAL( hovered() ), SLOT( highlightSecondQuarterRegion() ));
+    connect(buttonAppendThirdQuarterRegion->defaultAction() , SIGNAL( hovered() ), SLOT( highlightThirdQuarterRegion()  ));
+    connect(buttonAppendFourthQuarterRegion->defaultAction(), SIGNAL( hovered() ), SLOT( highlightFourthQuarterRegion() ));
+    connect(buttonAppendFirstRegion->defaultAction()        , SIGNAL( hovered() ), SLOT( highlightFirstRegion()     ));
+    connect(buttonAppendSecondRegion->defaultAction()       , SIGNAL( hovered() ), SLOT( highlightSecondRegion()    ));
+    connect(buttonAppendEntireRegion->defaultAction()       , SIGNAL( hovered() ), SLOT( highlightEntireRegion()        ));
 
-KAction * BlenderColorSelector::addLowestColorRangeAction() const
-{
-    return m_addLowestColorRangeAction;
-}
-
-KAction * BlenderColorSelector::addHighestColorRangeAction() const
-{
-    return m_addHighestColorRangeAction;
-}
-*/
-
-QVector<QColor> BlenderColorSelector::allColorRange() const
-{
-    QVector<QColor> tmpColorRange;
-
-    for (int i = 1; i <= 100; i++)
-        tmpColorRange.append(KColorUtils::mix(m_baseColor->color(), m_overlayedColor->color(), static_cast<float>(i)/100.0f));
-
-    return tmpColorRange;
-}
-
-QVector<QColor> BlenderColorSelector::lowestColorRange() const
-{
-    QVector<QColor> tmpColorRange;
-
-    for (int i = 1; i <= m_linearMixer->value(); i++)
-        tmpColorRange.append(KColorUtils::mix(m_baseColor->color(), m_overlayedColor->color(), static_cast<float>(i)/100.0f));
-
-    return tmpColorRange;
-}
-
-QVector<QColor> BlenderColorSelector::highestColorRange() const
-{
-    QVector<QColor> tmpColorRange;
-
-    for (int i = m_linearMixer->value(); i <= 100; i++)
-        tmpColorRange.append(KColorUtils::mix(m_baseColor->color(), m_overlayedColor->color(), static_cast<float>(i)/100.0f));
-
-    return tmpColorRange;
+    connect(buttonAppendFirstQuarterRegion->defaultAction() , SIGNAL( triggered(bool) ), SLOT( appendFirstQuarterRegion()  ));
+    connect(buttonAppendSecondQuarterRegion->defaultAction(), SIGNAL( triggered(bool) ), SLOT( appendSecondQuarterRegion() ));
+    connect(buttonAppendThirdQuarterRegion->defaultAction() , SIGNAL( triggered(bool) ), SLOT( appendThirdQuarterRegion()  ));
+    connect(buttonAppendFourthQuarterRegion->defaultAction(), SIGNAL( triggered(bool) ), SLOT( appendFourthQuarterRegion() ));
+    connect(buttonAppendFirstRegion->defaultAction()        , SIGNAL( triggered(bool) ), SLOT( appendFirstRegion()     ));
+    connect(buttonAppendSecondRegion->defaultAction()       , SIGNAL( triggered(bool) ), SLOT( appendSecondRegion()    ));
+    connect(buttonAppendEntireRegion->defaultAction()       , SIGNAL( triggered(bool) ), SLOT( appendEntireRegion()        ));
 }
 
 void BlenderColorSelector::setColor(const QColor & color)
@@ -176,14 +233,131 @@ void BlenderColorSelector::updateMixWhenChangeColor(const QColor & color)
 {
     Q_UNUSED(color);
 
-    m_linearMixer->setColors(m_baseColor->color(), m_overlayedColor->color());
+    m_highlighterGradientSelector->setColors(m_firstColor->color(), m_secondColor->color());
 
     performMix();
 }
 
+void BlenderColorSelector::highlightFirstQuarterRegion()
+{
+    m_highlighterGradientSelector->setRegion(HighlighterGradientSelector::FirstQuarterRegion);
+}
+
+void BlenderColorSelector::highlightSecondQuarterRegion()
+{
+    m_highlighterGradientSelector->setRegion(HighlighterGradientSelector::SecondQuarterRegion);
+}
+
+void BlenderColorSelector::highlightThirdQuarterRegion()
+{
+    m_highlighterGradientSelector->setRegion(HighlighterGradientSelector::ThirdQuarterRegion);
+}
+
+void BlenderColorSelector::highlightFourthQuarterRegion()
+{
+    m_highlighterGradientSelector->setRegion(HighlighterGradientSelector::FourthQuarterRegion);
+}
+
+void BlenderColorSelector::highlightFirstRegion()
+{
+    m_highlighterGradientSelector->setRegion(HighlighterGradientSelector::FirstRegion);
+}
+
+void BlenderColorSelector::highlightSecondRegion()
+{
+    m_highlighterGradientSelector->setRegion(HighlighterGradientSelector::SecondRegion);
+}
+
+void BlenderColorSelector::highlightEntireRegion()
+{
+    m_highlighterGradientSelector->setRegion(HighlighterGradientSelector::EntireRegion);
+}
+
+void BlenderColorSelector::appendFirstQuarterRegion()
+{
+    appendColorsOfRegion(HighlighterGradientSelector::FirstQuarterRegion);
+}
+
+void BlenderColorSelector::appendSecondQuarterRegion()
+{
+    appendColorsOfRegion(HighlighterGradientSelector::SecondQuarterRegion);
+}
+
+void BlenderColorSelector::appendThirdQuarterRegion()
+{
+    appendColorsOfRegion(HighlighterGradientSelector::ThirdQuarterRegion);
+}
+
+void BlenderColorSelector::appendFourthQuarterRegion()
+{
+    appendColorsOfRegion(HighlighterGradientSelector::FourthQuarterRegion);
+}
+
+void BlenderColorSelector::appendFirstRegion()
+{
+    appendColorsOfRegion(HighlighterGradientSelector::FirstRegion);
+}
+
+void BlenderColorSelector::appendSecondRegion()
+{
+    appendColorsOfRegion(HighlighterGradientSelector::SecondRegion);
+}
+
+void BlenderColorSelector::appendEntireRegion()
+{
+    appendColorsOfRegion(HighlighterGradientSelector::EntireRegion);
+}
+
 void BlenderColorSelector::performMix()
 {
-    emit colorSelected(KColorUtils::mix(m_baseColor->color(), m_overlayedColor->color(), m_bias));
+    emit colorSelected(KColorUtils::mix(m_firstColor->color(), m_secondColor->color(), m_bias));
+}
+
+void BlenderColorSelector::appendColorsOfRegion(HighlighterGradientSelector::Region region)
+{
+    QVector<QColor> tmpColorRange;
+    int regionLimitMin;
+    int regionLimitMax;
+
+    switch (region)
+    {
+        case HighlighterGradientSelector::FirstQuarterRegion:
+            regionLimitMin = 1;
+            regionLimitMax = 25;
+            break;
+        case HighlighterGradientSelector::SecondQuarterRegion:
+            regionLimitMin = 26;
+            regionLimitMax = 50;
+            break;
+        case HighlighterGradientSelector::ThirdQuarterRegion:
+            regionLimitMin = 51;
+            regionLimitMax = 75;
+            break;
+        case HighlighterGradientSelector::FourthQuarterRegion:
+            regionLimitMin = 76;
+            regionLimitMax = 100;
+            break;
+        case HighlighterGradientSelector::FirstRegion:
+            regionLimitMin = 1;
+            regionLimitMax = m_highlighterGradientSelector->value();
+            break;
+        case HighlighterGradientSelector::SecondRegion:
+            regionLimitMin = m_highlighterGradientSelector->value();
+            regionLimitMax = 100;
+            break;
+        case HighlighterGradientSelector::EntireRegion:
+            regionLimitMin = 1;
+            regionLimitMax = 100;
+            break;
+
+        case HighlighterGradientSelector::NoneRegion:
+            break;
+    }
+
+    for (int i = regionLimitMin; i <= regionLimitMax; i++)
+        tmpColorRange.append(KColorUtils::mix(m_firstColor->color(), m_secondColor->color(), static_cast<float>(i)/100.0f));
+
+    emit colorsAdded(tmpColorRange);
 }
 
 #include "blendercolorselector.moc"

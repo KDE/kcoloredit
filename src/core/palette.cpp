@@ -66,20 +66,6 @@ void Palette::setDescription(const QString & description)
     m_description = description;
 }
 
-QString Palette::comments() const
-{
-    if (m_items.isEmpty())
-        return QString();
-
-    QString tmpFullDescription;
-
-    for (int i = 0; i < m_items.count(); i++)
-        if (itemType(i) == PaletteItem::CommentType)
-            tmpFullDescription +=  commentItem(i)->comment() + "\n";
-
-    return tmpFullDescription;
-}
-
 int Palette::count() const
 {
     return m_items.count();

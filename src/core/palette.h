@@ -27,7 +27,7 @@
 class Palette
 {
     public:
-        enum MoveOperation { MoveToPrev = 0, MoveToNext = 1, MoveToStart = 2, MoveToEnd = 3 };
+        enum MoveOperation { MoveToPrev = 0, MoveToNext, MoveToStart, MoveToEnd };
 
         Palette();
         ~Palette();
@@ -37,8 +37,6 @@ class Palette
 
         QString description() const;
         void setDescription(const QString & description);
-
-        QString comments() const;
 
         int count() const;
         bool isEmpty() const;

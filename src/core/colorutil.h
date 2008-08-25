@@ -23,7 +23,7 @@
 #include <QtGui/QColor>
 #include <QtCore/QVector>
 
-class ColorUtils
+class ColorUtil
 {
     public:
         static float luminance(const QColor & color);

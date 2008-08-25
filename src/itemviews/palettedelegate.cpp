@@ -100,7 +100,7 @@ void PaletteDelegate::paint(QPainter * painter, const QStyleOptionViewItem & opt
     {
         QColor color = index.model()->data(index).toMap().value("color").value<QColor>();
 
-        painter->setPen(ColorUtils::contrastColor(color));
+        painter->setPen(ColorUtil::contrastColor(color));
         painter->fillRect(option.rect, color);
         painter->drawText(option.rect, Qt::AlignCenter, index.model()->data(index).toMap().value("name").toString());
     }
@@ -109,9 +109,9 @@ void PaletteDelegate::paint(QPainter * painter, const QStyleOptionViewItem & opt
     {
         QBrush brush;
         brush.setStyle(Qt::Dense1Pattern);
-        brush.setColor(ColorUtils::contrastColor(ColorUtils::backgroundColorOfWindow()));
+        brush.setColor(ColorUtil::contrastColor(ColorUtil::backgroundColorOfWindow()));
 
-        painter->setPen(ColorUtils::contrastColor(brush.color()));
+        painter->setPen(ColorUtil::contrastColor(brush.color()));
         painter->fillRect(option.rect, brush);
         painter->drawText(option.rect, Qt::AlignCenter, index.model()->data(index).toMap().value("comment").toString());
     }

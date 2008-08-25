@@ -21,12 +21,12 @@
 
 #include <KColorScheme>
 
-float ColorUtils::luminance(const QColor & color)
+float ColorUtil::luminance(const QColor & color)
 {
     return 0.2126*color.red() + 0.7152*color.green() + 0.0722*color.blue();
 }
 
-QColor ColorUtils::contrastColor(const QColor & color)
+QColor ColorUtil::contrastColor(const QColor & color)
 {
     if (luminance(color) > (255.0 / 2.0))
         return Qt::black;
@@ -34,12 +34,12 @@ QColor ColorUtils::contrastColor(const QColor & color)
     return Qt::white;
 }
 
-QColor ColorUtils::complementColor(const QColor & color)
+QColor ColorUtil::complementColor(const QColor & color)
 {
     return QColor::fromHsv(validHueValue(color.hue() + 180), color.saturation(), color.value());
 }
 
-QVector<QColor> ColorUtils::triadicColors(const QColor & color)
+QVector<QColor> ColorUtil::triadicColors(const QColor & color)
 {
     QVector<QColor> ret;
 
@@ -49,7 +49,7 @@ QVector<QColor> ColorUtils::triadicColors(const QColor & color)
     return ret;
 }
 
-QVector<QColor> ColorUtils::tetradicColors(const QColor & color)
+QVector<QColor> ColorUtil::tetradicColors(const QColor & color)
 {
     QVector<QColor> ret;
 
@@ -60,7 +60,7 @@ QVector<QColor> ColorUtils::tetradicColors(const QColor & color)
     return ret;
 }
 
-QVector<QColor> ColorUtils::analogousColors(const QColor & color)
+QVector<QColor> ColorUtil::analogousColors(const QColor & color)
 {
     QVector<QColor> ret;
 
@@ -70,22 +70,22 @@ QVector<QColor> ColorUtils::analogousColors(const QColor & color)
     return ret;
 }
 
-QColor ColorUtils::backgroundColorOfWindow()
+QColor ColorUtil::backgroundColorOfWindow()
 {
     KColorScheme systemColorScheme(QPalette::Active);
 
     return systemColorScheme.background(KColorScheme::NormalBackground).color();
 }
 
-inline int ColorUtils::validHueValue(int hue)
+inline int ColorUtil::validHueValue(int hue)
 {
-    int tmpHue = hue;
+    int ret = hue;
 
-    if (tmpHue > 359)
-        tmpHue -= 360;
+    if (ret > 359)
+        ret -= 360;
 
-    if (tmpHue < 0)
-        tmpHue += 360;
+    if (ret < 0)
+        ret += 360;
 
-    return tmpHue;
+    return ret;
 }

@@ -26,7 +26,7 @@
 class PaletteItem
 {
     public:
-        enum ItemType { ColorType = 0, CommentType = 1};
+        enum ItemType { ColorType = 0, CommentType};
 
     PaletteItem() {}
     virtual ~PaletteItem() {}

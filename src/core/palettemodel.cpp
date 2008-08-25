@@ -207,11 +207,6 @@ void PaletteModel::setPaletteDescription(const QString & description)
     m_palette.setDescription(description);
 }
 
-QString PaletteModel::comments() const
-{
-    return m_palette.comments();
-}
-
 bool PaletteModel::hasDescription() const
 {
     if (m_palette.description().isEmpty())
@@ -249,13 +244,7 @@ void PaletteModel::insertColorItem(int pos, const QColor & color, const QString 
 {
     insertColorRows(pos, 1);
 
-    QVariantMap vmap;
-
-    vmap.insert("type", QString("color"));
-    vmap.insert("color", color);
-    vmap.insert("name", colorName);
-
-    setData(index(pos , 0), vmap);
+    setColorItem(pos, color, colorName);
 }
 
 void PaletteModel::setColorItem(int pos, const QColor & color, const QString & colorName)
@@ -284,12 +273,7 @@ void PaletteModel::insertCommentItem(int pos, const QString & comment)
 {
     insertCommentRows(pos, 1);
 
-    QVariantMap vmap;
-
-    vmap.insert("type", QString("comment"));
-    vmap.insert("comment", comment);
-
-    setData(index(pos, 0), vmap);
+    setCommentItem(pos, comment);
 }
 
 void PaletteModel::setCommentItem(int pos, const QString & comment)

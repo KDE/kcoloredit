@@ -56,6 +56,7 @@ class KColorEditWidget : public QWidget
         void addLowestColorRange();
         void addHighestColorRange();
 
+        void addColorsFromGradientSelector(const QVector<QColor> & colors);
         void addColorFromSchemes(const QColor & color);
 
     private:
