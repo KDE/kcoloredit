@@ -47,7 +47,7 @@
 #include <QtGui/QGroupBox>
 
 QT_BEGIN_NAMESPACE
-class QComboBox;
+class KComboBox;
 class QStackedWidget;
 class QVBoxLayout;
 QT_END_NAMESPACE
@@ -60,7 +60,7 @@ class MultiPageWidget : public QGroupBox
     Q_PROPERTY(QString pageTitle READ pageTitle WRITE setPageTitle STORED false)
 
 public:
-    MultiPageWidget(QWidget *parent = 0, const QString name = QString());
+    explicit MultiPageWidget(QWidget *parent = 0, const QString name = QString());
 
     QSize sizeHint() const;
 
@@ -82,7 +82,7 @@ signals:
 
 private:
     QStackedWidget *stackWidget;
-    QComboBox *comboBox;
+    KComboBox *comboBox;
     QVBoxLayout *layout;
 };
 //! [0]

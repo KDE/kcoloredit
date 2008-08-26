@@ -35,7 +35,7 @@ class CollectionGrid : public KColorCells
     Q_OBJECT
 
     public:
-        CollectionGrid(const QString & collection, QWidget * parent = 0);
+        explicit CollectionGrid(const QString & collection, QWidget * parent = 0);
 
         bool isEmpty() const;
 
@@ -60,7 +60,7 @@ class CollectionsWidget : public QWidget
 
     signals:
         void selectedCollection(const QString & collection);
-    
+
     private slots:
         void chooseCollection(const QString & collection);
 
@@ -76,7 +76,7 @@ class PaletteDialog : public KDialog
     public:
         static QString getOpenPaletteName(QWidget * parent = 0);
 
-        PaletteDialog(QWidget * parent = 0, Qt::WFlags flags = 0);
+        explicit PaletteDialog(QWidget * parent = 0, Qt::WFlags flags = 0);
         ~PaletteDialog();
 
         QString paletteName() const;

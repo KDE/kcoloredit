@@ -37,7 +37,7 @@ class PaletteItem
 class ColorItem : public PaletteItem
 {
     public:
-        ColorItem(const QColor & color = Qt::white, const QString & colorName = QString())
+        explicit ColorItem(const QColor & color = Qt::white, const QString & colorName = QString())
             : m_color(color)
             , m_colorName(colorName) {}
         ColorItem(const ColorItem & colorItem)

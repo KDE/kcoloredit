@@ -1,10 +1,8 @@
 [Desktop Entry]
-Encoding=UTF-8
 Type=Application
 Categories=Qt;KDE;Graphics;
 Exec=kcoloredit
 Icon=kcoloredit
-Path=
 Terminal=false
 DocPath=kcoloredit/index.html
 GenericName=Color Palette Editor

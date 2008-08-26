@@ -225,14 +225,12 @@ PaletteItem::ItemType PaletteModel::itemType(int pos) const
     return PaletteItem::CommentType;
 }
 
-QVariantMap PaletteModel::colorItem(int pos) const
+ColorItem PaletteModel::colorItem(int pos) const
 {
-    QVariantMap vmap = index(pos, 0).data().toMap();
+    if (m_palette.itemType(pos) == PaletteItem::ColorType)
+        return ColorItem(m_palette.colorItem(pos)->color(), m_palette.colorItem(pos)->colorName());
 
-    if (vmap.value("type").toString() == QString("color"))
-        return vmap;
-
-    return QVariantMap();
+    return ColorItem(QColor::Invalid, QString());
 }
 
 void PaletteModel::appendColorItem(const QColor & color, const QString & colorName)
@@ -254,14 +252,12 @@ void PaletteModel::setColorItem(int pos, const QColor & color, const QString & c
     emit dataChanged(QModelIndex(), QModelIndex());
 }
 
-QVariantMap PaletteModel::commentItem(int pos) const
+CommentItem PaletteModel::commentItem(int pos) const
 {
-    QVariantMap vmap = index(pos, 0).data().toMap();
+    if (m_palette.itemType(pos) == PaletteItem::CommentType)
+        return CommentItem(m_palette.commentItem(pos)->comment());
 
-    if (vmap.value("type").toString() == QString("comment"))
-        return vmap;
-
-    return QVariantMap();
+    return CommentItem(QString());
 }
 
 void PaletteModel::appendCommentItem(const QString & comment)

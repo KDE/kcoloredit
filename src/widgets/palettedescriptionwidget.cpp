@@ -20,7 +20,6 @@
 #include "palettedescriptionwidget.h"
 
 #include <QtGui/QLayout>
-#include <QtGui/QTextEdit>
 #include <QtGui/QToolButton>
 #include <QtCore/QEventLoop>
 #include <QtCore/QPointer>
@@ -33,7 +32,7 @@
 #include <KDialog>
 #include <KLocale>
 #include <KDebug>
-
+#include <KTextEdit>
 
 class PaletteDescriptionWidget::Private
 {
@@ -45,7 +44,7 @@ public:
 
     QEventLoop* eventLoop;
     bool success;
-    QTextEdit* textEdit;
+    KTextEdit* textEdit;
     QToolButton* buttonSave;
     QToolButton* buttonCancel;
 
@@ -112,7 +111,7 @@ PaletteDescriptionWidget::PaletteDescriptionWidget( QWidget* parent )
     setFrameStyle( QFrame::Box|QFrame::Plain );
     setWindowFlags( Qt::Popup );
 
-    d->textEdit = new QTextEdit( this );
+    d->textEdit = new KTextEdit( this );
     d->textEdit->installEventFilter( this );
     QVBoxLayout* layout = new QVBoxLayout( this );
     layout->setMargin( 0 );

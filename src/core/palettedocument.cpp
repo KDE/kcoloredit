@@ -21,7 +21,6 @@
 
 #include "palettedocument.h"
 
-#include <QtCore/QFile>
 #include <QtCore/QTextStream>
 
 #include <KSaveFile>
@@ -33,9 +32,10 @@ PaletteDocument::PaletteDocument(QObject * parent)
     : QObject(parent)
     , m_model(new PaletteModel(this))
     , m_fullPathFile(QString())
+    , m_documentType(PaletteDocument::KDEType)
 {
-    connect(m_model, SIGNAL( dataChanged(QModelIndex, QModelIndex) ), this, SLOT( updatePaletteDocument() ));
-    connect(m_model, SIGNAL( rowsRemoved(QModelIndex, int, int) ), this, SLOT( updatePaletteDocument() ));
+    connect(m_model, SIGNAL( dataChanged(QModelIndex, QModelIndex) ), SLOT( updatePaletteDocument() ));
+    connect(m_model, SIGNAL( rowsRemoved(QModelIndex, int, int)    ), SLOT( updatePaletteDocument() ));
 }
 
 PaletteDocument::~PaletteDocument()
@@ -57,8 +57,6 @@ PaletteModel * PaletteDocument::model()
     return m_model;
 }
 
-#include <kdebug.h>
-
 bool PaletteDocument::openPaletteFile(const QString & fileName)
 {
     QFile file(fileName);
@@ -72,7 +70,7 @@ bool PaletteDocument::openPaletteFile(const QString & fileName)
 
     if (!file.open(QIODevice::ReadOnly))
     {
-        m_lastErrorString = i18n("Couldn't open the file");
+        m_lastErrorString = i18n("Could not open the file");
 
         return false;
     }
@@ -80,7 +78,7 @@ bool PaletteDocument::openPaletteFile(const QString & fileName)
     QString line;
 
     // Read first line
-    // Expected "GIMP Palette"
+    // Expected "GIMP Palette" or "KDE RGB Palette"
     line = QString::fromLocal8Bit(file.readLine());
 
     if (line.indexOf(" Palette") == -1)
@@ -89,6 +87,12 @@ bool PaletteDocument::openPaletteFile(const QString & fileName)
 
         return false; 
     }
+
+    if (line.indexOf("KDE") == -1)
+        m_documentType = PaletteDocument::KDEType;
+
+    if (line.indexOf("GIMP") == -1)
+        m_documentType = PaletteDocument::GIMPType;
 
     // NOT DEPRECATED i solved the issue with deletion see palettemodel removeRows
     // NOTE this 4 lines are very important
@@ -99,8 +103,8 @@ bool PaletteDocument::openPaletteFile(const QString & fileName)
 
     m_model = new PaletteModel(this);
 
-    connect(m_model, SIGNAL( dataChanged(QModelIndex, QModelIndex) ), this, SLOT( updatePaletteDocument() ));
-    connect(m_model, SIGNAL( rowsRemoved(QModelIndex, int, int) ), this, SLOT( updatePaletteDocument() ));
+    connect(m_model, SIGNAL( dataChanged(QModelIndex, QModelIndex) ), SLOT( updatePaletteDocument() ));
+    connect(m_model, SIGNAL( rowsRemoved(QModelIndex, int, int)    ), SLOT( updatePaletteDocument() ));
 
     // TOO SLOWWWW load time no wayy
     // NOTE now we simply remove items not delete the model
@@ -109,8 +113,6 @@ bool PaletteDocument::openPaletteFile(const QString & fileName)
 
     int r, g, b;
     int pos = 0;
-
-    QVariantMap vmap;
 
     while( !file.atEnd() )
     {
@@ -156,33 +158,16 @@ bool PaletteDocument::openPaletteFile(const QString & fileName)
             line = line.trimmed(); // Strip remaining white space..
 
             //if (!line.isEmpty())
-                m_model->appendCommentItem(line);
+            m_model->appendCommentItem(line);
         }
     }
 
-///
-
-    m_model->setPaletteDescription(descriptionOfPaletteFile());
-
-    int a; // NOTE WIIIIIIIIII
-
-    for (int i = 0; i < m_model->rowCount(); i++)
-    {
-        if (m_model->itemType(i) != PaletteItem::CommentType)
-        {
-            a = i;
-            kDebug() << i;
-            break ;
-        }
-    }
-
-    if (a != 0) // NOTE wowo niccc
-        m_model->removeRows(0, a);
-
-///
+    extractDescriptionFromModel();
 
     m_fullPathFile = fileName;
-    m_file = m_fullPathFile.split("/")[m_fullPathFile.split("/").count() - 1];
+    m_file = m_fullPathFile.split('/')[m_fullPathFile.split('/').count() - 1];
+
+    file.close();
 
     return true;
 }
@@ -198,37 +183,40 @@ bool PaletteDocument::saveFileAs(const QString & fileName)
         return false;
     }
 
-    QVariantMap vmap;
-
     QTextStream textStream(&saveFile);
-    textStream << "KDE RGB Palette" << endl;
+
+    switch (m_documentType)
+    {
+        case PaletteDocument::KDEType:
+            textStream << "KDE RGB Palette" << endl;
+            break;
+        case PaletteDocument::GIMPType:
+            textStream << "GIMP Palette" << endl;
+            break;
+    }
+
     textStream << "Name: " << m_model->paletteName() << endl;
 
-///
-    QStringList description = m_model->paletteDescription().split('\n');
+    // NOTE write the description (first comments before the first color ocurrence)
+    QStringList tmpDescription = m_model->paletteDescription().split('\n');
 
-    for(int i = 0; i < description.count(); i++)
-        textStream << "#" << description[i] << endl;
-///
+    for(int i = 0; i < tmpDescription.count(); i++)
+        textStream << "#" << tmpDescription[i] << endl;
 
+    // NOTE write the data (color and comment items)
     for(int i = 0; i < m_model->rowCount(); i++)
     {
-        vmap = m_model->index(i, 0).data().toMap();
+        PaletteItem::ItemType itemType = m_model->itemType(i);
 
-        if (vmap.value("type").toString() == QString("color"))
+        if (itemType == PaletteItem::ColorType)
         {
-            QColor color = vmap.value("color").value<QColor>();
-            QString colorName = vmap.value("name").toString();
+            QColor color = m_model->colorItem(i).color();
 
-            textStream << color.red() << " " << color.green() << " " << color.blue() << " " << colorName << endl;
+            textStream << color.red() << " " << color.green() << " " << color.blue() << " " << m_model->colorItem(i).colorName() << endl;
         }
 
-        if (vmap.value("type").toString() == QString("comment"))
-        {
-            QString comment = vmap.value("comment").toString();
-
-            textStream << "#" << comment << endl;
-        }
+        if (itemType == PaletteItem::CommentType)
+            textStream << "#" << m_model->commentItem(i).comment() << endl;
     }
 
     saveFile.flush();
@@ -243,9 +231,14 @@ bool PaletteDocument::saveFileAs(const QString & fileName)
     }
 
     m_fullPathFile = fileName;
-    m_file = m_fullPathFile.split("/")[m_fullPathFile.split("/").count() - 1];
+    m_file = m_fullPathFile.split('/')[m_fullPathFile.split('/').count() - 1];
 
     return true;
+}
+
+PaletteDocument::DocumentType PaletteDocument::type() const
+{
+    return m_documentType;
 }
 
 QString PaletteDocument::lastErrorString() const
@@ -258,31 +251,8 @@ void PaletteDocument::updatePaletteDocument()
     emit modified();
 }
 
-QString PaletteDocument::descriptionOfPaletteFile() const
+void PaletteDocument::extractDescriptionFromModel()
 {
-    if (!m_model)
-        return QString();
-
-    if (m_model->rowCount() == 0)
-        return QString();
-
-    if (m_model->itemType(0) != PaletteItem::CommentType)
-        return QString();
-    else
-    {
-        if (m_model->rowCount() == 1)
-        {
-            if (m_model->itemType(0) == PaletteItem::CommentType)
-                return m_model->commentItem(0).value("comment").toString();
-            else
-                return QString();
-        }
-
-        if (m_model->rowCount() > 1)
-            if (m_model->itemType(1) == PaletteItem::ColorType)
-                return m_model->commentItem(0).value("comment").toString();
-    }
-
     QStringList comments;
 
     int j = 0;
@@ -293,22 +263,41 @@ QString PaletteDocument::descriptionOfPaletteFile() const
         {
             j++;
 
+            // NOTE the last comment not belong to description
             if (i != (j - 1))
                 break;
 
-            comments.append(m_model->commentItem(i).value("comment").toString());
+            comments.append(m_model->commentItem(i).comment());
         }
     }
 
     QString tmpDescription;
 
-    for (int i = 0; i < comments.count(); i++)
-        if (i + 1 == comments.count())
-            tmpDescription += comments[i];
-        else
-            tmpDescription += comments[i] + "\n";
+    if (comments.count() > 0)
+    {
+        for (int i = 0; i < comments.count() - 1; i++)
+            tmpDescription += comments[i] + '\n';
 
-    return tmpDescription;
+        tmpDescription += comments[comments.count() - 1];
+    }
+
+    m_model->setPaletteDescription(tmpDescription);
+
+    // NOTE Remove the comment items that belongs to the description
+    // commentsToRemove equals to first comments before the first color item ocurrence
+    int commentsToRemove;
+
+    for (int i = 0; i < m_model->rowCount(); i++)
+    {
+        if (m_model->itemType(i) != PaletteItem::CommentType)
+        {
+            commentsToRemove = i;
+            break ;
+        }
+    }
+
+    if (commentsToRemove != 0)
+        m_model->removeRows(0, commentsToRemove);
 }
 
 #include "palettedocument.moc"

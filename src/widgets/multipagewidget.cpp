@@ -46,14 +46,18 @@
   Percy Camilo Triveño Aucahuasi <orgyforever@gmail.com>
 */
 
-#include <QtGui>
-
 #include "multipagewidget.h"
+
+#include <QtGui/QLayout>
+#include <QtGui/QLabel>
+#include <QtGui/QStackedWidget>
+
+#include <KComboBox>
 
 MultiPageWidget::MultiPageWidget(QWidget * parent, const QString name)
     : QGroupBox(parent)
 {
-    comboBox = new QComboBox();
+    comboBox = new KComboBox();
     comboBox->setObjectName("__qt__passive_comboBox");
     stackWidget = new QStackedWidget();
 

@@ -35,7 +35,7 @@ class PaletteBriefView : public QWidget
     Q_OBJECT
 
     public:
-        PaletteBriefView(PaletteModel * model, QWidget * parent = 0);
+        explicit PaletteBriefView(PaletteModel * model, QWidget * parent = 0);
 
         void setModel(PaletteModel * model);
 

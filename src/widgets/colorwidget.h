@@ -33,7 +33,7 @@ class ColorWidget : public QWidget
     public:
         enum Mode {Simple = 0, WithActions};
 
-        ColorWidget(QWidget * parent = 0, ColorWidget::Mode mode = ColorWidget::WithActions);
+        explicit ColorWidget(QWidget * parent = 0, ColorWidget::Mode mode = ColorWidget::WithActions);
 
         QColor color() const;
 

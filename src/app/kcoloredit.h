@@ -35,7 +35,7 @@ class KColorEditMainWnd : public KXmlGuiWindow
     Q_OBJECT
 
     public:
-        KColorEditMainWnd(QWidget * parent = 0, Qt::WindowFlags f = KDE_DEFAULT_WINDOWFLAGS);
+        explicit KColorEditMainWnd(QWidget * parent = 0, Qt::WindowFlags f = KDE_DEFAULT_WINDOWFLAGS);
         ~KColorEditMainWnd();
 
         void openPaletteFile(const QString & file);

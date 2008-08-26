@@ -36,7 +36,7 @@ class PaletteDetailView : public QWidget
     Q_OBJECT
 
     public:
-        PaletteDetailView(PaletteModel * model, QWidget * parent = 0);
+        explicit PaletteDetailView(PaletteModel * model, QWidget * parent = 0);
 
         void setModel(PaletteModel * model);
 

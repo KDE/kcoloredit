@@ -57,12 +57,12 @@ class PaletteModel : public QAbstractTableModel
 
         PaletteItem::ItemType itemType(int pos) const;
 
-        QVariantMap colorItem(int pos) const;
+        ColorItem colorItem(int pos) const;
         void appendColorItem(const QColor & color = Qt::white, const QString & colorName = QString());
         void insertColorItem(int pos, const QColor & color = Qt::white, const QString & colorName = QString());
         void setColorItem(int pos, const QColor & color, const QString & colorName);
 
-        QVariantMap commentItem(int pos) const;
+        CommentItem commentItem(int pos) const;
         void appendCommentItem(const QString & comment = QString());
         void insertCommentItem(int pos, const QString & comment = QString());
         void setCommentItem(int pos, const QString & comment);

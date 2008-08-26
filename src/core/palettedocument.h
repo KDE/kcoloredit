@@ -29,6 +29,8 @@ class PaletteDocument : public QObject
     Q_OBJECT
 
     public:
+        enum DocumentType { KDEType = 0, GIMPType };
+
         PaletteDocument(QObject * parent = 0);
         ~PaletteDocument();
 
@@ -41,6 +43,8 @@ class PaletteDocument : public QObject
         bool saveFile();
         bool saveFileAs(const QString & fileName);
 
+        PaletteDocument::DocumentType type() const;
+
         QString lastErrorString() const;
 
     signals:
@@ -50,13 +54,14 @@ class PaletteDocument : public QObject
         void updatePaletteDocument();
 
     private:
-        QString descriptionOfPaletteFile() const;
+        void extractDescriptionFromModel();
 
     private:
         PaletteModel * m_model;
         QString m_fullPathFile;
         QString m_file;
         QString m_lastErrorString;
+        PaletteDocument::DocumentType m_documentType;
 };
 
 #endif // PALETTE_DOCUMENT_H
