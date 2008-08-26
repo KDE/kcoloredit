@@ -53,7 +53,7 @@ KColorEditWidget::KColorEditWidget(QWidget * parent)
     m_blenderColorSelector->setWindowIcon(KIcon("fill-color"));
 
     m_colorToolWidget = new ColorToolWidget(colorTools);
-    m_colorToolWidget->setWindowTitle(i18nc("Set of extra tools apart of color selectors", "Extra"));
+    m_colorToolWidget->setWindowTitle(i18nc("Set of extra tools apart of color selectors", "Extras"));
 
     colorTools->addPage(m_kdeColorSelector);
     colorTools->addPage(m_gtkColorSelector);
@@ -96,8 +96,17 @@ KColorEditWidget::KColorEditWidget(QWidget * parent)
 
     connect(m_blenderColorSelector, SIGNAL( colorsAdded(QVector<QColor>) ), SLOT( appendColorsFromGradientSelector(QVector<QColor>) ));
 
-    for (int i = 0; i < colorTools->count(); i++)
+    // TODO document this
+
+    // All color selector can change the color of the dispatcher and extratools
+    for (int i = 0; i < colorTools->count() - 1; i++)
+    {
         connect(colorTools->widget(i), SIGNAL( colorSelected(QColor) ), m_colorDispatcher, SLOT( setColor(QColor) ));
+        connect(colorTools->widget(i), SIGNAL( colorSelected(QColor) ), colorTools->widget(colorTools->count() - 1), SLOT( setColor(QColor) ));
+    }
+
+    // Extratools can change the color of the dispatcher
+    connect(colorTools->widget(colorTools->count() - 1), SIGNAL( colorSelected(QColor) ), m_colorDispatcher, SLOT( setColor(QColor) ));
 
     for (int j = 0; j < colorInfoTexts->count(); j++)
         connect(m_colorDispatcher, SIGNAL( colorChanged(QColor) ), colorInfoTexts->widget(j), SLOT( setColor(QColor) ));

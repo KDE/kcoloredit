@@ -19,7 +19,7 @@
 
 #include "colortoolwidget.h"
 
-#include <QtGui/QGridLayout>
+#include <QtGui/QLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QCheckBox>
 #include <QtGui/QGroupBox>
@@ -28,7 +28,6 @@
 #include <KLocalizedString>
 #include <KPushButton>
 
-
 ColorToolWidget::ColorToolWidget(QWidget * parent)
     : QWidget(parent)
 {
@@ -36,13 +35,15 @@ ColorToolWidget::ColorToolWidget(QWidget * parent)
 
     QGroupBox * brightnessBox = new QGroupBox(i18n("Brightness"), this);
 
-    KPushButton * decreaseBrightnessButton = new KPushButton(brightnessBox);
-    KPushButton * increaseBrightnessButton = new KPushButton(brightnessBox);
+    KPushButton * decreaseBrightnessButton = new KPushButton(KIcon("arrow-down"), i18n("Decrease"), brightnessBox);
+    KPushButton * increaseBrightnessButton = new KPushButton(KIcon("arrow-up"), i18n("Increase"), brightnessBox);
+
+    m_brightnessPercentage = new QLabel("45%", brightnessBox);
 
     QHBoxLayout * brightnessLayout = new QHBoxLayout(brightnessBox);
     brightnessLayout->addWidget(decreaseBrightnessButton);
     brightnessLayout->addWidget(increaseBrightnessButton);
-    brightnessLayout->addWidget(new QLabel("45%", brightnessBox));
+    brightnessLayout->addWidget(m_brightnessPercentage);
 
     //END Brightness settings
 
@@ -50,13 +51,15 @@ ColorToolWidget::ColorToolWidget(QWidget * parent)
 
     QGroupBox * saturationBox = new QGroupBox(i18n("Saturation"), this);
 
-    KPushButton * decreaseSaturationButton = new KPushButton(saturationBox);
-    KPushButton * increaseSaturationButton = new KPushButton(saturationBox);
+    KPushButton * decreaseSaturationButton = new KPushButton(KIcon("arrow-down"), i18n("Decrease"), saturationBox);
+    KPushButton * increaseSaturationButton = new KPushButton(KIcon("arrow-up"), i18n("Increase"), saturationBox);
+
+    m_saturationPercentage = new QLabel("15%", saturationBox);
 
     QHBoxLayout * saturationLayout = new QHBoxLayout(saturationBox);
     saturationLayout->addWidget(decreaseSaturationButton);
     saturationLayout->addWidget(increaseSaturationButton);
-    saturationLayout->addWidget(new QLabel("15%", saturationBox));
+    saturationLayout->addWidget(m_saturationPercentage);
 
     connect(decreaseSaturationButton, SIGNAL( pressed () ), SLOT( decreaseSaturation() ));
     connect(increaseSaturationButton, SIGNAL( pressed () ), SLOT( increaseSaturation() ));
@@ -67,11 +70,12 @@ ColorToolWidget::ColorToolWidget(QWidget * parent)
 
     QGroupBox * extraSelectorsBox = new QGroupBox(i18n("Extra color selectors"), this);
 
-    KPushButton * pickColorButton = new KPushButton(KIcon("pick-color"), i18n("pick a color from desktop"), extraSelectorsBox);
+    KPushButton * pickColorButton = new KPushButton(KIcon("color-picker"), i18n("Pick a color"), extraSelectorsBox);
+    h_checkBoxHideWindow = new QCheckBox(i18n("Hide window"), extraSelectorsBox);
 
     QHBoxLayout * pickColorLayout = new QHBoxLayout();
     pickColorLayout->addWidget(pickColorButton);
-    pickColorLayout->addWidget(new QCheckBox(extraSelectorsBox));
+    pickColorLayout->addWidget(h_checkBoxHideWindow);
 
     QVBoxLayout * extraSelectorsLayout = new QVBoxLayout(extraSelectorsBox);
     extraSelectorsLayout->addLayout(pickColorLayout);
@@ -92,6 +96,8 @@ ColorToolWidget::ColorToolWidget(QWidget * parent)
 void ColorToolWidget::setColor(const QColor & color)
 {
     m_color = color;
+
+    m_saturationPercentage->setText(QString::number(static_cast<int>(m_color.saturation()*100/255)) + "%");
 }
 
 void ColorToolWidget::pickColorFromDesktop()
@@ -99,17 +105,36 @@ void ColorToolWidget::pickColorFromDesktop()
 
 }
 
+void ColorToolWidget::decreaseBrightness()
+{
+
+}
+
+void ColorToolWidget::increaseBrightness()
+{
+
+}
+
 void ColorToolWidget::decreaseSaturation()
 {
-    //emit colorSelected(randColor);
+    int tmpSaturation = qBound(0, m_color.saturation() - 5, 255);
+
+    m_color.setHsv(m_color.hue(), tmpSaturation, m_color.value());
+
+    m_saturationPercentage->setText(QString::number(static_cast<int>(m_color.saturation()*100/255)) + "%");
+
+    emit colorSelected(m_color);
 }
 
 void ColorToolWidget::increaseSaturation()
 {
-    static QColor saturatedColor;
-    saturatedColor.setHsv(m_color.hue(), m_color.saturation() + 0.05 * 100, m_color.value());
+    int tmpSaturation = qBound(0, m_color.saturation() + 5, 255);
 
-    emit colorSelected(saturatedColor);
+    m_color.setHsv(m_color.hue(), tmpSaturation, m_color.value());
+
+    m_saturationPercentage->setText(QString::number(static_cast<int>(m_color.saturation()*100/255)) + "%");
+
+    emit colorSelected(m_color);
 }
 
 #include "colortoolwidget.moc"

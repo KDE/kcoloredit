@@ -22,7 +22,8 @@
 
 #include <QtGui/QWidget>
 
-class QEvent;
+class QLabel;
+class QCheckBox;
 
 class ColorToolWidget : public QWidget
 {
@@ -38,6 +39,9 @@ class ColorToolWidget : public QWidget
         void colorSelected(const QColor & color);
 
     private slots:
+        void decreaseBrightness();
+        void increaseBrightness();
+
         void decreaseSaturation();
         void increaseSaturation();
 
@@ -45,6 +49,11 @@ class ColorToolWidget : public QWidget
 
     private:
         QColor m_color;
+
+        QLabel * m_brightnessPercentage;
+        QLabel * m_saturationPercentage;
+
+        QCheckBox * h_checkBoxHideWindow;
 };
 
 #endif // COLORTOOL_WIDGET_H
