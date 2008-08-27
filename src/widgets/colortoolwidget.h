@@ -1,6 +1,9 @@
 /*********************************************************************************
 *  Copyright (C) 2008 by Percy Camilo Triveño Aucahuasi <orgyforever@gmail.com>  *
 *                                                                                *
+*  Filters:                                                                      *
+*  Is based on kdeui/colors/kcolordialog                                         *
+*                                                                                *
 *  This program is free software; you can redistribute it and/or modify          *
 *  it under the terms of the GNU General Public License as published by          *
 *  the Free Software Foundation; either version 2 of the License, or             *
@@ -23,7 +26,10 @@
 #include <QtGui/QWidget>
 
 class QLabel;
-class QCheckBox;
+
+#ifdef Q_WS_X11
+class KCDPickerFilter;
+#endif
 
 class ColorToolWidget : public QWidget
 {
@@ -31,12 +37,18 @@ class ColorToolWidget : public QWidget
 
     public:
         ColorToolWidget(QWidget * parent = 0);
+        ~ColorToolWidget();
 
     public slots:
         void setColor(const QColor & color);
 
     signals:
         void colorSelected(const QColor & color);
+
+    protected:
+        virtual void keyPressEvent(QKeyEvent * event);
+        virtual void mouseMoveEvent(QMouseEvent * event);
+        virtual void mousePressEvent(QMouseEvent * event);
 
     private slots:
         void decreaseBrightness();
@@ -48,12 +60,19 @@ class ColorToolWidget : public QWidget
         void pickColorFromDesktop();
 
     private:
+        QColor grabColor(const QPoint & p);
+
+    private:
         QColor m_color;
 
         QLabel * m_brightnessPercentage;
         QLabel * m_saturationPercentage;
 
-        QCheckBox * h_checkBoxHideWindow;
+#ifdef Q_WS_X11
+        KCDPickerFilter * m_filter;
+#endif
+
+        bool m_colorPicking;
 };
 
 #endif // COLORTOOL_WIDGET_H

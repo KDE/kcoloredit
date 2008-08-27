@@ -1,7 +1,9 @@
 /*********************************************************************************
 *  Copyright (C) 2008 by Percy Camilo Triveño Aucahuasi <orgyforever@gmail.com>  *
+*                                                                                *
 *  openPaletteFile(const QString & fileName):                                    *
-*  Is based on kdeui: Copyright (C) 1999 Waldo Bastian (bastian@kde.org)         *
+*  Is based on kdeui/colors/kcolordialog                                         *
+*  Copyright (C) 1999 Waldo Bastian (bastian@kde.org)                            *
 *                                                                                *
 *  This program is free software; you can redistribute it and/or modify          *
 *  it under the terms of the GNU General Public License as published by          *

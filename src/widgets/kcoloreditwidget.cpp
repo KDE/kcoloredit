@@ -54,6 +54,7 @@ KColorEditWidget::KColorEditWidget(QWidget * parent)
 
     m_colorToolWidget = new ColorToolWidget(colorTools);
     m_colorToolWidget->setWindowTitle(i18nc("Set of extra tools apart of color selectors", "Extras"));
+    m_colorToolWidget->setWindowIcon(KIcon("fill-color"));
 
     colorTools->addPage(m_kdeColorSelector);
     colorTools->addPage(m_gtkColorSelector);
