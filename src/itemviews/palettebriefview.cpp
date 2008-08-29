@@ -106,6 +106,8 @@ void PaletteBriefView::setZoomFactor(int factor)
 
         updatePaletteView();
     }
+    else
+        m_setColumnSlider->setValue(1);
 }
 
 void PaletteBriefView::zoomOut()
@@ -122,23 +124,31 @@ void PaletteBriefView::zoomIn()
 
 void PaletteBriefView::updatePaletteView()
 {
-    // TODO I will improve this method
-    // NOTE Here we load the data from PaletteModel
-
     m_colorCells->clear();
+
+    // NOTE
+    // First check if PaletteModel is not empty
+
+    if (m_model->rowCount() == 0)
+    {
+        m_colorCells->setRowCount(0);
+        m_colorCells->setColumnCount(1);
+
+        m_setColumnSlider->setValue(1);
+
+        return ;
+    }
+
+    // NOTE
+    // Here we load data (color and comment items) from PaletteModel
+    // to fill it inside KColorCells
 
     int rows = m_model->rowCount();
     int colors = 0;
 
-    QVariantMap vmap;
-
     for (int i = 0; i < rows; i++)
-    {
-        vmap = m_model->index(i, 0).data().toMap();
-
-        if (vmap.value("type").toString() == QString("color"))
+        if (m_model->itemType(i) == PaletteItem::ColorType)
             colors++;
-    }
 
     if (!m_showCommentsCheckBox->isChecked())
     {
@@ -165,79 +175,94 @@ void PaletteBriefView::updatePaletteView()
             return ;
     }
 
+    // NOTE
+    // Setup the brush to the background of the comment items
+
+    QBrush brush;
+    brush.setStyle(Qt::Dense1Pattern);
+    brush.setColor(ColorUtil::contrastColor(ColorUtil::backgroundColorOfWindow()));
+
+    // NOTE
+    // This variables represent the current row and column of the
+    // item (color or comment) that are inside the ColorCells
+
     int tableRow;
     int tableColumn;
 
-    if (!m_showCommentsCheckBox->isChecked())
-    {
-        int colorCount = 0;
+    // NOTE
+    // If show comments is checked, then we filled KColorCells with all the
+    // data (color and comment items) of PaletteModel, else
+    // only filled KColorCells with color items
 
-        for (int i = 0; i < rows; i++)
-        {
-            vmap = m_model->index(i, 0).data().toMap();
-
-            if (vmap.value("type").toString() == QString("color"))
-            {
-                tableRow = colorCount / m_colorCells->columnCount();
-                tableColumn = colorCount % m_colorCells->columnCount();
-
-                m_colorCells->setColor(colorCount, vmap.value("color").value<QColor>());
-
-                QTableWidgetItem * colorItem = m_colorCells->item(tableRow, tableColumn);
-
-                if ((!vmap.value("name").toString().isEmpty()) && (colorItem))
-                    colorItem->setToolTip(i18n("Name : ") + vmap.value("name").toString());
-
-                colorCount++;
-            }
-        }
-    }
-    else
+    if (m_showCommentsCheckBox->isChecked())
     {
         for (int i = 0; i < rows; i++)
         {
             tableRow = i / m_colorCells->columnCount();
             tableColumn = i % m_colorCells->columnCount();
 
-            vmap = m_model->index(i, 0).data().toMap();
-
-            if (vmap.value("type").toString() == QString("color"))
+            if (m_model->itemType(i) == PaletteItem::ColorType)
             {
-                m_colorCells->setColor(i, vmap.value("color").value<QColor>());
+                // NOTE
+                // Here we use the standar KColorCells APi to set a color item
+
+                m_colorCells->setColor(i, m_model->colorItem(i).color());
 
                 QTableWidgetItem * colorItem = m_colorCells->item(tableRow, tableColumn);
 
-                if ((!vmap.value("name").toString().isEmpty()) && (colorItem))
-                    colorItem->setToolTip(i18n("Name : ") + vmap.value("name").toString());
+                if ((!m_model->colorItem(i).colorName().isEmpty()) && (colorItem))
+                    colorItem->setToolTip(i18n("Name: ") + m_model->colorItem(i).colorName());
             }
 
-            if (vmap.value("type").toString() == QString("comment"))
+            if (m_model->itemType(i) == PaletteItem::CommentType)
             {
+                // NOTE
+                // Here we use QTableWidget (base class of KColorCells) APi to set a comment item
+
                 QTableWidgetItem * commentItem = new QTableWidgetItem();
 
                 m_colorCells->setItem(tableRow, tableColumn, commentItem);
 
-                QBrush brush;
-                brush.setStyle(Qt::Dense1Pattern);
-                brush.setColor(ColorUtil::contrastColor(ColorUtil::backgroundColorOfWindow()));
-
                 commentItem->setBackground(brush);
 
-                if (!vmap.value("comment").toString().isEmpty())
-                    commentItem->setToolTip(i18n("Comment : ") + vmap.value("comment").toString());
+                if (!m_model->commentItem(i).comment().isEmpty())
+                    commentItem->setToolTip(i18n("Comment: ") + m_model->commentItem(i).comment());
+            }
+        }
+    }
+    else
+    {
+        colors = 0;
+
+        for (int i = 0; i < rows; i++)
+        {
+            if (m_model->itemType(i) == PaletteItem::ColorType)
+            {
+                tableRow = colors / m_colorCells->columnCount();
+                tableColumn = colors % m_colorCells->columnCount();
+
+                m_colorCells->setColor(colors, m_model->colorItem(i).color());
+
+                QTableWidgetItem * colorItem = m_colorCells->item(tableRow, tableColumn);
+
+                if ((!m_model->colorItem(i).colorName().isEmpty()) && (colorItem))
+                    colorItem->setToolTip(i18n("Name: ") + m_model->colorItem(i).colorName());
+
+                colors++;
             }
         }
     }
 
+    // NOTE
+    // This last lines fix the size of each cell of KColorCells
+
     int hFactor = m_colorCells->width() / m_colorCells->columnCount();
     int vFactor = m_colorCells->height() / m_colorCells->rowCount();
-    int tableColumns = m_colorCells->columnCount();
-    int tableRows = m_colorCells->rowCount();
 
-    for (int i = 0 ; i < tableColumns ; i++)
+    for (int i = 0 ; i < m_colorCells->columnCount(); i++)
         m_colorCells->horizontalHeader()->resizeSection(i, hFactor);
 
-    for (int i = 0 ; i < tableRows ; i++)
+    for (int i = 0 ; i < m_colorCells->rowCount(); i++)
         m_colorCells->verticalHeader()->resizeSection(i, vFactor);
 }
 

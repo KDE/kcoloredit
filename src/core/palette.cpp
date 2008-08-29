@@ -81,12 +81,12 @@ PaletteItem::ItemType Palette::itemType(int index) const
     return m_items[index]->type();
 }
 
-ColorItem * Palette::colorItem(int index) const
+ColorItem Palette::colorItem(int index) const
 {
     if (itemType(index) != PaletteItem::ColorType)
-        return 0;
+        return ColorItem(QColor::Invalid, QString());
 
-    return dynamic_cast<ColorItem *>(m_items[index]);
+    return ColorItem(*dynamic_cast<ColorItem *>(m_items[index]));
 }
 
 void Palette::appendColorItem(const ColorItem & colorItem)
@@ -111,12 +111,12 @@ void Palette::setColorItem(int index, const ColorItem & colorItem)
     }
 }
 
-CommentItem * Palette::commentItem(int index) const
+CommentItem Palette::commentItem(int index) const
 {
     if (itemType(index) != PaletteItem::CommentType)
-        return 0;
+        return CommentItem();
 
-    return dynamic_cast<CommentItem *>(m_items[index]);
+    return CommentItem(*dynamic_cast<CommentItem *>(m_items[index]));
 }
 
 void Palette::appendCommentItem(const CommentItem & commentItem)
@@ -138,13 +138,23 @@ void Palette::setCommentItem(int index, const CommentItem & commentItem)
         tmpCommentItem->setComment(commentItem.comment());
 }
 
+void Palette::setPreferredColumns(int columns)
+{
+    m_preferredColumns = columns;
+}
+
+int Palette::preferredColumns() const
+{
+    return m_preferredColumns;
+}
+
 void Palette::moveItem(int index, Palette::MoveOperation operation)
 {
     switch (operation)
     {
         case Palette::MoveToPrev:
             if (index == 0)
-                break ;
+                return ;
 
             m_items.swap(index, index - 1);
 
@@ -152,7 +162,7 @@ void Palette::moveItem(int index, Palette::MoveOperation operation)
 
         case Palette::MoveToNext:
             if (index == m_items.count() - 1)
-                break ;
+                return ;
 
             m_items.swap(index, index + 1);
 
@@ -160,7 +170,7 @@ void Palette::moveItem(int index, Palette::MoveOperation operation)
 
         case Palette::MoveToStart:
             if (index == 0)
-                break ;
+                return ;
 
             m_items.swap(index, 0);
 
@@ -168,7 +178,7 @@ void Palette::moveItem(int index, Palette::MoveOperation operation)
 
         case Palette::MoveToEnd:
             if (index == m_items.count() - 1)
-                break ;
+                return ;
 
             m_items.swap(index, m_items.count() - 1);
 
@@ -200,6 +210,10 @@ void Palette::clear()
 //END public methods
 
 //BEGIN private methods
+
+void Palette::adjustPreferredColumns()
+{
+}
 
 void Palette::swapItem(int i, int j)
 {

@@ -43,15 +43,18 @@ class Palette
 
         PaletteItem::ItemType itemType(int index) const;
 
-        ColorItem * colorItem(int index) const;
+        ColorItem colorItem(int index) const;
         void appendColorItem(const ColorItem & colorItem);
         void insertColorItem(int index, const ColorItem & colorItem);
         void setColorItem(int index, const ColorItem & colorItem);
 
-        CommentItem * commentItem(int index) const;
+        CommentItem commentItem(int index) const;
         void appendCommentItem(const CommentItem & commentItem);
         void insertCommentItem(int index, const CommentItem & commentItem);
         void setCommentItem(int index, const CommentItem & commentItem);
+
+        void setPreferredColumns(int columns);
+        int preferredColumns() const;
 
         void moveItem(int index, Palette::MoveOperation operation);
 
@@ -60,12 +63,14 @@ class Palette
         void clear();
 
     private:
+        void adjustPreferredColumns();
         void swapItem(int i, int j);
 
     private:
         QList<PaletteItem *> m_items;
         QString m_name;
         QString m_description;
+        int m_preferredColumns;
 };
 
 #endif // PALETTE_H

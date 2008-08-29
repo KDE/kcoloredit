@@ -67,6 +67,9 @@ class PaletteModel : public QAbstractTableModel
         void insertCommentItem(int pos, const QString & comment = QString());
         void setCommentItem(int pos, const QString & comment);
 
+        void setPreferredPaletteColumns(int paletteColumns);
+        int preferredPaletteColumns() const;
+
         void moveItem(const QModelIndex & itemIndex, Palette::MoveOperation operation);
 
         void generateColorNames();

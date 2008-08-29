@@ -57,8 +57,6 @@ PaletteDetailView::PaletteDetailView(PaletteModel * model, QWidget * parent)
 
     updateDescriptionLink();
 
-    setMinimumHeight(290); // TODO consts ... avoid this numbers
-
     QHBoxLayout * nameLayout = new QHBoxLayout();
     nameLayout->addWidget(new QLabel(i18n("Palette Name:"), this));
     nameLayout->addWidget(m_paletteNameLineEdit);
@@ -209,15 +207,14 @@ void PaletteDetailView::updateDescriptionLink()
 
 void PaletteDetailView::showPaletteDescriptionWidget()
 {
-    // TODO close a few details of this ... 
-    PaletteDescriptionWidget w;
+    PaletteDescriptionWidget paletteDescriptionWidget;
 
     if (m_model->hasDescription())
-        w.setDescription(m_model->paletteDescription());
+        paletteDescriptionWidget.setDescription(m_model->paletteDescription());
 
-    if ( w.exec(QCursor::pos()) )
+    if (paletteDescriptionWidget.exec(QCursor::pos()))
     {
-        m_model->setPaletteDescription(w.description());
+        m_model->setPaletteDescription(paletteDescriptionWidget.description());
 
         updateDescriptionLink();
 

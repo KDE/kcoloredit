@@ -17,8 +17,8 @@
 *  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.                 *
 *********************************************************************************/
 
-#ifndef PALETTE_GRID_VIEW_H
-#define PALETTE_GRID_VIEW_H
+#ifndef PALETTE_BRIEF_VIEW_H
+#define PALETTE_BRIEF_VIEW_H
 
 #include <QtGui/QWidget>
 
@@ -69,4 +69,4 @@ class PaletteBriefView : public QWidget
         QCheckBox * m_showCommentsCheckBox;
 };
 
-#endif // PALETTE_GRID_VIEW_H
+#endif // PALETTE_BRIEF_VIEW_H

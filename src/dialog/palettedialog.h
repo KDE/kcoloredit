@@ -20,8 +20,6 @@
 #ifndef PALETTE_DIALOG_H
 #define PALETTE_DIALOG_H
 
-#include <QtCore/QList>
-
 #include <KColorDialog>
 
 class QLabel;

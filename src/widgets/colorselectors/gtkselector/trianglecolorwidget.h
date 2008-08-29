@@ -20,7 +20,7 @@
 #ifndef TRIANGLE_COLOR_WIDGET_H
 #define TRIANGLE_COLOR_WIDGET_H
 
-#include <QWidget>
+#include <QtGui/QWidget>
 
 class TriangleColorWidget : public QWidget
 {

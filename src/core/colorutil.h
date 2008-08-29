@@ -17,11 +17,10 @@
 *  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.                 *
 *********************************************************************************/
 
-#ifndef COLOR_UTILS_H
-#define COLOR_UTILS_H
+#ifndef COLOR_UTIL_H
+#define COLOR_UTIL_H
 
 #include <QtGui/QColor>
-#include <QtCore/QVector>
 
 class ColorUtil
 {
@@ -40,4 +39,4 @@ class ColorUtil
         static inline int validHueValue(int hue);
 };
 
-#endif // COLOR_UTILS_H
+#endif // COLOR_UTIL_H

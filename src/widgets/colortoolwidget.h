@@ -20,8 +20,8 @@
 *  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.                 *
 *********************************************************************************/
 
-#ifndef COLORTOOL_WIDGET_H
-#define COLORTOOL_WIDGET_H
+#ifndef COLOR_TOOL_WIDGET_H
+#define COLOR_TOOL_WIDGET_H
 
 #include <QtGui/QWidget>
 
@@ -75,4 +75,4 @@ class ColorToolWidget : public QWidget
         bool m_colorPicking;
 };
 
-#endif // COLORTOOL_WIDGET_H
+#endif // COLOR_TOOL_WIDGET_H

@@ -57,8 +57,8 @@ QVariant PaletteModel::data(const QModelIndex & index, int role) const
     {
         QVariantMap vmap;
         vmap.insert("type", QString("color"));
-        vmap.insert("color", m_palette.colorItem(index.row())->color());
-        vmap.insert("name", m_palette.colorItem(index.row())->colorName());
+        vmap.insert("color", m_palette.colorItem(index.row()).color());
+        vmap.insert("name", m_palette.colorItem(index.row()).colorName());
 
         return vmap;
     }
@@ -67,7 +67,7 @@ QVariant PaletteModel::data(const QModelIndex & index, int role) const
     {
         QVariantMap vmap;
         vmap.insert("type", QString("comment"));
-        vmap.insert("comment", m_palette.commentItem(index.row())->comment());
+        vmap.insert("comment", m_palette.commentItem(index.row()).comment());
 
         return vmap;
     }
@@ -85,6 +85,7 @@ bool PaletteModel::setData(const QModelIndex & index, const QVariant & value, in
         {
             data(index, Qt::BackgroundRole).toMap().insert("type", QString("color"));  // NOTE
 
+            /*
             ColorItem * colorItem = m_palette.colorItem(index.row());
 
             if (colorItem)
@@ -92,6 +93,9 @@ bool PaletteModel::setData(const QModelIndex & index, const QVariant & value, in
                 colorItem->setColor(vmap.value("color").value<QColor>());
                 colorItem->setColorName(vmap.value("name").toString());
             }
+            */
+
+            m_palette.setColorItem(index.row(), ColorItem(vmap.value("color").value<QColor>(), vmap.value("name").toString()));
 
             emit dataChanged(index, index);
 
@@ -102,10 +106,12 @@ bool PaletteModel::setData(const QModelIndex & index, const QVariant & value, in
         {
             data(index, Qt::BackgroundRole).toMap().insert("type", QString("comment"));  // NOTE
 
-            CommentItem * commentItem = m_palette.commentItem(index.row());
+//             CommentItem * commentItem = m_palette.commentItem(index.row());
+// 
+//             if (commentItem)
+//                 commentItem->setComment(vmap.value("comment").toString());
 
-            if (commentItem)
-                commentItem->setComment(vmap.value("comment").toString());
+            m_palette.setCommentItem(index.row(), CommentItem(vmap.value("comment").toString()));
 
             emit dataChanged(index, index);
 
@@ -228,7 +234,7 @@ PaletteItem::ItemType PaletteModel::itemType(int pos) const
 ColorItem PaletteModel::colorItem(int pos) const
 {
     if (m_palette.itemType(pos) == PaletteItem::ColorType)
-        return ColorItem(m_palette.colorItem(pos)->color(), m_palette.colorItem(pos)->colorName());
+        return ColorItem(m_palette.colorItem(pos).color(), m_palette.colorItem(pos).colorName());
 
     return ColorItem(QColor::Invalid, QString());
 }
@@ -255,7 +261,7 @@ void PaletteModel::setColorItem(int pos, const QColor & color, const QString & c
 CommentItem PaletteModel::commentItem(int pos) const
 {
     if (m_palette.itemType(pos) == PaletteItem::CommentType)
-        return CommentItem(m_palette.commentItem(pos)->comment());
+        return CommentItem(m_palette.commentItem(pos).comment());
 
     return CommentItem(QString());
 }
@@ -279,6 +285,16 @@ void PaletteModel::setCommentItem(int pos, const QString & comment)
     emit dataChanged(QModelIndex(), QModelIndex());
 }
 
+void PaletteModel::setPreferredPaletteColumns(int paletteColumns)
+{
+    m_palette.setPreferredColumns(paletteColumns);
+}
+
+int PaletteModel::preferredPaletteColumns() const
+{
+    return m_palette.preferredColumns();
+}
+
 void PaletteModel::moveItem(const QModelIndex & itemIndex, Palette::MoveOperation operation)
 {
     m_palette.moveItem(itemIndex.row(), operation);
@@ -290,7 +306,7 @@ void PaletteModel::generateColorNames()
 {
     for (int i = 0; i < m_palette.count(); i++)
         if (m_palette.itemType(i) == PaletteItem::ColorType)
-            m_palette.colorItem(i)->setColorName(m_palette.colorItem(i)->color().name());
+            m_palette.colorItem(i).setColorName(m_palette.colorItem(i).color().name());
 
     emit dataChanged(QModelIndex(), QModelIndex());
 }
@@ -299,8 +315,8 @@ void PaletteModel::completeColorNames()
 {
     for (int i = 0; i < m_palette.count(); i++)
         if (m_palette.itemType(i) == PaletteItem::ColorType)
-            if (m_palette.colorItem(i)->colorName().isEmpty())
-                m_palette.colorItem(i)->setColorName(m_palette.colorItem(i)->color().name());
+            if (m_palette.colorItem(i).colorName().isEmpty())
+                m_palette.colorItem(i).setColorName(m_palette.colorItem(i).color().name());
 
     emit dataChanged(QModelIndex(), QModelIndex());
 }
