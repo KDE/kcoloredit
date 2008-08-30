@@ -42,6 +42,9 @@ class HighlighterGradientSelector : public KGradientSelector
         virtual void paintEvent(QPaintEvent * event);
 
     private:
+        QColor highlightedColor() const;
+
+    private:
         HighlighterGradientSelector::Region m_region;
         bool m_leftButtonPressed;
 };

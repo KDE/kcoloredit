@@ -29,7 +29,7 @@ class Palette
     public:
         enum MoveOperation { MoveToPrev = 0, MoveToNext, MoveToStart, MoveToEnd };
         static const int MIN_PREFERRED_COLUMNS = 1;
-        static const int MAX_PREFERRED_COLUMNS = 48;
+        static const int MAX_PREFERRED_COLUMNS = 50;
 
         Palette();
         ~Palette();

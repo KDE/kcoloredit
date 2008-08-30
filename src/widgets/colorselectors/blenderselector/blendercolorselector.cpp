@@ -27,6 +27,8 @@
 #include <KColorUtils>
 #include <KColorButton>
 
+#include "colorutil.h"
+
 HighlighterGradientSelector::HighlighterGradientSelector(QWidget * parent)
     : KGradientSelector(parent)
     , m_region(HighlighterGradientSelector::NoneRegion)
@@ -97,22 +99,22 @@ void HighlighterGradientSelector::paintEvent(QPaintEvent * event)
     switch (m_region)
     {
         case HighlighterGradientSelector::FirstQuarterRegion:
-            rect = QRect(x, y, width/4, height);
+            rect = QRect(x, y, static_cast<int>(width/4), height);
             break;
         case HighlighterGradientSelector::SecondQuarterRegion:
-            rect = QRect(x + width/4, y, width/4, height);
+            rect = QRect(x + static_cast<int>(width/4), y, static_cast<int>(width/4), height);
             break;
         case HighlighterGradientSelector::ThirdQuarterRegion:
-            rect = QRect(x + width/2, y, width/4, height);
+            rect = QRect(x + static_cast<int>(width/2), y, static_cast<int>(width/4), height);
             break;
         case HighlighterGradientSelector::FourthQuarterRegion:
-            rect = QRect(x + width*3/4, y, width/4, height);
+            rect = QRect(x + static_cast<int>(width*3/4), y, static_cast<int>(width/4), height);
             break;
         case HighlighterGradientSelector::FirstRegion:
-            rect = QRect(x, y, width*value()/100, height);
+            rect = QRect(x, y, static_cast<int>(width*value()/100), height);
             break;
         case HighlighterGradientSelector::SecondRegion:
-            rect = QRect(x + width*value()/100, y, width - width*value()/100, height);
+            rect = QRect(x + static_cast<int>(width*value()/100), y, width - static_cast<int>(width*value()/100), height);
             break;
         case HighlighterGradientSelector::EntireRegion:
             rect = contentsRect();
@@ -121,13 +123,28 @@ void HighlighterGradientSelector::paintEvent(QPaintEvent * event)
             break;
     }
 
-    // TODO i have to improve this effect
     painter.begin(this);
-        QPen pen(Qt::blue); // TODO here we have to use colorutils ...
+        QPen pen(highlightedColor());
         pen.setWidth(4);
         painter.setPen(pen);
         painter.drawRect(rect);
     painter.end();
+}
+
+QColor HighlighterGradientSelector::highlightedColor() const
+{
+    QColor tmpColor = ColorUtil::triadicColors(firstColor())[0];
+
+    if (tmpColor.saturation() < 64)
+        tmpColor = ColorUtil::triadicColors(secondColor())[1];
+
+    if (tmpColor.saturation() < 64)
+        tmpColor = Qt::darkBlue;
+
+    if (tmpColor.value() < 64)
+        tmpColor = Qt::yellow;
+
+    return tmpColor;
 }
 
 BlenderColorSelector::BlenderColorSelector(QWidget * parent)
@@ -135,8 +152,7 @@ BlenderColorSelector::BlenderColorSelector(QWidget * parent)
 {
     m_highlighterGradientSelector = new HighlighterGradientSelector(this);
 
-    // TODO set default thing color utils??
-    m_highlighterGradientSelector->setColors(Qt::red, Qt::white);
+    m_highlighterGradientSelector->setColors(ColorUtil::DEFAULT_COLOR, ColorUtil::complementColor(ColorUtil::DEFAULT_COLOR));
 
     QToolButton * buttonAppendFirstQuarterRegion = new QToolButton(m_highlighterGradientSelector);
     QToolButton * buttonAppendSecondQuarterRegion = new QToolButton(m_highlighterGradientSelector);
@@ -146,13 +162,13 @@ BlenderColorSelector::BlenderColorSelector(QWidget * parent)
     QToolButton * buttonAppendSecondRegion = new QToolButton(m_highlighterGradientSelector);
     QToolButton * buttonAppendEntireRegion = new QToolButton(m_highlighterGradientSelector);
 
-    buttonAppendFirstQuarterRegion->setAutoRaise(true);
-    buttonAppendSecondQuarterRegion->setAutoRaise(true);
-    buttonAppendThirdQuarterRegion->setAutoRaise(true);
-    buttonAppendFourthQuarterRegion->setAutoRaise(true);
-    buttonAppendFirstRegion->setAutoRaise(true);
-    buttonAppendSecondRegion->setAutoRaise(true);
-    buttonAppendEntireRegion->setAutoRaise(true);
+//     buttonAppendFirstQuarterRegion->setAutoRaise(true);
+//     buttonAppendSecondQuarterRegion->setAutoRaise(true);
+//     buttonAppendThirdQuarterRegion->setAutoRaise(true);
+//     buttonAppendFourthQuarterRegion->setAutoRaise(true);
+//     buttonAppendFirstRegion->setAutoRaise(true);
+//     buttonAppendSecondRegion->setAutoRaise(true);
+//     buttonAppendEntireRegion->setAutoRaise(true);
 
     buttonAppendFirstQuarterRegion->setDefaultAction(new KAction(KIcon("list-add"), QString(), this));
     buttonAppendSecondQuarterRegion->setDefaultAction(new KAction(KIcon("list-add"), QString(), this));
@@ -183,12 +199,12 @@ BlenderColorSelector::BlenderColorSelector(QWidget * parent)
     m_firstColor = new KColorButton(this);
     m_firstColor->setMinimumHeight(200);
     m_firstColor->setMaximumWidth(45);
-    m_firstColor->setColor(Qt::red); // TODO defaults colors 
+    m_firstColor->setColor(ColorUtil::DEFAULT_COLOR);
 
     m_secondColor = new KColorButton(this);
     m_secondColor->setMinimumHeight(200);
     m_secondColor->setMaximumWidth(45);
-    m_secondColor->setColor(Qt::white); // TODO defaults colors 
+    m_secondColor->setColor(ColorUtil::complementColor(ColorUtil::DEFAULT_COLOR));
 
     QHBoxLayout * layout = new QHBoxLayout(this);
     layout->addWidget(m_firstColor);

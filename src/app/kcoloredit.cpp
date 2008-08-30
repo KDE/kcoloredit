@@ -35,6 +35,7 @@
 #include "palettebriefview.h"
 #include "kcoloreditwidget.h"
 #include "palettedialog.h"
+#include "colorutil.h"
 
 KColorEditMainWnd::KColorEditMainWnd(QWidget * parent, Qt::WindowFlags f) : KXmlGuiWindow(parent, f)
 {
@@ -138,6 +139,8 @@ void KColorEditMainWnd::saveFile()
         saveFileAs();
 }
 
+#include <kdebug.h>
+
 void KColorEditMainWnd::saveFileAs()
 {
     // same code in palettedialog ... utils.h ?
@@ -149,11 +152,16 @@ void KColorEditMainWnd::saveFileAs()
     QString filter = QString("*.colors *.gpl|") + allSupportedStr + QString("\n*.colors|") + kdePaletteStr +
         QString(" (*.colors)\n*.gpl|") + gimpPaletteStr + QString(" (*.gpl)");
 
-    QString paletteFile = KFileDialog::getSaveFileName(url, filter);
+    QString saveFileName = KFileDialog::getSaveFileName(url, filter);
 
-    if (!paletteFile.isEmpty())
+    if (KIO::NetAccess::exists(KUrl(saveFileName), KIO::NetAccess::DestinationSide, widget()))
+        if (KMessageBox::warningContinueCancel(widget(), i18n("A file named \"%1\" already exists. Are you sure you want to overwrite it?", saveFileName), QString(), KGuiItem(i18n("Overwrite"))) != KMessageBox::Continue)
+            return;
+
+    if (!saveFileName.isEmpty())
     {
-        if (!m_paletteDocument->saveFileAs(paletteFile))
+        kDebug() << "ASDDDDDDDDDDDDDd";
+        if (!m_paletteDocument->saveFileAs(saveFileName))
             KMessageBox::error(this, m_paletteDocument->lastErrorString());
         else
             updateTittleWhenOpenSaveDoc();
@@ -305,7 +313,7 @@ void KColorEditMainWnd::setupWidgets()
     connect(m_paletteBriefView, SIGNAL( colorSelected(QColor) ), m_kColorEditWidget, SLOT( setColor(QColor) ));
 
     // NOTE setup default colors colors
-    m_kColorEditWidget->setColor(Qt::blue);
+    m_kColorEditWidget->setColor(ColorUtil::DEFAULT_COLOR);
 }
 
 void KColorEditMainWnd::setupActions()

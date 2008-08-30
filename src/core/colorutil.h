@@ -25,6 +25,8 @@
 class ColorUtil
 {
     public:
+        static const QColor DEFAULT_COLOR;
+
         static float luminance(const QColor & color);
         static QColor contrastColor(const QColor & color);
 

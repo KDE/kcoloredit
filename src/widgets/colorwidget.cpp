@@ -43,11 +43,11 @@ ColorWidget::ColorWidget(QWidget * parent, ColorWidget::Mode mode)
     {
         m_buttonAdd = new QToolButton(m_colorPatch);
         m_buttonAdd->setIcon(KIcon("list-add"));
-        m_buttonAdd->setAutoRaise(true);
+        //m_buttonAdd->setAutoRaise(true);
         m_buttonAdd->setToolTip(i18n("Append color"));
 
         m_buttonToClipboard = new QToolButton(m_colorPatch);
-        m_buttonToClipboard->setAutoRaise(true);
+        //m_buttonToClipboard->setAutoRaise(true);
         m_buttonToClipboard->setIcon(KIcon("edit-copy"));
         m_buttonToClipboard->setToolTip(i18n("Copy color name to clipboard"));
 
