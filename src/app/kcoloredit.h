@@ -20,6 +20,7 @@
 #ifndef KCOLOREDIT_H
 #define KCOLOREDIT_H
 
+#include <KUrl>
 #include <KXmlGuiWindow>
 
 class QDockWidget;
@@ -42,7 +43,7 @@ class KColorEditMainWnd : public KXmlGuiWindow
 
     public slots:
         void newFile();
-        void openFile();
+        void openFile(const KUrl & url = KUrl());
         void saveFile();
         void saveFileAs();
 

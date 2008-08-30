@@ -31,7 +31,7 @@
 #include <KIcon>
 #include <KDialog>
 #include <KLocale>
-#include <KDebug>
+//#include <KDebug>
 #include <KTextEdit>
 
 class PaletteDescriptionWidget::Private

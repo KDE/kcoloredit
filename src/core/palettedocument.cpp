@@ -187,8 +187,6 @@ bool PaletteDocument::openPaletteFile(const QString & fileName)
     return true;
 }
 
-#include <kdebug.h>
-
 bool PaletteDocument::saveFileAs(const QString & fileName)
 {
     KSaveFile saveFile(fileName);
@@ -224,12 +222,7 @@ bool PaletteDocument::saveFileAs(const QString & fileName)
 
         for(int i = 0; i < tmpDescription.count(); i++)
             textStream << "#" << tmpDescription[i] << endl;
-
-        kDebug() << "QQQQQQQQQQQQQQ";
-        kDebug() << tmpDescription.count();
     }
-
-    kDebug() << "YEEEEEEEEEEEEEEEE";
 
     // Writing the data (color and comment items)
     for(int i = 0; i < m_model->rowCount(); i++)
@@ -279,8 +272,6 @@ void PaletteDocument::updatePaletteDocument()
 {
     emit modified();
 }
-
-#include <kdebug.h>
 
 void PaletteDocument::extractDescriptionFromModel()
 {

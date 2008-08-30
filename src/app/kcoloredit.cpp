@@ -17,6 +17,8 @@
 *  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.                 *
 *********************************************************************************/
 
+// BIGGGGGGGGG TODO her ... recent files etc etc refactor this clase ... use kurl in docueent ...
+
 #include "kcoloredit.h"
 
 #include <QtGui/QDockWidget>
@@ -25,7 +27,7 @@
 #include <KIO/NetAccess>
 #include <KApplication>
 #include <KMessageBox>
-#include <KAction>
+#include <KRecentFilesAction>
 #include <KActionCollection>
 #include <KFileDialog>
 
@@ -91,9 +93,14 @@ void KColorEditMainWnd::newFile()
 {
 }
 
-void KColorEditMainWnd::openFile()
+void KColorEditMainWnd::openFile(const KUrl & url)
 {
-    QString fileNameFromDialog = PaletteDialog::getOpenPaletteName();
+    QString fileNameFromDialog;
+
+    if (url.fileName().isEmpty())
+        fileNameFromDialog = PaletteDialog::getOpenPaletteName();
+    else
+        fileNameFromDialog = url.fileName();
 
     QString tmpFile;
 
@@ -139,8 +146,6 @@ void KColorEditMainWnd::saveFile()
         saveFileAs();
 }
 
-#include <kdebug.h>
-
 void KColorEditMainWnd::saveFileAs()
 {
     // same code in palettedialog ... utils.h ?
@@ -160,7 +165,6 @@ void KColorEditMainWnd::saveFileAs()
 
     if (!saveFileName.isEmpty())
     {
-        kDebug() << "ASDDDDDDDDDDDDDd";
         if (!m_paletteDocument->saveFileAs(saveFileName))
             KMessageBox::error(this, m_paletteDocument->lastErrorString());
         else
@@ -396,6 +400,8 @@ void KColorEditMainWnd::setupActions()
     KStandardAction::open   (this, SLOT( openFile()   ), actionCollection());
     KStandardAction::save   (this, SLOT( saveFile()   ), actionCollection());
     KStandardAction::saveAs (this, SLOT( saveFileAs() ), actionCollection());
+
+    KStandardAction::openRecent(this, SLOT( openFile(KUrl) ), actionCollection());
 
     KStandardAction::openNew(this, SLOT( newWindow()       ), actionCollection());
     // TODO print
