@@ -46,12 +46,9 @@ PaletteBriefView::PaletteBriefView(PaletteModel * model, QWidget * parent)
     m_showCommentsCheckBox->setStatusTip(i18n("If is checked, views will be synchronized"));
 
     m_setColumnSlider = new QSlider(Qt::Horizontal, this);
-    // HERE TODO
-    m_setColumnSlider->setRange(1, 20);
     m_setColumnSlider->setSingleStep(1);
     m_setColumnSlider->setPageStep(1);
     m_setColumnSlider->setTickInterval(1);
-    m_setColumnSlider->setValue(1); // TODO NOTE check this default value
 
     m_zoomOutButton = new KPushButton(KIcon(QString("zoom-out")), QString(), this);
 
@@ -62,6 +59,8 @@ PaletteBriefView::PaletteBriefView(PaletteModel * model, QWidget * parent)
     m_colorCells->setMinimumWidth(256);
     m_colorCells->setAcceptDrops(false);
     m_colorCells->setSelectionMode(QAbstractItemView::NoSelection);
+
+    setupPreferredColumns();
 
     QHBoxLayout * layoutHeader = new QHBoxLayout();
     layoutHeader->addWidget(m_quickNavigationCheckBox);
@@ -93,6 +92,8 @@ PaletteBriefView::PaletteBriefView(PaletteModel * model, QWidget * parent)
 void PaletteBriefView::setModel(PaletteModel * model)
 {
     m_model = model;
+
+    setupPreferredColumns();
 
     connect(m_model, SIGNAL( dataChanged(QModelIndex, QModelIndex) ), SLOT( updatePaletteView() ));
     connect(m_model, SIGNAL( rowsRemoved(QModelIndex, int, int)    ), SLOT( updatePaletteView() ));
@@ -297,6 +298,27 @@ void PaletteBriefView::showComments(bool show)
 
     if ((m_model->rowCount() > 0))
         updatePaletteView();
+}
+
+void PaletteBriefView::setupPreferredColumns()
+{
+    int preferredColumns = m_model->preferredPaletteColumns();
+
+    if (preferredColumns > Palette::DEFAULT_PREFERRED_COLUMNS)
+    {
+        if (preferredColumns % 2 == 0)
+            m_setColumnSlider->setRange(1, 2*preferredColumns);
+        else
+            m_setColumnSlider->setRange(1, 2*preferredColumns - 1);
+
+        m_colorCells->setColumnCount(preferredColumns);
+        m_setColumnSlider->setValue(preferredColumns);
+    }
+    else
+    {
+        m_setColumnSlider->setRange(1, 2);
+        m_setColumnSlider->setValue(Palette::DEFAULT_PREFERRED_COLUMNS);
+    }
 }
 
 #include "palettebriefview.moc"

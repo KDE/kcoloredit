@@ -28,6 +28,7 @@ class Palette
 {
     public:
         enum MoveOperation { MoveToPrev = 0, MoveToNext, MoveToStart, MoveToEnd };
+        static const int DEFAULT_PREFERRED_COLUMNS = 1;
 
         Palette();
         ~Palette();

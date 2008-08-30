@@ -58,6 +58,9 @@ class PaletteBriefView : public QWidget
         void showComments(bool show);
 
     private:
+        void setupPreferredColumns();
+
+    private:
         PaletteModel * m_model;
 
         KColorCells * m_colorCells;

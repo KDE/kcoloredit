@@ -64,6 +64,8 @@ class KCDPickerFilter: public QWidget
     }
 };
 
+
+
 #endif
 
 ///
@@ -116,10 +118,14 @@ ColorToolWidget::ColorToolWidget(QWidget * parent)
 
     QGroupBox * extraSelectorsBox = new QGroupBox(i18n("Color selectors"), this);
 
-    KPushButton * pickColorButton = new KPushButton(KIcon("color-picker"), i18n("Pick a color from desktop"), extraSelectorsBox);
+    KPushButton * pickColorButton = new KPushButton(KIcon("color-picker"), i18n("Pick a color"), extraSelectorsBox);
+
+    m_checkBoxHideWindow = new QCheckBox(i18n("Hide window"), extraSelectorsBox);
+    m_checkBoxHideWindow->setStatusTip(i18n("Only works if Desktop Effects is enabled"));
 
     QHBoxLayout * pickColorLayout = new QHBoxLayout();
     pickColorLayout->addWidget(pickColorButton);
+    pickColorLayout->addWidget(m_checkBoxHideWindow);
 
     QVBoxLayout * extraSelectorsLayout = new QVBoxLayout(extraSelectorsBox);
     extraSelectorsLayout->addLayout(pickColorLayout);
@@ -164,6 +170,17 @@ void ColorToolWidget::keyPressEvent(QKeyEvent * event)
             delete m_filter;
             m_filter = 0;
 #endif
+
+            // NOTE
+            // Restore the opacity of the MainWindow (KColorEdit)
+
+            if (m_checkBoxHideWindow->isChecked())
+            {
+                parentWidget()->parentWidget()->parentWidget()->parentWidget()->setWindowOpacity(1.0);
+
+                m_checkBoxHideWindow->setEnabled(true);
+            }
+
             releaseMouse();
             releaseKeyboard();
         }
@@ -181,6 +198,8 @@ void ColorToolWidget::mouseMoveEvent(QMouseEvent * event)
     if (m_colorPicking)
     {
         m_color = grabColor(event->globalPos());
+
+        a->setColor(m_color);
 
         setColor(m_color);
 
@@ -202,6 +221,17 @@ void ColorToolWidget::mousePressEvent(QMouseEvent * event)
         delete m_filter;
         m_filter = 0;
 #endif
+
+        // NOTE
+        // Restore the opacity of the MainWondow (KColorEdit)
+
+        if (m_checkBoxHideWindow->isChecked())
+        {
+            parentWidget()->parentWidget()->parentWidget()->parentWidget()->setWindowOpacity(1.0);
+
+            m_checkBoxHideWindow->setEnabled(true);
+        }
+
         releaseMouse();
         releaseKeyboard();
 
@@ -217,9 +247,23 @@ void ColorToolWidget::mousePressEvent(QMouseEvent * event)
     QWidget::mousePressEvent(event);
 }
 
+
 void ColorToolWidget::pickColorFromDesktop()
 {
+
+
+
     m_colorPicking = true;
+
+    if (m_checkBoxHideWindow->isChecked())
+    {
+        parentWidget()->parentWidget()->parentWidget()->parentWidget()->setWindowOpacity(0.0);
+
+        m_checkBoxHideWindow->setEnabled(false);
+
+        // BIG TODO Show a window that track the color if the main window is hide
+        a = new aa(); a->show();
+    }
 
 #ifdef Q_WS_X11
     m_filter = new KCDPickerFilter(this);

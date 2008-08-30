@@ -116,6 +116,8 @@ bool PaletteDocument::openPaletteFile(const QString & fileName)
     int r, g, b;
     int pos = 0;
 
+    // TODO last improve here
+
     while( !file.atEnd() )
     {
         line = QString::fromLocal8Bit(file.readLine());
@@ -131,6 +133,20 @@ bool PaletteDocument::openPaletteFile(const QString & fileName)
                 palName.remove('\n');
 
                 m_model->setPaletteName(palName);
+            }
+        }
+
+                // NOTE looking for columns
+        if (line[0] == 'C')
+        {
+            QStringList strLst = line.split(": ");
+
+            if (strLst[0] == "Columns")
+            {
+                QString palName = strLst[1];
+                palName.remove('\n');
+
+                m_model->setPreferredPaletteColumns(palName.toInt());
             }
         }
 

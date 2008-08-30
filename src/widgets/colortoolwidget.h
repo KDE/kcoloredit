@@ -26,10 +26,29 @@
 #include <QtGui/QWidget>
 
 class QLabel;
+class QCheckBox;
 
 #ifdef Q_WS_X11
 class KCDPickerFilter;
 #endif
+
+#include <KColor>
+
+class aa : public KColorPatch
+{
+    public:
+        aa(QWidget * parent = 0) : KColorPatch(parent)
+        {
+            setMouseTracking(true);
+        }
+
+    protected:
+        virtual void mouseMoveEvent(QMouseEvent * event)
+        {
+            this->setWindowTitle("sadasd");
+        }
+};
+
 
 class ColorToolWidget : public QWidget
 {
@@ -72,7 +91,11 @@ class ColorToolWidget : public QWidget
         KCDPickerFilter * m_filter;
 #endif
 
+        QCheckBox * m_checkBoxHideWindow;
+
         bool m_colorPicking;
+
+        aa * a;
 };
 
 #endif // COLOR_TOOL_WIDGET_H

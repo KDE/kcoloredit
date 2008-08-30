@@ -22,6 +22,7 @@
 //BEGIN public constructors
 
 Palette::Palette()
+    : m_preferredColumns(Palette::DEFAULT_PREFERRED_COLUMNS)
 {
 }
 
