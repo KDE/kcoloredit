@@ -28,27 +28,13 @@
 class QLabel;
 class QCheckBox;
 
+class KColorPatch;
+
 #ifdef Q_WS_X11
+
 class KCDPickerFilter;
+
 #endif
-
-#include <KColor>
-
-class aa : public KColorPatch
-{
-    public:
-        aa(QWidget * parent = 0) : KColorPatch(parent)
-        {
-            setMouseTracking(true);
-        }
-
-    protected:
-        virtual void mouseMoveEvent(QMouseEvent * event)
-        {
-            this->setWindowTitle("sadasd");
-        }
-};
-
 
 class ColorToolWidget : public QWidget
 {
@@ -79,6 +65,9 @@ class ColorToolWidget : public QWidget
         void pickColorFromDesktop();
 
     private:
+        void grabPicking();
+        void releasePicking();
+
         QColor grabColor(const QPoint & p);
 
     private:
@@ -87,15 +76,17 @@ class ColorToolWidget : public QWidget
         QLabel * m_brightnessPercentage;
         QLabel * m_saturationPercentage;
 
-#ifdef Q_WS_X11
-        KCDPickerFilter * m_filter;
-#endif
-
         QCheckBox * m_checkBoxHideWindow;
 
         bool m_colorPicking;
 
-        aa * a;
+        KColorPatch * m_colorView;
+
+#ifdef Q_WS_X11
+
+        KCDPickerFilter * m_filter;
+
+#endif
 };
 
 #endif // COLOR_TOOL_WIDGET_H

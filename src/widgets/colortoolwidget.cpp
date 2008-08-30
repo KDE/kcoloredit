@@ -23,10 +23,12 @@
 #include "colortoolwidget.h"
 
 #ifdef Q_WS_X11
+
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <QX11Info>
 #include <fixx11h.h>
+
 #endif
 
 #include <QtGui/QMouseEvent>
@@ -40,10 +42,10 @@
 #include <KApplication>
 #include <KLocalizedString>
 #include <KPushButton>
-
-///
+#include <KColorPatch>
 
 #ifdef Q_WS_X11
+
 class KCDPickerFilter: public QWidget
 {
     public:
@@ -54,7 +56,7 @@ class KCDPickerFilter: public QWidget
             if (event->type == ButtonRelease)
             {
                 QMouseEvent e(QEvent::MouseButtonRelease, QPoint(),
-                          QPoint(event->xmotion.x_root, event->xmotion.y_root) , Qt::NoButton, Qt::NoButton, Qt::NoModifier);
+                    QPoint(event->xmotion.x_root, event->xmotion.y_root) , Qt::NoButton, Qt::NoButton, Qt::NoModifier);
                 KApplication::sendEvent(parentWidget(), &e);
 
                 return true;
@@ -64,11 +66,7 @@ class KCDPickerFilter: public QWidget
     }
 };
 
-
-
 #endif
-
-///
 
 ColorToolWidget::ColorToolWidget(QWidget * parent)
     : QWidget(parent)
@@ -144,8 +142,10 @@ ColorToolWidget::ColorToolWidget(QWidget * parent)
 ColorToolWidget::~ColorToolWidget()
 {
 #ifdef Q_WS_X11
+
     if (m_colorPicking && kapp)
         kapp->removeX11EventFilter(m_filter);
+
 #endif
 }
 
@@ -162,28 +162,7 @@ void ColorToolWidget::keyPressEvent(QKeyEvent * event)
     if (m_colorPicking)
     {
         if (event->key() == Qt::Key_Escape)
-        {
-            m_colorPicking = false;
-
-#ifdef Q_WS_X11
-            kapp->removeX11EventFilter(m_filter);
-            delete m_filter;
-            m_filter = 0;
-#endif
-
-            // NOTE
-            // Restore the opacity of the MainWindow (KColorEdit)
-
-            if (m_checkBoxHideWindow->isChecked())
-            {
-                parentWidget()->parentWidget()->parentWidget()->parentWidget()->setWindowOpacity(1.0);
-
-                m_checkBoxHideWindow->setEnabled(true);
-            }
-
-            releaseMouse();
-            releaseKeyboard();
-        }
+            releasePicking();
 
         event->accept();
 
@@ -199,7 +178,8 @@ void ColorToolWidget::mouseMoveEvent(QMouseEvent * event)
     {
         m_color = grabColor(event->globalPos());
 
-        a->setColor(m_color);
+        if (m_checkBoxHideWindow->isChecked())
+            m_colorView->setColor(m_color);
 
         setColor(m_color);
 
@@ -214,26 +194,7 @@ void ColorToolWidget::mousePressEvent(QMouseEvent * event)
 {
     if (m_colorPicking)
     {
-        m_colorPicking = false;
-
-#ifdef Q_WS_X11
-        kapp->removeX11EventFilter(m_filter);
-        delete m_filter;
-        m_filter = 0;
-#endif
-
-        // NOTE
-        // Restore the opacity of the MainWondow (KColorEdit)
-
-        if (m_checkBoxHideWindow->isChecked())
-        {
-            parentWidget()->parentWidget()->parentWidget()->parentWidget()->setWindowOpacity(1.0);
-
-            m_checkBoxHideWindow->setEnabled(true);
-        }
-
-        releaseMouse();
-        releaseKeyboard();
+        releasePicking();
 
         m_color = grabColor(event->globalPos());
 
@@ -250,27 +211,7 @@ void ColorToolWidget::mousePressEvent(QMouseEvent * event)
 
 void ColorToolWidget::pickColorFromDesktop()
 {
-
-
-
-    m_colorPicking = true;
-
-    if (m_checkBoxHideWindow->isChecked())
-    {
-        parentWidget()->parentWidget()->parentWidget()->parentWidget()->setWindowOpacity(0.0);
-
-        m_checkBoxHideWindow->setEnabled(false);
-
-        // BIG TODO Show a window that track the color if the main window is hide
-        a = new aa(); a->show();
-    }
-
-#ifdef Q_WS_X11
-    m_filter = new KCDPickerFilter(this);
-    kapp->installX11EventFilter(m_filter);
-#endif
-    grabMouse(Qt::CrossCursor);
-    grabKeyboard();
+    grabPicking();
 }
 
 void ColorToolWidget::decreaseBrightness()
@@ -317,13 +258,73 @@ void ColorToolWidget::increaseSaturation()
     emit colorSelected(m_color);
 }
 
+void ColorToolWidget::grabPicking()
+{
+    m_colorPicking = true;
+
+#ifdef Q_WS_X11
+
+    m_filter = new KCDPickerFilter(this);
+    kapp->installX11EventFilter(m_filter);
+
+#endif
+
+    // NOTE
+    // Hide the MainWindow (KColorEdit) (make it transparent)
+
+    if (m_checkBoxHideWindow->isChecked())
+    {
+        parentWidget()->parentWidget()->parentWidget()->parentWidget()->setWindowOpacity(0.0);
+
+        m_checkBoxHideWindow->setEnabled(false);
+
+        m_colorView = new KColorPatch(0);
+        m_colorView->setMaximumSize(48, 48);
+        m_colorView->setWindowFlags(Qt::ToolTip);
+        m_colorView->show();
+    }
+
+    grabMouse(Qt::CrossCursor);
+    grabKeyboard();
+}
+
+void ColorToolWidget::releasePicking()
+{
+    m_colorPicking = false;
+
+#ifdef Q_WS_X11
+
+    kapp->removeX11EventFilter(m_filter);
+    delete m_filter;
+    m_filter = 0;
+
+#endif
+
+    // NOTE
+    // Restore the opacity of the MainWindow (KColorEdit)
+
+    if (m_checkBoxHideWindow->isChecked())
+    {
+        parentWidget()->parentWidget()->parentWidget()->parentWidget()->setWindowOpacity(1.0);
+
+        m_checkBoxHideWindow->setEnabled(true);
+
+        delete m_colorView;
+        m_colorView = 0;
+    }
+
+    releaseMouse();
+    releaseKeyboard();
+}
+
 QColor ColorToolWidget::grabColor(const QPoint & p)
 {
 #ifdef Q_WS_X11
+
     // we use the X11 API directly in this case as we are not getting back a valid
     // return from QPixmap::grabWindow in the case where the application is using
     // an argb visual
-    if( !qApp->desktop()->geometry().contains( p ))
+    if( !KApplication::desktop()->geometry().contains( p ))
         return QColor();
     Window root = RootWindow(QX11Info::display(), QX11Info::appScreen());
     XImage *ximg = XGetImage(QX11Info::display(), root, p.x(), p.y(), 1, 1, -1, ZPixmap);
@@ -336,11 +337,14 @@ QColor ColorToolWidget::grabColor(const QPoint & p)
                 DefaultColormap(QX11Info::display(), QX11Info::appScreen()),
                 &xcol);
     return QColor::fromRgbF(xcol.red / 65535.0, xcol.green / 65535.0, xcol.blue / 65535.0);
+
 #else
-    QWidget *desktop = QApplication::desktop();
+
+    QWidget *desktop = KApplication::desktop();
     QPixmap pm = QPixmap::grabWindow(desktop->winId(), p.x(), p.y(), 1, 1);
     QImage i = pm.toImage();
     return i.pixel(0, 0);
+
 #endif
 }
 

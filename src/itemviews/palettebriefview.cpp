@@ -55,9 +55,10 @@ PaletteBriefView::PaletteBriefView(PaletteModel * model, QWidget * parent)
     m_zoomInButton = new KPushButton(KIcon(QString("zoom-in")), QString(), this);
 
     m_colorCells = new KColorCells(this, 0, 1);
-    m_colorCells->setMouseTracking(true);
     m_colorCells->setAcceptDrops(false);
-    m_colorCells->setAcceptDrags(true);
+    // WARNING Can't enabled drag support it disable mousetracking ...
+    //m_colorCells->setAcceptDrags(true);
+    m_colorCells->setMouseTracking(true);
     m_colorCells->setSelectionMode(QAbstractItemView::NoSelection);
 
     setupPreferredColumns();
