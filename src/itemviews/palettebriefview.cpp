@@ -56,8 +56,8 @@ PaletteBriefView::PaletteBriefView(PaletteModel * model, QWidget * parent)
 
     m_colorCells = new KColorCells(this, 0, 1);
     m_colorCells->setMouseTracking(true);
-    m_colorCells->setMinimumWidth(256);
     m_colorCells->setAcceptDrops(false);
+    m_colorCells->setAcceptDrags(true);
     m_colorCells->setSelectionMode(QAbstractItemView::NoSelection);
 
     setupPreferredColumns();
@@ -108,7 +108,7 @@ void PaletteBriefView::setZoomFactor(int factor)
         updatePaletteView();
     }
     else
-        m_setColumnSlider->setValue(1);
+        m_setColumnSlider->setValue(Palette::MIN_PREFERRED_COLUMNS);
 }
 
 void PaletteBriefView::zoomOut()
@@ -133,9 +133,9 @@ void PaletteBriefView::updatePaletteView()
     if (m_model->rowCount() == 0)
     {
         m_colorCells->setRowCount(0);
-        m_colorCells->setColumnCount(1);
+        m_colorCells->setColumnCount(Palette::MIN_PREFERRED_COLUMNS);
 
-        m_setColumnSlider->setValue(1);
+        m_setColumnSlider->setValue(Palette::MIN_PREFERRED_COLUMNS);
 
         return ;
     }
@@ -302,23 +302,44 @@ void PaletteBriefView::showComments(bool show)
 
 void PaletteBriefView::setupPreferredColumns()
 {
-    int preferredColumns = m_model->preferredPaletteColumns();
+    int finalColumns = Palette::MAX_PREFERRED_COLUMNS;
+    int finalValue = Palette::MIN_PREFERRED_COLUMNS;
 
-    if (preferredColumns > Palette::DEFAULT_PREFERRED_COLUMNS)
+    if (m_model->preferredPaletteColumns() > Palette::MIN_PREFERRED_COLUMNS)
     {
-        if (preferredColumns % 2 == 0)
-            m_setColumnSlider->setRange(1, 2*preferredColumns);
+        if (m_model->preferredPaletteColumns() % 2 == 0)
+            finalColumns = 2*m_model->preferredPaletteColumns();
         else
-            m_setColumnSlider->setRange(1, 2*preferredColumns - 1);
+            finalColumns = 2*m_model->preferredPaletteColumns() - 1;
 
-        m_colorCells->setColumnCount(preferredColumns);
-        m_setColumnSlider->setValue(preferredColumns);
+        finalValue = m_model->preferredPaletteColumns();
     }
     else
     {
-        m_setColumnSlider->setRange(1, 2);
-        m_setColumnSlider->setValue(Palette::DEFAULT_PREFERRED_COLUMNS);
+        if (m_model->rowCount() % 2 == 0)
+            finalColumns = 2*m_model->rowCount();
+        else
+            finalColumns = 2*m_model->rowCount() - 1;
+
+        finalValue = static_cast<int>(finalColumns/2);
     }
+
+    if (finalColumns > Palette::MAX_PREFERRED_COLUMNS)
+    {
+        finalColumns = Palette::MAX_PREFERRED_COLUMNS;
+        finalValue = static_cast<int>(Palette::MAX_PREFERRED_COLUMNS/2);
+    }
+
+    if (m_model->rowCount() == 0)
+    {
+        finalColumns = Palette::MAX_PREFERRED_COLUMNS;
+        finalValue = Palette::MIN_PREFERRED_COLUMNS;
+    }
+
+    m_colorCells->setColumnCount(finalColumns);
+
+    m_setColumnSlider->setRange(Palette::MIN_PREFERRED_COLUMNS, finalColumns);
+    m_setColumnSlider->setValue(finalValue);
 }
 
 #include "palettebriefview.moc"

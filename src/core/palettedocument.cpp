@@ -192,6 +192,8 @@ bool PaletteDocument::openPaletteFile(const QString & fileName)
 
 bool PaletteDocument::saveFileAs(const QString & fileName)
 {
+    // TODO here obtain the preferred columns
+
     KSaveFile saveFile(fileName);
 
     if (!saveFile.open())
