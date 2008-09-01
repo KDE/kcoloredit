@@ -92,8 +92,8 @@ class PaletteDialog : public KDialog
         CollectionsWidget * m_collectionsWidget;
         KFileWidget * m_fileWidget;
 
-        KUrl m_paletteUrl; // Contain the url of the palette file (custom palette or KDE palette)
-        bool m_isKdePalette; // tell me if m_paletteName is a kdepalette or a sigle file name
+        KUrl m_paletteUrl; // the url of the palette file (custom palette or KDE palette)
+        bool m_isKdePalette; // tell me if m_paletteUrl.path() is a kdepalette or a sigle file name
 };
 
 #endif // PALETTE_DIALOG_H

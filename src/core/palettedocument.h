@@ -35,12 +35,18 @@ class PaletteDocument : public QObject
         ~PaletteDocument();
 
         bool openFile(const KUrl & url);
-        bool saveFile();
         bool saveFileAs(const KUrl & url);
 
         KUrl url() const;
+
         bool isModified() const;
+        void setModified(bool modified);
+
+        bool isSaved() const;
+        void setSaved(bool saved);
+
         PaletteDocument::DocumentType type() const;
+
         PaletteModel * model();
 
         QString lastErrorString() const;
@@ -60,6 +66,7 @@ class PaletteDocument : public QObject
         QString m_lastErrorString;
         PaletteDocument::DocumentType m_documentType;
         bool m_modified;
+        bool m_saved;
 };
 
 #endif // PALETTE_DOCUMENT_H

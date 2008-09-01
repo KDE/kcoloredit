@@ -81,6 +81,9 @@ void KColorEditMainWnd::openFile(const KUrl & url)
                 updateTittleWhenOpenSaveDoc();
 
                 m_recentFilesAction->addUrl(KUrl(paletteFileName));
+
+                m_paletteDocument->setModified(false);
+                m_paletteDocument->setSaved(true);
             }
             else
             {
@@ -105,7 +108,7 @@ bool KColorEditMainWnd::queryClose()
             "Do you want to save your changes or discard them?", m_paletteDocument->url().fileName()),
             i18n( "Close Document" ), KStandardGuiItem::save(), KStandardGuiItem::discard()))
         {
-            case KMessageBox::Yes: return false;
+            case KMessageBox::Yes: saveFile(); return m_paletteDocument->isSaved();
             case KMessageBox::No : return true;
             // Case KMessageBox::Cancel
             default : return false;

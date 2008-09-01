@@ -35,6 +35,7 @@ PaletteDocument::PaletteDocument(QObject * parent)
     , m_model(new PaletteModel(this))
     , m_documentType(PaletteDocument::KDEType)
     , m_modified(false)
+    , m_saved(false)
 {
     connect(m_model, SIGNAL( dataChanged(QModelIndex, QModelIndex) ), SLOT( updatePaletteDocument() ));
     connect(m_model, SIGNAL( rowsRemoved(QModelIndex, int, int)    ), SLOT( updatePaletteDocument() ));
@@ -238,6 +239,9 @@ bool PaletteDocument::saveFileAs(const KUrl & url)
 
     m_url = url;
 
+    m_modified = false;
+    m_saved = true;
+
     return true;
 }
 
@@ -249,6 +253,21 @@ KUrl PaletteDocument::url() const
 bool PaletteDocument::isModified() const
 {
     return m_modified;
+}
+
+void PaletteDocument::setModified(bool modified)
+{
+    m_modified = modified;
+}
+
+bool PaletteDocument::isSaved() const
+{
+    return m_saved;
+}
+
+void PaletteDocument::setSaved(bool saved)
+{
+    m_saved = saved;
 }
 
 PaletteDocument::DocumentType PaletteDocument::type() const
