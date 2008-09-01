@@ -25,6 +25,8 @@
 
 class QDockWidget;
 
+class KRecentFilesAction;
+
 class PaletteDocument;
 class PaletteDetailView;
 class PaletteBriefView;
@@ -39,17 +41,14 @@ class KColorEditMainWnd : public KXmlGuiWindow
         explicit KColorEditMainWnd(QWidget * parent = 0, Qt::WindowFlags f = KDE_DEFAULT_WINDOWFLAGS);
         ~KColorEditMainWnd();
 
-        void openPaletteFile(const QString & file);
+        void openPaletteFile(const KUrl & url);
 
-    public slots:
+    private slots:
         void newFile();
-        void openFile(const KUrl & url = KUrl());
+        void openFile();
+        void registerRecentFile(const KUrl & url);
         void saveFile();
         void saveFileAs();
-
-        void newWindow();
-        // TODO settings
-        //void settingsPreferences();
 
         void cleanPalette();
         void generateColorNames();
@@ -65,7 +64,6 @@ class KColorEditMainWnd : public KXmlGuiWindow
         void moveBegin();
         void moveEnd();
 
-    private slots:
         void updateTittleWhenChangeDocState();
         void updateTittleWhenOpenSaveDoc();
 
@@ -76,6 +74,8 @@ class KColorEditMainWnd : public KXmlGuiWindow
         QString appName() const;
 
     private:
+        KRecentFilesAction * m_recentFilesAction;
+
         PaletteDocument * m_paletteDocument;
 
         PaletteBriefView * m_paletteBriefView;

@@ -20,7 +20,7 @@
 #ifndef PALETTE_DOCUMENT_H
 #define PALETTE_DOCUMENT_H
 
-#include <QtCore/QObject>
+#include <KUrl>
 
 class PaletteModel;
 
@@ -34,16 +34,13 @@ class PaletteDocument : public QObject
         PaletteDocument(QObject * parent = 0);
         ~PaletteDocument();
 
-        QString fullPathFileName() const;
-        QString fileName() const;
-
-        PaletteModel * model();
-
-        bool openPaletteFile(const QString & fileName);
+        bool openFile(const KUrl & url);
         bool saveFile();
-        bool saveFileAs(const QString & fileName);
+        bool saveFileAs(const KUrl & url);
 
+        KUrl url() const;
         PaletteDocument::DocumentType type() const;
+        PaletteModel * model();
 
         QString lastErrorString() const;
 
@@ -57,9 +54,8 @@ class PaletteDocument : public QObject
         void extractDescriptionFromModel();
 
     private:
+        KUrl m_url;
         PaletteModel * m_model;
-        QString m_fullPathFile;
-        QString m_file;
         QString m_lastErrorString;
         PaletteDocument::DocumentType m_documentType;
 };

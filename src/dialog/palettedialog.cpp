@@ -35,7 +35,8 @@
 //BEGIN public class CollectionGrid
 
 CollectionGrid::CollectionGrid(const QString & collection, QWidget * parent)
-    : KColorCells(parent, 0, 0), m_collection(collection)
+    : KColorCells(parent, 0, 0)
+    , m_collection(collection)
     , m_isEmpty(true)
 {
     setCursor(KCursor("hand2"));
@@ -82,7 +83,7 @@ void CollectionGrid::mousePressEvent(QMouseEvent * event)
 // this construct need a lot of explanation .. hehehe i think :P
 CollectionsWidget::CollectionsWidget(QWidget * parent) : QWidget(parent)
 {
-    QString emptyStr = i18n("\n[Empty]");
+    QString emptyStr = '\n' + i18n("[Empty]");
 
     QHBoxLayout * layout = new QHBoxLayout(this);
 
@@ -102,7 +103,7 @@ CollectionsWidget::CollectionsWidget(QWidget * parent) : QWidget(parent)
 
         layout->addLayout(collectionLayout);
 
-        connect(m_collections[i], SIGNAL( collectionClicked(QString) ), this, SLOT( chooseCollection(QString) ));
+        connect(m_collections[i], SIGNAL( collectionClicked(QString) ), SLOT( chooseCollection(QString) ));
     }
 }
 
@@ -138,21 +139,21 @@ void CollectionsWidget::chooseCollection(const QString & collection)
 
 //BEGIN public class PaletteDialog
 
-QString PaletteDialog::getOpenPaletteName(QWidget * parent)
+KUrl PaletteDialog::getOpenUrl(QWidget * parent)
 {
     PaletteDialog paletteDialog(parent);
 
-    QString fileName;
+    KUrl tmpUrl;
 
     if (paletteDialog.exec() == QDialog::Accepted)
     {
-        fileName = paletteDialog.paletteName();
+        tmpUrl = paletteDialog.paletteUrl();
 
         if (paletteDialog.isKdePalette())
-            fileName = KStandardDirs::locate("config", "colors/"+fileName);
+            tmpUrl = KUrl(KStandardDirs::locate("config", "colors/"+ tmpUrl.path()));
     }
 
-    return fileName;
+    return tmpUrl;
 }
 
 PaletteDialog::PaletteDialog(QWidget * parent, Qt::WFlags flags) : KDialog(parent, flags), m_isKdePalette(false)
@@ -185,20 +186,20 @@ PaletteDialog::PaletteDialog(QWidget * parent, Qt::WFlags flags) : KDialog(paren
 
     setMainWidget(m_mainWidget);
 
-    connect(m_mainWidget, SIGNAL( currentChanged(int)), this, SLOT( updateDialogBtns(int) ));
-    connect(m_collectionsWidget, SIGNAL( selectedCollection(QString) ), this, SLOT( selectKdePaletteName(QString) ));
-    connect(m_fileWidget, SIGNAL( accepted() ), this, SLOT( selectFileName() ));
+    connect(m_mainWidget, SIGNAL( currentChanged(int)), SLOT( updateDialogBtns(int) ));
+    connect(m_collectionsWidget, SIGNAL( selectedCollection(QString) ), SLOT( selectKdePalette(QString) ));
+    connect(m_fileWidget, SIGNAL( accepted() ), SLOT( selectUrl() ));
     connect(this, SIGNAL( okClicked() ), m_fileWidget, SLOT( slotOk() ));
-    connect(this, SIGNAL( okClicked() ), this, SLOT( selectFileName() ));
+    connect(this, SIGNAL( okClicked() ), SLOT( selectUrl() ));
 }
 
 PaletteDialog::~PaletteDialog()
 {
 }
 
-QString PaletteDialog::paletteName() const
+KUrl PaletteDialog::paletteUrl() const
 {
-    return m_paletteName;
+    return m_paletteUrl;
 }
 
 bool PaletteDialog::isKdePalette() const
@@ -225,25 +226,24 @@ void PaletteDialog::updateDialogBtns(int tabIndex)
     }
 }
 
-void PaletteDialog::selectKdePaletteName(const QString & paletteName)
+void PaletteDialog::selectKdePalette(const QString & kdePalette)
 {
     m_isKdePalette = true;
 
-    m_paletteName = paletteName;
+    m_paletteUrl = KUrl(kdePalette);
 
-        // set the dialog return to acepted and close the dialog
-
+    // Return to acepted and close the dialog
     accept();
 }
 
-void PaletteDialog::selectFileName()
+void PaletteDialog::selectUrl()
 {
     m_isKdePalette = false;
 
-        // fill the filename field of KFileWidget
+    // Fill the filename field of KFileWidget
     m_fileWidget->accept();
 
-    m_paletteName = m_fileWidget->selectedFile();
+    m_paletteUrl = m_fileWidget->selectedUrl();
 
     accept();
 }

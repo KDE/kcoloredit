@@ -147,3 +147,5 @@ void MultiPageWidget::setPageTitle(QString const &newTitle)
         currentWidget->setWindowTitle(newTitle);
     emit pageTitleChanged(newTitle);
 }
+
+#include "multipagewidget.moc"

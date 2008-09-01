@@ -63,8 +63,8 @@ class CollectionsWidget : public QWidget
         void chooseCollection(const QString & collection);
 
     private:
-        QList< QLabel * > m_headers;
-        QList< CollectionGrid * > m_collections;
+        QList<QLabel *> m_headers;
+        QList<CollectionGrid *> m_collections;
 };
 
 class PaletteDialog : public KDialog
@@ -72,18 +72,18 @@ class PaletteDialog : public KDialog
     Q_OBJECT
 
     public:
-        static QString getOpenPaletteName(QWidget * parent = 0);
+        static KUrl getOpenUrl(QWidget * parent = 0);
 
         explicit PaletteDialog(QWidget * parent = 0, Qt::WFlags flags = 0);
         ~PaletteDialog();
 
-        QString paletteName() const;
+        KUrl paletteUrl() const;
         bool isKdePalette() const;
 
-    public slots:
+    private slots:
         void updateDialogBtns(int tabIndex);
-        void selectKdePaletteName(const QString & paletteName);
-        void selectFileName();
+        void selectKdePalette(const QString & kdePalette);
+        void selectUrl();
 
     private:
         KTabWidget * m_mainWidget;
@@ -91,7 +91,7 @@ class PaletteDialog : public KDialog
         CollectionsWidget * m_collectionsWidget;
         KFileWidget * m_fileWidget;
 
-        QString m_paletteName; // contain the kde palette name or the file name selected
+        KUrl m_paletteUrl; // Contain the url of the palette file (custom palette or KDE palette)
         bool m_isKdePalette; // tell me if m_paletteName is a kdepalette or a sigle file name
 };
 

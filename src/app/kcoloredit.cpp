@@ -17,7 +17,7 @@
 *  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.                 *
 *********************************************************************************/
 
-// BIGGGGGGGGG TODO her ... recent files etc etc refactor this clase ... use kurl in docueent ...
+// BIGGGGGGGGG TODO here ... recent files etc etc refactor this clase
 
 #include "kcoloredit.h"
 
@@ -51,17 +51,15 @@ KColorEditMainWnd::~KColorEditMainWnd()
 {
 }
 
-void KColorEditMainWnd::openPaletteFile(const QString & file)
+void KColorEditMainWnd::openPaletteFile(const KUrl & url)
 {
-    QString fileNameFromDialog = file;
-
     QString tmpFile;
 
-    if (!fileNameFromDialog.isEmpty())
+    if (!url.path().isEmpty())
     {
-        if (KIO::NetAccess::download(fileNameFromDialog, tmpFile, this))
+        if (KIO::NetAccess::download(url, tmpFile, this))
         {
-            if (m_paletteDocument->openPaletteFile(tmpFile))
+            if (m_paletteDocument->openFile(KUrl(tmpFile)))
             {
                 m_paletteDetailView->setModel(m_paletteDocument->model());
                 m_paletteDetailView->updatePaletteDetails();
@@ -91,16 +89,29 @@ void KColorEditMainWnd::openPaletteFile(const QString & file)
 
 void KColorEditMainWnd::newFile()
 {
+    KColorEditMainWnd * newWnd = new KColorEditMainWnd();
+    newWnd->show();
 }
 
-void KColorEditMainWnd::openFile(const KUrl & url)
+void KColorEditMainWnd::registerRecentFile(const KUrl & url)
 {
-    QString fileNameFromDialog;
-
-    if (url.fileName().isEmpty())
-        fileNameFromDialog = PaletteDialog::getOpenPaletteName();
+    if (m_paletteDocument->openFile(url))
+        m_recentFilesAction->addUrl(url);
     else
-        fileNameFromDialog = url.fileName();
+        m_recentFilesAction->removeUrl(url);
+}
+
+void KColorEditMainWnd::openFile()
+{
+    KUrl fileNameFromDialog = PaletteDialog::getOpenUrl();
+
+    //if (url.fileName().isEmpty())
+    //    fileNameFromDialog = 
+    //else
+//     {
+//         //fileNameFromDialog = url.fileName();
+//         m_recentFilesAction->addUrl( KUrl(fileNameFromDialog) );
+//     }
 
     QString tmpFile;
 
@@ -108,7 +119,7 @@ void KColorEditMainWnd::openFile(const KUrl & url)
     {
         if (KIO::NetAccess::download(fileNameFromDialog, tmpFile, this))
         {
-            if (m_paletteDocument->openPaletteFile(tmpFile))
+            if (m_paletteDocument->openFile(KUrl(tmpFile)))
             {
                 m_paletteDetailView->setModel(m_paletteDocument->model());
                 m_paletteDetailView->updatePaletteDetails();
@@ -122,6 +133,9 @@ void KColorEditMainWnd::openFile(const KUrl & url)
                     m_paletteDocument->model()->setData(m_paletteDocument->model()->index(0, 0), m_paletteDocument->model()->index(0, 0).data());
 
                 updateTittleWhenOpenSaveDoc();
+
+                // TODO WARNING
+                //registerRecentFile(KUrl(tmpFile));
             }
             else
                 KMessageBox::error(this, m_paletteDocument->lastErrorString());
@@ -135,9 +149,9 @@ void KColorEditMainWnd::openFile(const KUrl & url)
 
 void KColorEditMainWnd::saveFile()
 {
-    if(!m_paletteDocument->fullPathFileName().isEmpty())
+    if(!m_paletteDocument->url().fileName().isEmpty())
     {
-        if (!m_paletteDocument->saveFileAs(m_paletteDocument->fullPathFileName()))
+        if (!m_paletteDocument->saveFileAs(m_paletteDocument->url()))
             KMessageBox::error(this, m_paletteDocument->lastErrorString());
         else
             updateTittleWhenOpenSaveDoc();
@@ -172,11 +186,6 @@ void KColorEditMainWnd::saveFileAs()
     }
 }
 
-void KColorEditMainWnd::newWindow()
-{
-    KColorEditMainWnd * newWnd = new KColorEditMainWnd();
-    newWnd->show();
-}
 
 /*
 // TODO
@@ -267,7 +276,7 @@ void KColorEditMainWnd::moveEnd()
 
 void KColorEditMainWnd::updateTittleWhenChangeDocState()
 {
-    setWindowTitle(QString("KColorEdit") + " - " + m_paletteDocument->fileName() + i18n(" [modified]"));
+    setWindowTitle(QString("KColorEdit") + " - " + m_paletteDocument->url().fileName() + i18n(" [modified]"));
 }
 
 void KColorEditMainWnd::setupWidgets()
@@ -401,9 +410,11 @@ void KColorEditMainWnd::setupActions()
     KStandardAction::save   (this, SLOT( saveFile()   ), actionCollection());
     KStandardAction::saveAs (this, SLOT( saveFileAs() ), actionCollection());
 
-    KStandardAction::openRecent(this, SLOT( openFile(KUrl) ), actionCollection());
+    m_recentFilesAction = KStandardAction::openRecent(this, SLOT( registerRecentFile(KUrl) ), actionCollection());
+    //KStandardAction::openRecent(this, SLOT( openFile(KUrl) ), actionCollection());
+    connect( m_recentFilesAction, SIGNAL( triggered() ), this, SLOT( openFile() ) );
 
-    KStandardAction::openNew(this, SLOT( newWindow()       ), actionCollection());
+    KStandardAction::openNew(this, SLOT( newFile()       ), actionCollection());
     // TODO print
     //KStandardAction::print      (this, SLOT( slotFilePrint()           ), actionCollection());
     // TODO settings
@@ -414,7 +425,7 @@ void KColorEditMainWnd::setupActions()
 void KColorEditMainWnd::updateTittleWhenOpenSaveDoc()
 {
     // setup the window title acording to the file name
-    setWindowTitle(QString("KColorEdit") + " - " + m_paletteDocument->fileName());
+    setWindowTitle(QString("KColorEdit") + " - " + m_paletteDocument->url().fileName());
 }
 
 #include "kcoloredit.moc"

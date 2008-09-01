@@ -33,7 +33,6 @@
 PaletteDocument::PaletteDocument(QObject * parent)
     : QObject(parent)
     , m_model(new PaletteModel(this))
-    , m_fullPathFile(QString())
     , m_documentType(PaletteDocument::KDEType)
 {
     connect(m_model, SIGNAL( dataChanged(QModelIndex, QModelIndex) ), SLOT( updatePaletteDocument() ));
@@ -44,24 +43,9 @@ PaletteDocument::~PaletteDocument()
 {
 }
 
-QString PaletteDocument::fullPathFileName() const
+bool PaletteDocument::openFile(const KUrl & url)
 {
-    return m_fullPathFile;
-}
-
-QString PaletteDocument::fileName() const
-{
-    return m_file;
-}
-
-PaletteModel * PaletteDocument::model()
-{
-    return m_model;
-}
-
-bool PaletteDocument::openPaletteFile(const QString & fileName)
-{
-    QFile file(fileName);
+    QFile file(url.path());
 
     //NOTE
     // Checking errors
@@ -179,17 +163,16 @@ bool PaletteDocument::openPaletteFile(const QString & fileName)
 
     extractDescriptionFromModel();
 
-    m_fullPathFile = fileName;
-    m_file = m_fullPathFile.split('/')[m_fullPathFile.split('/').count() - 1];
-
     file.close();
+
+    m_url = url;
 
     return true;
 }
 
-bool PaletteDocument::saveFileAs(const QString & fileName)
+bool PaletteDocument::saveFileAs(const KUrl & url)
 {
-    KSaveFile saveFile(fileName);
+    KSaveFile saveFile(url.path());
 
     // Checking errors
     if (!saveFile.open())
@@ -252,15 +235,24 @@ bool PaletteDocument::saveFileAs(const QString & fileName)
         return false;
     }
 
-    m_fullPathFile = fileName;
-    m_file = m_fullPathFile.split('/')[m_fullPathFile.split('/').count() - 1];
+    m_url = url;
 
     return true;
+}
+
+KUrl PaletteDocument::url() const
+{
+    return m_url;
 }
 
 PaletteDocument::DocumentType PaletteDocument::type() const
 {
     return m_documentType;
+}
+
+PaletteModel * PaletteDocument::model()
+{
+    return m_model;
 }
 
 QString PaletteDocument::lastErrorString() const
