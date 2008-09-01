@@ -39,6 +39,7 @@ class PaletteDocument : public QObject
         bool saveFileAs(const KUrl & url);
 
         KUrl url() const;
+        bool isModified() const;
         PaletteDocument::DocumentType type() const;
         PaletteModel * model();
 
@@ -58,6 +59,7 @@ class PaletteDocument : public QObject
         PaletteModel * m_model;
         QString m_lastErrorString;
         PaletteDocument::DocumentType m_documentType;
+        bool m_modified;
 };
 
 #endif // PALETTE_DOCUMENT_H

@@ -36,7 +36,8 @@
 #include "palettedialog.h"
 #include "colorutil.h"
 
-KColorEditMainWnd::KColorEditMainWnd(QWidget * parent, Qt::WindowFlags f) : KXmlGuiWindow(parent, f)
+KColorEditMainWnd::KColorEditMainWnd(QWidget * parent, Qt::WindowFlags f)
+    : KXmlGuiWindow(parent, f)
 {
     setupWidgets();
     setupActions();
@@ -73,7 +74,7 @@ void KColorEditMainWnd::openFile(const KUrl & url)
 
                 m_kColorEditWidget->setModel(m_paletteDocument->model());
 
-                // Little hack to force the signal dataChange in PaletteBriefView to update the KColorCells
+                // Little hack to force emit the signal dataChange in PaletteBriefView to update the KColorCells
                 if (m_paletteDocument->model()->rowCount() > 0)
                     m_paletteDocument->model()->setData(m_paletteDocument->model()->index(0, 0), m_paletteDocument->model()->index(0, 0).data());
 
@@ -93,6 +94,25 @@ void KColorEditMainWnd::openFile(const KUrl & url)
         else
             KMessageBox::error(this, KIO::NetAccess::lastErrorString());
     }
+}
+
+bool KColorEditMainWnd::queryClose()
+{
+    if (m_paletteDocument->isModified())
+    {
+        switch (KMessageBox::warningYesNoCancel(this,
+            i18n( "The document \"%1\" has been modified.\n"
+            "Do you want to save your changes or discard them?", m_paletteDocument->url().fileName()),
+            i18n( "Close Document" ), KStandardGuiItem::save(), KStandardGuiItem::discard()))
+        {
+            case KMessageBox::Yes: return false;
+            case KMessageBox::No : return true;
+            // Case KMessageBox::Cancel
+            default : return false;
+        }
+    }
+
+    return true;
 }
 
 void KColorEditMainWnd::newFile()
@@ -129,11 +149,6 @@ void KColorEditMainWnd::saveFileAs()
         else
             updateTittleWhenOpenSaveDoc();
     }
-}
-
-void KColorEditMainWnd::quit()
-{
-    close();
 }
 
 void KColorEditMainWnd::cleanPalette()
@@ -281,7 +296,7 @@ void KColorEditMainWnd::setupActions()
     KStandardAction::save   (this, SLOT( saveFile()   ), actionCollection());
     KStandardAction::saveAs (this, SLOT( saveFileAs() ), actionCollection());
     KStandardAction::openNew(this, SLOT( newFile()    ), actionCollection());
-    KStandardAction::quit   (this, SLOT( quit()       ), actionCollection());
+    KStandardAction::quit   (this, SLOT( close()      ), actionCollection());
 
     m_recentFilesAction = KStandardAction::openRecent(this, SLOT( openFile(KUrl) ), actionCollection());
     m_recentFilesAction->loadEntries(KGlobal::config()->group("Recent Files"));

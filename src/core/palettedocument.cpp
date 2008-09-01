@@ -34,6 +34,7 @@ PaletteDocument::PaletteDocument(QObject * parent)
     : QObject(parent)
     , m_model(new PaletteModel(this))
     , m_documentType(PaletteDocument::KDEType)
+    , m_modified(false)
 {
     connect(m_model, SIGNAL( dataChanged(QModelIndex, QModelIndex) ), SLOT( updatePaletteDocument() ));
     connect(m_model, SIGNAL( rowsRemoved(QModelIndex, int, int)    ), SLOT( updatePaletteDocument() ));
@@ -245,6 +246,11 @@ KUrl PaletteDocument::url() const
     return m_url;
 }
 
+bool PaletteDocument::isModified() const
+{
+    return m_modified;
+}
+
 PaletteDocument::DocumentType PaletteDocument::type() const
 {
     return m_documentType;
@@ -262,6 +268,8 @@ QString PaletteDocument::lastErrorString() const
 
 void PaletteDocument::updatePaletteDocument()
 {
+    m_modified = true;
+
     emit modified();
 }
 

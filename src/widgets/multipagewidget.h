@@ -52,7 +52,6 @@ class QStackedWidget;
 class QVBoxLayout;
 QT_END_NAMESPACE
 
-//! [0]
 class MultiPageWidget : public QGroupBox
 {
     Q_OBJECT
@@ -85,6 +84,5 @@ private:
     KComboBox *comboBox;
     QVBoxLayout *layout;
 };
-//! [0]
 
 #endif

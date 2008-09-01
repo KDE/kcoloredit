@@ -54,7 +54,7 @@ class CollectionsWidget : public QWidget
 
     public:
         CollectionsWidget(QWidget * parent = 0);
-        ~CollectionsWidget();
+        virtual ~CollectionsWidget();
 
     signals:
         void selectedCollection(const QString & collection);
@@ -76,7 +76,7 @@ class PaletteDialog : public KDialog
         static KUrl getOpenUrl(QWidget * parent = 0);
 
         explicit PaletteDialog(QWidget * parent = 0, Qt::WFlags flags = 0);
-        ~PaletteDialog();
+        virtual ~PaletteDialog();
 
         KUrl paletteUrl() const;
         bool isKdePalette() const;

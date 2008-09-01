@@ -179,10 +179,6 @@ PaletteDialog::PaletteDialog(QWidget * parent, Qt::WFlags flags) : KDialog(paren
     m_fileWidget->setMode(KFile::ExistingOnly | KFile::LocalOnly);
     m_fileWidget->setOperationMode(KFileWidget::Opening);
 
-    QString allSupportedStr = i18n("All Supported Files");
-    QString kdePaletteStr = i18n("KDE Palette");
-    QString gimpPaletteStr = i18n("GIMP Palette");
-
     m_fileWidget->setFilter(PaletteDialog::filter());
 
     m_mainWidget->addTab(m_collectionsWidget, KIcon("kde"), i18n("KDE Palettes"));

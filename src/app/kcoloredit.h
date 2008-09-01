@@ -44,11 +44,13 @@ class KColorEditMainWnd : public KXmlGuiWindow
     public slots:
         void openFile(const KUrl & url = KUrl());
 
+    protected:
+        bool queryClose();
+
     private slots:
         void newFile();
         void saveFile();
         void saveFileAs();
-        void quit();
 
         void cleanPalette();
 
