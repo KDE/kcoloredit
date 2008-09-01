@@ -72,6 +72,7 @@ class PaletteDialog : public KDialog
     Q_OBJECT
 
     public:
+        static QString filter();
         static KUrl getOpenUrl(QWidget * parent = 0);
 
         explicit PaletteDialog(QWidget * parent = 0, Qt::WFlags flags = 0);

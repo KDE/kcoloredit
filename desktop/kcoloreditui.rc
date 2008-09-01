@@ -15,17 +15,17 @@
     </MenuBar>
     <ToolBar name="palette-toolbar" newline="true">
         <text>Palette Toolbar</text>
-        <Action name="add-color"/>
-        <Action name="add-comment"/>
+        <Action name="append-color-item"/>
+        <Action name="append-comment-item"/>
         <Separator/>
-        <Action name="insert-color"/>
-        <Action name="insert-comment"/>
+        <Action name="insert-color-item"/>
+        <Action name="insert-comment-item"/>
         <Separator/>
         <Action name="remove-item"/>
         <Separator/>
-        <Action name="move-next"/>
-        <Action name="move-prev"/>
-        <Action name="move-begin"/>
-        <Action name="move-end"/>
+        <Action name="move-item-to-next-position"/>
+        <Action name="move-item-to-prev-position"/>
+        <Action name="move-item-to-first-position"/>
+        <Action name="move-item-to-last-position"/>
     </ToolBar>
 </gui>

@@ -39,30 +39,33 @@ class KColorEditMainWnd : public KXmlGuiWindow
 
     public:
         explicit KColorEditMainWnd(QWidget * parent = 0, Qt::WindowFlags f = KDE_DEFAULT_WINDOWFLAGS);
-        ~KColorEditMainWnd();
+        virtual ~KColorEditMainWnd();
 
-        void openPaletteFile(const KUrl & url);
+    public slots:
+        void openFile(const KUrl & url = KUrl());
 
     private slots:
         void newFile();
-        void openFile();
-        void registerRecentFile(const KUrl & url);
         void saveFile();
         void saveFileAs();
+        void quit();
 
         void cleanPalette();
+
         void generateColorNames();
         void completeColorNames();
 
-        void addColorItem();
-        void addCommentItem();
+        void appendColorItem();
+        void appendCommentItem();
         void insertColorItem();
         void insertCommentItem();
+
         void removeItem();
-        void moveNext();
-        void movePrev();
-        void moveBegin();
-        void moveEnd();
+
+        void moveItemToNextPosition();
+        void moveItemToPrevPosition();
+        void moveItemToFirstPosition();
+        void moveItemToLastPosition();
 
         void updateTittleWhenChangeDocState();
         void updateTittleWhenOpenSaveDoc();

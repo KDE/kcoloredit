@@ -17,15 +17,12 @@
 *  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.                 *
 *********************************************************************************/
 
-// BIGGGGGGGGG TODO here ... recent files etc etc refactor this clase
-
 #include "kcoloredit.h"
 
 #include <QtGui/QDockWidget>
 
 #include <KLocalizedString>
 #include <KIO/NetAccess>
-#include <KApplication>
 #include <KMessageBox>
 #include <KRecentFilesAction>
 #include <KActionCollection>
@@ -49,17 +46,25 @@ KColorEditMainWnd::KColorEditMainWnd(QWidget * parent, Qt::WindowFlags f) : KXml
 
 KColorEditMainWnd::~KColorEditMainWnd()
 {
+    m_recentFilesAction->saveEntries(KConfigGroup(KGlobal::config(), "Recent Files"));
+
+    KGlobal::config()->sync();
 }
 
-void KColorEditMainWnd::openPaletteFile(const KUrl & url)
+void KColorEditMainWnd::openFile(const KUrl & url)
 {
-    QString tmpFile;
+    KUrl paletteUrl = url;
 
-    if (!url.path().isEmpty())
+    if (url.isEmpty())
+        paletteUrl = PaletteDialog::getOpenUrl();
+
+    QString paletteFileName;
+
+    if (!paletteUrl.isEmpty())
     {
-        if (KIO::NetAccess::download(url, tmpFile, this))
+        if (KIO::NetAccess::download(paletteUrl, paletteFileName, this))
         {
-            if (m_paletteDocument->openFile(KUrl(tmpFile)))
+            if (m_paletteDocument->openFile(KUrl(paletteFileName)))
             {
                 m_paletteDetailView->setModel(m_paletteDocument->model());
                 m_paletteDetailView->updatePaletteDetails();
@@ -68,24 +73,27 @@ void KColorEditMainWnd::openPaletteFile(const KUrl & url)
 
                 m_kColorEditWidget->setModel(m_paletteDocument->model());
 
-                // NOTE little hack to force the signal dataChange to update the gridView
+                // Little hack to force the signal dataChange in PaletteBriefView to update the KColorCells
                 if (m_paletteDocument->model()->rowCount() > 0)
                     m_paletteDocument->model()->setData(m_paletteDocument->model()->index(0, 0), m_paletteDocument->model()->index(0, 0).data());
 
                 updateTittleWhenOpenSaveDoc();
+
+                m_recentFilesAction->addUrl(KUrl(paletteFileName));
             }
             else
-                KMessageBox::error(this, m_paletteDocument->lastErrorString());
+            {
+                m_recentFilesAction->removeUrl(KUrl(paletteFileName));
 
-            KIO::NetAccess::removeTempFile(tmpFile);
+                KMessageBox::error(this, m_paletteDocument->lastErrorString());
+            }
+
+            KIO::NetAccess::removeTempFile(paletteFileName);
         }
         else
             KMessageBox::error(this, KIO::NetAccess::lastErrorString());
     }
-
 }
-
-//BEGIN public slots
 
 void KColorEditMainWnd::newFile()
 {
@@ -93,63 +101,9 @@ void KColorEditMainWnd::newFile()
     newWnd->show();
 }
 
-void KColorEditMainWnd::registerRecentFile(const KUrl & url)
-{
-    if (m_paletteDocument->openFile(url))
-        m_recentFilesAction->addUrl(url);
-    else
-        m_recentFilesAction->removeUrl(url);
-}
-
-void KColorEditMainWnd::openFile()
-{
-    KUrl fileNameFromDialog = PaletteDialog::getOpenUrl();
-
-    //if (url.fileName().isEmpty())
-    //    fileNameFromDialog = 
-    //else
-//     {
-//         //fileNameFromDialog = url.fileName();
-//         m_recentFilesAction->addUrl( KUrl(fileNameFromDialog) );
-//     }
-
-    QString tmpFile;
-
-    if (!fileNameFromDialog.isEmpty())
-    {
-        if (KIO::NetAccess::download(fileNameFromDialog, tmpFile, this))
-        {
-            if (m_paletteDocument->openFile(KUrl(tmpFile)))
-            {
-                m_paletteDetailView->setModel(m_paletteDocument->model());
-                m_paletteDetailView->updatePaletteDetails();
-
-                m_paletteBriefView->setModel(m_paletteDocument->model());
-
-                m_kColorEditWidget->setModel(m_paletteDocument->model());
-
-                // NOTE little hack to force the signal dataChange to update the gridView
-                if (m_paletteDocument->model()->rowCount() > 0)
-                    m_paletteDocument->model()->setData(m_paletteDocument->model()->index(0, 0), m_paletteDocument->model()->index(0, 0).data());
-
-                updateTittleWhenOpenSaveDoc();
-
-                // TODO WARNING
-                //registerRecentFile(KUrl(tmpFile));
-            }
-            else
-                KMessageBox::error(this, m_paletteDocument->lastErrorString());
-
-            KIO::NetAccess::removeTempFile(tmpFile);
-        }
-        else
-            KMessageBox::error(this, KIO::NetAccess::lastErrorString());
-    }
-}
-
 void KColorEditMainWnd::saveFile()
 {
-    if(!m_paletteDocument->url().fileName().isEmpty())
+    if(!m_paletteDocument->url().isEmpty())
     {
         if (!m_paletteDocument->saveFileAs(m_paletteDocument->url()))
             KMessageBox::error(this, m_paletteDocument->lastErrorString());
@@ -162,40 +116,25 @@ void KColorEditMainWnd::saveFile()
 
 void KColorEditMainWnd::saveFileAs()
 {
-    // same code in palettedialog ... utils.h ?
-    QString allSupportedStr = i18n("All Supported Files");
-    QString kdePaletteStr = i18n("KDE Palette");
-    QString gimpPaletteStr = i18n("GIMP Palette");
+    QString paletteFileName = KFileDialog::getSaveFileName(KUrl(QDir::homePath()), PaletteDialog::filter());
 
-    KUrl url = KUrl(QDir::homePath() + QLatin1Char('/'));
-    QString filter = QString("*.colors *.gpl|") + allSupportedStr + QString("\n*.colors|") + kdePaletteStr +
-        QString(" (*.colors)\n*.gpl|") + gimpPaletteStr + QString(" (*.gpl)");
-
-    QString saveFileName = KFileDialog::getSaveFileName(url, filter);
-
-    if (KIO::NetAccess::exists(KUrl(saveFileName), KIO::NetAccess::DestinationSide, widget()))
-        if (KMessageBox::warningContinueCancel(widget(), i18n("A file named \"%1\" already exists. Are you sure you want to overwrite it?", saveFileName), QString(), KGuiItem(i18n("Overwrite"))) != KMessageBox::Continue)
+    if (KIO::NetAccess::exists(KUrl(paletteFileName), KIO::NetAccess::DestinationSide, widget()))
+        if (KMessageBox::warningContinueCancel(widget(), i18n("A file named \"%1\" already exists. Are you sure you want to overwrite it?", paletteFileName), QString(), KGuiItem(i18n("Overwrite"))) != KMessageBox::Continue)
             return;
 
-    if (!saveFileName.isEmpty())
+    if (!paletteFileName.isEmpty())
     {
-        if (!m_paletteDocument->saveFileAs(saveFileName))
+        if (!m_paletteDocument->saveFileAs(paletteFileName))
             KMessageBox::error(this, m_paletteDocument->lastErrorString());
         else
             updateTittleWhenOpenSaveDoc();
     }
 }
 
-
-/*
-// TODO
-void KColorEditMainWnd::settingsPreferences()
+void KColorEditMainWnd::quit()
 {
-    KConfigDialog dialog(this, QString("TODO :P"), new KConfigSkeleton());
-
-    dialog.exec();
+    close();
 }
-*/
 
 void KColorEditMainWnd::cleanPalette()
 {
@@ -227,12 +166,12 @@ void KColorEditMainWnd::completeColorNames()
         m_paletteDocument->model()->completeColorNames();
 }
 
-void KColorEditMainWnd::addColorItem()
+void KColorEditMainWnd::appendColorItem()
 {
     m_paletteDetailView->appendColorItem(m_kColorEditWidget->selectedColor());
 }
 
-void KColorEditMainWnd::addCommentItem()
+void KColorEditMainWnd::appendCommentItem()
 {
     m_paletteDetailView->appendCommentItem();
 }
@@ -252,31 +191,35 @@ void KColorEditMainWnd::removeItem()
     m_paletteDetailView->removeItem(m_paletteDetailView->selectedIndex());
 }
 
-void KColorEditMainWnd::moveNext()
+void KColorEditMainWnd::moveItemToNextPosition()
 {
     m_paletteDetailView->moveItem(m_paletteDetailView->selectedIndex(), Palette::MoveToPrev);
 }
 
-void KColorEditMainWnd::movePrev()
+void KColorEditMainWnd::moveItemToPrevPosition()
 {
     m_paletteDetailView->moveItem(m_paletteDetailView->selectedIndex(), Palette::MoveToNext);
 }
 
-void KColorEditMainWnd::moveBegin()
+void KColorEditMainWnd::moveItemToFirstPosition()
 {
     m_paletteDetailView->moveItem(m_paletteDetailView->selectedIndex(), Palette::MoveToStart);
 }
 
-void KColorEditMainWnd::moveEnd()
+void KColorEditMainWnd::moveItemToLastPosition()
 {
     m_paletteDetailView->moveItem(m_paletteDetailView->selectedIndex(), Palette::MoveToEnd);
 }
 
-//END public slots
-
 void KColorEditMainWnd::updateTittleWhenChangeDocState()
 {
     setWindowTitle(QString("KColorEdit") + " - " + m_paletteDocument->url().fileName() + i18n(" [modified]"));
+}
+
+void KColorEditMainWnd::updateTittleWhenOpenSaveDoc()
+{
+    // setup the window title acording to the file name
+    setWindowTitle(QString("KColorEdit") + " - " + m_paletteDocument->url().fileName());
 }
 
 void KColorEditMainWnd::setupWidgets()
@@ -331,101 +274,94 @@ void KColorEditMainWnd::setupWidgets()
 
 void KColorEditMainWnd::setupActions()
 {
-    KAction * tmpAction = 0;
-
-    /// palette menu
-
-    tmpAction = actionCollection()->addAction("clean-palette");
-    tmpAction->setIcon(KIcon("edit-clear"));
-    tmpAction->setText(i18n("Clean Palette"));
-
-    tmpAction = actionCollection()->addAction("generate-color-names");
-    tmpAction->setIcon(KIcon("format-stroke-color"));
-    tmpAction->setText(i18n("Generate Color Names"));
-
-    tmpAction = actionCollection()->addAction("complete-color-names");
-    tmpAction->setIcon(KIcon("format-stroke-color"));
-    tmpAction->setText(i18n("Complete Color Names"));
-
-    /// palette toolbar
-
-    tmpAction = actionCollection()->addAction("add-color");
-    tmpAction->setIcon(KIcon("list-add"));
-    tmpAction->setText(i18n("Append Color"));
-
-    tmpAction = actionCollection()->addAction("add-comment");
-    tmpAction->setIcon(KIcon("insert-text"));
-    tmpAction->setText(i18n("Append Comment"));
-
-    tmpAction = actionCollection()->addAction("insert-color");
-    tmpAction->setIcon(KIcon("insert-horizontal-rule"));
-    tmpAction->setText(i18n("Insert Color"));
-
-    tmpAction = actionCollection()->addAction("insert-comment");
-    tmpAction->setIcon(KIcon("list-add-font"));
-    tmpAction->setText(i18n("Insert Comment"));
-
-    tmpAction = actionCollection()->addAction("remove-item");
-    tmpAction->setIcon(KIcon("list-remove"));
-    tmpAction->setText(i18n("Remove Item"));
-
-    tmpAction = actionCollection()->addAction("move-next");
-    tmpAction->setIcon(KIcon("go-up"));
-    tmpAction->setText(i18n("Prev position"));
-
-    tmpAction = actionCollection()->addAction("move-prev");
-    tmpAction->setIcon(KIcon("go-down"));
-    tmpAction->setText(i18n("Next position"));
-
-    tmpAction = actionCollection()->addAction("move-begin");
-    tmpAction->setIcon(KIcon("go-top"));
-    tmpAction->setText(i18n("First position"));
-
-    tmpAction = actionCollection()->addAction("move-end");
-    tmpAction->setIcon(KIcon("go-bottom"));
-    tmpAction->setText(i18n("Last position"));
-
-    /// palette menu
-    connect(dynamic_cast<KAction *>(actionCollection()->action("clean-palette"))        , SIGNAL( triggered(bool) ), this, SLOT( cleanPalette() ));
-    connect(dynamic_cast<KAction *>(actionCollection()->action("generate-color-names")) , SIGNAL( triggered(bool) ), this, SLOT( generateColorNames() ));
-    connect(dynamic_cast<KAction *>(actionCollection()->action("complete-color-names")) , SIGNAL( triggered(bool) ), this, SLOT( completeColorNames() ));
-
-    /// palette toolbar
-
-    connect(dynamic_cast<KAction *>(actionCollection()->action("add-color"))     , SIGNAL( triggered(bool) ), this, SLOT( addColorItem()       ));
-    connect(dynamic_cast<KAction *>(actionCollection()->action("add-comment"))   , SIGNAL( triggered(bool) ), this, SLOT( addCommentItem()     ));
-    connect(dynamic_cast<KAction *>(actionCollection()->action("insert-color"))  , SIGNAL( triggered(bool) ), this, SLOT( insertColorItem()    ));
-    connect(dynamic_cast<KAction *>(actionCollection()->action("insert-comment")), SIGNAL( triggered(bool) ), this, SLOT( insertCommentItem()  ));
-    connect(dynamic_cast<KAction *>(actionCollection()->action("remove-item"))   , SIGNAL( triggered(bool) ), this, SLOT( removeItem()         ));
-    connect(dynamic_cast<KAction *>(actionCollection()->action("move-next"))     , SIGNAL( triggered(bool) ), this, SLOT( moveNext()           ));
-    connect(dynamic_cast<KAction *>(actionCollection()->action("move-prev"))     , SIGNAL( triggered(bool) ), this, SLOT( movePrev()           ));
-    connect(dynamic_cast<KAction *>(actionCollection()->action("move-begin"))    , SIGNAL( triggered(bool) ), this, SLOT( moveBegin()          ));
-    connect(dynamic_cast<KAction *>(actionCollection()->action("move-end"))      , SIGNAL( triggered(bool) ), this, SLOT( moveEnd()            ));
-
-    // NOTE docks's actinos
-    actionCollection()->addAction("show-detail-view", m_paletteTableDockWidget->toggleViewAction());
-    actionCollection()->addAction("show-brief-view", m_paletteListDockWidget->toggleViewAction());
+    // NOTE
+    // Actions for standard document functions
 
     KStandardAction::open   (this, SLOT( openFile()   ), actionCollection());
     KStandardAction::save   (this, SLOT( saveFile()   ), actionCollection());
     KStandardAction::saveAs (this, SLOT( saveFileAs() ), actionCollection());
+    KStandardAction::openNew(this, SLOT( newFile()    ), actionCollection());
+    KStandardAction::quit   (this, SLOT( quit()       ), actionCollection());
 
-    m_recentFilesAction = KStandardAction::openRecent(this, SLOT( registerRecentFile(KUrl) ), actionCollection());
-    //KStandardAction::openRecent(this, SLOT( openFile(KUrl) ), actionCollection());
-    connect( m_recentFilesAction, SIGNAL( triggered() ), this, SLOT( openFile() ) );
+    m_recentFilesAction = KStandardAction::openRecent(this, SLOT( openFile(KUrl) ), actionCollection());
+    m_recentFilesAction->loadEntries(KGlobal::config()->group("Recent Files"));
 
-    KStandardAction::openNew(this, SLOT( newFile()       ), actionCollection());
-    // TODO print
-    //KStandardAction::print      (this, SLOT( slotFilePrint()           ), actionCollection());
-    // TODO settings
-    //KStandardAction::preferences(this, SLOT( settingsPreferences() ), actionCollection());
-    KStandardAction::quit       (kapp, SLOT( quit() ), actionCollection());
-}
+    // NOTE
+    // Actions for docks
 
-void KColorEditMainWnd::updateTittleWhenOpenSaveDoc()
-{
-    // setup the window title acording to the file name
-    setWindowTitle(QString("KColorEdit") + " - " + m_paletteDocument->url().fileName());
+    actionCollection()->addAction("show-detail-view", m_paletteTableDockWidget->toggleViewAction());
+    actionCollection()->addAction("show-brief-view", m_paletteListDockWidget->toggleViewAction());
+
+    // NOTE
+    // Actions for palette menu
+
+    KAction * cleanPaletteAction = actionCollection()->addAction("clean-palette");
+    cleanPaletteAction->setIcon(KIcon("edit-clear"));
+    cleanPaletteAction->setText(i18n("Clean Palette"));
+
+    KAction * generateColorNamesAction = actionCollection()->addAction("generate-color-names");
+    generateColorNamesAction->setIcon(KIcon("format-stroke-color"));
+    generateColorNamesAction->setText(i18n("Generate Color Names"));
+
+    KAction * completeColorNamesAction = actionCollection()->addAction("complete-color-names");
+    completeColorNamesAction->setIcon(KIcon("format-stroke-color"));
+    completeColorNamesAction->setText(i18n("Complete Color Names"));
+
+    connect(cleanPaletteAction, SIGNAL( triggered(bool) ), this, SLOT( cleanPalette() ));
+
+    connect(generateColorNamesAction, SIGNAL( triggered(bool) ), this, SLOT( generateColorNames() ));
+    connect(completeColorNamesAction, SIGNAL( triggered(bool) ), this, SLOT( completeColorNames() ));
+
+    // NOTE
+    // Actions for palette toolbar
+
+    KAction * appendColorItemAction = actionCollection()->addAction("append-color-item");
+    appendColorItemAction->setIcon(KIcon("list-add"));
+    appendColorItemAction->setText(i18n("Append Color"));
+
+    KAction * appendCommentItemAction = actionCollection()->addAction("append-comment-item");
+    appendCommentItemAction->setIcon(KIcon("insert-text"));
+    appendCommentItemAction->setText(i18n("Append Comment"));
+
+    KAction * insertColorItemAction = actionCollection()->addAction("insert-color-item");
+    insertColorItemAction->setIcon(KIcon("insert-horizontal-rule"));
+    insertColorItemAction->setText(i18n("Insert Color"));
+
+    KAction * insertCommentItemAction = actionCollection()->addAction("insert-comment-item");
+    insertCommentItemAction->setIcon(KIcon("list-add-font"));
+    insertCommentItemAction->setText(i18n("Insert Comment"));
+
+    KAction * removeItemAction = actionCollection()->addAction("remove-item");
+    removeItemAction->setIcon(KIcon("list-remove"));
+    removeItemAction->setText(i18n("Remove Item"));
+
+    KAction * moveItemToNextPositionAction = actionCollection()->addAction("move-item-to-next-position");
+    moveItemToNextPositionAction->setIcon(KIcon("go-up"));
+    moveItemToNextPositionAction->setText(i18n("Prev position"));
+
+    KAction * moveItemToPrevPositionAction = actionCollection()->addAction("move-item-to-prev-position");
+    moveItemToPrevPositionAction->setIcon(KIcon("go-down"));
+    moveItemToPrevPositionAction->setText(i18n("Next position"));
+
+    KAction * moveItemToFirstPositionAction = actionCollection()->addAction("move-item-to-first-position");
+    moveItemToFirstPositionAction->setIcon(KIcon("go-top"));
+    moveItemToFirstPositionAction->setText(i18n("First position"));
+
+    KAction * moveItemToLastPositionAction = actionCollection()->addAction("move-item-to-last-position");
+    moveItemToLastPositionAction->setIcon(KIcon("go-bottom"));
+    moveItemToLastPositionAction->setText(i18n("Last position"));
+
+    connect(appendColorItemAction  , SIGNAL( triggered(bool) ), SLOT( appendColorItem()   ));
+    connect(appendCommentItemAction, SIGNAL( triggered(bool) ), SLOT( appendCommentItem() ));
+    connect(insertColorItemAction  , SIGNAL( triggered(bool) ), SLOT( insertColorItem()   ));
+    connect(insertCommentItemAction, SIGNAL( triggered(bool) ), SLOT( insertCommentItem() ));
+
+    connect(removeItemAction, SIGNAL( triggered(bool) ), SLOT( removeItem() ));
+
+    connect(moveItemToNextPositionAction , SIGNAL( triggered(bool) ), SLOT( moveItemToNextPosition()  ));
+    connect(moveItemToPrevPositionAction , SIGNAL( triggered(bool) ), SLOT( moveItemToPrevPosition()  ));
+    connect(moveItemToFirstPositionAction, SIGNAL( triggered(bool) ), SLOT( moveItemToFirstPosition() ));
+    connect(moveItemToLastPositionAction , SIGNAL( triggered(bool) ), SLOT( moveItemToLastPosition()  ));
 }
 
 #include "kcoloredit.moc"

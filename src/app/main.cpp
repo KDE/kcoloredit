@@ -44,14 +44,14 @@ int main(int argc, char * argv[])
 
     KCmdLineArgs * args = KCmdLineArgs::parsedArgs();
 
-    KColorEditMainWnd * kceMainWnd = new KColorEditMainWnd();
+    KColorEditMainWnd * kceMainWnd = new KColorEditMainWnd;
 
     if (args->count())
-        kceMainWnd->openPaletteFile(args->url(0).url());
-
-    kceMainWnd->show();
+        kceMainWnd->openFile(args->url(0));
 
     args->clear();
+
+    kceMainWnd->show();
 
     return app.exec();
 }

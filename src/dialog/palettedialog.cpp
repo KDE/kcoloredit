@@ -139,6 +139,13 @@ void CollectionsWidget::chooseCollection(const QString & collection)
 
 //BEGIN public class PaletteDialog
 
+QString PaletteDialog::filter()
+{
+    return QString("*.colors *.gpl|") + i18n("All Supported Files") +
+        QString("\n*.colors|") + i18n("KDE Palette") + QString(" (*.colors)") +
+        QString("\n*.gpl|") + i18n("GIMP Palette") + QString(" (*.gpl)");
+}
+
 KUrl PaletteDialog::getOpenUrl(QWidget * parent)
 {
     PaletteDialog paletteDialog(parent);
@@ -176,10 +183,7 @@ PaletteDialog::PaletteDialog(QWidget * parent, Qt::WFlags flags) : KDialog(paren
     QString kdePaletteStr = i18n("KDE Palette");
     QString gimpPaletteStr = i18n("GIMP Palette");
 
-    QString filter = QString("*.colors *.gpl|") + allSupportedStr + QString("\n*.colors|") + kdePaletteStr +
-        QString(" (*.colors)\n*.gpl|") + gimpPaletteStr + QString(" (*.gpl)");
-
-    m_fileWidget->setFilter(filter);
+    m_fileWidget->setFilter(PaletteDialog::filter());
 
     m_mainWidget->addTab(m_collectionsWidget, KIcon("kde"), i18n("KDE Palettes"));
     m_mainWidget->addTab(m_fileWidget, KIcon("edit-find"), i18n("Search Palettes"));
