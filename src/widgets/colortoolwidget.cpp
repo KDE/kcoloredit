@@ -22,19 +22,10 @@
 
 #include "colortoolwidget.h"
 
-#ifdef Q_WS_X11
-
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
-#include <QX11Info>
-#include <fixx11h.h>
-
-#endif
-
 #include <QtGui/QMouseEvent>
 #include <QtGui/QLayout>
 #include <QtGui/QLabel>
-#include <QtGui/QCheckBox>
+
 #include <QtGui/QGroupBox>
 #include <QtGui/QDesktopWidget>
 
@@ -45,6 +36,15 @@
 #include <KColorPatch>
 
 #ifdef Q_WS_X11
+
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
+#include <QX11Info>
+#include <fixx11h.h>
+
+#include <QtGui/QCheckBox>
+
+#include <KWindowSystem>
 
 class KCDPickerFilter: public QWidget
 {
@@ -118,12 +118,19 @@ ColorToolWidget::ColorToolWidget(QWidget * parent)
 
     KPushButton * pickColorButton = new KPushButton(KIcon("color-picker"), i18n("Pick a color"), extraSelectorsBox);
 
-    m_checkBoxHideWindow = new QCheckBox(i18n("Hide window"), extraSelectorsBox);
-    m_checkBoxHideWindow->setStatusTip(i18n("Only works if Desktop Effects is enabled"));
-
     QHBoxLayout * pickColorLayout = new QHBoxLayout();
     pickColorLayout->addWidget(pickColorButton);
-    pickColorLayout->addWidget(m_checkBoxHideWindow);
+
+#ifdef Q_WS_X11
+
+    if (KWindowSystem::compositingActive())
+    {
+        m_checkBoxHideWindow = new QCheckBox(i18n("Hide window"), extraSelectorsBox);
+
+        pickColorLayout->addWidget(m_checkBoxHideWindow);
+    }
+
+#endif
 
     QVBoxLayout * extraSelectorsLayout = new QVBoxLayout(extraSelectorsBox);
     extraSelectorsLayout->addLayout(pickColorLayout);
@@ -178,8 +185,13 @@ void ColorToolWidget::mouseMoveEvent(QMouseEvent * event)
     {
         m_color = grabColor(event->globalPos());
 
+#ifdef Q_WS_X11
+
+    if (KWindowSystem::compositingActive())
         if (m_checkBoxHideWindow->isChecked())
             m_colorView->setColor(m_color);
+
+#endif
 
         setColor(m_color);
 
@@ -267,22 +279,23 @@ void ColorToolWidget::grabPicking()
     m_filter = new KCDPickerFilter(this);
     kapp->installX11EventFilter(m_filter);
 
-#endif
-
     // NOTE
     // Hide the MainWindow (KColorEdit) (make it transparent)
 
-    if (m_checkBoxHideWindow->isChecked())
-    {
-        parentWidget()->parentWidget()->parentWidget()->parentWidget()->setWindowOpacity(0.0);
+    if (KWindowSystem::compositingActive())
+        if (m_checkBoxHideWindow->isChecked())
+        {
+            parentWidget()->parentWidget()->parentWidget()->parentWidget()->setWindowOpacity(0.0);
 
-        m_checkBoxHideWindow->setEnabled(false);
+            m_checkBoxHideWindow->setEnabled(false);
 
-        m_colorView = new KColorPatch(0);
-        m_colorView->setMaximumSize(48, 48);
-        m_colorView->setWindowFlags(Qt::ToolTip);
-        m_colorView->show();
-    }
+            m_colorView = new KColorPatch(0);
+            m_colorView->setMaximumSize(48, 48);
+            m_colorView->setWindowFlags(Qt::ToolTip);
+            m_colorView->show();
+        }
+
+#endif
 
     grabMouse(Qt::CrossCursor);
     grabKeyboard();
@@ -298,20 +311,21 @@ void ColorToolWidget::releasePicking()
     delete m_filter;
     m_filter = 0;
 
-#endif
-
     // NOTE
     // Restore the opacity of the MainWindow (KColorEdit)
 
-    if (m_checkBoxHideWindow->isChecked())
-    {
-        parentWidget()->parentWidget()->parentWidget()->parentWidget()->setWindowOpacity(1.0);
+    if (KWindowSystem::compositingActive())
+        if (m_checkBoxHideWindow->isChecked())
+        {
+            parentWidget()->parentWidget()->parentWidget()->parentWidget()->setWindowOpacity(1.0);
 
-        m_checkBoxHideWindow->setEnabled(true);
+            m_checkBoxHideWindow->setEnabled(true);
 
-        delete m_colorView;
-        m_colorView = 0;
-    }
+            delete m_colorView;
+            m_colorView = 0;
+        }
+
+#endif
 
     releaseMouse();
     releaseKeyboard();

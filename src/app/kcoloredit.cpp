@@ -103,9 +103,14 @@ bool KColorEditMainWnd::queryClose()
 {
     if (m_paletteDocument->isModified())
     {
+        QString paletteFileName = m_paletteDocument->url().fileName();
+
+        if (paletteFileName.isEmpty())
+            paletteFileName = i18n("Untitled");
+
         switch (KMessageBox::warningYesNoCancel(this,
             i18n( "The document \"%1\" has been modified.\n"
-            "Do you want to save your changes or discard them?", m_paletteDocument->url().fileName()),
+            "Do you want to save your changes or discard them?", paletteFileName),
             i18n( "Close Document" ), KStandardGuiItem::save(), KStandardGuiItem::discard()))
         {
             case KMessageBox::Yes: saveFile(); return m_paletteDocument->isSaved();
@@ -231,54 +236,49 @@ void KColorEditMainWnd::moveItemToLastPosition()
 
 void KColorEditMainWnd::updateTittleWhenChangeDocState()
 {
-    setWindowTitle(QString("KColorEdit") + " - " + m_paletteDocument->url().fileName() + i18n(" [modified]"));
+    QString paletteFileName = m_paletteDocument->url().fileName();
+
+    if (paletteFileName.isEmpty())
+        paletteFileName = i18n("Untitled");
+
+    setWindowTitle(QString("%1 - KColorEdit " + i18n("[modified]")).arg(paletteFileName));
 }
 
 void KColorEditMainWnd::updateTittleWhenOpenSaveDoc()
 {
-    // setup the window title acording to the file name
-    setWindowTitle(QString("KColorEdit") + " - " + m_paletteDocument->url().fileName());
+    QString paletteFileName = m_paletteDocument->url().fileName();
+
+    if (paletteFileName.isEmpty())
+        paletteFileName = i18n("Untitled");
+
+    setWindowTitle(QString("%1 - KColorEdit").arg(paletteFileName));
 }
 
 void KColorEditMainWnd::setupWidgets()
 {
-    //init viewers
+    // NOTE
+    // Initialize document
 
     m_paletteDocument = new PaletteDocument(this);
 
-    m_paletteDetailView = new PaletteDetailView(m_paletteDocument->model(), this);
+    updateTittleWhenOpenSaveDoc();
 
-    m_paletteBriefView = new PaletteBriefView(m_paletteDocument->model(), this);
+    connect(m_paletteDocument, SIGNAL( modified() ), this, SLOT( updateTittleWhenChangeDocState() ));
 
-    //init central widget
+    // NOTE
+    // Initialize central widget (KColorEditWidget)
 
     m_kColorEditWidget = new KColorEditWidget(this);
     m_kColorEditWidget->setModel(m_paletteDocument->model());
+    m_kColorEditWidget->setColor(ColorUtil::DEFAULT_COLOR);
 
     setCentralWidget(m_kColorEditWidget);
 
-    m_paletteTableDockWidget = new QDockWidget(i18n("Brief view"), this);
-    m_paletteTableDockWidget->setObjectName(QString("brief-view-dock"));
-    m_paletteTableDockWidget->setFeatures(QDockWidget::AllDockWidgetFeatures);
-    m_paletteTableDockWidget->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-    m_paletteTableDockWidget->setWidget(m_paletteBriefView);
-    m_paletteTableDockWidget->setMinimumWidth(310);
+    // NOTE
+    // Initialize viewers
 
-    m_paletteListDockWidget = new QDockWidget(i18n("Detail view"), this);
-    m_paletteListDockWidget->setObjectName(QString("detail-view-dock"));
-    m_paletteListDockWidget->setFeatures(QDockWidget::AllDockWidgetFeatures);
-    m_paletteListDockWidget->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-    m_paletteListDockWidget->setWidget(m_paletteDetailView);
-    m_paletteListDockWidget->setMinimumWidth(310);
-
-    addDockWidget(Qt::RightDockWidgetArea, m_paletteListDockWidget);
-    addDockWidget(Qt::RightDockWidgetArea, m_paletteTableDockWidget);
-
-    tabifyDockWidget(m_paletteListDockWidget, m_paletteTableDockWidget);
-
-    setDockOptions(QMainWindow::AnimatedDocks | QMainWindow::AllowNestedDocks | QMainWindow::AllowTabbedDocks);
-
-    connect(m_paletteDocument, SIGNAL( modified() ), this, SLOT( updateTittleWhenChangeDocState() ));
+    m_paletteDetailView = new PaletteDetailView(m_paletteDocument->model(), this);
+    m_paletteBriefView = new PaletteBriefView(m_paletteDocument->model(), this);
 
     connect(m_paletteBriefView, SIGNAL( colorTracked(QColor) ), m_kColorEditWidget, SLOT( setColor(QColor) ));
     connect(m_paletteBriefView, SIGNAL( itemTracked(int) ), m_paletteDetailView, SLOT( scrollToItem(int) ));
@@ -286,8 +286,28 @@ void KColorEditMainWnd::setupWidgets()
     connect(m_paletteBriefView, SIGNAL( itemSelected(int) ), m_paletteDetailView, SLOT( setSelectedItem(int) ));
     connect(m_paletteBriefView, SIGNAL( colorSelected(QColor) ), m_kColorEditWidget, SLOT( setColor(QColor) ));
 
-    // NOTE setup default colors colors
-    m_kColorEditWidget->setColor(ColorUtil::DEFAULT_COLOR);
+    // NOTE
+    // Initialize docks
+
+    m_paletteBriefViewDockWidget = new QDockWidget(i18n("Brief view"), this);
+    m_paletteBriefViewDockWidget->setObjectName(QString("brief-view-dock"));
+    m_paletteBriefViewDockWidget->setFeatures(QDockWidget::AllDockWidgetFeatures);
+    m_paletteBriefViewDockWidget->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+    m_paletteBriefViewDockWidget->setWidget(m_paletteBriefView);
+
+    m_paletteDetailViewDockWidget = new QDockWidget(i18n("Detail view"), this);
+    m_paletteDetailViewDockWidget->setObjectName(QString("detail-view-dock"));
+    m_paletteDetailViewDockWidget->setFeatures(QDockWidget::AllDockWidgetFeatures);
+    m_paletteDetailViewDockWidget->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+    m_paletteDetailViewDockWidget->setWidget(m_paletteDetailView);
+    m_paletteDetailViewDockWidget->setMinimumWidth(310);
+
+    addDockWidget(Qt::RightDockWidgetArea, m_paletteDetailViewDockWidget);
+    addDockWidget(Qt::RightDockWidgetArea, m_paletteBriefViewDockWidget);
+
+    tabifyDockWidget(m_paletteDetailViewDockWidget, m_paletteBriefViewDockWidget);
+
+    setDockOptions(QMainWindow::AnimatedDocks | QMainWindow::AllowNestedDocks | QMainWindow::AllowTabbedDocks);
 }
 
 void KColorEditMainWnd::setupActions()
@@ -307,8 +327,8 @@ void KColorEditMainWnd::setupActions()
     // NOTE
     // Actions for docks
 
-    actionCollection()->addAction("show-detail-view", m_paletteTableDockWidget->toggleViewAction());
-    actionCollection()->addAction("show-brief-view", m_paletteListDockWidget->toggleViewAction());
+    actionCollection()->addAction("show-detail-view", m_paletteBriefViewDockWidget->toggleViewAction());
+    actionCollection()->addAction("show-brief-view", m_paletteDetailViewDockWidget->toggleViewAction());
 
     // NOTE
     // Actions for palette menu

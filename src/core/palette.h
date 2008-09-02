@@ -24,6 +24,17 @@
 
 #include <QtCore/QList>
 
+/**
+ * @short This is the palette (a set of color and comment items).
+ *
+ * This class hold the data, is a wrapper of QList<PaletteItem*>, so this
+ * class can store all the subclasses of PaletteItem.
+ * <b>Subclasses:</b>\n
+ * @li ColorItem.
+ * @li CommentItem.
+ *
+ * @author Percy Camilo Triveño Aucahuasi <orgyforever@gmail.com>
+ */
 class Palette
 {
     public:

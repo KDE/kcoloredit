@@ -64,7 +64,7 @@ KColorEditWidget::KColorEditWidget(QWidget * parent)
     m_colorDispatcher = new ColorWidget(this, ColorWidget::Simple);
 
     MultiPageWidget * colorInfoTexts = new MultiPageWidget(this, i18n("Color information:"));
-    colorInfoTexts->setMaximumHeight(110); // NOTE default value here;
+    colorInfoTexts->setMaximumHeight(110);
 
     ColorInfoTextRGB * infoTextRGB = new ColorInfoTextRGB(colorInfoTexts);
     ColorInfoTextHSV * infoTextHSV = new ColorInfoTextHSV(colorInfoTexts);
@@ -77,7 +77,7 @@ KColorEditWidget::KColorEditWidget(QWidget * parent)
     colorInfoTexts->addPage(infoTextHTML);
 
     MultiPageWidget * colorInfoVisuals = new MultiPageWidget(this, i18n("Color scheme:"));
-    colorInfoVisuals->setMaximumHeight(128); // NOTE default value here;
+    colorInfoVisuals->setMaximumHeight(128);
 
     m_colorInfoVisualComplement = new ColorInfoVisualComplement(colorInfoVisuals);
     m_colorInfoVisualTriadic = new ColorInfoVisualTriadic(colorInfoVisuals);
@@ -96,8 +96,6 @@ KColorEditWidget::KColorEditWidget(QWidget * parent)
     mainLayout->addWidget(colorInfoVisuals);
 
     connect(m_blenderColorSelector, SIGNAL( colorsAdded(QVector<QColor>) ), SLOT( appendColorsFromGradientSelector(QVector<QColor>) ));
-
-    // TODO document this
 
     // All color selector can change the color of the dispatcher and extratools
     for (int i = 0; i < colorTools->count() - 1; i++)

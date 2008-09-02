@@ -141,6 +141,9 @@ void PaletteBriefView::updatePaletteView()
         return ;
     }
 
+    // ... and then we change the columns in KColorCells acording to the QSlider.value()
+    m_colorCells->setColumnCount(m_setColumnSlider->value());
+
     // NOTE
     // Here we load data (color and comment items) from PaletteModel
     // to fill it inside KColorCells

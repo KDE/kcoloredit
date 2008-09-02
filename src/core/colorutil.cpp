@@ -21,7 +21,7 @@
 
 #include <KColorScheme>
 
-const QColor ColorUtil::DEFAULT_COLOR = QColor(193, 160, 9);
+const QColor ColorUtil::DEFAULT_COLOR = QColor(0, 123, 254);
 
 float ColorUtil::luminance(const QColor & color)
 {

@@ -76,13 +76,13 @@ class ColorToolWidget : public QWidget
         QLabel * m_brightnessPercentage;
         QLabel * m_saturationPercentage;
 
-        QCheckBox * m_checkBoxHideWindow;
-
         bool m_colorPicking;
 
         KColorPatch * m_colorView;
 
 #ifdef Q_WS_X11
+
+        QCheckBox * m_checkBoxHideWindow;
 
         KCDPickerFilter * m_filter;
 

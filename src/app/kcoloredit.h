@@ -88,8 +88,8 @@ class KColorEditMainWnd : public KXmlGuiWindow
 
         KColorEditWidget * m_kColorEditWidget;
 
-        QDockWidget * m_paletteTableDockWidget;
-        QDockWidget * m_paletteListDockWidget;
+        QDockWidget * m_paletteBriefViewDockWidget;
+        QDockWidget * m_paletteDetailViewDockWidget;
 };
 
 #endif // KCOLOREDIT_H

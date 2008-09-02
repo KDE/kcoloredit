@@ -33,7 +33,6 @@ ColorItemEditor::ColorItemEditor(QWidget * parent)
     m_color->setMinimumWidth(92);
 
     m_colorName = new KLineEdit(this);
-    m_colorName->setMinimumWidth(128);
     m_colorName->setClearButtonShown(true);
 
     QHBoxLayout * layout = new QHBoxLayout(this);
@@ -71,7 +70,6 @@ CommentItemEditor::CommentItemEditor(QWidget * parent)
     : QWidget(parent)
 {
     m_comment = new KLineEdit(this);
-    m_comment->setMinimumWidth(128);
     m_comment->setClearButtonShown(true);
 
     QHBoxLayout * layout = new QHBoxLayout(this);
