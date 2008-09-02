@@ -302,10 +302,8 @@ void KColorEditMainWnd::setupWidgets()
     m_paletteDetailViewDockWidget->setWidget(m_paletteDetailView);
     m_paletteDetailViewDockWidget->setMinimumWidth(310);
 
-    addDockWidget(Qt::RightDockWidgetArea, m_paletteDetailViewDockWidget);
+    addDockWidget(Qt::LeftDockWidgetArea, m_paletteDetailViewDockWidget);
     addDockWidget(Qt::RightDockWidgetArea, m_paletteBriefViewDockWidget);
-
-    tabifyDockWidget(m_paletteDetailViewDockWidget, m_paletteBriefViewDockWidget);
 
     setDockOptions(QMainWindow::AnimatedDocks | QMainWindow::AllowNestedDocks | QMainWindow::AllowTabbedDocks);
 }

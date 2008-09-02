@@ -84,9 +84,6 @@ PaletteItem::ItemType Palette::itemType(int index) const
 
 ColorItem Palette::colorItem(int index) const
 {
-    if (itemType(index) != PaletteItem::ColorType)
-        return ColorItem(QColor::Invalid, QString());
-
     return ColorItem(*dynamic_cast<ColorItem *>(m_items[index]));
 }
 
@@ -102,21 +99,13 @@ void Palette::insertColorItem(int index, const ColorItem & colorItem)
 
 void Palette::setColorItem(int index, const ColorItem & colorItem)
 {
-    if (itemType(index) != PaletteItem::ColorType)
-        return ;
-
-    if (ColorItem * tmpColorItem = dynamic_cast<ColorItem *>(m_items[index]))
-    {
-        tmpColorItem->setColor(colorItem.color());
-        tmpColorItem->setColorName(colorItem.colorName());
-    }
+    ColorItem * tmpColorItem = dynamic_cast<ColorItem *>(m_items[index]);
+    tmpColorItem->setColor(colorItem.color());
+    tmpColorItem->setColorName(colorItem.colorName());
 }
 
 CommentItem Palette::commentItem(int index) const
 {
-    if (itemType(index) != PaletteItem::CommentType)
-        return CommentItem();
-
     return CommentItem(*dynamic_cast<CommentItem *>(m_items[index]));
 }
 
@@ -132,11 +121,8 @@ void Palette::insertCommentItem(int index, const CommentItem & commentItem)
 
 void Palette::setCommentItem(int index, const CommentItem & commentItem)
 {
-    if (itemType(index) != PaletteItem::CommentType)
-        return ;
-
-    if (CommentItem * tmpCommentItem = dynamic_cast<CommentItem *>(m_items[index]))
-        tmpCommentItem->setComment(commentItem.comment());
+    CommentItem * tmpCommentItem = dynamic_cast<CommentItem *>(m_items[index]);
+    tmpCommentItem->setComment(commentItem.comment());
 }
 
 void Palette::setPreferredColumns(int columns)
@@ -211,10 +197,6 @@ void Palette::clear()
 //END public methods
 
 //BEGIN private methods
-
-void Palette::adjustPreferredColumns()
-{
-}
 
 void Palette::swapItem(int i, int j)
 {

@@ -109,8 +109,7 @@ bool PaletteModel::setData(const QModelIndex & index, const QVariant & value, in
 
 QVariant PaletteModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-    if (role != Qt::DisplayRole)
-        return QVariant();
+    Q_UNUSED(role);
 
     if (orientation == Qt::Horizontal)
         if (section == 0)
@@ -186,6 +185,8 @@ QString PaletteModel::paletteName() const
 void PaletteModel::setPaletteName(const QString & paletteName)
 {
     m_palette.setName(paletteName);
+
+    emit dataChanged(QModelIndex(), QModelIndex());
 }
 
 QString PaletteModel::paletteDescription() const
@@ -196,6 +197,8 @@ QString PaletteModel::paletteDescription() const
 void PaletteModel::setPaletteDescription(const QString & description)
 {
     m_palette.setDescription(description);
+
+    emit dataChanged(QModelIndex(), QModelIndex());
 }
 
 bool PaletteModel::hasDescription() const
@@ -208,20 +211,12 @@ bool PaletteModel::hasDescription() const
 
 PaletteItem::ItemType PaletteModel::itemType(int pos) const
 {
-    QVariantMap vmap = index(pos, 0).data().toMap();
-
-    if (vmap.value("type").toString() == QString("color"))
-        return PaletteItem::ColorType;
-
-    return PaletteItem::CommentType;
+    return m_palette.itemType(pos);
 }
 
 ColorItem PaletteModel::colorItem(int pos) const
 {
-    if (m_palette.itemType(pos) == PaletteItem::ColorType)
-        return ColorItem(m_palette.colorItem(pos).color(), m_palette.colorItem(pos).colorName());
-
-    return ColorItem(QColor::Invalid, QString());
+    return ColorItem(m_palette.colorItem(pos).color(), m_palette.colorItem(pos).colorName());
 }
 
 void PaletteModel::appendColorItem(const QColor & color, const QString & colorName)
@@ -245,10 +240,7 @@ void PaletteModel::setColorItem(int pos, const QColor & color, const QString & c
 
 CommentItem PaletteModel::commentItem(int pos) const
 {
-    if (m_palette.itemType(pos) == PaletteItem::CommentType)
-        return CommentItem(m_palette.commentItem(pos).comment());
-
-    return CommentItem(QString());
+    return CommentItem(m_palette.commentItem(pos).comment());
 }
 
 void PaletteModel::appendCommentItem(const QString & comment)
@@ -289,7 +281,6 @@ void PaletteModel::moveItem(const QModelIndex & itemIndex, Palette::MoveOperatio
 
 void PaletteModel::generateColorNames()
 {
-
     for (int i = 0; i < m_palette.count(); i++)
         if (m_palette.itemType(i) == PaletteItem::ColorType)
             m_palette.setColorItem(i, ColorItem(m_palette.colorItem(i).color(), m_palette.colorItem(i).color().name()));

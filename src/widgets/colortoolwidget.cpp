@@ -160,8 +160,8 @@ void ColorToolWidget::setColor(const QColor & color)
 {
     m_color = color;
 
-    m_brightnessPercentage->setText(QString::number(static_cast<int>(m_color.value()*100/255)) + "%");
-    m_saturationPercentage->setText(QString::number(static_cast<int>(m_color.saturation()*100/255)) + "%");
+    m_brightnessPercentage->setText(QString::number(static_cast<int>(m_color.value()*100/255)) + '%');
+    m_saturationPercentage->setText(QString::number(static_cast<int>(m_color.saturation()*100/255)) + '%');
 }
 
 void ColorToolWidget::keyPressEvent(QKeyEvent * event)
@@ -232,7 +232,7 @@ void ColorToolWidget::decreaseBrightness()
 
     m_color.setHsv(m_color.hue(), m_color.saturation(), tmpValue);
 
-    m_brightnessPercentage->setText(QString::number(static_cast<int>(m_color.value()*100/255)) + "%");
+    m_brightnessPercentage->setText(QString::number(static_cast<int>(m_color.value()*100/255)) + '%');
 
     emit colorSelected(m_color);
 }
@@ -243,7 +243,7 @@ void ColorToolWidget::increaseBrightness()
 
     m_color.setHsv(m_color.hue(), m_color.saturation(), tmpValue);
 
-    m_brightnessPercentage->setText(QString::number(static_cast<int>(m_color.value()*100/255)) + "%");
+    m_brightnessPercentage->setText(QString::number(static_cast<int>(m_color.value()*100/255)) + '%');
 
     emit colorSelected(m_color);
 }
@@ -254,7 +254,7 @@ void ColorToolWidget::decreaseSaturation()
 
     m_color.setHsv(m_color.hue(), tmpSaturation, m_color.value());
 
-    m_saturationPercentage->setText(QString::number(static_cast<int>(m_color.saturation()*100/255)) + "%");
+    m_saturationPercentage->setText(QString::number(static_cast<int>(m_color.saturation()*100/255)) + '%');
 
     emit colorSelected(m_color);
 }
@@ -265,7 +265,7 @@ void ColorToolWidget::increaseSaturation()
 
     m_color.setHsv(m_color.hue(), tmpSaturation, m_color.value());
 
-    m_saturationPercentage->setText(QString::number(static_cast<int>(m_color.saturation()*100/255)) + "%");
+    m_saturationPercentage->setText(QString::number(static_cast<int>(m_color.saturation()*100/255)) + '%');
 
     emit colorSelected(m_color);
 }

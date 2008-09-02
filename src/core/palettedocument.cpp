@@ -333,11 +333,11 @@ void PaletteDocument::extractDescriptionFromModel()
         if (m_model->itemType(i) != PaletteItem::CommentType)
             break ;
 
-        commentsToRemove = i;
+        commentsToRemove = i + 1;
     }
 
     if (commentsToRemove > 0)
-        m_model->removeRows(0, commentsToRemove + 1);
+        m_model->removeRows(0, commentsToRemove);
 }
 
 #include "palettedocument.moc"

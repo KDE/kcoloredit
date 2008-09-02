@@ -216,7 +216,7 @@ void PaletteBriefView::updatePaletteView()
                 QTableWidgetItem * colorItem = m_colorCells->item(tableRow, tableColumn);
 
                 if ((!m_model->colorItem(i).colorName().isEmpty()) && (colorItem))
-                    colorItem->setToolTip(i18n("Name: ") + m_model->colorItem(i).colorName());
+                    colorItem->setToolTip(m_model->colorItem(i).colorName());
             }
 
             if (m_model->itemType(i) == PaletteItem::CommentType)
@@ -231,7 +231,7 @@ void PaletteBriefView::updatePaletteView()
                 commentItem->setBackground(brush);
 
                 if (!m_model->commentItem(i).comment().isEmpty())
-                    commentItem->setToolTip(i18n("Comment: ") + m_model->commentItem(i).comment());
+                    commentItem->setToolTip(m_model->commentItem(i).comment());
             }
         }
     }
@@ -251,7 +251,7 @@ void PaletteBriefView::updatePaletteView()
                 QTableWidgetItem * colorItem = m_colorCells->item(tableRow, tableColumn);
 
                 if ((!m_model->colorItem(i).colorName().isEmpty()) && (colorItem))
-                    colorItem->setToolTip(i18n("Name: ") + m_model->colorItem(i).colorName());
+                    colorItem->setToolTip(m_model->colorItem(i).colorName());
 
                 colors++;
             }
