@@ -184,8 +184,17 @@ void PaletteBriefView::updatePaletteView()
     // Setup the brush to the background of the comment items
 
     QBrush brush;
-    brush.setStyle(Qt::Dense1Pattern);
-    brush.setColor(ColorUtil::contrastColor(ColorUtil::backgroundColorOfWindow()));
+
+    if (ColorUtil::luminance(ColorUtil::backgroundColorOfWindow()) < (255 / 2.0))
+    {
+        brush.setColor(Qt::white);
+        brush.setStyle(Qt::Dense5Pattern);
+    }
+    else
+    {
+        brush.setColor(Qt::black);
+        brush.setStyle(Qt::Dense7Pattern);
+    }
 
     // NOTE
     // This variables represent the current row and column of the

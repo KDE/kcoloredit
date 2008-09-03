@@ -112,10 +112,20 @@ void PaletteDelegate::paint(QPainter * painter, const QStyleOptionViewItem & opt
     if (vmap.value("type").toString() == QString("comment"))
     {
         QBrush brush;
-        brush.setStyle(Qt::Dense1Pattern);
-        brush.setColor(ColorUtil::contrastColor(ColorUtil::backgroundColorOfWindow()));
 
-        painter->setPen(ColorUtil::contrastColor(brush.color()));
+        if (ColorUtil::luminance(ColorUtil::backgroundColorOfWindow()) < (255 / 2.0))
+        {
+            brush.setColor(Qt::white);
+            brush.setStyle(Qt::Dense1Pattern);
+            painter->setPen(ColorUtil::contrastColor(brush.color()));
+        }
+        else
+        {
+            brush.setStyle(Qt::Dense7Pattern);
+            painter->setPen(ColorUtil::contrastColor(ColorUtil::backgroundColorOfWindow()));
+            brush.setColor(Qt::black);
+        }
+
         painter->fillRect(option.rect, brush);
         painter->drawText(option.rect, Qt::AlignCenter, index.model()->data(index).toMap().value("comment").toString());
     }
