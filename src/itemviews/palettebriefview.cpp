@@ -141,7 +141,7 @@ void PaletteBriefView::updatePaletteView()
         return ;
     }
 
-    // ... and then we change the columns in KColorCells acording to the QSlider.value()
+    // We change the columns in KColorCells acording to the value of QSlider
     m_colorCells->setColumnCount(m_setColumnSlider->value());
 
     // NOTE
@@ -209,7 +209,7 @@ void PaletteBriefView::updatePaletteView()
             if (m_model->itemType(i) == PaletteItem::ColorType)
             {
                 // NOTE
-                // Here we use the standar KColorCells APi to set a color item
+                // Here we use the standard KColorCells APi to set a color item
 
                 m_colorCells->setColor(i, m_model->colorItem(i).color());
 

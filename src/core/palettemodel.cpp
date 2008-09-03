@@ -109,7 +109,8 @@ bool PaletteModel::setData(const QModelIndex & index, const QVariant & value, in
 
 QVariant PaletteModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-    Q_UNUSED(role);
+    if (role != Qt::DisplayRole)
+         return QVariant();
 
     if (orientation == Qt::Horizontal)
         if (section == 0)

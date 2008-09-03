@@ -35,8 +35,7 @@
  *
  * Unlike KColorCollection, this class doesn't perform any operation with
  * palette files (PaletteDocument is responsible for load and save palette files).
- * Also, this class suport more features than KColorCollection on storing data,
- * like move items arround the palette.
+ * Also, this class suport more features than KColorCollection on storing data.
  * This class has fully support to the GIMP palette specification (like preferred columns)
  * and KDE palette format.
  *

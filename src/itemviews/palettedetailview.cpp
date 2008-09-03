@@ -183,13 +183,6 @@ void PaletteDetailView::scrollToItem(int index)
 void PaletteDetailView::updatePaletteDetails()
 {
     m_view->horizontalHeader()->setResizeMode(0, QHeaderView::Stretch);
-
-    // NOTE DEPRECATED code clean this in future revisions
-    // Now isn't necesary update the heigh of every item
-    // and avoid a litle flickering when scrool the tableview
-    // See PaletteDelegate::updateEditorGeometry
-    //for (int i = 0; i < m_view->model()->rowCount(); i++)
-    //    m_view->verticalHeader()->resizeSection(i, 44);
 }
 
 void PaletteDetailView::updatePaletteName(const QString & text)
