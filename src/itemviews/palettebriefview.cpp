@@ -50,9 +50,9 @@ PaletteBriefView::PaletteBriefView(PaletteModel * model, QWidget * parent)
     m_setColumnSlider->setPageStep(1);
     m_setColumnSlider->setTickInterval(1);
 
-    m_zoomOutButton = new KPushButton(KIcon(QString("zoom-out")), QString(), this);
+    m_zoomOutButton = new KPushButton(KIcon("zoom-out"), QString(), this);
 
-    m_zoomInButton = new KPushButton(KIcon(QString("zoom-in")), QString(), this);
+    m_zoomInButton = new KPushButton(KIcon("zoom-in"), QString(), this);
 
     m_colorCells = new KColorCells(this, 0, 1);
     m_colorCells->setAcceptDrops(false);
