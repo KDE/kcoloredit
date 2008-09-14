@@ -43,7 +43,7 @@ PaletteBriefView::PaletteBriefView(PaletteModel * model, QWidget * parent)
     m_showCommentsCheckBox = new QCheckBox(this);
     m_showCommentsCheckBox->setText(i18n("Show comments"));
     m_showCommentsCheckBox->setChecked(false);
-    m_showCommentsCheckBox->setStatusTip(i18n("If is checked, views will be synchronized"));
+    m_showCommentsCheckBox->setStatusTip(i18n("If checked, views will be synchronized"));
 
     m_setColumnSlider = new QSlider(Qt::Horizontal, this);
     m_setColumnSlider->setSingleStep(1);
