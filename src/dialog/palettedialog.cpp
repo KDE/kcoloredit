@@ -176,9 +176,8 @@ PaletteDialog::PaletteDialog(QWidget * parent, Qt::WFlags flags) : KDialog(paren
     m_collectionsWidget = new CollectionsWidget(m_mainWidget);
 
     m_fileWidget = new KFileWidget(KUrl(QDir::homePath()), m_mainWidget);
-    m_fileWidget->setMode(KFile::ExistingOnly | KFile::LocalOnly);
+    //m_fileWidget->setMode(KFile::ExistingOnly | KFile::LocalOnly); // WARNING bug here
     m_fileWidget->setOperationMode(KFileWidget::Opening);
-
     m_fileWidget->setFilter(PaletteDialog::filter());
 
     m_mainWidget->addTab(m_collectionsWidget, KIcon("kde"), i18n("KDE Palettes"));
@@ -188,8 +187,8 @@ PaletteDialog::PaletteDialog(QWidget * parent, Qt::WFlags flags) : KDialog(paren
 
     connect(m_mainWidget, SIGNAL( currentChanged(int)), SLOT( updateDialogBtns(int) ));
     connect(m_collectionsWidget, SIGNAL( selectedCollection(QString) ), SLOT( selectKdePalette(QString) ));
-    connect(m_fileWidget, SIGNAL( accepted() ), SLOT( selectUrl() ));
-    connect(this, SIGNAL( okClicked() ), m_fileWidget, SLOT( slotOk() ));
+    //connect(m_fileWidget, SIGNAL( accepted() ), SLOT( selectUrl() )); // WARNING bug here
+    //connect(this, SIGNAL( okClicked() ), m_fileWidget, SLOT( slotOk() )); // WARNING bug here
     connect(this, SIGNAL( okClicked() ), SLOT( selectUrl() ));
 }
 
