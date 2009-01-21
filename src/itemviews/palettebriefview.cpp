@@ -38,7 +38,7 @@ PaletteBriefView::PaletteBriefView(PaletteModel * model, QWidget * parent)
     m_quickNavigationCheckBox = new QCheckBox(this);
     m_quickNavigationCheckBox->setText(i18n("Quick navigation"));
     m_quickNavigationCheckBox->setChecked(false);
-    m_quickNavigationCheckBox->setStatusTip(i18n("It will disable automatically if you clicked over a item"));
+    m_quickNavigationCheckBox->setStatusTip(i18n("It will be disabled automatically when clicking over a item"));
 
     m_showCommentsCheckBox = new QCheckBox(this);
     m_showCommentsCheckBox->setText(i18n("Show comments"));
