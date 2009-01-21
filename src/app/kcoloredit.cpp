@@ -341,7 +341,7 @@ void KColorEditMainWnd::setupActions()
 
     KAction * completeColorNamesAction = actionCollection()->addAction("complete-color-names");
     completeColorNamesAction->setIcon(KIcon("format-stroke-color"));
-    completeColorNamesAction->setText(i18n("Complete Color Names"));
+    completeColorNamesAction->setText(i18nc("Complete is a verb here, this is an action that fills missing color names in a palette", "Complete Color Names"));
 
     connect(cleanPaletteAction, SIGNAL( triggered(bool) ), this, SLOT( cleanPalette() ));
 
