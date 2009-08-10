@@ -34,6 +34,7 @@ ColorItemEditor::ColorItemEditor(QWidget * parent)
 
     m_colorName = new KLineEdit(this);
     m_colorName->setClearButtonShown(true);
+    m_colorName->grabKeyboard();
 
     QHBoxLayout * layout = new QHBoxLayout(this);
     layout->addWidget(m_color);
@@ -71,6 +72,7 @@ CommentItemEditor::CommentItemEditor(QWidget * parent)
 {
     m_comment = new KLineEdit(this);
     m_comment->setClearButtonShown(true);
+    m_comment->grabKeyboard();
 
     QHBoxLayout * layout = new QHBoxLayout(this);
     layout->addWidget(m_comment);

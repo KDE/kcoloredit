@@ -102,7 +102,7 @@ void ColorInfoText::setComponentValues(int valueComponent1, int valueComponent2,
 ColorInfoTextRGB::ColorInfoTextRGB(QWidget * parent)
     : ColorInfoText(parent)
 {
-    setWindowTitle(i18n("RGB Model"));
+    setWindowTitle(i18n("RGB"));
     setComponentNames(i18n("Red"), i18n("Green"), i18n("Blue"));
 }
 
@@ -121,7 +121,7 @@ void ColorInfoTextRGB::setColor(const QColor & color)
 
 ColorInfoTextHSV::ColorInfoTextHSV(QWidget * parent) : ColorInfoText(parent)
 {
-    setWindowTitle(i18n("HSV Model"));
+    setWindowTitle(i18n("HSV"));
     setComponentNames(i18n("Hue"), i18n("Saturation"), i18n("Value"));
 }
 
@@ -141,7 +141,7 @@ void ColorInfoTextHSV::setColor(const QColor & color)
 ColorInfoTextCMYK::ColorInfoTextCMYK(QWidget * parent)
     : ColorInfoText(parent)
 {
-    setWindowTitle(i18n("CMYK Model"));
+    setWindowTitle(i18n("CMY"));
     setComponentNames(i18n("Cyan"), i18n("Magenta"), i18n("Yellow"));
 }
 

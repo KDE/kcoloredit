@@ -46,6 +46,36 @@ void ColorInfoVisual::addColor(const QColor color)
     emit colorAdded(color);
 }
 
+//BEGIN public class ColorInfoVisualSimple
+
+ColorInfoVisualNormal::ColorInfoVisualNormal(QWidget * parent)
+    : ColorInfoVisual(parent)
+{
+    setWindowTitle(i18n("Selected"));
+
+    m_colorWidget = new ColorWidget(this);
+
+    layout()->addWidget(m_colorWidget);
+
+    connect(m_colorWidget, SIGNAL( colorAdded(QColor) ), this, SLOT( addColor(QColor) ));
+}
+
+ColorInfoVisualNormal::~ColorInfoVisualNormal()
+{
+}
+
+ColorWidget * ColorInfoVisualNormal::colorWidget()
+{
+    return m_colorWidget;
+}
+
+void ColorInfoVisualNormal::setColor(const QColor & color)
+{
+    m_colorWidget->setColor(color);
+}
+
+//END public class ColorInfoVisualSimple
+
 //BEGIN public class ColorInfoVisualComplement
 
 ColorInfoVisualComplement::ColorInfoVisualComplement(QWidget * parent)

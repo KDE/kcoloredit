@@ -19,6 +19,7 @@
 
 #include "colorwidget.h"
 
+#include <QtCore/QMimeData>
 #include <QtGui/QClipboard>
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QToolButton>
@@ -49,7 +50,7 @@ ColorWidget::ColorWidget(QWidget * parent, ColorWidget::Mode mode)
         m_buttonToClipboard = new QToolButton(m_colorPatch);
         //m_buttonToClipboard->setAutoRaise(true);
         m_buttonToClipboard->setIcon(KIcon("edit-copy"));
-        m_buttonToClipboard->setToolTip(i18n("Copy color name to clipboard"));
+        m_buttonToClipboard->setToolTip(i18n("Copy color to clipboard"));
 
         QVBoxLayout * vlayout = new QVBoxLayout(m_colorPatch);
         vlayout->addWidget(m_buttonAdd, Qt::AlignRight);
@@ -90,9 +91,11 @@ void ColorWidget::addColor()
 
 void ColorWidget::copyColorNameToClipboard()
 {
-    QClipboard * clipboard = KApplication::clipboard();
-    clipboard->setText(m_color.name(), QClipboard::Clipboard);
-    clipboard->setText(m_color.name(), QClipboard::Selection);
+    QMimeData *mime = new QMimeData();
+    mime->setColorData(m_color);
+    mime->setText(m_color.name());
+
+    QApplication::clipboard()->setMimeData(mime, QClipboard::Clipboard);
 }
 
 #include "colorwidget.moc"

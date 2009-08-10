@@ -22,17 +22,117 @@
 #include <QtGui/QLayout>
 #include <QtGui/QHeaderView>
 #include <QtGui/QTableView>
+#include <QtGui/QToolButton>
 
 #include <KLocalizedString>
 #include <KLineEdit>
+#include <KPushButton>
 #include <KUrlLabel>
 
+#include "colorutil.h"
 #include "palettemodel.h"
 #include "palettedelegate.h"
 #include "palettedescriptionwidget.h"
 
+//BEGIN Public class ViewControls
+
+PaletteDetailViewControls::PaletteDetailViewControls(PaletteDetailView *paletteDetailView)
+    : QWidget(paletteDetailView)
+    , m_paletteDetailView(paletteDetailView)
+{
+    QToolButton *moveItemToFirstPositionButton = new QToolButton(this);
+    moveItemToFirstPositionButton->setIcon(KIcon("go-top"));
+    moveItemToFirstPositionButton->setToolTip(i18n("First position"));
+
+    QToolButton *moveItemToPrevPositionButton = new QToolButton(this);
+    moveItemToPrevPositionButton->setIcon(KIcon("go-up"));
+    moveItemToPrevPositionButton->setToolTip(i18n("Prev position"));
+    moveItemToPrevPositionButton->setAutoRepeat(true);
+
+    QToolButton *insertColorItemButton = new QToolButton(this);
+    insertColorItemButton->setIcon(KIcon("insert-horizontal-rule"));
+    insertColorItemButton->setToolTip(i18n("Insert Color"));
+
+    QToolButton *insertCommentItemButton = new QToolButton(this);
+    insertCommentItemButton->setIcon(KIcon("list-add-font"));
+    insertCommentItemButton->setToolTip(i18n("Insert Comment"));
+
+    QToolButton *removeItemButton = new QToolButton(this);
+    removeItemButton->setIcon(KIcon("list-remove"));
+    removeItemButton->setToolTip(i18n("Remove Item"));
+
+    QToolButton *moveItemToNextPositionButton = new QToolButton(this);
+    moveItemToNextPositionButton->setIcon(KIcon("go-down"));
+    moveItemToNextPositionButton->setToolTip(i18n("Next position"));
+    moveItemToNextPositionButton->setAutoRepeat(true);
+
+    QToolButton *moveItemToLastPositionButton = new QToolButton(this);
+    moveItemToLastPositionButton->setIcon(KIcon("go-bottom"));
+    moveItemToLastPositionButton->setToolTip(i18n("Last position"));
+
+    QVBoxLayout *mainLayout = new QVBoxLayout(this);
+    mainLayout->addWidget(moveItemToFirstPositionButton);
+    mainLayout->addWidget(moveItemToPrevPositionButton);
+    mainLayout->addStretch(1);
+    mainLayout->addWidget(insertColorItemButton);
+    mainLayout->addWidget(insertCommentItemButton);
+    mainLayout->addWidget(removeItemButton);
+    mainLayout->addStretch(1);
+    mainLayout->addWidget(moveItemToNextPositionButton);
+    mainLayout->addWidget(moveItemToLastPositionButton);
+
+    connect(moveItemToFirstPositionButton, SIGNAL(pressed()), this, SLOT(moveItemToFirstPosition()));
+    connect(moveItemToPrevPositionButton, SIGNAL(pressed()), this, SLOT(moveItemToPrevPosition()));
+    connect(insertColorItemButton, SIGNAL(pressed()), this, SLOT(insertColorItem()));
+    connect(insertCommentItemButton, SIGNAL(pressed()), this, SLOT(insertCommentItem()));
+    connect(removeItemButton, SIGNAL(pressed()), this, SLOT(removeItem()));
+    connect(moveItemToNextPositionButton, SIGNAL(pressed()), this, SLOT(moveItemToNextPosition()));
+    connect(moveItemToLastPositionButton, SIGNAL(pressed()), this, SLOT(moveItemToLastPosition()));
+}
+
+void PaletteDetailViewControls::insertColorItem()
+{
+    m_paletteDetailView->insertColorItem(m_paletteDetailView->selectedIndex(), m_paletteDetailView->currentKColorEditColor());
+}
+
+void PaletteDetailViewControls::insertCommentItem()
+{
+    m_paletteDetailView->insertCommentItem(m_paletteDetailView->selectedIndex());
+}
+
+void PaletteDetailViewControls::removeItem()
+{
+    m_paletteDetailView->removeItem(m_paletteDetailView->selectedIndex());
+}
+
+void PaletteDetailViewControls::moveItemToNextPosition()
+{
+    m_paletteDetailView->moveItem(m_paletteDetailView->selectedIndex(), Palette::MoveToPrev);
+}
+
+void PaletteDetailViewControls::moveItemToPrevPosition()
+{
+    m_paletteDetailView->moveItem(m_paletteDetailView->selectedIndex(), Palette::MoveToNext);
+}
+
+void PaletteDetailViewControls::moveItemToFirstPosition()
+{
+    m_paletteDetailView->moveItem(m_paletteDetailView->selectedIndex(), Palette::MoveToStart);
+}
+
+void PaletteDetailViewControls::moveItemToLastPosition()
+{
+    m_paletteDetailView->moveItem(m_paletteDetailView->selectedIndex(), Palette::MoveToEnd);
+}
+
+
+//END Public class ViewControls
+
+//BEGIN Public class PaletteDetailView
+
 PaletteDetailView::PaletteDetailView(PaletteModel * model, QWidget * parent)
     : QWidget(parent)
+    , m_currentKColorEditColor(ColorUtil::DEFAULT_COLOR)
 {
     m_model = model;
 
@@ -48,6 +148,12 @@ PaletteDetailView::PaletteDetailView(PaletteModel * model, QWidget * parent)
     m_view->verticalHeader()->setResizeMode(QHeaderView::Fixed);
 
     updatePaletteDetails();
+
+    PaletteDetailViewControls *viewControls = new PaletteDetailViewControls(this);
+
+    QHBoxLayout *viewLayout = new QHBoxLayout();
+    viewLayout->addWidget(m_view);
+    viewLayout->addWidget(viewControls);
 
     m_paletteNameLineEdit = new KLineEdit(this);
     m_paletteNameLineEdit->setClearButtonShown(true);
@@ -68,7 +174,7 @@ PaletteDetailView::PaletteDetailView(PaletteModel * model, QWidget * parent)
     QVBoxLayout * mainLayout = new QVBoxLayout(this);
     mainLayout->addLayout(nameLayout);
     mainLayout->addLayout(descriptionLayout);
-    mainLayout->addWidget(m_view);
+    mainLayout->addLayout(viewLayout);
 
     connect(m_paletteNameLineEdit   , SIGNAL( textEdited(QString) ), SLOT( updatePaletteName(QString)     ));
     connect(m_paletteDescriptionLink, SIGNAL( leftClickedUrl()    ), SLOT( showPaletteDescriptionWidget() ));
@@ -139,17 +245,17 @@ void PaletteDetailView::moveItem(int index, Palette::MoveOperation operation)
     switch (operation)
     {
         case Palette::MoveToPrev:
-            if (index == 0)
-                break ;
-
-            m_view->setCurrentIndex(m_view->model()->index(index - 1, 0));
-            break;
-
-        case Palette::MoveToNext:
             if (index == (m_model->rowCount() - 1))
                 break ;
 
             m_view->setCurrentIndex(m_view->model()->index(index + 1, 0));
+            break;
+
+        case Palette::MoveToNext:
+            if (index == 0)
+                break ;
+
+            m_view->setCurrentIndex(m_view->model()->index(index - 1, 0));
             break;
 
         case Palette::MoveToStart:
@@ -168,6 +274,11 @@ void PaletteDetailView::moveItem(int index, Palette::MoveOperation operation)
     }
 }
 
+QColor PaletteDetailView::currentKColorEditColor() const
+{
+    return m_currentKColorEditColor;
+}
+
 void PaletteDetailView::setSelectedItem(int index)
 {
     if (m_model->rowCount() > 0)
@@ -183,6 +294,11 @@ void PaletteDetailView::scrollToItem(int index)
 void PaletteDetailView::updatePaletteDetails()
 {
     m_view->horizontalHeader()->setResizeMode(0, QHeaderView::Stretch);
+}
+
+void PaletteDetailView::setCurrentKColorEditColor(const QColor color)
+{
+    m_currentKColorEditColor = color;
 }
 
 void PaletteDetailView::updatePaletteName(const QString & text)
@@ -214,5 +330,7 @@ void PaletteDetailView::showPaletteDescriptionWidget()
         update();
     }
 }
+
+//END Public class PaletteDetailView
 
 #include "palettedetailview.moc"

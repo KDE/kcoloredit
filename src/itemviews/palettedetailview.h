@@ -52,11 +52,15 @@ class PaletteDetailView : public QWidget
 
         void moveItem(int index, Palette::MoveOperation operation);
 
+        QColor currentKColorEditColor() const;
+
     public slots:
         void setSelectedItem(int index);
         void scrollToItem(int index);
 
         void updatePaletteDetails();
+
+        void setCurrentKColorEditColor(const QColor color);
 
     private slots:
         void updatePaletteName(const QString & text);
@@ -71,6 +75,31 @@ class PaletteDetailView : public QWidget
         PaletteModel * m_model;
 
         KUrlLabel * m_paletteDescriptionLink;
+
+        QColor m_currentKColorEditColor; // to insertColorItem button
+};
+
+class PaletteDetailViewControls : public QWidget
+{
+    Q_OBJECT
+
+    public:
+        PaletteDetailViewControls(PaletteDetailView *paletteDetailView = 0);
+
+    public slots:
+
+        void insertColorItem();
+        void insertCommentItem();
+
+        void removeItem();
+
+        void moveItemToNextPosition();
+        void moveItemToPrevPosition();
+        void moveItemToFirstPosition();
+        void moveItemToLastPosition();
+
+    private:
+        PaletteDetailView *m_paletteDetailView;
 };
 
 #endif // PALETTE_DETAIL_VIEW_H

@@ -197,13 +197,13 @@ BlenderColorSelector::BlenderColorSelector(QWidget * parent)
     mixerLayout->addLayout(entireRegionLayout);
 
     m_firstColor = new KColorButton(this);
-    m_firstColor->setMinimumHeight(200);
-    m_firstColor->setMaximumWidth(45);
+    m_firstColor->setMinimumHeight(100);
+    m_firstColor->setMaximumWidth(64);
     m_firstColor->setColor(ColorUtil::DEFAULT_COLOR);
 
     m_secondColor = new KColorButton(this);
-    m_secondColor->setMinimumHeight(200);
-    m_secondColor->setMaximumWidth(45);
+    m_secondColor->setMinimumHeight(100);
+    m_secondColor->setMaximumWidth(64);
     m_secondColor->setColor(ColorUtil::complementColor(ColorUtil::DEFAULT_COLOR));
 
     QHBoxLayout * layout = new QHBoxLayout(this);

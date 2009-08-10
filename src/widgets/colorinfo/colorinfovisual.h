@@ -40,6 +40,23 @@ class ColorInfoVisual : public QWidget
         void addColor(const QColor color);
 };
 
+class ColorInfoVisualNormal : public ColorInfoVisual
+{
+    Q_OBJECT
+
+    public:
+        ColorInfoVisualNormal(QWidget * parent = 0);
+        ~ColorInfoVisualNormal();
+
+        ColorWidget * colorWidget();
+
+    public slots:
+        void setColor(const QColor & color);
+
+    private:
+        ColorWidget * m_colorWidget;
+};
+
 class ColorInfoVisualComplement : public ColorInfoVisual
 {
     Q_OBJECT

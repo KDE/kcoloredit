@@ -29,16 +29,15 @@
 #include "kdecolorselector.h"
 #include "gtkcolorselector.h"
 #include "blendercolorselector.h"
-#include "colortoolwidget.h"
 #include "colorwidget.h"
+#include "colortoolwidget.h"
 #include "colorinfovisual.h"
 #include "colorinfotext.h"
 
 KColorEditWidget::KColorEditWidget(QWidget * parent)
     : QWidget(parent)
 {
-
-    MultiPageWidget * colorTools = new MultiPageWidget(this, i18n("Color tool:"));
+    MultiPageWidget * colorTools = new MultiPageWidget(this, i18n("Tool:"));
 
     m_kdeColorSelector = new KdeColorSelector(colorTools);
     m_kdeColorSelector->setWindowTitle(i18n("KDE selector"));
@@ -61,9 +60,24 @@ KColorEditWidget::KColorEditWidget(QWidget * parent)
     colorTools->addPage(m_blenderColorSelector);
     colorTools->addPage(m_colorToolWidget);
 
-    m_colorDispatcher = new ColorWidget(this, ColorWidget::Simple);
+    MultiPageWidget * colorInfoVisuals = new MultiPageWidget(this, i18nc("Refer to color scheme ... just scheme", "Scheme:"));
+    colorInfoVisuals->setMaximumHeight(128);
 
-    MultiPageWidget * colorInfoTexts = new MultiPageWidget(this, i18n("Color information:"));
+    m_colorDispatcher = new ColorInfoVisualNormal(colorInfoVisuals);
+
+    m_colorInfoVisualComplement = new ColorInfoVisualComplement(colorInfoVisuals);
+    m_colorInfoVisualTriadic = new ColorInfoVisualTriadic(colorInfoVisuals);
+    m_colorInfoVisualTetradic = new ColorInfoVisualTetradic(colorInfoVisuals);
+    m_colorInfoVisualAnalogous = new ColorInfoVisualAnalogous(colorInfoVisuals);
+
+    colorInfoVisuals->addPage(m_colorDispatcher);
+
+    colorInfoVisuals->addPage(m_colorInfoVisualComplement);
+    colorInfoVisuals->addPage(m_colorInfoVisualTriadic);
+    colorInfoVisuals->addPage(m_colorInfoVisualTetradic);
+    colorInfoVisuals->addPage(m_colorInfoVisualAnalogous);
+
+    MultiPageWidget * colorInfoTexts = new MultiPageWidget(this, i18nc("Color models: for instance RGB", "Model:"));
     colorInfoTexts->setMaximumHeight(110);
 
     ColorInfoTextRGB * infoTextRGB = new ColorInfoTextRGB(colorInfoTexts);
@@ -76,47 +90,39 @@ KColorEditWidget::KColorEditWidget(QWidget * parent)
     colorInfoTexts->addPage(infoTextCMYK);
     colorInfoTexts->addPage(infoTextHTML);
 
-    MultiPageWidget * colorInfoVisuals = new MultiPageWidget(this, i18n("Color scheme:"));
-    colorInfoVisuals->setMaximumHeight(128);
-
-    m_colorInfoVisualComplement = new ColorInfoVisualComplement(colorInfoVisuals);
-    m_colorInfoVisualTriadic = new ColorInfoVisualTriadic(colorInfoVisuals);
-    m_colorInfoVisualTetradic = new ColorInfoVisualTetradic(colorInfoVisuals);
-    m_colorInfoVisualAnalogous = new ColorInfoVisualAnalogous(colorInfoVisuals);
-
-    colorInfoVisuals->addPage(m_colorInfoVisualComplement);
-    colorInfoVisuals->addPage(m_colorInfoVisualTriadic);
-    colorInfoVisuals->addPage(m_colorInfoVisualTetradic);
-    colorInfoVisuals->addPage(m_colorInfoVisualAnalogous);
-
     QVBoxLayout * mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(colorTools);
-    mainLayout->addWidget(m_colorDispatcher);
-    mainLayout->addWidget(colorInfoTexts);
     mainLayout->addWidget(colorInfoVisuals);
+    mainLayout->addWidget(colorInfoTexts);
 
     connect(m_blenderColorSelector, SIGNAL( colorsAdded(QVector<QColor>) ), SLOT( appendColorsFromGradientSelector(QVector<QColor>) ));
 
     // All color selector can change the color of the dispatcher and extratools
     for (int i = 0; i < colorTools->count() - 1; i++)
     {
-        connect(colorTools->widget(i), SIGNAL( colorSelected(QColor) ), m_colorDispatcher, SLOT( setColor(QColor) ));
+        connect(colorTools->widget(i), SIGNAL( colorSelected(QColor) ), m_colorDispatcher->colorWidget(), SLOT( setColor(QColor) ));
         connect(colorTools->widget(i), SIGNAL( colorSelected(QColor) ), colorTools->widget(colorTools->count() - 1), SLOT( setColor(QColor) ));
     }
 
     // Extratools can change the color of the dispatcher
-    connect(colorTools->widget(colorTools->count() - 1), SIGNAL( colorSelected(QColor) ), m_colorDispatcher, SLOT( setColor(QColor) ));
+    connect(colorTools->widget(colorTools->count() - 1), SIGNAL( colorSelected(QColor) ), m_colorDispatcher->colorWidget(), SLOT( setColor(QColor) ));
 
     for (int j = 0; j < colorInfoTexts->count(); j++)
-        connect(m_colorDispatcher, SIGNAL( colorChanged(QColor) ), colorInfoTexts->widget(j), SLOT( setColor(QColor) ));
+        connect(m_colorDispatcher->colorWidget(), SIGNAL( colorChanged(QColor) ), colorInfoTexts->widget(j), SLOT( setColor(QColor) ));
 
-    for (int l = 0; l < colorInfoVisuals->count(); l++)
-        connect(m_colorDispatcher, SIGNAL( colorChanged(QColor) ), colorInfoVisuals->widget(l), SLOT( setColor(QColor) ));
+    // All exept the dispatcher m_colorDispatcher (ColorInfoVisualNormal)
+    for (int l = 1; l < colorInfoVisuals->count(); l++)
+        connect(m_colorDispatcher->colorWidget(), SIGNAL( colorChanged(QColor) ), colorInfoVisuals->widget(l), SLOT( setColor(QColor) ));
+
+    connect(m_colorDispatcher, SIGNAL( colorAdded(QColor) ), SLOT( appendColorFromSchemes(QColor) ));
 
     connect(m_colorInfoVisualComplement, SIGNAL( colorAdded(QColor) ), SLOT( appendColorFromSchemes(QColor) ));
     connect(m_colorInfoVisualTriadic,    SIGNAL( colorAdded(QColor) ), SLOT( appendColorFromSchemes(QColor) ));
     connect(m_colorInfoVisualTetradic,   SIGNAL( colorAdded(QColor) ), SLOT( appendColorFromSchemes(QColor) ));
     connect(m_colorInfoVisualAnalogous,  SIGNAL( colorAdded(QColor) ), SLOT( appendColorFromSchemes(QColor) ));
+
+    // Export the color to PaletteDetailView to implement insertColorItem
+    connect(m_colorDispatcher->colorWidget(), SIGNAL( colorChanged(QColor) ), SIGNAL( colorSelected(QColor) ));
 }
 
 void KColorEditWidget::setModel(PaletteModel * model)
@@ -126,12 +132,12 @@ void KColorEditWidget::setModel(PaletteModel * model)
 
 QColor KColorEditWidget::selectedColor() const
 {
-    return m_colorDispatcher->color();
+    return m_colorDispatcher->colorWidget()->color();
 }
 
 void KColorEditWidget::setColor(const QColor & color)
 {
-    // NOTE this is necesary couse the comments make invalid color when track/hover inside briefview
+    // NOTE this is necesary becouse the comments make invalid color when track/hover inside briefview
     if (color.isValid())
     {
         m_kdeColorSelector->setColor(color);

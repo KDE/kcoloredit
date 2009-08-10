@@ -30,12 +30,12 @@
 RectangleColorWidget::RectangleColorWidget(QWidget * parent) : QWidget(parent)
 {
     m_hsSelector = new KHueSaturationSelector(this);
-    m_hsSelector->setMinimumSize(256, 256);
+    m_hsSelector->setMinimumSize(96, 96);
     connect(m_hsSelector, SIGNAL(valueChanged(int, int)), SLOT(slotSetHs(int, int)));
 
     m_vSelector = new KColorValueSelector(this);
     m_vSelector->setMinimumSize(26, 70);
-    m_vSelector->setMaximumWidth(40);
+    m_vSelector->setMaximumWidth(30);
     m_vSelector->setIndent(false);
     m_vSelector->setArrowDirection(Qt::RightArrow);
     connect(m_vSelector, SIGNAL(valueChanged(int)), SLOT(slotSetV(int)));

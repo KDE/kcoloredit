@@ -24,14 +24,13 @@
 
 class PaletteModel;
 
-class ColorWidget;
-
 class KdeColorSelector;
 class GtkColorSelector;
 class BlenderColorSelector;
 
 class ColorToolWidget;
 
+class ColorInfoVisualNormal;
 class ColorInfoVisualComplement;
 class ColorInfoVisualTriadic;
 class ColorInfoVisualTetradic;
@@ -51,6 +50,9 @@ class KColorEditWidget : public QWidget
     public slots:
         void setColor(const QColor & color);
 
+    signals:
+        void colorSelected(const QColor & color); // give the color to PaletteDetailView (see setColor impl)
+
     private slots:
         void appendColorsFromGradientSelector(const QVector<QColor> & colors);
         void appendColorFromSchemes(const QColor & color);
@@ -58,13 +60,13 @@ class KColorEditWidget : public QWidget
     private:
         PaletteModel * m_model;
 
-        ColorWidget * m_colorDispatcher;
-
         KdeColorSelector * m_kdeColorSelector;
         GtkColorSelector * m_gtkColorSelector;
         BlenderColorSelector * m_blenderColorSelector;
 
         ColorToolWidget * m_colorToolWidget;
+
+        ColorInfoVisualNormal * m_colorDispatcher;
 
         ColorInfoVisualComplement * m_colorInfoVisualComplement;
         ColorInfoVisualTriadic * m_colorInfoVisualTriadic;

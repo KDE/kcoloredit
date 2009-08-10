@@ -36,14 +36,14 @@ PaletteBriefView::PaletteBriefView(PaletteModel * model, QWidget * parent)
     , m_model(model)
 {
     m_quickNavigationCheckBox = new QCheckBox(this);
-    m_quickNavigationCheckBox->setText(i18n("Quick navigation"));
+    m_quickNavigationCheckBox->setText(i18n("Use mouse"));
     m_quickNavigationCheckBox->setChecked(false);
-    m_quickNavigationCheckBox->setStatusTip(i18n("It will be disabled automatically when clicking over a item"));
+    m_quickNavigationCheckBox->setToolTip(i18n("It will be disabled automatically when clicking over a item"));
 
     m_showCommentsCheckBox = new QCheckBox(this);
     m_showCommentsCheckBox->setText(i18n("Show comments"));
     m_showCommentsCheckBox->setChecked(false);
-    m_showCommentsCheckBox->setStatusTip(i18n("If checked, views will be synchronized"));
+    m_showCommentsCheckBox->setToolTip(i18n("If checked, views will be synchronized"));
 
     m_setColumnSlider = new QSlider(Qt::Horizontal, this);
     m_setColumnSlider->setSingleStep(1);

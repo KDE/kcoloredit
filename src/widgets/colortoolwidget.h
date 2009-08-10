@@ -27,6 +27,7 @@
 
 class QLabel;
 class QCheckBox;
+class QSlider;
 
 class KColorPatch;
 
@@ -45,6 +46,12 @@ class ColorToolWidget : public QWidget
         ~ColorToolWidget();
 
     public slots:
+        void changeBrightnessValue(int);
+        void setupDefaultBrightness();
+
+        void changeSaturationValue(int);
+        void setupDefaultSaturation();
+
         void setColor(const QColor & color);
 
     signals:
@@ -56,12 +63,6 @@ class ColorToolWidget : public QWidget
         virtual void mousePressEvent(QMouseEvent * event);
 
     private slots:
-        void decreaseBrightness();
-        void increaseBrightness();
-
-        void decreaseSaturation();
-        void increaseSaturation();
-
         void pickColorFromDesktop();
 
     private:
@@ -72,9 +73,13 @@ class ColorToolWidget : public QWidget
 
     private:
         QColor m_color;
+        QColor m_oldColor; // original color without any modification
 
         QLabel * m_brightnessPercentage;
         QLabel * m_saturationPercentage;
+
+        QSlider *m_brightnessSlider;
+        QSlider *m_saturationSlider;
 
         bool m_colorPicking;
 

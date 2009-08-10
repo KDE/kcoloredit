@@ -47,8 +47,8 @@ void hsv_to_rgb(int H, int S, int V, int *R, int *G, int *B)
 TriangleColorWidget::TriangleColorWidget(QWidget* parent)
     : QWidget(parent)
 {
-    setMinimumHeight( 100 );
-    setMinimumWidth( 100 );
+    setMinimumHeight( 96 );
+    setMinimumWidth( 96 );
     m_hue = 0;
     m_saturation = 0;
     m_value = 0;

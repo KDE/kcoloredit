@@ -57,18 +57,6 @@ class KColorEditMainWnd : public KXmlGuiWindow
         void generateColorNames();
         void completeColorNames();
 
-        void appendColorItem();
-        void appendCommentItem();
-        void insertColorItem();
-        void insertCommentItem();
-
-        void removeItem();
-
-        void moveItemToNextPosition();
-        void moveItemToPrevPosition();
-        void moveItemToFirstPosition();
-        void moveItemToLastPosition();
-
         void updateTittleWhenChangeDocState();
         void updateTittleWhenOpenSaveDoc();
 

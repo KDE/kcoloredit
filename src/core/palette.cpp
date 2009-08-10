@@ -140,18 +140,18 @@ void Palette::moveItem(int index, Palette::MoveOperation operation)
     switch (operation)
     {
         case Palette::MoveToPrev:
-            if (index == 0)
-                return ;
-
-            m_items.swap(index, index - 1);
-
-            break;
-
-        case Palette::MoveToNext:
             if (index == m_items.count() - 1)
                 return ;
 
             m_items.swap(index, index + 1);
+
+            break;
+
+        case Palette::MoveToNext:
+            if (index == 0)
+                return ;
+
+            m_items.swap(index, index - 1);
 
             break;
 

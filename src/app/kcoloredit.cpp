@@ -36,13 +36,19 @@
 #include "palettedialog.h"
 #include "colorutil.h"
 
+#include <KStatusBar>
+
 KColorEditMainWnd::KColorEditMainWnd(QWidget * parent, Qt::WindowFlags f)
     : KXmlGuiWindow(parent, f)
 {
     setupWidgets();
     setupActions();
 
-    setupGUI();
+    KXmlGuiWindow::StandardWindowOptions stdWndOpts;
+    stdWndOpts |= KXmlGuiWindow::Default;
+    stdWndOpts &= ~KXmlGuiWindow::StatusBar;
+
+    setupGUI(stdWndOpts);
 }
 
 KColorEditMainWnd::~KColorEditMainWnd()
@@ -189,51 +195,6 @@ void KColorEditMainWnd::completeColorNames()
         m_paletteDocument->model()->completeColorNames();
 }
 
-void KColorEditMainWnd::appendColorItem()
-{
-    m_paletteDetailView->appendColorItem(m_kColorEditWidget->selectedColor());
-}
-
-void KColorEditMainWnd::appendCommentItem()
-{
-    m_paletteDetailView->appendCommentItem();
-}
-
-void KColorEditMainWnd::insertColorItem()
-{
-    m_paletteDetailView->insertColorItem(m_paletteDetailView->selectedIndex(), m_kColorEditWidget->selectedColor());
-}
-
-void KColorEditMainWnd::insertCommentItem()
-{
-    m_paletteDetailView->insertCommentItem(m_paletteDetailView->selectedIndex());
-}
-
-void KColorEditMainWnd::removeItem()
-{
-    m_paletteDetailView->removeItem(m_paletteDetailView->selectedIndex());
-}
-
-void KColorEditMainWnd::moveItemToNextPosition()
-{
-    m_paletteDetailView->moveItem(m_paletteDetailView->selectedIndex(), Palette::MoveToPrev);
-}
-
-void KColorEditMainWnd::moveItemToPrevPosition()
-{
-    m_paletteDetailView->moveItem(m_paletteDetailView->selectedIndex(), Palette::MoveToNext);
-}
-
-void KColorEditMainWnd::moveItemToFirstPosition()
-{
-    m_paletteDetailView->moveItem(m_paletteDetailView->selectedIndex(), Palette::MoveToStart);
-}
-
-void KColorEditMainWnd::moveItemToLastPosition()
-{
-    m_paletteDetailView->moveItem(m_paletteDetailView->selectedIndex(), Palette::MoveToEnd);
-}
-
 void KColorEditMainWnd::updateTittleWhenChangeDocState()
 {
     QString paletteFileName = m_paletteDocument->url().fileName();
@@ -286,11 +247,13 @@ void KColorEditMainWnd::setupWidgets()
     connect(m_paletteBriefView, SIGNAL( itemSelected(int) ), m_paletteDetailView, SLOT( setSelectedItem(int) ));
     connect(m_paletteBriefView, SIGNAL( colorSelected(QColor) ), m_kColorEditWidget, SLOT( setColor(QColor) ));
 
+    connect(m_kColorEditWidget, SIGNAL(colorSelected(QColor) ), m_paletteDetailView, SLOT(setCurrentKColorEditColor(QColor)));
+
     // NOTE
     // Initialize docks
 
-    m_paletteBriefViewDockWidget = new QDockWidget(i18n("Brief view"), this);
-    m_paletteBriefViewDockWidget->setObjectName(QString("brief-view-dock"));
+    m_paletteBriefViewDockWidget = new QDockWidget(i18n("Quick view"), this);
+    m_paletteBriefViewDockWidget->setObjectName(QString("quick-view-dock"));
     m_paletteBriefViewDockWidget->setFeatures(QDockWidget::AllDockWidgetFeatures);
     m_paletteBriefViewDockWidget->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     m_paletteBriefViewDockWidget->setWidget(m_paletteBriefView);
@@ -347,57 +310,6 @@ void KColorEditMainWnd::setupActions()
 
     connect(generateColorNamesAction, SIGNAL( triggered(bool) ), this, SLOT( generateColorNames() ));
     connect(completeColorNamesAction, SIGNAL( triggered(bool) ), this, SLOT( completeColorNames() ));
-
-    // NOTE
-    // Actions for palette toolbar
-
-    KAction * appendColorItemAction = actionCollection()->addAction("append-color-item");
-    appendColorItemAction->setIcon(KIcon("list-add"));
-    appendColorItemAction->setText(i18n("Append Color"));
-
-    KAction * appendCommentItemAction = actionCollection()->addAction("append-comment-item");
-    appendCommentItemAction->setIcon(KIcon("insert-text"));
-    appendCommentItemAction->setText(i18n("Append Comment"));
-
-    KAction * insertColorItemAction = actionCollection()->addAction("insert-color-item");
-    insertColorItemAction->setIcon(KIcon("insert-horizontal-rule"));
-    insertColorItemAction->setText(i18n("Insert Color"));
-
-    KAction * insertCommentItemAction = actionCollection()->addAction("insert-comment-item");
-    insertCommentItemAction->setIcon(KIcon("list-add-font"));
-    insertCommentItemAction->setText(i18n("Insert Comment"));
-
-    KAction * removeItemAction = actionCollection()->addAction("remove-item");
-    removeItemAction->setIcon(KIcon("list-remove"));
-    removeItemAction->setText(i18n("Remove Item"));
-
-    KAction * moveItemToNextPositionAction = actionCollection()->addAction("move-item-to-next-position");
-    moveItemToNextPositionAction->setIcon(KIcon("go-up"));
-    moveItemToNextPositionAction->setText(i18n("Prev position"));
-
-    KAction * moveItemToPrevPositionAction = actionCollection()->addAction("move-item-to-prev-position");
-    moveItemToPrevPositionAction->setIcon(KIcon("go-down"));
-    moveItemToPrevPositionAction->setText(i18n("Next position"));
-
-    KAction * moveItemToFirstPositionAction = actionCollection()->addAction("move-item-to-first-position");
-    moveItemToFirstPositionAction->setIcon(KIcon("go-top"));
-    moveItemToFirstPositionAction->setText(i18n("First position"));
-
-    KAction * moveItemToLastPositionAction = actionCollection()->addAction("move-item-to-last-position");
-    moveItemToLastPositionAction->setIcon(KIcon("go-bottom"));
-    moveItemToLastPositionAction->setText(i18n("Last position"));
-
-    connect(appendColorItemAction  , SIGNAL( triggered(bool) ), SLOT( appendColorItem()   ));
-    connect(appendCommentItemAction, SIGNAL( triggered(bool) ), SLOT( appendCommentItem() ));
-    connect(insertColorItemAction  , SIGNAL( triggered(bool) ), SLOT( insertColorItem()   ));
-    connect(insertCommentItemAction, SIGNAL( triggered(bool) ), SLOT( insertCommentItem() ));
-
-    connect(removeItemAction, SIGNAL( triggered(bool) ), SLOT( removeItem() ));
-
-    connect(moveItemToNextPositionAction , SIGNAL( triggered(bool) ), SLOT( moveItemToNextPosition()  ));
-    connect(moveItemToPrevPositionAction , SIGNAL( triggered(bool) ), SLOT( moveItemToPrevPosition()  ));
-    connect(moveItemToFirstPositionAction, SIGNAL( triggered(bool) ), SLOT( moveItemToFirstPosition() ));
-    connect(moveItemToLastPositionAction , SIGNAL( triggered(bool) ), SLOT( moveItemToLastPosition()  ));
 }
 
 #include "kcoloredit.moc"
