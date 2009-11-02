@@ -1,5 +1,5 @@
 /*********************************************************************************
-*  Copyright (C) 2008 by Percy Camilo Triveño Aucahuasi <orgyforever@gmail.com>  *
+*  Copyright (C) 2009 by Percy Camilo T. Aucahuasi <percy.camilo.ta@gmail.com>   *
 *                                                                                *
 *  Filters:                                                                      *
 *  Is based on kdeui/colors/kcolordialog                                         *

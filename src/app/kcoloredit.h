@@ -1,5 +1,5 @@
 /*********************************************************************************
-*  Copyright (C) 2008 by Percy Camilo Triveño Aucahuasi <orgyforever@gmail.com>  *
+*  Copyright (C) 2009 by Percy Camilo T. Aucahuasi <percy.camilo.ta@gmail.com>   *
 *                                                                                *
 *  This program is free software; you can redistribute it and/or modify          *
 *  it under the terms of the GNU General Public License as published by          *
@@ -23,7 +23,10 @@
 #include <KUrl>
 #include <KXmlGuiWindow>
 
+#include "ui_builderconfiguration.h"
+
 class QDockWidget;
+class QLabel;
 
 class KRecentFilesAction;
 
@@ -57,8 +60,12 @@ class KColorEditMainWnd : public KXmlGuiWindow
         void generateColorNames();
         void completeColorNames();
 
+        void configureApp();
+
         void updateTittleWhenChangeDocState();
         void updateTittleWhenOpenSaveDoc();
+
+        void updateInputTypePreviewImage(bool textInput);
 
     private:
         void setupWidgets();
@@ -67,17 +74,21 @@ class KColorEditMainWnd : public KXmlGuiWindow
         QString appName() const;
 
     private:
-        KRecentFilesAction * m_recentFilesAction;
+        KRecentFilesAction *m_recentFilesAction;
 
-        PaletteDocument * m_paletteDocument;
+        PaletteDocument *m_paletteDocument;
 
-        PaletteBriefView * m_paletteBriefView;
-        PaletteDetailView * m_paletteDetailView;
+        PaletteBriefView *m_paletteBriefView;
+        PaletteDetailView *m_paletteDetailView;
 
-        KColorEditWidget * m_kColorEditWidget;
+        KColorEditWidget *m_kColorEditWidget;
 
-        QDockWidget * m_paletteBriefViewDockWidget;
-        QDockWidget * m_paletteDetailViewDockWidget;
+        QDockWidget *m_paletteBriefViewDockWidget;
+        QDockWidget *m_paletteDetailViewDockWidget;
+
+        QLabel *m_inputTypePreviewLabel; // same as the config .ui file
+
+        Ui::BuilderConfigurationForm m_uiBuilderConfigurationForm;
 };
 
 #endif // KCOLOREDIT_H

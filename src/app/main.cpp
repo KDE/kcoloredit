@@ -1,5 +1,5 @@
 /*********************************************************************************
-*  Copyright (C) 2008 by Percy Camilo Triveño Aucahuasi <orgyforever@gmail.com>  *
+*  Copyright (C) 2009 by Percy Camilo T. Aucahuasi <percy.camilo.ta@gmail.com>   *
 *                                                                                *
 *  This program is free software; you can redistribute it and/or modify          *
 *  it under the terms of the GNU General Public License as published by          *
@@ -27,9 +27,9 @@
 
 int main(int argc, char * argv[])
 {
-    KAboutData about("kcoloredit", 0, ki18n(I18N_NOOP("KColorEdit")), "2.09.90 (KColorEdit 2.1 RC)",
-        ki18n(I18N_NOOP("KColorEdit, great tool for editing color palettes.")),
-        KAboutData::License_GPL, ki18n("(C) 2008, Percy Camilo Triveño Aucahuasi\n" "(C) 2000, Artur Rataj"));
+    KAboutData about("kcoloredit", 0, ki18n(I18N_NOOP("KColorEdit")), "2.09.99 (KColorEdit 2.1 RC 2)",
+        ki18n(I18N_NOOP("KColorEdit, a tool for editing color palettes.")),
+        KAboutData::License_GPL, ki18n("(C) 2009, Percy Camilo Triveño Aucahuasi\n" "(C) 2000, Artur Rataj"));
     about.addAuthor(ki18n("Percy Camilo Triveño Aucahuasi"), ki18n("Current maintainer - Upgraded and developed the new version."), "percy.camilo.ta@gmail.com");
     about.addAuthor(ki18n("Artur Rataj"), ki18n("Former maintainer - Created KColorEdit"), "art@zeus.polsl.gliwice.pl");
 

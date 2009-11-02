@@ -1,5 +1,5 @@
 /*********************************************************************************
-*  Copyright (C) 2008 by Percy Camilo Triveño Aucahuasi <orgyforever@gmail.com>  *
+*  Copyright (C) 2009 by Percy Camilo T. Aucahuasi <percy.camilo.ta@gmail.com>   *
 *                                                                                *
 *  This program is free software; you can redistribute it and/or modify          *
 *  it under the terms of the GNU General Public License as published by          *
@@ -38,8 +38,6 @@
  * Also, this class suport more features than KColorCollection on storing data.
  * This class has fully support to the GIMP palette specification (like preferred columns)
  * and KDE palette format.
- *
- * @author Percy Camilo Triveño Aucahuasi <orgyforever@gmail.com>
  */
 class Palette
 {

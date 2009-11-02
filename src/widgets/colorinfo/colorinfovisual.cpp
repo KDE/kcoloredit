@@ -1,5 +1,5 @@
 /*********************************************************************************
-*  Copyright (C) 2008 by Percy Camilo Triveño Aucahuasi <orgyforever@gmail.com>  *
+*  Copyright (C) 2009 by Percy Camilo T. Aucahuasi <percy.camilo.ta@gmail.com>   *
 *                                                                                *
 *  This program is free software; you can redistribute it and/or modify          *
 *  it under the terms of the GNU General Public License as published by          *
@@ -51,7 +51,7 @@ void ColorInfoVisual::addColor(const QColor color)
 ColorInfoVisualNormal::ColorInfoVisualNormal(QWidget * parent)
     : ColorInfoVisual(parent)
 {
-    setWindowTitle(i18n("Selected"));
+    setWindowTitle(i18n("Current color"));
 
     m_colorWidget = new ColorWidget(this);
 

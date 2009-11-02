@@ -1,5 +1,5 @@
 /*********************************************************************************
-*  Copyright (C) 2008 by Percy Camilo Triveño Aucahuasi <orgyforever@gmail.com>  *
+*  Copyright (C) 2009 by Percy Camilo T. Aucahuasi <percy.camilo.ta@gmail.com>   *
 *                                                                                *
 *  This program is free software; you can redistribute it and/or modify          *
 *  it under the terms of the GNU General Public License as published by          *
@@ -29,10 +29,13 @@
 #include "kdecolorselector.h"
 #include "gtkcolorselector.h"
 #include "blendercolorselector.h"
+#include "buildercolorselector.h"
 #include "colorwidget.h"
 #include "colortoolwidget.h"
 #include "colorinfovisual.h"
 #include "colorinfotext.h"
+
+#include "kcoloredit_settings.h"
 
 KColorEditWidget::KColorEditWidget(QWidget * parent)
     : QWidget(parent)
@@ -51,6 +54,10 @@ KColorEditWidget::KColorEditWidget(QWidget * parent)
     m_blenderColorSelector->setWindowTitle(i18n("Gradient selector"));
     m_blenderColorSelector->setWindowIcon(KIcon("fill-color"));
 
+    m_builderColorSelector = new BuilderColorSelector(colorTools);
+    m_builderColorSelector->setWindowTitle(i18n("Color builder"));
+    m_builderColorSelector->setWindowIcon(KIcon("format-stroke-color"));
+
     m_colorToolWidget = new ColorToolWidget(colorTools);
     m_colorToolWidget->setWindowTitle(i18nc("Set of extra tools apart of color selectors", "Extras"));
     m_colorToolWidget->setWindowIcon(KIcon("fill-color"));
@@ -58,6 +65,7 @@ KColorEditWidget::KColorEditWidget(QWidget * parent)
     colorTools->addPage(m_kdeColorSelector);
     colorTools->addPage(m_gtkColorSelector);
     colorTools->addPage(m_blenderColorSelector);
+    colorTools->addPage(m_builderColorSelector);
     colorTools->addPage(m_colorToolWidget);
 
     MultiPageWidget * colorInfoVisuals = new MultiPageWidget(this, i18nc("Refer to color scheme ... just scheme", "Scheme:"));
@@ -144,6 +152,13 @@ void KColorEditWidget::setColor(const QColor & color)
         m_gtkColorSelector->setColor(color);
         m_colorToolWidget->setColor(color);
     }
+}
+
+void KColorEditWidget::updateSettings(QString page)
+{
+    Q_UNUSED(page);
+
+    m_builderColorSelector->setInputType(Settings::textInput());
 }
 
 void KColorEditWidget::appendColorsFromGradientSelector(const QVector<QColor> & colors)

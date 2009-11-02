@@ -17,77 +17,38 @@
 *  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.                 *
 *********************************************************************************/
 
-#include "palettedelegateeditors.h"
+#ifndef BUILDER_COLOR_SELECTOR_H
+#define BUILDER_COLOR_SELECTOR_H
 
-#include <QtGui/QLayout>
+#include "colorselector.h"
 
-#include <KColorButton>
-#include <KLineEdit>
+#include "ui_builderwidget.h"
 
-//BEGIN public class ColorItemEditor
-
-ColorItemEditor::ColorItemEditor(QWidget * parent)
-    : QWidget(parent)
+class BuilderColorSelector : public ColorSelector
 {
-    m_color = new KColorButton(this);
-    m_color->setMinimumWidth(92);
+    Q_OBJECT
 
-    m_colorName = new KLineEdit(this);
-    m_colorName->setClearButtonShown(true);
-    m_colorName->grabKeyboard();
+    public:
+        BuilderColorSelector(QWidget * parent = 0);
 
-    QHBoxLayout * layout = new QHBoxLayout(this);
-    layout->addWidget(m_color);
-    layout->addWidget(m_colorName);
+        // textInput = false then olor components will be insert through SpinBox's controls
+        void setInputType(bool textInput);
 
-    setMinimumHeight(40);
-}
+    public slots:
+        void setColor(const QColor & color);
 
-QColor ColorItemEditor::color() const
-{
-    return m_color->color();
-}
+    private slots:
+        // this send a color to current color widget by emit colorSelected signal
+        void buildColor();
+        void setCurrentSource(int tabIndex);
+//         void dispatcher(int value);
 
-void ColorItemEditor::setColor(const QColor & color)
-{
-    m_color->setColor(color);
-}
+    private:
 
-QString ColorItemEditor::colorName() const
-{
-    return m_colorName->text();
-}
+    private:
+        int m_currentSource; // 0 RGB , 1 HSV , 2 CMY , 3 Textual
 
-void ColorItemEditor::setColorName(const QString & colorName)
-{
-    m_colorName->setText(colorName);
-}
+        Ui::BuilderForm m_uiBuilderForm;
+};
 
-//END public class ColorItemEditor
-
-//BEGIN public class CommentItemEditor
-
-CommentItemEditor::CommentItemEditor(QWidget * parent)
-    : QWidget(parent)
-{
-    m_comment = new KLineEdit(this);
-    m_comment->setClearButtonShown(true);
-    m_comment->grabKeyboard();
-
-    QHBoxLayout * layout = new QHBoxLayout(this);
-    layout->addWidget(m_comment);
-
-    setMinimumHeight(40);
-}
-
-QString CommentItemEditor::comment() const
-{
-    return m_comment->text();
-}
-
-void CommentItemEditor::setComment(const QString & comment)
-{
-    m_comment->setText(comment);
-}
-
-//END public class CommentItemEditor
+#endif // BUILDER_COLOR_SELECTOR_H

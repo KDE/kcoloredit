@@ -7,6 +7,7 @@ include_directories (
   ${CMAKE_CURRENT_SOURCE_DIR}/widgets/colorselectors/kdeselector
   ${CMAKE_CURRENT_SOURCE_DIR}/widgets/colorselectors/gtkselector
   ${CMAKE_CURRENT_SOURCE_DIR}/widgets/colorselectors/blenderselector
+  ${CMAKE_CURRENT_SOURCE_DIR}/widgets/colorselectors/builderselector
   ${CMAKE_CURRENT_SOURCE_DIR}/widgets/colorselectors
   ${CMAKE_CURRENT_SOURCE_DIR}/widgets/colorinfo
   ${CMAKE_CURRENT_SOURCE_DIR}/widgets
@@ -29,6 +30,7 @@ set (
   widgets/colorselectors/gtkselector/trianglecolorwidget.cpp
   widgets/colorselectors/gtkselector/gtkcolorselector.cpp
   widgets/colorselectors/blenderselector/blendercolorselector.cpp
+  widgets/colorselectors/builderselector/buildercolorselector.cpp
   widgets/colorselectors/colorselector.cpp
   widgets/colortoolwidget.cpp
   widgets/colorinfo/colorinfovisual.cpp
@@ -43,12 +45,17 @@ set (
   app/main.cpp
 )
 
+kde4_add_ui_files (
+  kcoloredit_SRCS
+
+  widgets/colorselectors/builderselector/builderwidget.ui
+  settings/builderconfiguration.ui
+)
+
+kde4_add_kcfg_files ( kcoloredit_SRCS settings/kcoloredit_settings.kcfgc)
+
 kde4_add_executable ( kcoloredit ${kcoloredit_SRCS} )
 
-target_link_libraries (
-  kcoloredit
-
-  ${KDE4_KFILE_LIBS}
-)
+target_link_libraries ( kcoloredit ${KDE4_KFILE_LIBS} )
 
 install (TARGETS kcoloredit  ${INSTALL_TARGETS_DEFAULT_ARGS} )

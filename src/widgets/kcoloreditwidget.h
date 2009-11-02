@@ -1,5 +1,5 @@
 /*********************************************************************************
-*  Copyright (C) 2008 by Percy Camilo Triveño Aucahuasi <orgyforever@gmail.com>  *
+*  Copyright (C) 2009 by Percy Camilo T. Aucahuasi <percy.camilo.ta@gmail.com>   *
 *                                                                                *
 *  This program is free software; you can redistribute it and/or modify          *
 *  it under the terms of the GNU General Public License as published by          *
@@ -27,6 +27,7 @@ class PaletteModel;
 class KdeColorSelector;
 class GtkColorSelector;
 class BlenderColorSelector;
+class BuilderColorSelector;
 
 class ColorToolWidget;
 
@@ -50,6 +51,8 @@ class KColorEditWidget : public QWidget
     public slots:
         void setColor(const QColor & color);
 
+        void updateSettings(QString);
+
     signals:
         void colorSelected(const QColor & color); // give the color to PaletteDetailView (see setColor impl)
 
@@ -63,6 +66,7 @@ class KColorEditWidget : public QWidget
         KdeColorSelector * m_kdeColorSelector;
         GtkColorSelector * m_gtkColorSelector;
         BlenderColorSelector * m_blenderColorSelector;
+        BuilderColorSelector * m_builderColorSelector;
 
         ColorToolWidget * m_colorToolWidget;
 

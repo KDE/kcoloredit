@@ -1,5 +1,5 @@
 /*********************************************************************************
-*  Copyright (C) 2008 by Percy Camilo Triveño Aucahuasi <orgyforever@gmail.com>  *
+*  Copyright (C) 2009 by Percy Camilo T. Aucahuasi <percy.camilo.ta@gmail.com>   *
 *                                                                                *
 *  This program is free software; you can redistribute it and/or modify          *
 *  it under the terms of the GNU General Public License as published by          *
@@ -25,8 +25,11 @@
 #include <KIO/NetAccess>
 #include <KMessageBox>
 #include <KRecentFilesAction>
+#include <KConfigDialog>
 #include <KActionCollection>
 #include <KFileDialog>
+#include <KStatusBar>
+#include <KStandardDirs>
 
 #include "palettedocument.h"
 #include "palettemodel.h"
@@ -36,7 +39,7 @@
 #include "palettedialog.h"
 #include "colorutil.h"
 
-#include <KStatusBar>
+#include "kcoloredit_settings.h"
 
 KColorEditMainWnd::KColorEditMainWnd(QWidget * parent, Qt::WindowFlags f)
     : KXmlGuiWindow(parent, f)
@@ -195,6 +198,27 @@ void KColorEditMainWnd::completeColorNames()
         m_paletteDocument->model()->completeColorNames();
 }
 
+void KColorEditMainWnd::configureApp()
+{
+    if (KConfigDialog::showDialog("settings"))
+        return;
+
+    KConfigDialog *dialog = new KConfigDialog(this, "settings", Settings::self());
+
+    QWidget *generalSettingsDlg = new QWidget;
+
+    m_uiBuilderConfigurationForm.setupUi(generalSettingsDlg);
+
+    updateInputTypePreviewImage(Settings::textInput());
+
+    dialog->addPage(generalSettingsDlg, i18n("Color builder"), "format-stroke-color");
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
+    dialog->show();
+
+    connect(m_uiBuilderConfigurationForm.kcfg_textInput, SIGNAL(toggled(bool)), SLOT(updateInputTypePreviewImage(bool)));
+    connect(dialog, SIGNAL(settingsChanged(QString)), m_kColorEditWidget, SLOT(updateSettings(QString)));
+}
+
 void KColorEditMainWnd::updateTittleWhenChangeDocState()
 {
     QString paletteFileName = m_paletteDocument->url().fileName();
@@ -213,6 +237,16 @@ void KColorEditMainWnd::updateTittleWhenOpenSaveDoc()
         paletteFileName = i18n("Untitled");
 
     setWindowTitle(QString("%1 - KColorEdit").arg(paletteFileName));
+}
+
+void KColorEditMainWnd::updateInputTypePreviewImage(bool text_input)
+{
+    if (text_input)
+        m_uiBuilderConfigurationForm.inputTypePreviewLabel->setPixmap(
+            QPixmap(KStandardDirs::locate("data","kcoloredit/pics/text-input.png")));
+    else
+        m_uiBuilderConfigurationForm.inputTypePreviewLabel->setPixmap(
+            QPixmap(KStandardDirs::locate("data","kcoloredit/pics/controls-input.png")));
 }
 
 void KColorEditMainWnd::setupWidgets()
@@ -252,13 +286,13 @@ void KColorEditMainWnd::setupWidgets()
     // NOTE
     // Initialize docks
 
-    m_paletteBriefViewDockWidget = new QDockWidget(i18n("Quick view"), this);
+    m_paletteBriefViewDockWidget = new QDockWidget(i18nc("In this view the user can see the whole color pallete", "Preview"), this);
     m_paletteBriefViewDockWidget->setObjectName(QString("quick-view-dock"));
     m_paletteBriefViewDockWidget->setFeatures(QDockWidget::AllDockWidgetFeatures);
     m_paletteBriefViewDockWidget->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     m_paletteBriefViewDockWidget->setWidget(m_paletteBriefView);
 
-    m_paletteDetailViewDockWidget = new QDockWidget(i18n("Detail view"), this);
+    m_paletteDetailViewDockWidget = new QDockWidget(i18nc("In this view the user can edit the palette", "Edit view"), this);
     m_paletteDetailViewDockWidget->setObjectName(QString("detail-view-dock"));
     m_paletteDetailViewDockWidget->setFeatures(QDockWidget::AllDockWidgetFeatures);
     m_paletteDetailViewDockWidget->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
@@ -274,12 +308,13 @@ void KColorEditMainWnd::setupWidgets()
 void KColorEditMainWnd::setupActions()
 {
     // NOTE
-    // Actions for standard document functions
+    // Standar actions
 
     KStandardAction::open   (this, SLOT( openFile()   ), actionCollection());
     KStandardAction::save   (this, SLOT( saveFile()   ), actionCollection());
     KStandardAction::saveAs (this, SLOT( saveFileAs() ), actionCollection());
     KStandardAction::openNew(this, SLOT( newFile()    ), actionCollection());
+    KStandardAction::preferences(this, SLOT(configureApp()), actionCollection());
     KStandardAction::quit   (this, SLOT( close()      ), actionCollection());
 
     m_recentFilesAction = KStandardAction::openRecent(this, SLOT( openFile(KUrl) ), actionCollection());
