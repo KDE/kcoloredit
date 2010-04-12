@@ -71,15 +71,17 @@ PaletteDetailViewControls::PaletteDetailViewControls(PaletteDetailView *paletteD
     moveItemToLastPositionButton->setToolTip(i18n("Last position"));
 
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
-    mainLayout->addWidget(moveItemToFirstPositionButton);
-    mainLayout->addWidget(moveItemToPrevPositionButton);
     mainLayout->addStretch(1);
+    mainLayout->addWidget(moveItemToFirstPositionButton);
+    mainLayout->addWidget(moveItemToLastPositionButton);
+    mainLayout->addStretch(1);
+    mainLayout->addWidget(moveItemToPrevPositionButton);
+    mainLayout->addWidget(moveItemToNextPositionButton);
+    mainLayout->addStretch(1); 
     mainLayout->addWidget(insertColorItemButton);
     mainLayout->addWidget(insertCommentItemButton);
     mainLayout->addWidget(removeItemButton);
     mainLayout->addStretch(1);
-    mainLayout->addWidget(moveItemToNextPositionButton);
-    mainLayout->addWidget(moveItemToLastPositionButton);
 
     connect(moveItemToFirstPositionButton, SIGNAL(pressed()), this, SLOT(moveItemToFirstPosition()));
     connect(moveItemToPrevPositionButton, SIGNAL(pressed()), this, SLOT(moveItemToPrevPosition()));
