@@ -56,6 +56,6 @@ kde4_add_kcfg_files ( kcoloredit_SRCS settings/kcoloredit_settings.kcfgc)
 
 kde4_add_executable ( kcoloredit ${kcoloredit_SRCS} )
 
-target_link_libraries ( kcoloredit ${KDE4_KFILE_LIBS} )
+target_link_libraries ( kcoloredit ${KDE4_KFILE_LIBS} ${X11_LIBRARIES})
 
 install (TARGETS kcoloredit  ${INSTALL_TARGETS_DEFAULT_ARGS} )
