@@ -8,7 +8,7 @@
 ]
 >
 
-<book lang="&language;">
+<book id="kcoloredit" lang="&language;">
 <bookinfo>
 <title> The &kcoloredit; Handbook</title>
 <authorgroup>
