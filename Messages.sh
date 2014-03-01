@@ -1,3 +1,3 @@
 #!bin/sh
-$EXTRACTRC *.rc */*.rc >> rc.cpp
+$EXTRACTRC `find . -name '*.rc' -o -name '*.ui' -o -name '*.kcfg'` >> rc.cpp
 $XGETTEXT `find -name '*.h' -o -name '*.cpp'` -o $podir/kcoloredit.pot
