@@ -226,7 +226,7 @@ void KColorEditMainWnd::updateTittleWhenChangeDocState()
     if (paletteFileName.isEmpty())
         paletteFileName = i18n("Untitled");
 
-    setWindowTitle(QString("%1 - KColorEdit " + i18n("[modified]")).arg(paletteFileName));
+    setWindowTitle(i18n("%1 - KColorEdit [modified]", paletteFileName));
 }
 
 void KColorEditMainWnd::updateTittleWhenOpenSaveDoc()
@@ -236,7 +236,7 @@ void KColorEditMainWnd::updateTittleWhenOpenSaveDoc()
     if (paletteFileName.isEmpty())
         paletteFileName = i18n("Untitled");
 
-    setWindowTitle(QString("%1 - KColorEdit").arg(paletteFileName));
+    setWindowTitle(i18n("%1 - KColorEdit", paletteFileName));
 }
 
 void KColorEditMainWnd::updateInputTypePreviewImage(bool text_input)

@@ -51,7 +51,7 @@ void ColorInfoVisual::addColor(const QColor color)
 ColorInfoVisualNormal::ColorInfoVisualNormal(QWidget * parent)
     : ColorInfoVisual(parent)
 {
-    setWindowTitle(i18n("Current color"));
+    setWindowTitle(i18n("Current Color"));
 
     m_colorWidget = new ColorWidget(this);
 

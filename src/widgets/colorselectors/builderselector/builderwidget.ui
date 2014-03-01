@@ -476,7 +476,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Build color</string>
+        <string>Build Color</string>
        </property>
       </widget>
      </item>

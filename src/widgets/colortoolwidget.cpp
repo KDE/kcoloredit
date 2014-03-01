@@ -120,9 +120,9 @@ ColorToolWidget::ColorToolWidget(QWidget * parent)
 
     //BEGIN Extra color selectors settings
 
-    QGroupBox * extraSelectorsBox = new QGroupBox(i18n("Color selectors"), this);
+    QGroupBox * extraSelectorsBox = new QGroupBox(i18n("Color Selectors"), this);
 
-    KPushButton * pickColorButton = new KPushButton(KIcon("color-picker"), i18n("Pick a color"), extraSelectorsBox);
+    KPushButton * pickColorButton = new KPushButton(KIcon("color-picker"), i18n("Pick a Color"), extraSelectorsBox);
 
     QHBoxLayout * pickColorLayout = new QHBoxLayout();
     pickColorLayout->addWidget(pickColorButton);

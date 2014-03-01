@@ -46,20 +46,20 @@ PaletteDetailViewControls::PaletteDetailViewControls(PaletteDetailView *paletteD
 
     QToolButton *moveItemToPrevPositionButton = new QToolButton(this);
     moveItemToPrevPositionButton->setIcon(KIcon("go-up"));
-    moveItemToPrevPositionButton->setToolTip(i18n("Prev position"));
+    moveItemToPrevPositionButton->setToolTip(i18n("Previous position"));
     moveItemToPrevPositionButton->setAutoRepeat(true);
 
     QToolButton *insertColorItemButton = new QToolButton(this);
     insertColorItemButton->setIcon(KIcon("insert-horizontal-rule"));
-    insertColorItemButton->setToolTip(i18n("Insert Color"));
+    insertColorItemButton->setToolTip(i18n("Insert color"));
 
     QToolButton *insertCommentItemButton = new QToolButton(this);
     insertCommentItemButton->setIcon(KIcon("list-add-font"));
-    insertCommentItemButton->setToolTip(i18n("Insert Comment"));
+    insertCommentItemButton->setToolTip(i18n("Insert comment"));
 
     QToolButton *removeItemButton = new QToolButton(this);
     removeItemButton->setIcon(KIcon("list-remove"));
-    removeItemButton->setToolTip(i18n("Remove Item"));
+    removeItemButton->setToolTip(i18n("Remove item"));
 
     QToolButton *moveItemToNextPositionButton = new QToolButton(this);
     moveItemToNextPositionButton->setIcon(KIcon("go-down"));

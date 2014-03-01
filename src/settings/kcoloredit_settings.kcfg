@@ -6,7 +6,7 @@
   <kcfgfile name="kcoloreditrc"/>
   <group name="Preferences">
     <entry name="textInput" type="Bool">
-        <label>type of input to build a color</label>
+        <label>Type of input to build a color</label>
         <default>true</default>
     </entry>
   </group>

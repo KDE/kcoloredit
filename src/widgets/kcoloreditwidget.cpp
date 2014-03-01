@@ -43,19 +43,19 @@ KColorEditWidget::KColorEditWidget(QWidget * parent)
     MultiPageWidget * colorTools = new MultiPageWidget(this, i18n("Tool:"));
 
     m_kdeColorSelector = new KdeColorSelector(colorTools);
-    m_kdeColorSelector->setWindowTitle(i18n("KDE selector"));
+    m_kdeColorSelector->setWindowTitle(i18n("KDE Selector"));
     m_kdeColorSelector->setWindowIcon(KIcon("kde"));
 
     m_gtkColorSelector = new GtkColorSelector(colorTools);
-    m_gtkColorSelector->setWindowTitle(i18n("GTK selector"));
+    m_gtkColorSelector->setWindowTitle(i18n("GTK Selector"));
     m_gtkColorSelector->setWindowIcon(KIcon("fill-color"));
 
     m_blenderColorSelector = new BlenderColorSelector(colorTools);
-    m_blenderColorSelector->setWindowTitle(i18n("Gradient selector"));
+    m_blenderColorSelector->setWindowTitle(i18n("Gradient Selector"));
     m_blenderColorSelector->setWindowIcon(KIcon("fill-color"));
 
     m_builderColorSelector = new BuilderColorSelector(colorTools);
-    m_builderColorSelector->setWindowTitle(i18n("Color builder"));
+    m_builderColorSelector->setWindowTitle(i18n("Color Builder"));
     m_builderColorSelector->setWindowIcon(KIcon("format-stroke-color"));
 
     m_colorToolWidget = new ColorToolWidget(colorTools);
