@@ -6,3 +6,4 @@ include ( MacroLibrary )
 
 ADD_SUBDIRECTORY ( src )
 ADD_SUBDIRECTORY ( desktop )
+ADD_SUBDIRECTORY ( doc )
