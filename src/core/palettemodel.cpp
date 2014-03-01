@@ -117,7 +117,7 @@ QVariant PaletteModel::headerData(int section, Qt::Orientation orientation, int 
             return i18n("Items");
 
      if (orientation == Qt::Vertical)
-        return QString("%1").arg(section + 1);
+        return QString::number(section + 1);
 
     return QVariant();
 }
