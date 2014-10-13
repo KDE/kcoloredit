@@ -367,7 +367,7 @@ void BlenderColorSelector::appendColorsOfRegion(HighlighterGradientSelector::Reg
             break;
 
         case HighlighterGradientSelector::NoneRegion:
-            break;
+            return;
     }
 
     for (int i = regionLimitMin; i <= regionLimitMax; i++)
