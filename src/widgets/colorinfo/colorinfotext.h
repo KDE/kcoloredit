@@ -20,12 +20,12 @@
 #ifndef COLOR_INFO_TEXT_H
 #define COLOR_INFO_TEXT_H
 
-#include <QtGui/QWidget>
+#include <QWidget>
 
 class QLabel;
 
 class KLineEdit;
-class KPushButton;
+class QPushButton;
 
 class ColorInfoText : public QWidget
 {
@@ -52,7 +52,7 @@ class ColorInfoText : public QWidget
         KLineEdit * m_componentValue2;
         KLineEdit * m_componentValue3;
 
-        KPushButton * m_buttonToClipboard;
+        QPushButton * m_buttonToClipboard;
 };
 
 class ColorInfoTextRGB : public ColorInfoText
@@ -113,8 +113,8 @@ class ColorInfoTextHTML : public QWidget
         KLineEdit * m_componentValue1;
         KLineEdit * m_componentValue2;
 
-        KPushButton * m_buttonValue1ToClipboard;
-        KPushButton * m_buttonValue2ToClipboard;
+        QPushButton * m_buttonValue1ToClipboard;
+        QPushButton * m_buttonValue2ToClipboard;
 };
 
 #endif // COLOR_INFO_TEXT_H

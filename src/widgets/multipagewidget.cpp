@@ -48,9 +48,9 @@
 
 #include "multipagewidget.h"
 
-#include <QtGui/QLayout>
-#include <QtGui/QLabel>
-#include <QtGui/QStackedWidget>
+#include <QLayout>
+#include <QLabel>
+#include <QStackedWidget>
 
 #include <KComboBox>
 
@@ -147,5 +147,3 @@ void MultiPageWidget::setPageTitle(QString const &newTitle)
         currentWidget->setWindowTitle(newTitle);
     emit pageTitleChanged(newTitle);
 }
-
-#include "multipagewidget.moc"

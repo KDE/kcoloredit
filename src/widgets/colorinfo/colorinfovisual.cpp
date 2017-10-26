@@ -19,7 +19,7 @@
 
 #include "colorinfovisual.h"
 
-#include <QtGui/QLayout>
+#include <QLayout>
 
 #include <KLocalizedString>
 
@@ -192,5 +192,3 @@ void ColorInfoVisualAnalogous::setColor(const QColor & color)
 }
 
 //END public class ColorInfoVisualAnalogous
-
-#include "colorinfovisual.moc"

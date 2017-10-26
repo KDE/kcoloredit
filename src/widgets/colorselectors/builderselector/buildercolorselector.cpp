@@ -19,15 +19,14 @@
 
 #include "buildercolorselector.h"
 
-#include <QtGui/QMouseEvent>
-#include <QtGui/QLayout>
-#include <QtGui/QRadioButton>
-#include <QtGui/QStackedWidget>
+#include <QMouseEvent>
+#include <QLayout>
+#include <QRadioButton>
+#include <QStackedWidget>
+#include <QTabWidget>
 
-#include <KAction>
 #include <KColorUtils>
 #include <KColorButton>
-#include <KTabWidget>
 
 #include "colorutil.h"
 
@@ -46,10 +45,10 @@ BuilderColorSelector::BuilderColorSelector(QWidget * parent)
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(builderWidget);
 
-    connect(m_uiBuilderForm.buildColorKPushButton, SIGNAL(pressed()), SLOT(buildColor()));
-    connect(m_uiBuilderForm.controlsInputKTabWidget, SIGNAL(currentChanged(int)), SLOT(setCurrentSource(int)));
+    connect(m_uiBuilderForm.buildColorPushButton, SIGNAL(pressed()), SLOT(buildColor()));
+    connect(m_uiBuilderForm.controlsInputTabWidget, SIGNAL(currentChanged(int)), SLOT(setCurrentSource(int)));
 
-    connect(m_uiBuilderForm.controlsInputKTabWidget, SIGNAL(currentChanged(int)), SLOT(setCurrentSource(int)));
+    connect(m_uiBuilderForm.controlsInputTabWidget, SIGNAL(currentChanged(int)), SLOT(setCurrentSource(int)));
 //     valueChanged ( int i )
 }
 
@@ -57,12 +56,12 @@ void BuilderColorSelector::setInputType(bool textInput)
 {
     if (textInput)
     {
-        m_uiBuilderForm.controlsInputKTabWidget->setVisible(false);
+        m_uiBuilderForm.controlsInputTabWidget->setVisible(false);
         m_uiBuilderForm.textInputWidget->setVisible(true);
     }
     else
     {
-        m_uiBuilderForm.controlsInputKTabWidget->setVisible(true);
+        m_uiBuilderForm.controlsInputTabWidget->setVisible(true);
         m_uiBuilderForm.textInputWidget->setVisible(false);
     }
 }
@@ -85,5 +84,3 @@ void BuilderColorSelector::setCurrentSource(int tabIndex)
 }
 
 //
-
-#include "buildercolorselector.moc"

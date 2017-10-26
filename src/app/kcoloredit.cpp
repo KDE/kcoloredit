@@ -19,7 +19,7 @@
 
 #include "kcoloredit.h"
 
-#include <QtGui/QDockWidget>
+#include <QDockWidget>
 
 #include <KLocalizedString>
 #include <KIO/NetAccess>
@@ -56,14 +56,14 @@ KColorEditMainWnd::KColorEditMainWnd(QWidget * parent, Qt::WindowFlags f)
 
 KColorEditMainWnd::~KColorEditMainWnd()
 {
-    m_recentFilesAction->saveEntries(KConfigGroup(KGlobal::config(), "Recent Files"));
+    m_recentFilesAction->saveEntries(KConfigGroup(KSharedConfig::openConfig(), "Recent Files"));
 
-    KGlobal::config()->sync();
+    KSharedConfig::openConfig()->sync();
 }
 
-void KColorEditMainWnd::openFile(const KUrl & url)
+void KColorEditMainWnd::openFile(const QUrl & url)
 {
-    KUrl paletteUrl = url;
+    KUrl paletteUrl(url);
 
     if (url.isEmpty())
         paletteUrl = PaletteDialog::getOpenUrl();
@@ -174,7 +174,7 @@ void KColorEditMainWnd::cleanPalette()
         if (KMessageBox::questionYesNo(this
             , i18n("This action will delete all items (colors and comments) of the current palette.")
             , QString()
-            , KGuiItem(i18n("Clean Palette"), KIcon("edit-clear"))
+            , KGuiItem(i18n("Clean Palette"), QIcon::fromTheme("edit-clear"))
             , KStandardGuiItem::cancel())
             == KMessageBox::Yes)
             m_paletteDocument->model()->removeRows(0, m_paletteDocument->model()->rowCount());
@@ -186,7 +186,7 @@ void KColorEditMainWnd::generateColorNames()
         if (KMessageBox::questionYesNo(this
         , i18n("This action will replace the name of all color items with names in this format #RRGGBB.")
         , QString()
-        , KGuiItem(i18n("Generate Color Names"), KIcon("format-stroke-color"))
+        , KGuiItem(i18n("Generate Color Names"), QIcon::fromTheme("format-stroke-color"))
         , KStandardGuiItem::cancel())
         == KMessageBox::Yes)
             m_paletteDocument->model()->generateColorNames();
@@ -317,8 +317,8 @@ void KColorEditMainWnd::setupActions()
     KStandardAction::preferences(this, SLOT(configureApp()), actionCollection());
     KStandardAction::quit   (this, SLOT( close()      ), actionCollection());
 
-    m_recentFilesAction = KStandardAction::openRecent(this, SLOT( openFile(KUrl) ), actionCollection());
-    m_recentFilesAction->loadEntries(KGlobal::config()->group("Recent Files"));
+    m_recentFilesAction = KStandardAction::openRecent(this, SLOT( openFile(QUrl) ), actionCollection());
+    m_recentFilesAction->loadEntries(KConfigGroup(KSharedConfig::openConfig(), "Recent Files"));
 
     // NOTE
     // Actions for docks
@@ -329,16 +329,16 @@ void KColorEditMainWnd::setupActions()
     // NOTE
     // Actions for palette menu
 
-    KAction * cleanPaletteAction = actionCollection()->addAction("clean-palette");
-    cleanPaletteAction->setIcon(KIcon("edit-clear"));
+    QAction * cleanPaletteAction = actionCollection()->addAction("clean-palette");
+    cleanPaletteAction->setIcon(QIcon::fromTheme("edit-clear"));
     cleanPaletteAction->setText(i18n("Clean Palette"));
 
-    KAction * generateColorNamesAction = actionCollection()->addAction("generate-color-names");
-    generateColorNamesAction->setIcon(KIcon("format-stroke-color"));
+    QAction * generateColorNamesAction = actionCollection()->addAction("generate-color-names");
+    generateColorNamesAction->setIcon(QIcon::fromTheme("format-stroke-color"));
     generateColorNamesAction->setText(i18n("Generate Color Names"));
 
-    KAction * completeColorNamesAction = actionCollection()->addAction("complete-color-names");
-    completeColorNamesAction->setIcon(KIcon("format-stroke-color"));
+    QAction * completeColorNamesAction = actionCollection()->addAction("complete-color-names");
+    completeColorNamesAction->setIcon(QIcon::fromTheme("format-stroke-color"));
     completeColorNamesAction->setText(i18nc("Complete is a verb here, this is an action that fills missing color names in a palette", "Complete Color Names"));
 
     connect(cleanPaletteAction, SIGNAL( triggered(bool) ), this, SLOT( cleanPalette() ));
@@ -346,5 +346,3 @@ void KColorEditMainWnd::setupActions()
     connect(generateColorNamesAction, SIGNAL( triggered(bool) ), this, SLOT( generateColorNames() ));
     connect(completeColorNamesAction, SIGNAL( triggered(bool) ), this, SLOT( completeColorNames() ));
 }
-
-#include "kcoloredit.moc"

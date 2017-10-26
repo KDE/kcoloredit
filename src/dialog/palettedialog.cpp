@@ -19,17 +19,16 @@
 
 #include "palettedialog.h"
 
-#include <QtCore/QStringList>
-#include <QtGui/QMouseEvent>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QVBoxLayout>
-#include <QtGui/QLabel>
+#include <QStringList>
+#include <QMouseEvent>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QLabel>
+#include <QTabWidget>
 
 #include <KLocalizedString>
 #include <KStandardDirs>
 #include <KColorCollection>
-#include <KCursor>
-#include <KTabWidget>
 #include <kfilewidget.h> // no sale en el include de KDE
 
 //BEGIN public class CollectionGrid
@@ -39,7 +38,7 @@ CollectionGrid::CollectionGrid(const QString & collection, QWidget * parent)
     , m_collection(collection)
     , m_isEmpty(true)
 {
-    setCursor(KCursor("hand2"));
+    setCursor(QCursor(Qt::CursorShape::DragMoveCursor));
 
     KColorCollection colorCollection(collection);
 
@@ -171,7 +170,7 @@ PaletteDialog::PaletteDialog(QWidget * parent, Qt::WFlags flags) : KDialog(paren
     setModal( true );
     resize(700, 400);
 
-    m_mainWidget = new KTabWidget(this);
+    m_mainWidget = new QTabWidget(this);
 
     m_collectionsWidget = new CollectionsWidget(m_mainWidget);
 
@@ -180,8 +179,8 @@ PaletteDialog::PaletteDialog(QWidget * parent, Qt::WFlags flags) : KDialog(paren
     m_fileWidget->setOperationMode(KFileWidget::Opening);
     m_fileWidget->setFilter(PaletteDialog::filter());
 
-    m_mainWidget->addTab(m_collectionsWidget, KIcon("kde"), i18n("KDE Palettes"));
-    m_mainWidget->addTab(m_fileWidget, KIcon("edit-find"), i18n("Search Palettes"));
+    m_mainWidget->addTab(m_collectionsWidget, QIcon::fromTheme("kde"), i18n("KDE Palettes"));
+    m_mainWidget->addTab(m_fileWidget, QIcon::fromTheme("edit-find"), i18n("Search Palettes"));
 
     setMainWidget(m_mainWidget);
 
@@ -250,5 +249,3 @@ void PaletteDialog::selectUrl()
 //END public slots
 
 //END public class PaletteDialog
-
-#include "palettedialog.moc"

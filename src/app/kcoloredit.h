@@ -20,7 +20,8 @@
 #ifndef KCOLOREDIT_H
 #define KCOLOREDIT_H
 
-#include <KUrl>
+#include <QUrl>
+
 #include <KXmlGuiWindow>
 
 #include "ui_builderconfiguration.h"
@@ -45,7 +46,7 @@ class KColorEditMainWnd : public KXmlGuiWindow
         virtual ~KColorEditMainWnd();
 
     public slots:
-        void openFile(const KUrl & url = KUrl());
+        void openFile(const QUrl & url = QUrl());
 
     protected:
         bool queryClose();

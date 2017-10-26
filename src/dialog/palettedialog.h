@@ -21,12 +21,13 @@
 #define PALETTE_DIALOG_H
 
 #include <KColorDialog>
+#include <KUrl>
 
 class QLabel;
 class QStringList;
+class QTabWidget;
 
 class KFileWidget;
-class KTabWidget;
 
 class CollectionGrid : public KColorCells
 {
@@ -87,7 +88,7 @@ class PaletteDialog : public KDialog
         void selectUrl();
 
     private:
-        KTabWidget * m_mainWidget;
+        QTabWidget * m_mainWidget;
 
         CollectionsWidget * m_collectionsWidget;
         KFileWidget * m_fileWidget;

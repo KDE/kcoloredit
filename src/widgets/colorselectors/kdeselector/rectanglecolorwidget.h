@@ -22,7 +22,7 @@
 #ifndef RECTANGLE_COLOR_WIDGET_H
 #define RECTANGLE_COLOR_WIDGET_H
 
-#include <QtGui/QWidget>
+#include <QWidget>
 
 #include <kcolorchoosermode.h>
 

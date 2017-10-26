@@ -19,7 +19,7 @@
 
 #include "palettedelegate.h"
 
-#include <QtGui/QPainter>
+#include <QPainter>
 
 #include "colorutil.h"
 #include "palettemodel.h"
@@ -130,5 +130,3 @@ void PaletteDelegate::paint(QPainter * painter, const QStyleOptionViewItem & opt
         painter->drawText(option.rect, Qt::AlignCenter, index.model()->data(index).toMap().value("comment").toString());
     }
 }
-
-#include "palettedelegate.moc"

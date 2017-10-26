@@ -19,13 +19,13 @@
 
 #include "palettebriefview.h"
 
-#include <QtGui/QLayout>
-#include <QtGui/QHeaderView>
-#include <QtGui/QSlider>
-#include <QtGui/QCheckBox>
+#include <QLayout>
+#include <QHeaderView>
+#include <QSlider>
+#include <QCheckBox>
+#include <QPushButton>
 
 #include <KLocalizedString>
-#include <KPushButton>
 #include <KColorCells>
 
 #include "colorutil.h"
@@ -50,9 +50,9 @@ PaletteBriefView::PaletteBriefView(PaletteModel * model, QWidget * parent)
     m_setColumnSlider->setPageStep(1);
     m_setColumnSlider->setTickInterval(1);
 
-    m_zoomOutButton = new KPushButton(KIcon("zoom-out"), QString(), this);
+    m_zoomOutButton = new QPushButton(QIcon::fromTheme("zoom-out"), QString(), this);
 
-    m_zoomInButton = new KPushButton(KIcon("zoom-in"), QString(), this);
+    m_zoomInButton = new QPushButton(QIcon::fromTheme("zoom-in"), QString(), this);
 
     m_colorCells = new KColorCells(this, 0, 1);
     m_colorCells->setAcceptDrops(false);
@@ -354,5 +354,3 @@ void PaletteBriefView::setupPreferredColumns()
     m_setColumnSlider->setRange(Palette::MIN_PREFERRED_COLUMNS, finalColumns);
     m_setColumnSlider->setValue(finalValue);
 }
-
-#include "palettebriefview.moc"

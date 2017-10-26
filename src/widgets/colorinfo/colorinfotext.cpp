@@ -19,14 +19,14 @@
 
 #include "colorinfotext.h"
 
-#include <QtGui/QClipboard>
-#include <QtGui/QLayout>
-#include <QtGui/QLabel>
+#include <QClipboard>
+#include <QLayout>
+#include <QLabel>
+#include <QPushButton>
 
 #include <KLocalizedString>
 #include <KApplication>
 #include <KLineEdit>
-#include <KPushButton>
 
 //BEGIN ColorInfoText
 
@@ -46,9 +46,9 @@ ColorInfoText::ColorInfoText(QWidget * parent)
     m_componentValue3 = new KLineEdit(this);
     m_componentValue3->setReadOnly(true);
 
-    m_buttonToClipboard = new KPushButton(this);
+    m_buttonToClipboard = new QPushButton(this);
     m_buttonToClipboard->setMaximumWidth(36);
-    m_buttonToClipboard->setIcon(KIcon("edit-copy"));
+    m_buttonToClipboard->setIcon(QIcon::fromTheme("edit-copy"));
     m_buttonToClipboard->setToolTip(i18n("Copy color values to clipboard"));
 
     QGridLayout * layout = new QGridLayout(this);
@@ -162,7 +162,7 @@ ColorInfoTextHTML::ColorInfoTextHTML(QWidget * parent)
     : QWidget(parent)
 {
     setWindowTitle(i18n("Textual"));
-    setWindowIcon(KIcon("format-text-color"));
+    setWindowIcon(QIcon::fromTheme("format-text-color"));
 
     m_componentName1 = new QLabel(this);
     m_componentName2 = new QLabel(this);
@@ -176,14 +176,14 @@ ColorInfoTextHTML::ColorInfoTextHTML(QWidget * parent)
     m_componentName1->setText(i18n("HTML"));
     m_componentName2->setText(i18n("Hexadecimal"));
 
-    m_buttonValue1ToClipboard = new KPushButton(this);
+    m_buttonValue1ToClipboard = new QPushButton(this);
     m_buttonValue1ToClipboard->setMaximumWidth(36);
-    m_buttonValue1ToClipboard->setIcon(KIcon("edit-copy"));
+    m_buttonValue1ToClipboard->setIcon(QIcon::fromTheme("edit-copy"));
     m_buttonValue1ToClipboard->setToolTip(i18n("Copy HTML value to clipboard"));
 
-    m_buttonValue2ToClipboard  = new KPushButton(this);
+    m_buttonValue2ToClipboard  = new QPushButton(this);
     m_buttonValue2ToClipboard->setMaximumWidth(36);
-    m_buttonValue2ToClipboard->setIcon(KIcon("edit-copy"));
+    m_buttonValue2ToClipboard->setIcon(QIcon::fromTheme("edit-copy"));
     m_buttonValue2ToClipboard->setToolTip(i18n("Copy color hexadecimal value to clipboard"));
 
     QGridLayout * layout = new QGridLayout(this);
@@ -225,5 +225,3 @@ void ColorInfoTextHTML::copyColorValue2ToClipboard()
 }
 
 //END ColorInfoTextHTML
-
-#include "colorinfotext.moc"

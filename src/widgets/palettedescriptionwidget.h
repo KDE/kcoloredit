@@ -17,10 +17,10 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA            *
  ***************************************************************************/
 
-#ifndef _PALETTE_DESCRIPTION_WIDGET_H_
-#define _PALETTE_DESCRIPTION_WIDGET_H_
+#ifndef PALETTE_DESCRIPTION_WIDGET_H
+#define PALETTE_DESCRIPTION_WIDGET_H
 
-#include <QtGui/QFrame>
+#include <QFrame>
 
 class QResizeEvent;
 class QMouseEvent;
@@ -46,6 +46,10 @@ public:
 
     bool eventFilter( QObject* watched, QEvent* event );
 
+private slots:
+    void saveClicked();
+    void cancelClicked();
+
 private:
     void updateButtons();
     void resizeEvent( QResizeEvent* );
@@ -54,9 +58,6 @@ private:
 
     class Private;
     Private* const d;
-
-    Q_PRIVATE_SLOT( d, void _k_saveClicked() )
-    Q_PRIVATE_SLOT( d, void _k_cancelClicked() )
 };
 
 #endif

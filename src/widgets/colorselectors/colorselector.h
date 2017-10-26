@@ -20,7 +20,7 @@
 #ifndef COLOR_SELECTOR_H
 #define COLOR_SELECTOR_H
 
-#include <QtGui/QWidget>
+#include <QWidget>
 
 class ColorSelector : public QWidget
 {

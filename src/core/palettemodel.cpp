@@ -19,8 +19,8 @@
 
 #include "palettemodel.h"
 
-#include <QtCore/QString>
-#include <QtGui/QColor>
+#include <QString>
+#include <QColor>
 
 #include <KLocalizedString>
 
@@ -300,5 +300,3 @@ void PaletteModel::completeColorNames()
 }
 
 //END public methods
-
-#include "palettemodel.moc"

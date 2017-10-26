@@ -19,10 +19,9 @@
 
 #include "kcoloreditwidget.h"
 
-#include <QtGui/QLayout>
+#include <QLayout>
 
 #include <KLocalizedString>
-#include <KIcon>
 
 #include "palettemodel.h"
 #include "multipagewidget.h"
@@ -44,23 +43,23 @@ KColorEditWidget::KColorEditWidget(QWidget * parent)
 
     m_kdeColorSelector = new KdeColorSelector(colorTools);
     m_kdeColorSelector->setWindowTitle(i18n("KDE Selector"));
-    m_kdeColorSelector->setWindowIcon(KIcon("kde"));
+    m_kdeColorSelector->setWindowIcon(QIcon::fromTheme("kde"));
 
     m_gtkColorSelector = new GtkColorSelector(colorTools);
     m_gtkColorSelector->setWindowTitle(i18n("GTK Selector"));
-    m_gtkColorSelector->setWindowIcon(KIcon("fill-color"));
+    m_gtkColorSelector->setWindowIcon(QIcon::fromTheme("fill-color"));
 
     m_blenderColorSelector = new BlenderColorSelector(colorTools);
     m_blenderColorSelector->setWindowTitle(i18n("Gradient Selector"));
-    m_blenderColorSelector->setWindowIcon(KIcon("fill-color"));
+    m_blenderColorSelector->setWindowIcon(QIcon::fromTheme("fill-color"));
 
     m_builderColorSelector = new BuilderColorSelector(colorTools);
     m_builderColorSelector->setWindowTitle(i18n("Color Builder"));
-    m_builderColorSelector->setWindowIcon(KIcon("format-stroke-color"));
+    m_builderColorSelector->setWindowIcon(QIcon::fromTheme("format-stroke-color"));
 
     m_colorToolWidget = new ColorToolWidget(colorTools);
     m_colorToolWidget->setWindowTitle(i18nc("Set of extra tools apart of color selectors", "Extras"));
-    m_colorToolWidget->setWindowIcon(KIcon("fill-color"));
+    m_colorToolWidget->setWindowIcon(QIcon::fromTheme("fill-color"));
 
     colorTools->addPage(m_kdeColorSelector);
     colorTools->addPage(m_gtkColorSelector);
@@ -171,5 +170,3 @@ void KColorEditWidget::appendColorFromSchemes(const QColor & color)
 {
     m_model->appendColorItem(color);
 }
-
-#include "kcoloreditwidget.moc"

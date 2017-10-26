@@ -21,8 +21,8 @@
 
 #include <math.h>
 
-#include <QtGui/QMouseEvent>
-#include <QtGui/QPainter>
+#include <QMouseEvent>
+#include <QPainter>
 
 void rgb_to_hsv(int R, int G, int B, int *H, int *S, int *V)
 {
@@ -356,5 +356,3 @@ void TriangleColorWidget::selectColorAt(int _x, int _y, bool /* checkInWheel */)
         update();
     }
 }
-
-#include "trianglecolorwidget.moc"

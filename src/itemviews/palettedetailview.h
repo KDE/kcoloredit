@@ -20,7 +20,7 @@
 #ifndef PALETTE_DETAIL_VIEW_H
 #define PALETTE_DETAIL_VIEW_H
 
-#include <QtGui/QWidget>
+#include <QWidget>
 
 #include "palette.h"
 

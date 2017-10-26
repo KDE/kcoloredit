@@ -23,33 +23,42 @@
 #include <KApplication>
 #include <KCmdLineArgs>
 #include <KAboutData>
-#include <KIcon>
+#include <QCommandLineParser>
 
 int main(int argc, char * argv[])
 {
-    KAboutData about("kcoloredit", 0, ki18n(I18N_NOOP("KColorEdit")), "2.09.99 (KColorEdit 2.1 RC 2)",
-        ki18n(I18N_NOOP("KColorEdit, a tool for editing color palettes.")),
-        KAboutData::License_GPL, ki18n("(C) 2009, Percy Camilo Triveño Aucahuasi\n" "(C) 2000, Artur Rataj"));
-    about.addAuthor(ki18n("Percy Camilo Triveño Aucahuasi"), ki18n("Current maintainer - Upgraded and developed the new version."), "percy.camilo.ta@gmail.com");
-    about.addAuthor(ki18n("Artur Rataj"), ki18n("Former maintainer - Created KColorEdit"), "art@zeus.polsl.gliwice.pl");
+    QApplication app(argc, argv);
 
-    KCmdLineArgs::init(argc, argv, &about);
+    KAboutData about(QLatin1Literal("kcoloredit"),
+                     i18n("KColorEdit"),
+                     "2.09.99 (KColorEdit 2.1 RC 2)",
+                     i18n("KColorEdit, a tool for editing color palettes."),
+                     KAboutLicense::GPL_V2,
+                     i18n("(C) 2009, Percy Camilo Triveño Aucahuasi\n" "(C) 2000, Artur Rataj"),
+                     QLatin1String(""),
+                     QLatin1String("https://userbase.kde.org/KColorEdit")
+                     );
 
-    KCmdLineOptions options;
-    options.add("+[URL]", ki18n("File to open (Text file with colors and comments items)"));
-    KCmdLineArgs::addCmdLineOptions(options);
+    about.addAuthor(i18n("Percy Camilo Triveño Aucahuasi"), i18n("Current maintainer - Upgraded and developed the new version."), "percy.camilo.ta@gmail.com");
+    about.addAuthor(i18n("Artur Rataj"), i18n("Former maintainer - Created KColorEdit"), "art@zeus.polsl.gliwice.pl");
 
-    KApplication app;
-    QApplication::setWindowIcon(KIcon("kcoloredit"));
+    QCommandLineParser parser;
 
-    KCmdLineArgs * args = KCmdLineArgs::parsedArgs();
+    KAboutData::setApplicationData(about);
+    about.setupCommandLine(&parser);
+
+    parser.addOption(QCommandLineOption(QStringList() << QStringLiteral("+[URL]"), i18n("File to open (Text file with colors and comments items)")));
+
+    parser.process(app);
+    about.processCommandLine(&parser);
+
+    QApplication::setWindowIcon(QIcon::fromTheme("kcoloredit"));
 
     KColorEditMainWnd * kceMainWnd = new KColorEditMainWnd;
 
-    if (args->count())
-        kceMainWnd->openFile(args->url(0));
-
-    args->clear();
+    const QStringList urls = parser.positionalArguments();
+    if (urls.count())
+        kceMainWnd->openFile(QUrl::fromUserInput(urls.at(0)));
 
     kceMainWnd->show();
 

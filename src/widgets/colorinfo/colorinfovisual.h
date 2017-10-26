@@ -20,7 +20,7 @@
 #ifndef COLOR_INFO_VISUAL_H
 #define COLOR_INFO_VISUAL_H
 
-#include <QtGui/QWidget>
+#include <QWidget>
 
 class ColorWidget;
 

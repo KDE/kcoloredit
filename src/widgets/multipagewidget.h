@@ -44,7 +44,7 @@
 #ifndef MULTIPAGEWIDGET_H
 #define MULTIPAGEWIDGET_H
 
-#include <QtGui/QGroupBox>
+#include <QGroupBox>
 
 QT_BEGIN_NAMESPACE
 class KComboBox;

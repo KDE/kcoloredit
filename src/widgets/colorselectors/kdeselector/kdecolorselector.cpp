@@ -19,11 +19,10 @@
 
 #include "kdecolorselector.h"
 
-#include <QtGui/QLayout>
-#include <QtGui/QLabel>
+#include <QLayout>
+#include <QLabel>
 
 #include <KLocalizedString>
-#include <KIcon>
 #include <KComboBox>
 
 #include "rectanglecolorwidget.h"
@@ -33,12 +32,12 @@ KdeColorSelector::KdeColorSelector(QWidget * parent) : ColorSelector(parent)
     m_rectangleColorWidget = new RectangleColorWidget(this);
 
     KComboBox * chooserModeComboBox = new KComboBox(this);
-    chooserModeComboBox->addItem(KIcon("view-filter"), i18n("Hue"));
-    chooserModeComboBox->addItem(KIcon("view-filter"), i18n("Saturation"));
-    chooserModeComboBox->addItem(KIcon("view-filter"), i18n("Value"));
-    chooserModeComboBox->addItem(KIcon("view-filter"), i18n("Red"));
-    chooserModeComboBox->addItem(KIcon("view-filter"), i18n("Green"));
-    chooserModeComboBox->addItem(KIcon("view-filter"), i18n("Blue"));
+    chooserModeComboBox->addItem(QIcon::fromTheme("view-filter"), i18n("Hue"));
+    chooserModeComboBox->addItem(QIcon::fromTheme("view-filter"), i18n("Saturation"));
+    chooserModeComboBox->addItem(QIcon::fromTheme("view-filter"), i18n("Value"));
+    chooserModeComboBox->addItem(QIcon::fromTheme("view-filter"), i18n("Red"));
+    chooserModeComboBox->addItem(QIcon::fromTheme("view-filter"), i18n("Green"));
+    chooserModeComboBox->addItem(QIcon::fromTheme("view-filter"), i18n("Blue"));
     chooserModeComboBox->setCurrentIndex(2);
 
     QHBoxLayout * chooserModeLayout = new QHBoxLayout();
@@ -85,5 +84,3 @@ void KdeColorSelector::changeChooserMode(int index)
 
     m_rectangleColorWidget->setColor(m_lastSelectedColor);
 }
-
-#include "kdecolorselector.moc"

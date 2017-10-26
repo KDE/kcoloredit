@@ -20,12 +20,12 @@
 #ifndef PALETTE_BRIEF_VIEW_H
 #define PALETTE_BRIEF_VIEW_H
 
-#include <QtGui/QWidget>
+#include <QWidget>
 
 class QSlider;
 class QCheckBox;
+class QPushButton;
 
-class KPushButton;
 class KColorCells;
 
 class PaletteModel;
@@ -66,8 +66,8 @@ class PaletteBriefView : public QWidget
         KColorCells * m_colorCells;
 
         QSlider * m_setColumnSlider;
-        KPushButton * m_zoomOutButton;
-        KPushButton * m_zoomInButton;
+        QPushButton * m_zoomOutButton;
+        QPushButton * m_zoomInButton;
         QCheckBox * m_quickNavigationCheckBox;
         QCheckBox * m_showCommentsCheckBox;
 };

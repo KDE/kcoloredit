@@ -20,7 +20,7 @@
 #ifndef PALETTE_DELEGATE_H
 #define PALETTE_DELEGATE_H
 
-#include <QtGui/QItemDelegate>
+#include <QItemDelegate>
 
 class PaletteDelegate : public QItemDelegate
 {

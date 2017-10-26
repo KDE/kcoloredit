@@ -20,7 +20,7 @@
 #ifndef KCOLOREDIT_WIDGET_H
 #define KCOLOREDIT_WIDGET_H
 
-#include <QtGui/QWidget>
+#include <QWidget>
 
 class PaletteModel;
 

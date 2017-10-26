@@ -45,17 +45,27 @@ set (
   app/main.cpp
 )
 
-kde4_add_ui_files (
+ki18n_wrap_ui(
   kcoloredit_SRCS
 
   widgets/colorselectors/builderselector/builderwidget.ui
   settings/builderconfiguration.ui
 )
 
-kde4_add_kcfg_files ( kcoloredit_SRCS settings/kcoloredit_settings.kcfgc)
+set(kcoloredit_LIBS
+  Qt5::Core
+  Qt5::Gui
+  Qt5::Widgets
+  KF5::I18n
+  KF5::ConfigCore
+  KF5::CoreAddons
+  KF5::KDELibs4Support
+)
 
-kde4_add_executable ( kcoloredit ${kcoloredit_SRCS} )
+kconfig_add_kcfg_files ( kcoloredit_SRCS settings/kcoloredit_settings.kcfgc)
 
-target_link_libraries ( kcoloredit ${KDE4_KFILE_LIBS} ${X11_LIBRARIES})
+add_executable ( kcoloredit ${kcoloredit_SRCS} )
 
-install (TARGETS kcoloredit  ${INSTALL_TARGETS_DEFAULT_ARGS} )
+target_link_libraries ( kcoloredit ${kcoloredit_LIBS})
+
+install (TARGETS kcoloredit DESTINATION ${KDE_INSTALL_BINDIR} )

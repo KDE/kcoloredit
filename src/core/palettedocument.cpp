@@ -339,5 +339,3 @@ void PaletteDocument::extractDescriptionFromModel()
     if (commentsToRemove > 0)
         m_model->removeRows(0, commentsToRemove);
 }
-
-#include "palettedocument.moc"

@@ -20,7 +20,7 @@
 #ifndef COLOR_WIDGET_H
 #define COLOR_WIDGET_H
 
-#include <QtGui/QWidget>
+#include <QWidget>
 
 class QToolButton;
 

@@ -23,7 +23,7 @@
 #ifndef COLOR_TOOL_WIDGET_H
 #define COLOR_TOOL_WIDGET_H
 
-#include <QtGui/QWidget>
+#include <QWidget>
 
 class QLabel;
 class QCheckBox;

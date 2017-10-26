@@ -19,26 +19,24 @@
 
 #include "palettedescriptionwidget.h"
 
-#include <QtGui/QLayout>
-#include <QtGui/QToolButton>
-#include <QtCore/QEventLoop>
-#include <QtCore/QPointer>
-#include <QtGui/QApplication>
-#include <QtGui/QDesktopWidget>
-#include <QtGui/QMouseEvent>
-#include <QtGui/QFont>
+#include <QLayout>
+#include <QToolButton>
+#include <QEventLoop>
+#include <QPointer>
+#include <QApplication>
+#include <QDesktopWidget>
+#include <QMouseEvent>
+#include <QFont>
 
-#include <KIcon>
 #include <KDialog>
 #include <KLocale>
-//#include <KDebug>
 #include <KTextEdit>
 
 class PaletteDescriptionWidget::Private
 {
 public:
     Private( PaletteDescriptionWidget* parent )
-        : eventLoop( 0 ),
+        : eventLoop( nullptr ),
           q( parent ) {
     }
 
@@ -123,8 +121,8 @@ PaletteDescriptionWidget::PaletteDescriptionWidget( QWidget* parent )
     d->buttonCancel->setToolButtonStyle( Qt::ToolButtonTextBesideIcon );
     d->buttonSave->setAutoRaise( true );
     d->buttonCancel->setAutoRaise( true );
-    d->buttonSave->setIcon( KIcon( "document-save" ) );
-    d->buttonCancel->setIcon( KIcon( "edit-delete" ) );
+    d->buttonSave->setIcon(QIcon::fromTheme("document-save"));
+    d->buttonCancel->setIcon(QIcon::fromTheme("edit-delete"));
     d->buttonSave->setText( i18nc( "@action:button", "Save" ) );
     d->buttonCancel->setText( i18nc( "@action:button", "Cancel" ) );
 
@@ -172,7 +170,7 @@ bool PaletteDescriptionWidget::exec( const QPoint& pos )
     QPointer<QObject> guard = this;
     (void) eventLoop.exec();
     if ( !guard.isNull() )
-        d->eventLoop = 0;
+        d->eventLoop = nullptr;
     return d->success;
 }
 
@@ -238,4 +236,12 @@ bool PaletteDescriptionWidget::eventFilter( QObject* watched, QEvent* event )
     return QFrame::eventFilter( watched, event );
 }
 
-#include "palettedescriptionwidget.moc"
+void PaletteDescriptionWidget::saveClicked()
+{
+    d->_k_saveClicked();
+}
+
+void PaletteDescriptionWidget::cancelClicked()
+{
+    d->_k_cancelClicked();
+}

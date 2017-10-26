@@ -19,10 +19,10 @@
 
 #include "colorwidget.h"
 
-#include <QtCore/QMimeData>
-#include <QtGui/QClipboard>
-#include <QtGui/QVBoxLayout>
-#include <QtGui/QToolButton>
+#include <QMimeData>
+#include <QClipboard>
+#include <QVBoxLayout>
+#include <QToolButton>
 
 #include <KLocalizedString>
 #include <KApplication>
@@ -43,13 +43,13 @@ ColorWidget::ColorWidget(QWidget * parent, ColorWidget::Mode mode)
     if (mode == ColorWidget::WithActions)
     {
         m_buttonAdd = new QToolButton(m_colorPatch);
-        m_buttonAdd->setIcon(KIcon("list-add"));
+        m_buttonAdd->setIcon(QIcon::fromTheme("list-add"));
         //m_buttonAdd->setAutoRaise(true);
         m_buttonAdd->setToolTip(i18n("Append color"));
 
         m_buttonToClipboard = new QToolButton(m_colorPatch);
         //m_buttonToClipboard->setAutoRaise(true);
-        m_buttonToClipboard->setIcon(KIcon("edit-copy"));
+        m_buttonToClipboard->setIcon(QIcon::fromTheme("edit-copy"));
         m_buttonToClipboard->setToolTip(i18n("Copy color to clipboard"));
 
         QVBoxLayout * vlayout = new QVBoxLayout(m_colorPatch);
@@ -97,5 +97,3 @@ void ColorWidget::copyColorNameToClipboard()
 
     QApplication::clipboard()->setMimeData(mime, QClipboard::Clipboard);
 }
-
-#include "colorwidget.moc"

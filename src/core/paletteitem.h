@@ -20,8 +20,8 @@
 #ifndef PALETTE_ITEM_H
 #define PALETTE_ITEM_H
 
-#include <QtCore/QString>
-#include <QtGui/QColor>
+#include <QString>
+#include <QColor>
 
 class PaletteItem
 {

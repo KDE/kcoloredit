@@ -19,11 +19,11 @@
 
 #include "blendercolorselector.h"
 
-#include <QtGui/QMouseEvent>
-#include <QtGui/QLayout>
-#include <QtGui/QToolButton>
+#include <QMouseEvent>
+#include <QLayout>
+#include <QToolButton>
+#include <QAction>
 
-#include <KAction>
 #include <KColorUtils>
 #include <KColorButton>
 
@@ -170,13 +170,13 @@ BlenderColorSelector::BlenderColorSelector(QWidget * parent)
 //     buttonAppendSecondRegion->setAutoRaise(true);
 //     buttonAppendEntireRegion->setAutoRaise(true);
 
-    buttonAppendFirstQuarterRegion->setDefaultAction(new KAction(KIcon("list-add"), QString(), this));
-    buttonAppendSecondQuarterRegion->setDefaultAction(new KAction(KIcon("list-add"), QString(), this));
-    buttonAppendThirdQuarterRegion->setDefaultAction(new KAction(KIcon("list-add"), QString(), this));
-    buttonAppendFourthQuarterRegion->setDefaultAction(new KAction(KIcon("list-add"), QString(), this));
-    buttonAppendFirstRegion->setDefaultAction(new KAction(KIcon("list-add"), QString(), this));
-    buttonAppendSecondRegion->setDefaultAction(new KAction(KIcon("list-add"), QString(), this));
-    buttonAppendEntireRegion->setDefaultAction(new KAction(KIcon("list-add"), QString(), this));
+    buttonAppendFirstQuarterRegion->setDefaultAction(new QAction(QIcon::fromTheme("list-add"), QString(), this));
+    buttonAppendSecondQuarterRegion->setDefaultAction(new QAction(QIcon::fromTheme("list-add"), QString(), this));
+    buttonAppendThirdQuarterRegion->setDefaultAction(new QAction(QIcon::fromTheme("list-add"), QString(), this));
+    buttonAppendFourthQuarterRegion->setDefaultAction(new QAction(QIcon::fromTheme("list-add"), QString(), this));
+    buttonAppendFirstRegion->setDefaultAction(new QAction(QIcon::fromTheme("list-add"), QString(), this));
+    buttonAppendSecondRegion->setDefaultAction(new QAction(QIcon::fromTheme("list-add"), QString(), this));
+    buttonAppendEntireRegion->setDefaultAction(new QAction(QIcon::fromTheme("list-add"), QString(), this));
 
     QHBoxLayout * quartersLayout = new QHBoxLayout();
     quartersLayout->addWidget(buttonAppendFirstQuarterRegion);
@@ -375,5 +375,3 @@ void BlenderColorSelector::appendColorsOfRegion(HighlighterGradientSelector::Reg
 
     emit colorsAdded(tmpColorRange);
 }
-
-#include "blendercolorselector.moc"

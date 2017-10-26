@@ -19,14 +19,14 @@
 
 #include "palettedetailview.h"
 
-#include <QtGui/QLayout>
-#include <QtGui/QHeaderView>
-#include <QtGui/QTableView>
-#include <QtGui/QToolButton>
+#include <QLayout>
+#include <QHeaderView>
+#include <QTableView>
+#include <QToolButton>
+#include <QIcon>
 
 #include <KLocalizedString>
 #include <KLineEdit>
-#include <KPushButton>
 #include <KUrlLabel>
 
 #include "colorutil.h"
@@ -41,33 +41,33 @@ PaletteDetailViewControls::PaletteDetailViewControls(PaletteDetailView *paletteD
     , m_paletteDetailView(paletteDetailView)
 {
     QToolButton *moveItemToFirstPositionButton = new QToolButton(this);
-    moveItemToFirstPositionButton->setIcon(KIcon("go-top"));
+    moveItemToFirstPositionButton->setIcon(QIcon::fromTheme("go-top"));
     moveItemToFirstPositionButton->setToolTip(i18n("First position"));
 
     QToolButton *moveItemToPrevPositionButton = new QToolButton(this);
-    moveItemToPrevPositionButton->setIcon(KIcon("go-up"));
+    moveItemToPrevPositionButton->setIcon(QIcon::fromTheme("go-up"));
     moveItemToPrevPositionButton->setToolTip(i18n("Previous position"));
     moveItemToPrevPositionButton->setAutoRepeat(true);
 
     QToolButton *insertColorItemButton = new QToolButton(this);
-    insertColorItemButton->setIcon(KIcon("insert-horizontal-rule"));
+    insertColorItemButton->setIcon(QIcon::fromTheme("insert-horizontal-rule"));
     insertColorItemButton->setToolTip(i18n("Insert color"));
 
     QToolButton *insertCommentItemButton = new QToolButton(this);
-    insertCommentItemButton->setIcon(KIcon("list-add-font"));
+    insertCommentItemButton->setIcon(QIcon::fromTheme("list-add-font"));
     insertCommentItemButton->setToolTip(i18n("Insert comment"));
 
     QToolButton *removeItemButton = new QToolButton(this);
-    removeItemButton->setIcon(KIcon("list-remove"));
+    removeItemButton->setIcon(QIcon::fromTheme("list-remove"));
     removeItemButton->setToolTip(i18n("Remove item"));
 
     QToolButton *moveItemToNextPositionButton = new QToolButton(this);
-    moveItemToNextPositionButton->setIcon(KIcon("go-down"));
+    moveItemToNextPositionButton->setIcon(QIcon::fromTheme("go-down"));
     moveItemToNextPositionButton->setToolTip(i18n("Next position"));
     moveItemToNextPositionButton->setAutoRepeat(true);
 
     QToolButton *moveItemToLastPositionButton = new QToolButton(this);
-    moveItemToLastPositionButton->setIcon(KIcon("go-bottom"));
+    moveItemToLastPositionButton->setIcon(QIcon::fromTheme("go-bottom"));
     moveItemToLastPositionButton->setToolTip(i18n("Last position"));
 
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
@@ -334,5 +334,3 @@ void PaletteDetailView::showPaletteDescriptionWidget()
 }
 
 //END Public class PaletteDetailView
-
-#include "palettedetailview.moc"

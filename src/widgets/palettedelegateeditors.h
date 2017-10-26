@@ -20,7 +20,7 @@
 #ifndef PALETTE_DELEGATE_EDITORS_H
 #define PALETTE_DELEGATE_EDITORS_H
 
-#include <QtGui/QWidget>
+#include <QWidget>
 
 class KColorButton;
 class KLineEdit;

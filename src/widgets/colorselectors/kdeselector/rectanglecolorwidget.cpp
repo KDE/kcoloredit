@@ -22,7 +22,7 @@
 
 #include "rectanglecolorwidget.h"
 
-#include <QtGui/QLayout>
+#include <QLayout>
 
 #include <KColorValueSelector>
 #include <khuesaturationselect.h>
@@ -238,5 +238,3 @@ void RectangleColorWidget::updateColor(const QColor & color)
     m_hsSelector->blockSignals(blocked);
     m_hsSelector->repaint();
 }
-
-#include "rectanglecolorwidget.moc"

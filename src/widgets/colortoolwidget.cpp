@@ -22,17 +22,16 @@
 
 #include "colortoolwidget.h"
 
-#include <QtGui/QMouseEvent>
-#include <QtGui/QLayout>
-#include <QtGui/QLabel>
-#include <QtGui/QSlider>
-#include <QtGui/QGroupBox>
-#include <QtGui/QDesktopWidget>
+#include <QMouseEvent>
+#include <QLayout>
+#include <QLabel>
+#include <QSlider>
+#include <QGroupBox>
+#include <QDesktopWidget>
+#include <QPushButton>
 
-#include <KIcon>
 #include <KApplication>
 #include <KLocalizedString>
-#include <KPushButton>
 #include <KColorPatch>
 
 #ifdef Q_WS_X11
@@ -42,7 +41,7 @@
 #include <QX11Info>
 #include <fixx11h.h>
 
-#include <QtGui/QCheckBox>
+#include <QCheckBox>
 
 #include <KWindowSystem>
 
@@ -82,7 +81,8 @@ ColorToolWidget::ColorToolWidget(QWidget * parent)
     m_brightnessSlider->setOrientation(Qt::Horizontal);
     m_brightnessSlider->setRange(0, 255);
 
-    KPushButton *defaultBrightnessButton = new KPushButton(KGuiItem("", "edit-undo"), this);
+    QPushButton *defaultBrightnessButton = new QPushButton(this);
+    KGuiItem::assign(defaultBrightnessButton, KGuiItem("", "edit-undo"));
     defaultBrightnessButton->setToolTip(i18nc("color context: brightness", "Restore original brightness"));
 
     QHBoxLayout * brightnessLayout = new QHBoxLayout();
@@ -104,7 +104,8 @@ ColorToolWidget::ColorToolWidget(QWidget * parent)
     m_saturationSlider->setOrientation(Qt::Horizontal);
     m_saturationSlider->setRange(0, 255);
 
-    KPushButton *defaultSaturationButton = new KPushButton(KGuiItem("", "edit-undo"), this);
+    QPushButton *defaultSaturationButton = new QPushButton(this);
+    KGuiItem::assign(defaultSaturationButton, KGuiItem("", "edit-undo"));
     defaultSaturationButton->setToolTip(i18nc("color context: saturation of the color", "Restore original saturation"));
 
     QHBoxLayout * saturationLayout = new QHBoxLayout();
@@ -122,7 +123,7 @@ ColorToolWidget::ColorToolWidget(QWidget * parent)
 
     QGroupBox * extraSelectorsBox = new QGroupBox(i18n("Color Selectors"), this);
 
-    KPushButton * pickColorButton = new KPushButton(KIcon("color-picker"), i18n("Pick a Color"), extraSelectorsBox);
+    QPushButton * pickColorButton = new QPushButton(QIcon::fromTheme("color-picker"), i18n("Pick a Color"), extraSelectorsBox);
 
     QHBoxLayout * pickColorLayout = new QHBoxLayout();
     pickColorLayout->addWidget(pickColorButton);
@@ -384,5 +385,3 @@ QColor ColorToolWidget::grabColor(const QPoint & p)
 
 #endif
 }
-
-#include "colortoolwidget.moc"
