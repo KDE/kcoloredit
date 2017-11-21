@@ -19,15 +19,17 @@
 
 #include "kcoloredit.h"
 
-#include <KUrl>
-#include <KApplication>
-#include <KCmdLineArgs>
-#include <KAboutData>
+#include <QApplication>
 #include <QCommandLineParser>
+#include <QUrl>
+
+#include <KAboutData>
 
 int main(int argc, char * argv[])
 {
     QApplication app(argc, argv);
+
+    KLocalizedString::setApplicationDomain("kcoloredit");
 
     KAboutData about(QLatin1Literal("kcoloredit"),
                      i18n("KColorEdit"),
